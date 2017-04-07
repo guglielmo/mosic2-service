@@ -1,0 +1,12 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    token_authenticator:
+        class: UserBundle\Security\TokenAuthenticator
+        arguments: ['@lexik_jwt_authentication.jwt_encoder', '@doctrine.orm.entity_manager']
+
+    userbundle.security.access_denied_handler:
+        class: UserBundle\Security\AccessDeniedHandler
