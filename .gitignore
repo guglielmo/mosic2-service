@@ -1,3 +1,4 @@
 web/files
 /var/cache/*
 /var/logs/*
+/var/sessions/*
