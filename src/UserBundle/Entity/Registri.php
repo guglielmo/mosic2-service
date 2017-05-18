@@ -72,7 +72,13 @@ class Registri {
 		*/
     private $numeroSottofascicolo;
 
-		/**
+    /**
+     * @ORM\Column(name="denominazione_sottofascicolo", type="string", length=255)
+     */
+    private $denominazioneSottofascicolo;
+
+
+    /**
 		* @ORM\Column(name="proposta_cipe", type="boolean")
 		*/
     private $propostaCipe;
@@ -113,6 +119,7 @@ class Registri {
         $this->idSottofascicoli = 0;
         $this->mittente = '';
         $this->numeroSottofascicolo = 0;
+        $this->denominazioneSottofascicolo = '';
         $this->propostaCipe = 0;
 	    $this->dataMittente = new \DateTime("0000-00-00");
         $this->dataArrivo = new \DateTime("0000-00-00");
@@ -127,6 +134,7 @@ class Registri {
     }
 
   
+
 
     /**
      * Get id
@@ -376,6 +384,30 @@ class Registri {
     public function getNumeroSottofascicolo()
     {
         return $this->numeroSottofascicolo;
+    }
+
+    /**
+     * Set denominazioneSottofascicolo
+     *
+     * @param string $denominazioneSottofascicolo
+     *
+     * @return Registri
+     */
+    public function setDenominazioneSottofascicolo($denominazioneSottofascicolo)
+    {
+        $this->denominazioneSottofascicolo = $denominazioneSottofascicolo;
+
+        return $this;
+    }
+
+    /**
+     * Get denominazioneSottofascicolo
+     *
+     * @return string
+     */
+    public function getDenominazioneSottofascicolo()
+    {
+        return $this->denominazioneSottofascicolo;
     }
 
     /**

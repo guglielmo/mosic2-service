@@ -91,6 +91,7 @@ class TitolariController extends Controller
         $titolario->setCodice($data->codice);
         $titolario->setDenominazione($data->denominazione);
         $titolario->setDescrizione($data->descrizione);
+		$titolario->setIdUffici($data->id_uffici);
 
         
         //aggiorna la date della modifica nella tabella msc_last_updates
@@ -124,6 +125,7 @@ class TitolariController extends Controller
         $titolario->setCodice($data->codice);
         $titolario->setDenominazione($data->denominazione);
         $titolario->setDescrizione($data->descrizione);
+		$titolario->setIdUffici($data->id_uffici);
         
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');

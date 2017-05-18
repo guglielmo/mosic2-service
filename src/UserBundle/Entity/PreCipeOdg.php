@@ -375,4 +375,28 @@ class PreCipeOdg
     {
         return $this->stato;
     }
+
+    /**
+     * Set ordine
+     *
+     * @param string $ordine
+     *
+     * @return PreCipeOdg
+     */
+    public function setOrdine($ordine)
+    {
+        $this->ordine = $ordine;
+
+        return $this;
+    }
+
+    /**
+     * Get ordine
+     *
+     * @return string
+     */
+    public function getOrdine()
+    {
+        return $this->ordine;
+    }
 }

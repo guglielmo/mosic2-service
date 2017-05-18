@@ -112,6 +112,7 @@ class RegistriRepository extends \Doctrine\ORM\EntityRepository
                                             r.codiceTitolario as codice_titolario,
                                             r.numeroFascicolo as numero_fascicolo,
                                             r.numeroSottofascicolo as numero_sottofascicolo,
+                                            r.denominazioneSottofascicolo as denominazione_sottofascicolo,
                                             r.propostaCipe as proposta_cipe,
                                             r.annotazioni as annotazioni,
                                             r.idSottofascicoli as id_sottofascicoli,

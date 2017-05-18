@@ -72,7 +72,7 @@ class FascicoliRepository extends \Doctrine\ORM\EntityRepository
                                             r.idAmministrazioni as id_amministrazioni'
 																						)
             ->from('UserBundle:Fascicoli', 'f')
-						->leftJoin('UserBundle:RelAmministrazioniFascicoli', 'r', 'WITH', 'f.id = r.idFascicoli')
+            ->leftJoin('UserBundle:RelAmministrazioniFascicoli', 'r', 'WITH', 'f.id = r.idFascicoli')
             ->where('1=1' . $filter)
             ->setParameters($parameters)
             ->setFirstResult( $offset )
@@ -92,11 +92,11 @@ class FascicoliRepository extends \Doctrine\ORM\EntityRepository
 		
 		
     public function schedaFascicolo($id) {
-          
-				$parameters = array ();
+
+        $parameters = array ();
         $filter = "";
-				$filter .= " AND f.id = :id ";
-				$parameters['id'] = $id;
+        $filter .= " AND f.id = :id ";
+        $parameters['id'] = $id;
 
         $qb = $this->getEntityManager();
 
@@ -129,8 +129,6 @@ class FascicoliRepository extends \Doctrine\ORM\EntityRepository
         //print_r($query->getQuery()->getSql());
 
         return $query->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
-        //return $query->getQuery()->getResult();
-        
     }
 
     

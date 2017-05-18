@@ -27,6 +27,8 @@ $nomeDb= "mosic_symfony";
 
 //CONNESSIONE AL DB
 $db = mysqli_connect( $indirizzoHost, $nomeUser, $password, $nomeDb);
+mysqli_set_charset($db,"utf8");
+
 if (mysqli_connect_errno($db)) {      
     echo "Errore in connessione al DB: ".mysqli_connect_error(); 
 }
@@ -42,18 +44,40 @@ set_time_limit(7200);
 //setOggettoRegistri();
 //setMittentiRegistri();
 //updateIdTitolari();
-//gestioneFilesRegistri();
-//gestioneFilesPreCipe();
+//gestioneFilesRegistri(); //+ sottofasicoli
 
+//gestioneFilesPreCipe();
+//gestioneFilesCipe();
+
+//setSottofascicoliDenominazioneSuRegistri();
 
 //setIdFascicoli();
 
 //### da eseguire una sola volta! (serve per popolare la tabella msc_precipe)
 //raggruppaPreCipeData();
-
 //setOrdiniPreCipe();
-
 //setRegistriPrecipe();
+
+
+//raggruppaCipeData();
+//setOrdiniCipe();
+//setRegistriCipe();
+
+//setUfficiPreCipeOdg();
+//setUfficiCipeOdg();
+
+//renameFile();
+
+//setDelibere();
+//setUfficiDelibere();
+//setAllegatiDelibere(); //da finire,
+//setFunzionariDelibere();
+//setCorteDeiContiDelibere();
+
+//setTipoRegistrazioneCC(); //temporanea fix
+
+setDateDelibereGiorni();
+
 
 echo "-END-";
 // chiusura della connessione

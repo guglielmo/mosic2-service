@@ -45,6 +45,14 @@ class Titolari
      */
     private $descrizione;
 
+
+	
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="id_uffici", type="integer")
+     */
+    private $idUffici;
 		
 
 
@@ -128,5 +136,29 @@ class Titolari
     public function getDescrizione()
     {
         return $this->descrizione;
+    }
+
+    /**
+     * Set idUffici
+     *
+     * @param integer $idUffici
+     *
+     * @return Titolari
+     */
+    public function setIdUffici($idUffici)
+    {
+        $this->idUffici = $idUffici;
+
+        return $this;
+    }
+
+    /**
+     * Get idUffici
+     *
+     * @return integer
+     */
+    public function getIdUffici()
+    {
+        return $this->idUffici;
     }
 }

@@ -73,7 +73,6 @@ class PreCipeOdgController extends Controller
     /**
      * @Route("/precipeodg/{id}", name="precipeodg_item_save")
      * @Method("PUT")
-     * @Security("is_granted('ROLE_EDIT_UFFICI')")
      */
     public function precipeodgItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -112,7 +111,6 @@ class PreCipeOdgController extends Controller
    /**
      * @Route("/precipeodg", name="precipeodg_item_create")
      * @Method("POST")
-    * @Security("is_granted('ROLE_CREATE_UFFICI')")
      */
     public function precipeodgItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -150,7 +148,6 @@ class PreCipeOdgController extends Controller
     /**
      * @Route("/precipeodg/{id}", name="precipeodg_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_UFFICI')")
      */
     public function precipeodgItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

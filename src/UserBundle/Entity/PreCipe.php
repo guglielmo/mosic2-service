@@ -37,11 +37,29 @@ class PreCipe
      */
     private $ufficialeRiunione;
 
-    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="public_reserved_status", type="string", length=255)
+     */
+    private $publicReservedStatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="public_reserved_url", type="string", length=255)
+     */
+    private $publicReservedUrl;
+
+
+
 
     public function __construct() {
         $this->data = new \DateTime("0000-00-00");
     }
+
+
 
 
     /**
@@ -100,5 +118,53 @@ class PreCipe
     public function getUfficialeRiunione()
     {
         return $this->ufficialeRiunione;
+    }
+
+    /**
+     * Set publicReservedStatus
+     *
+     * @param string $publicReservedStatus
+     *
+     * @return PreCipe
+     */
+    public function setPublicReservedStatus($publicReservedStatus)
+    {
+        $this->publicReservedStatus = $publicReservedStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get publicReservedStatus
+     *
+     * @return string
+     */
+    public function getPublicReservedStatus()
+    {
+        return $this->publicReservedStatus;
+    }
+
+    /**
+     * Set publicReservedUrl
+     *
+     * @param string $publicReservedUrl
+     *
+     * @return PreCipe
+     */
+    public function setPublicReservedUrl($publicReservedUrl)
+    {
+        $this->publicReservedUrl = $publicReservedUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get publicReservedUrl
+     *
+     * @return string
+     */
+    public function getPublicReservedUrl()
+    {
+        return $this->publicReservedUrl;
     }
 }

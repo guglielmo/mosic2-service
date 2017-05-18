@@ -31,12 +31,13 @@ class RegistriController extends Controller
      * @Method("GET")
      * @Security("is_granted('ROLE_READ_REGISTRI')")
      */
-    public function registriAction(Request $request) {
-			
+    public function registriAction(Request $request)
+    {
+
         //prendo i parametri get
-        $limit  = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
+        $limit = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
         $offset = ($request->query->get('offset') != "") ? $request->query->get('offset') : 0;
-        $sortBy  = ($request->query->get('sort_by') != "") ? $request->query->get('sort_by') : 'id';
+        $sortBy = ($request->query->get('sort_by') != "") ? $request->query->get('sort_by') : 'id';
         $sortType = ($request->query->get('sort_order') != "") ? $request->query->get('sort_order') : "DESC";
 
         $id = ($request->query->get('id') != "") ? $request->query->get('id') : '';
@@ -54,14 +55,15 @@ class RegistriController extends Controller
         $registri = $repository->listaRegistri($limit, $offset, $sortBy, $sortType, $id, $id_titolari, $numero_fascicolo, $id_mittenti, $data_arrivo_from, $data_arrivo_to, $protocollo_arrivo, $protocollo_mittente, $oggetto);
         $totRegistri = $repository->totaleRegistri();
 
-        
+
         //converte i risultati in json
         $serialize = $this->serialize($registri);
-        
+
+
         //funzione per formattare le date del json
         $serialize = $this->formatDateJsonArrayCustom(json_decode($serialize), array('data_arrivo', 'data_mittente'));
-        
-        
+
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($totRegistri),
@@ -70,45 +72,42 @@ class RegistriController extends Controller
             "offset" => $offset,
             "data" => $serialize
         );
-        
+
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
-
-
         return $this->setBaseHeaders($response);
     }
-		
-		
+
+
     /**
      * @Route("/registri/{id}", name="registri_item")
      * @Method("GET")
      * @Security("is_granted('ROLE_READ_REGISTRI')")
      */
-    public function registriItemAction(Request $request, $id) {
+    public function registriItemAction(Request $request, $id)
+    {
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:Registri');
         $registro = $repository->schedaRegistro($id);
-        
-		//converte i risultati in json
+
+        //converte i risultati in json
         $serialize = $this->serialize($registro);
-        
+
         //funzione per raggruppare i risultati del join inserendo id_amministrazioni con la virgola
         $serialize = $this->mergeIdAmministrazioni($serialize);
-        
+
 
         $getDataPath = $repository->getDataPath($id);
         $getDataPath = json_decode($this->serialize($getDataPath));
-        
-        $allegati = $repository->getAllegatiByIdRegistro($id);
 
+        $allegati = $repository->getAllegatiByIdRegistro($id);
 
         //$serialize = $this->mergeAllegati($serialize, $allegati);
 
         $serialize["allegati"] = $allegati;
-        
+
         $serialize = $this->formatDateJsonCustom($serialize, array('data_arrivo', 'data_mittente'));
 
-        
-				
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => 1,
@@ -117,27 +116,28 @@ class RegistriController extends Controller
             "data" => $serialize,
             //"allegati" => $allegati
         );
-				
+
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
 
         return $this->setBaseHeaders($response);
     }
-		
-		
-		
+
+
     /**
      * @Route("/registri/{id}", name="registri_item_save")
      * @Method("PUT")
      * @Security("is_granted('ROLE_EDIT_REGISTRI')")
      */
-    public function registriItemSaveAction(Request $request, $id) {
+    public function registriItemSaveAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+
         $repository = $em->getRepository('UserBundle:Registri');
         $registro = $repository->findOneById($data->id);
-				
+        //$registro = $repository->findOneBy(["id" => $data->id]);
+
         $repository_rel = $em->getRepository('UserBundle:RelAmministrazioniRegistri');
         $relAmministrazioniRegistri_delete = $repository_rel->findByIdRegistri($data->id); //ricavo tutte le relazioni con l'id dei registri
 
@@ -149,11 +149,10 @@ class RegistriController extends Controller
         //ricavo gli tutte i tags passati dalla tendina
         $array_id_tags = explode(",", $data->id_tags);
 
-        
         $registro->setAnnotazioni($data->annotazioni);
         //$registro->setCodiceTitolario($data->codice_titolario);
-        $registro->setDataMittente(new \DateTime($this->formatDateStringCustom($data->data_mittente))); 
-        $registro->setDataArrivo(new \DateTime($this->formatDateStringCustom($data->data_arrivo))); 
+        $registro->setDataMittente(new \DateTime($this->formatDateStringCustom($data->data_mittente)));
+        $registro->setDataArrivo(new \DateTime($this->formatDateStringCustom($data->data_arrivo)));
         //$registro->setIdAmministrazione($data->id_amministrazione);
         $registro->setIdFascicoli($data->id_fascicoli);
         $registro->setIdMittenti($data->id_mittenti);
@@ -166,19 +165,19 @@ class RegistriController extends Controller
         $registro->setPropostaCipe($data->proposta_cipe);
         $registro->setProtocolloArrivo($data->protocollo_arrivo);
         $registro->setProtocolloMittente($data->protocollo_mittente);
-				
-		// AMMINISTRAZIONI		
+
+        // AMMINISTRAZIONI
         //rimuovo tutte le relazioni con l'id del registro (per poi riaggiornale ovvero ricrearle)
         foreach ($relAmministrazioniRegistri_delete as $relAmministrazioniRegistri_delete) {
-                $em->remove($relAmministrazioniRegistri_delete);
+            $em->remove($relAmministrazioniRegistri_delete);
         }
         //creo le relazioni da aggiornare nella tabella RelAmministrazioniRegistri
         foreach ($array_id_amministrazioni as $item) {
-                $relAmministrazioniRegistri = new relAmministrazioniRegistri();
-                $relAmministrazioniRegistri->setIdRegistri($data->id);
-                $relAmministrazioniRegistri->setIdAmministrazioni($item);
-                //aggiorno (in realt� ricreo) le relazioni del registro
-                $em->persist($relAmministrazioniRegistri); //create
+            $relAmministrazioniRegistri = new relAmministrazioniRegistri();
+            $relAmministrazioniRegistri->setIdRegistri($data->id);
+            $relAmministrazioniRegistri->setIdAmministrazioni($item);
+            //aggiorno (in realt� ricreo) le relazioni del registro
+            $em->persist($relAmministrazioniRegistri); //create
         }
 
         // TAGS
@@ -206,25 +205,25 @@ class RegistriController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
-		
-		
-   /**
+
+
+    /**
      * @Route("/registri", name="registri_item_create")
      * @Method("POST")
      * @Security("is_granted('ROLE_CREATE_REGISTRI')")
      */
-    public function registriItemCreateAction(Request $request) {
+    public function registriItemCreateAction(Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+
         $registro = new Registri();
-        
+
         $registro->setAnnotazioni($data->annotazioni);
         //$registro->setCodiceTitolario($data->codice_titolario);
-        $registro->setDataMittente(new \DateTime($this->formatDateStringCustom($data->data_mittente))); 
-        $registro->setDataArrivo(new \DateTime($this->formatDateStringCustom($data->data_arrivo))); 
+        $registro->setDataMittente(new \DateTime($this->formatDateStringCustom($data->data_mittente)));
+        $registro->setDataArrivo(new \DateTime($this->formatDateStringCustom($data->data_arrivo)));
         //$registro->setIdAmministrazione($data->id_amministrazione);
         //$registro->setIdFascicolo($data->id_fascicoli);
         $registro->setIdMittenti($data->id_mittenti);
@@ -238,25 +237,25 @@ class RegistriController extends Controller
         //$registro->setPropostaCipe($data->proposta_cipe);
         $registro->setProtocolloArrivo($data->protocollo_arrivo);
         $registro->setProtocolloMittente($data->protocollo_mittente);
-				
-        
-		//ricavo gli tutte le amministrazioni passate dalla tendina
+
+
+        //ricavo gli tutte le amministrazioni passate dalla tendina
         $array_id_amministrazioni = explode(",", $data->id_amministrazioni);
         //ricavo gli id di tutte i tags passati dalla tendina
         $array_id_tags = explode(",", $data->id_tags);
 
         $em->persist($registro);
         $em->flush(); //esegue query
-				
+
         $id_registro_creato = $registro->getId();
         //AMMINISTRAZIONI
         //creo le relazioni da creare nella tabella RelAmministrazioniRegistri
         foreach ($array_id_amministrazioni as $item) {
-                $relAmministrazioniRegistri = new relAmministrazioniRegistri();
-                $relAmministrazioniRegistri->setIdRegistri($id_registro_creato);
-                $relAmministrazioniRegistri->setIdAmministrazioni($item);
-                //aggiorno (in realt� ricreo) le relazioni del registro
-                $em->persist($relAmministrazioniRegistri); //create
+            $relAmministrazioniRegistri = new relAmministrazioniRegistri();
+            $relAmministrazioniRegistri->setIdRegistri($id_registro_creato);
+            $relAmministrazioniRegistri->setIdAmministrazioni($item);
+            //aggiorno (in realt� ricreo) le relazioni del registro
+            $em->persist($relAmministrazioniRegistri); //create
         }
 
         // TAGS
@@ -268,28 +267,29 @@ class RegistriController extends Controller
             //aggiorno (in realt� ricreo) le relazioni del fascicolo
             $em->persist($relTagsRegistri); //create
         }
-        
+
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("registri");
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
-        
+
         $em->flush(); //esegue query
-        
+
         $response = new Response($this->serialize($registro), Response::HTTP_OK);
 
         return $this->setBaseHeaders($response);
-		}
-		
-		
+    }
+
+
     /**
      * @Route("/registri/{id}", name="registri_item_delete")
      * @Method("DELETE")
      * @Security("is_granted('ROLE_DELETE_REGISTRI')")
      */
-    public function registriItemDeleteAction(Request $request, $id) {
+    public function registriItemDeleteAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
-        
+
         $repository = $em->getRepository('UserBundle:Registri');
         $registro = $repository->findOneById($id);
 
@@ -301,7 +301,7 @@ class RegistriController extends Controller
 
         //rimuovo tutte le relazioni con l'id del registro
         foreach ($relAmministrazioniRegistri_delete as $relAmministrazioniRegistri_delete) {
-                $em->remove($relAmministrazioniRegistri_delete);
+            $em->remove($relAmministrazioniRegistri_delete);
         }
 
         //rimuovo tutte le relazioni con l'id del registro
@@ -323,13 +323,12 @@ class RegistriController extends Controller
     }
 
 
-
-
     /**
      * @Route("/registri/{id}/upload", name="uploadRegistri")
      * @Method("POST")
      */
-    public function uploadRegistriAction(Request $request, $id) {
+    public function uploadRegistriAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $repository = $em->getRepository('UserBundle:Registri');
@@ -345,7 +344,7 @@ class RegistriController extends Controller
         $denominazione_titolario = strtoupper($denominazione_titolario);
         $codice_fascicolo = $fascicolo->getNumeroFascicolo();
 
-        $path_file = Costanti::URL_ALLEGATI_REGISTRI . "/" . $codice_titolario . " - ".$denominazione_titolario."/" . $codice_fascicolo . "/";
+        $path_file = Costanti::URL_ALLEGATI_REGISTRI . "/" . $codice_titolario . " - " . $denominazione_titolario . "/" . $codice_fascicolo . "/";
 
         $file = $request->files->get('file');
 
@@ -380,8 +379,6 @@ class RegistriController extends Controller
         }
 
 
-
-
         $array = array(
             'id' => $id_allegato_creato,
             'id_registri' => $id,
@@ -398,13 +395,13 @@ class RegistriController extends Controller
 
         //se il file è maggiore di 25 MB
         if ($file->getClientSize() > 26214400) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Il file e' troppo grande. (max 25 MB)"]);
+            $response_array = array("error" => ["code" => 409, "message" => "Il file e' troppo grande. (max 25 MB)"]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         }
         //controllo su i tipi di file ammessi
-        if(!in_array($file->getMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword'))) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
+        if (!in_array($file->getMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword'))) {
+            $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         }
@@ -433,7 +430,8 @@ class RegistriController extends Controller
      * @Route("/registri/{id}/upload/{idallegato}", name="uploadDeleteRegistri")
      * @Method("DELETE")
      */
-    public function allegatiItemDeleteAction(Request $request, $id, $idallegato) {
+    public function allegatiItemDeleteAction(Request $request, $id, $idallegato)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $repository = $em->getRepository('UserBundle:RelAllegatiRegistri');
@@ -446,7 +444,7 @@ class RegistriController extends Controller
         //$idRelAllegatiRegistri = $relazione_allegato[0]->getId();
 
         if (!$relazione_allegato[0]) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Questo file non e' allegato a questo registro."]);
+            $response_array = array("error" => ["code" => 409, "message" => "Questo file non e' allegato a questo registro."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {
@@ -473,25 +471,13 @@ class RegistriController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-		
-		
-
-		
-		
     /**
      * @Route("/registri", name="registri_options")
      * @Method("OPTIONS")
      */
-    public function registriOptions(Request $request) {
-			
+    public function registriOptions(Request $request)
+    {
+
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
@@ -500,7 +486,8 @@ class RegistriController extends Controller
      * @Route("/registri/{id}", name="registri_item_options")
      * @Method("OPTIONS")
      */
-    public function registriItemOptions(Request $request, $id) {
+    public function registriItemOptions(Request $request, $id)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -510,7 +497,8 @@ class RegistriController extends Controller
      * @Route("/registri/{id}/upload", name="registriUpload_item_options")
      * @Method("OPTIONS")
      */
-    public function registriUploadItemOptions(Request $request, $id) {
+    public function registriUploadItemOptions(Request $request, $id)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -520,7 +508,8 @@ class RegistriController extends Controller
      * @Route("/registri/{id}/upload/{idallegato}", name="registriUploadDelete_item_options")
      * @Method("OPTIONS")
      */
-    public function registriUploadDeleteItemOptions(Request $request, $id, $idallegato) {
+    public function registriUploadDeleteItemOptions(Request $request, $id, $idallegato)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);

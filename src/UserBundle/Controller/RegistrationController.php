@@ -13,6 +13,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Component\Form\FormInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use UserBundle\Entity\LastUpdates;
 
 class RegistrationController extends BaseController
 {
@@ -71,6 +72,10 @@ class RegistrationController extends BaseController
         $user->addGroup($gruppo_default);
 
 
+        //aggiorna la date della modifica nella tabella msc_last_updates
+        $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+        $lastUpdates = $repositoryLastUpdates->findOneByTabella("users");
+        $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
 
         $userManager->updateUser($user);
@@ -199,9 +204,13 @@ class RegistrationController extends BaseController
                 $user->setPassword($encoded);   
             }
         }
-        
-        
-            
+
+        //aggiorna la date della modifica nella tabella msc_last_updates
+        $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+        $lastUpdates = $repositoryLastUpdates->findOneByTabella("users");
+        $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+
+
         $em->flush(); //esegue l'update 
     
         $response = new Response($this->serialize($user), Response::HTTP_OK);
@@ -223,6 +232,14 @@ class RegistrationController extends BaseController
         $user = $repository->findOneById($id);
            
         $em->remove($user); //delete
+
+
+
+        //aggiorna la date della modifica nella tabella msc_last_updates
+        $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+        $lastUpdates = $repositoryLastUpdates->findOneByTabella("users");
+        $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+
 
         $em->flush(); //esegue l'update 
 

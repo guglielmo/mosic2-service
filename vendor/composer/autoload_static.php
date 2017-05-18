@@ -39,6 +39,7 @@ class ComposerStaticInit85c274eed38abdf2baab948bfc74133e
             'Symfony\\Polyfill\\Php70\\' => 23,
             'Symfony\\Polyfill\\Php56\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Component\\Security\\Acl\\' => 31,
             'Symfony\\Component\\' => 18,
             'Symfony\\Bundle\\SwiftmailerBundle\\' => 33,
             'Symfony\\Bundle\\MonologBundle\\' => 29,
@@ -118,6 +119,10 @@ class ComposerStaticInit85c274eed38abdf2baab948bfc74133e
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Component\\Security\\Acl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/security-acl',
         ),
         'Symfony\\Component\\' => 
         array (
@@ -239,6 +244,10 @@ class ComposerStaticInit85c274eed38abdf2baab948bfc74133e
         ),
         'S' => 
         array (
+            'Sensio\\Bundle\\BuzzBundle' => 
+            array (
+                0 => __DIR__ . '/..' . '/sensio/buzz-bundle',
+            ),
             'SensioLabs\\Security' => 
             array (
                 0 => __DIR__ . '/..' . '/sensiolabs/security-checker',
@@ -321,6 +330,13 @@ class ComposerStaticInit85c274eed38abdf2baab948bfc74133e
             'Doctrine\\Common\\Annotations\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/annotations/lib',
+            ),
+        ),
+        'B' => 
+        array (
+            'Buzz' => 
+            array (
+                0 => __DIR__ . '/..' . '/kriswallsmith/buzz/lib',
             ),
         ),
     );
