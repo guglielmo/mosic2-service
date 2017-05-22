@@ -1,4 +1,13 @@
+.DS_Store
 web/files
 /var/cache/*
 /var/logs/*
 /var/sessions/*
+prova-file.php
+web/Thread.php
+web/file-errori-upload-cipe.txt
+web/file-errori-upload.txt
+web/file-errori-upload2.txt
+web/info.php
+web/mosic-script/prova.txt
+web/prova.txt
