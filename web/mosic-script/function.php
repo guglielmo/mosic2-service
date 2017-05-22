@@ -1178,7 +1178,24 @@ function setDateDelibereGiorni() {
     }
 }
 
+function setUtentiAdempimenti() {
+    global $db;
 
+    $query = "SELECT * 
+              FROM TABLE_adempimenti_full as a
+              LEFT JOIN fos_user as u ON a.COL17 = u.username";
+    $res = mysqli_query($db, $query);
+
+    if (mysqli_num_rows($res) >= 1) {
+        while ($row = mysqli_fetch_array($res)) {
+            $query2 = 'UPDATE `msc_adempimenti` SET `utente`= "' . $row['id'] . '" WHERE `progressivo` = "' . $row['COL2'] . '" AND `codice_scheda` = "' . $row['COL3'] .'" AND `id_delibere` = "' . $row['COL4'] .'"';
+
+            echo $query2 . "<br>";
+            $res2 = mysqli_query($db, $query2);
+
+        }
+    }
+}
 
 
 ?>

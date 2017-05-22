@@ -120,13 +120,19 @@ class LoginController extends Controller
         // make more modifications to the database
         $this->getDoctrine()->getManager()->flush();
 
-				
+        //prendo i gruppi a cui appartiene l'utente
+        $gruppiAppartenentiUtente = $user->getGroups();
+        foreach ($gruppiAppartenentiUtente as $item) {
+            $idGruppi[] = $item->getId();
+        }
+
         $response_array = array(
             "total_results" => count($user),
             "data" =>  ['id' => $user->getId(),
             'username' => $user->getUsername(),
             'firstName' => $user->getFirstName(),
             'lastName' => $user->getLastName(),
+            'id_group' => $idGruppi,
             'capabilities' => $user->getRoles(),
             'token' => $token]
         );

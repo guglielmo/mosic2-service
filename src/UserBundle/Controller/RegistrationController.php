@@ -42,7 +42,12 @@ class RegistrationController extends BaseController
         $user->setPassword($encoded);
         $user->setFirstName($data['firstName']);
         $user->setLastName($data['lastName']);
-				
+        $user->setIdUffici($data['id_uffici']);
+        $user->setCessatoServizio($data->cessatoServizio);
+        $user->setIp($data['ip']);
+        $user->setStazione($data['stazione']);
+        $user->setIdRuoliCipe($data['id_ruoli_cipe']);
+
 				
         //cerco l'utente dall'email
         $em = $this->getDoctrine()->getManager();
@@ -68,7 +73,7 @@ class RegistrationController extends BaseController
 
         //associo l'utente al gruppo Uffici (di default)
         $repository_group = $em->getRepository('UserBundle:Group');
-        $gruppo_default = $repository_group->findOneByName('Uffici');
+        $gruppo_default = $repository_group->findOneByName('Base');
         $user->addGroup($gruppo_default);
 
 
@@ -78,12 +83,15 @@ class RegistrationController extends BaseController
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
 
+        //$response = new Response($this->serialize($user), Response::HTTP_CREATED);
+        //return $this->setBaseHeaders($response);
+
+
         $userManager->updateUser($user);
         
         $this->getDoctrine()->getManager()->flush();
         
         $response = new Response($this->serialize($user), Response::HTTP_CREATED);
-
         return $this->setBaseHeaders($response);
     }
 		

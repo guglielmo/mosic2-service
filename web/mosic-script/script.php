@@ -76,7 +76,9 @@ set_time_limit(7200);
 
 //setTipoRegistrazioneCC(); //temporanea fix
 
-setDateDelibereGiorni();
+//setDateDelibereGiorni();
+
+//setUtentiAdempimenti();
 
 
 echo "-END-";

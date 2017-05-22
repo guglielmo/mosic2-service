@@ -152,10 +152,12 @@ class FirmatariController extends Controller
         $repositoryCipe = $em->getRepository('UserBundle:Cipe');
         $cipeP = $repositoryCipe->findOneByIdPresidente($id);
         $cipeS = $repositoryCipe->findOneByIdSegretario($id);
-        $cipeD = $repositoryCipe->findOneByIdPresidente($id);
+        $cipeD = $repositoryCipe->findOneByIdDirettore($id);
 
+        $repositoryFirmatariDelibere = $em->getRepository('UserBundle:RelFirmatariDelibere');
+        $FirmatariDelibere = $repositoryFirmatariDelibere->findOneByIdFirmatari($id);
 
-        if ($cipe) {
+        if ($cipeP || $cipeS || $cipeD || $FirmatariDelibere) {
             $response_array = array("error" =>  ["code" => 409, "message" => "Il firmatario non e' vuoto, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
