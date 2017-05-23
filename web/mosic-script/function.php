@@ -1198,4 +1198,77 @@ function setUtentiAdempimenti() {
 }
 
 
+
+
+function monitor() {
+    global $db;
+
+    $query = "SELECT * FROM msc_delibere ORDER BY data DESC";
+    $res = mysqli_query($db, $query);
+
+    $arrayDelibere = array();
+
+    if (mysqli_num_rows($res) >= 1) {
+        while ($row = mysqli_fetch_array($res)) {
+
+            if (!isset($arrayDelibere[$row['data']])){
+                $arrayDelibere[$row['data']] = array(
+                    "num" => 0,
+                    "da_aquisire" => 0,
+                    "CD_inviare" => 0,
+                    "CD_firma" => 0,
+                    "MEF_inviare" => 0,
+                    "MEF_firma" => 0,
+                    "SEG_inviare" => 0,
+                    "SEG_firma" => 0,
+                    "PRE_inviare" => 0,
+                    "PRE_firma" => 0,
+                    "CC_inviare" => 0,
+                    "CC_firma" => 0,
+                    "GU_inviare" => 0,
+                    "GU_firma" => 0
+                );
+            }
+
+
+            $arrayDelibere[$row['data']]['num'] = $arrayDelibere[$row['data']]['num'] + 1;
+            
+            if ($row['data_consegna'] == null || $row['data_consegna'] == "" || $row['data_consegna'] == "0000-00-00") {
+                $arrayDelibere[$row['data']]['da_aquisire'] = $arrayDelibere[$row['data']]['da_aquisire'] + 1;
+                continue;
+            }
+            
+            if ($row['data_direttore_invio'] == null || $row['data_direttore_invio'] == "" || $row['data_direttore_invio'] == "0000-00-00") {
+                $arrayDelibere[$row['data']]['CD_inviare'] = $arrayDelibere[$row['data']]['CD_inviare'] + 1;
+            }
+            if (($row['data_direttore_ritorno'] == null || $row['data_direttore_ritorno'] == "" || $row['data_direttore_ritorno'] == "0000-00-00")
+            && (($row['data_direttore_invio'] != null && $row['data_direttore_invio'] != "" && $row['data_direttore_invio'] != "0000-00-00"))) {
+                $arrayDelibere[$row['data']]['CD_firma'] = $arrayDelibere[$row['data']]['CD_firma'] + 1;
+            }
+
+            if ($row['data_mef_pec'] == null || $row['data_mef_pec'] == "" || $row['data_mef_pec'] == "0000-00-00") {
+                $arrayDelibere[$row['data']]['MEF_inviare'] = $arrayDelibere[$row['data']]['MEF_inviare'] + 1;
+            }
+            if (($row['data_mef_ritorno'] == null || $row['data_mef_ritorno'] == "" || $row['data_mef_ritorno'] == "0000-00-00")
+                && (($row['data_mef_pec'] != null && $row['data_mef_pec'] != "" && $row['data_mef_pec'] != "0000-00-00"))) {
+                $arrayDelibere[$row['data']]['MEF_firma'] = $arrayDelibere[$row['data']]['MEF_firma'] + 1;
+            }
+
+
+
+        }
+    }
+
+
+    echo "<pre>";
+    print_r($arrayDelibere);
+    echo "</pre>";
+
+}
+
+
+
+
+
+
 ?>

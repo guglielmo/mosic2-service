@@ -80,6 +80,8 @@ set_time_limit(7200);
 
 //setUtentiAdempimenti();
 
+monitor();
+
 
 echo "-END-";
 // chiusura della connessione

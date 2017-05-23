@@ -48,7 +48,7 @@ class RegistrationController extends BaseController
         $user->setStazione($data['stazione']);
         $user->setIdRuoliCipe($data['id_ruoli_cipe']);
 
-				
+
         //cerco l'utente dall'email
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('UserBundle:User');
@@ -102,29 +102,44 @@ class RegistrationController extends BaseController
      * @Security("is_granted('ROLE_READ_UTENTI')")
      */
     public function usersListAction(Request $request) {
-
-
-        //prendo i parametri get
-        $limit  = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
-        $offset = ($request->query->get('offset') != "") ? $request->query->get('offset') : 0;
-
         $repository = $this->getDoctrine()->getRepository('UserBundle:User');
-        $users = $repository->listaUtenti();
+        $users = $repository->findAll();
     
-
         //converte i risultati in json
         $serialize = $this->serialize($users);
 
         //funzione per formattare le date del json
         $serialize = $this->formatDateTimeJsonCustom($serialize, array('registrationDate'));
+
+        foreach ($serialize as $item) {
+            $gruppi = "";
+            foreach ($item->groups as $k) {
+                $gruppi[] = $k->id;
+            }
+
+            $utenti[] = array(
+                "id" => $item->id,
+                "userName" => $item->username,
+                "firstName" => $item->first_name,
+                "lastName" => $item->last_name,
+                "eMail" => $item->email,
+                "id_uffici" => $item->id_uffici,
+                "cessatoServizio" => $item->cessato_servizio,
+                "ip" => $item->ip,
+                "stazione" => $item->stazione,
+                "id_ruoli_cipe" => $item->id_ruoli_cipe,
+                "registrationDate" => $item->created,
+                "id_groups" => $gruppi, //togliere [0] se vogliamo gestire più gruppi
+            );
+        }
         
 				
         $response_array = array(
             "response" => Response::HTTP_OK,
-            "total_results" => 100,
-            "limit" => $limit,
-            "offset" => $offset,
-            "data" => $serialize,
+            "total_results" => count($users),
+            "limit" => count($users),
+            "offset" => 0,
+            "data" => $utenti,
         );
 				
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
@@ -142,18 +157,39 @@ class RegistrationController extends BaseController
     public function usersItemAction(Request $request, $id) {
             
         $repository = $this->getDoctrine()->getRepository('UserBundle:User');
-        $user = $repository->schedaUtente($id);
+        //$user = $repository->schedaUtente($id);
+        $user = $repository->findOneBy(["id" => $id]);
 
+        $serialize = json_decode($this->serialize($user));
+
+        foreach ($serialize->groups as $item) {
+            $gruppi[] = $item->id;
+        }
+
+        $utente = array(
+            "id" => $serialize->id,
+            "userName" => $serialize->username,
+            "firstName" => $serialize->first_name,
+            "lastName" => $serialize->last_name,
+            "eMail" => $serialize->email,
+            "id_uffici" => $serialize->id_uffici,
+            "cessatoServizio" => $serialize->cessato_servizio,
+            "ip" => $serialize->ip,
+            "stazione" => $serialize->stazione,
+            "id_ruoli_cipe" => $serialize->id_ruoli_cipe,
+            "registrationDate" => $serialize->created,
+            "id_groups" => $gruppi[0], //togliere [0] se vogliamo gestire più gruppi
+        );
 
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($user),
             "limit" => 1,
             "offset" => 0,
-            "data" => json_decode($this->serialize($user))[0],
+            "data" => $utente,
         );
-        $response = new Response(json_encode($response_array), Response::HTTP_OK);
 
+        $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
     
@@ -171,7 +207,7 @@ class RegistrationController extends BaseController
         $data = json_decode($request->getContent());
         
         $repository = $em->getRepository('UserBundle:User');
-        $user = $repository->findOneById($data->id);
+        $user = $repository->findOneBy(["id" => $data->id]);
         
         $user->setUsername($data->userName);
         $user->setFirstName($data->firstName);
@@ -182,6 +218,18 @@ class RegistrationController extends BaseController
         $user->setIp($data->ip);
         $user->setStazione($data->stazione);
         $user->setIdRuoliCipe($data->id_ruoli_cipe);
+
+        //$user->removeGroup();
+
+        $gruppi = $user->getGroups();
+        foreach ($gruppi as $item) {
+            $user->removeGroup($item);
+        }
+        $repositoryGroup = $em->getRepository('UserBundle:Group');
+        $gruppo = $repositoryGroup->findOneBy(["id" => (int) $data->id_groups]);
+        $user->addGroup($gruppo);
+
+
 
         //cerco l'utente dall'email
         $utente = $repository->findOneByEmail($data->eMail);

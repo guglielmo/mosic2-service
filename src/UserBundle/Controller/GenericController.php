@@ -106,6 +106,45 @@ class GenericController extends Controller
 
 
 
+    /**
+     * @Route("/monitor", name="monitor")
+     * @Method("GET")
+     */
+    public function monitorAction(Request $request) {
+
+        $repository = $this->getDoctrine()->getRepository('UserBundle:Delibere');
+        $delibere = $repository->findAll();
+
+        $serialize = json_decode($this->serialize($delibere));
+        //$serialize = $this->formatDateJsonArrayCustom($serialize,array("data"));
+
+        $arrayDelibere = array();
+        foreach ($serialize as $item) {
+            if (isset($arrayDelibere[$item->data]['num'])) {
+                $arrayDelibere[$item->data]['num'] = $arrayDelibere[$item->data]['num'] + 1;
+            } else {
+                $arrayDelibere[$item->data]['num'] = 1;
+            }
+        }
+
+
+
+        $response_array = array(
+            "response" => Response::HTTP_OK,
+            "total_results" => count($delibere),
+            "data" => $arrayDelibere,
+        );
+
+        $response = new Response(json_encode($response_array), Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
+
+
+
+
+
+
+
 
 
 
