@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use UserBundle\Entity\Delibere;
+use UserBundle\Entity\DelibereCC;
 use UserBundle\Entity\DelibereGiorni;
 use UserBundle\Entity\Fascicoli;
 use UserBundle\Entity\Registri;
@@ -48,7 +49,8 @@ class DelibereController extends Controller
 
         $serialize = $this->formatDateJsonArrayCustom2($serialize, array('data', 'data_consegna', 'data_segretario_ritorno', 'data_segretario_invio',
                                                             'data_presidente_ritorno', 'data_presidente_invio', 'data_registrazione_cc',
-                                                            'data_invio_cc', 'data_invio_gu', 'data_gu'));
+                                                            'data_invio_cc', 'data_invio_gu', 'data_gu','data_direttore_invio','data_direttore_ritorno',
+                                                            'data_mef_invio','data_mef_ritorno'));
         $serialize = $this->setFaseProceduraleDelibere($serialize);
         $serialize = $this->setCastDelibere($serialize, "all");
 
@@ -69,7 +71,85 @@ class DelibereController extends Controller
                 "gu" => $delibereGiorni->getGiorniGU()
             );
 
+
+            $repositoryDelibereCC = $em->getRepository('UserBundle:DelibereCC');
+            $delibereCC = $repositoryDelibereCC->findBy(["idDelibere" => $serialize[$item]["id"]]);
+            $arrayDelibereCC = array();
+            foreach ($delibereCC as $k) {
+                $arrayDelibereCC[] = array(
+                    "id" => $k->getId(),
+                    "tipo_documento" => $k->getTipoDocumento(),
+                    "data_max_risposta" => strtotime($k->getDataRilievo()->modify('+'.$k->getGiorniRilievo().' days')->format('Y-m-d')) * 1000,
+                    "data_risposta" => strtotime($k->getDataRisposta()->format('Y-m-d')) * 1000
+                );
+
+            }
+
             $serialize[$item]["giorni_iter"] = $giorni;
+            $serialize[$item]["oss_cc"] = $arrayDelibereCC;
+            $serialize[$item]["registrazione_cc"] = array(
+                "data" => $serialize[$item]["data_registrazione_cc"],
+                "foglio" => $serialize[$item]["foglio_cc"],
+                "numero" => $serialize[$item]["registro_cc"]
+            );
+            $serialize[$item]["firme"] = array(
+                "uff_a" => $serialize[$item]["data_consegna"],
+                "cd_i" => $serialize[$item]["data_direttore_invio"],
+                "cd_r" => $serialize[$item]["data_direttore_ritorno"],
+                "mef_i" => $serialize[$item]["data_mef_invio"],
+                "mef_r" => $serialize[$item]["data_mef_ritorno"],
+                "seg_i" => $serialize[$item]["data_segretario_invio"],
+                "seg_r" => $serialize[$item]["data_segretario_ritorno"],
+                "pre_i" => $serialize[$item]["data_presidente_invio"],
+                "pre_r" => $serialize[$item]["data_presidente_ritorno"],
+                "cc_i" => $serialize[$item]["data_invio_cc"],
+                "cc_r" => $serialize[$item]["data_registrazione_cc"],
+                "gu_i" => $serialize[$item]["data_invio_gu"],
+                "gu_r" => $serialize[$item]["data_gu"]
+            );
+            unset($serialize[$item]['data_consegna']);
+            unset($serialize[$item]['data_direttore_invio']);
+            unset($serialize[$item]['data_direttore_ritorno']);
+            unset($serialize[$item]['data_mef_invio']);
+            unset($serialize[$item]['data_mef_ritorno']);
+            unset($serialize[$item]['data_segretario_invio']);
+            unset($serialize[$item]['data_segretario_ritorno']);
+            unset($serialize[$item]['data_presidente_invio']);
+            unset($serialize[$item]['data_presidente_ritorno']);
+            unset($serialize[$item]['data_invio_cc']);
+            unset($serialize[$item]['data_registrazione_cc']);
+            unset($serialize[$item]['data_invio_gu']);
+
+            $serialize[$item]["note"] = array(
+                "cd" => $serialize[$item]["note_direttore"],
+                "mef" => $serialize[$item]["note_mef"],
+                "seg" => $serialize[$item]["note_segretario"],
+                "pre" => $serialize[$item]["note_presidente"],
+                "cc" => $serialize[$item]["note_cc"],
+                "pa" => $serialize[$item]["note_p"],
+                "gu" => $serialize[$item]["note_gu"],
+                "an" => $serialize[$item]["note"],
+                "ns" => $serialize[$item]["note_servizio"],
+            );
+            unset($serialize[$item]['note_direttore']);
+            unset($serialize[$item]['note_mef']);
+            unset($serialize[$item]['note_segretario']);
+            unset($serialize[$item]['note_presidente']);
+            unset($serialize[$item]['note_cc']);
+            unset($serialize[$item]['note_p']);
+            unset($serialize[$item]['note_gu']);
+            unset($serialize[$item]['note_servizio']);
+
+
+            $serialize[$item]["pub_gu"] = array(
+                "nr" => $serialize[$item]["numero_gu"],
+                "data" => $serialize[$item]["data_gu"],
+            );
+            unset($serialize[$item]['numero_gu']);
+            unset($serialize[$item]['data_gu']);
+
+
+
         }
 
 
@@ -196,46 +276,46 @@ class DelibereController extends Controller
 
 
         $delibere->setNumero($data->numero);
-        if ($data->data != null){ $delibere->setData(new \DateTime($this->formatDateStringCustom($data->data))); }
+        if ($data->data != null){ $delibere->setData(new \DateTime($this->formatDateStringCustom($data->data))); } else {$delibere->setData(null); }
         $delibere->setIdStato($data->id_stato);
         $delibere->setArgomento($data->argomento);
         $delibere->setFinanziamento($data->finanziamento);
         $delibere->setNote($data->note);
         $delibere->setNoteServizio($data->note_servizio);
         $delibere->setScheda($data->scheda);
-        if ($data->data_consegna != null){ $delibere->setDataConsegna(new \DateTime($this->formatDateStringCustom($data->data_consegna)));}
+        if ($data->data_consegna != null){ $delibere->setDataConsegna(new \DateTime($this->formatDateStringCustom($data->data_consegna)));} else {$delibere->setDataConsegna(null); }
         $delibere->setIdDirettore($data->id_direttore);
-        if ($data->data_direttore_invio != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->formatDateStringCustom($data->data_direttore_invio)));}
-        if ($data->data_direttore_ritorno != null){ $delibere->setDataDirettoreRitorno(new \DateTime($this->formatDateStringCustom($data->data_direttore_ritorno)));}
+        if ($data->data_direttore_invio != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->formatDateStringCustom($data->data_direttore_invio)));} else {$delibere->setDataDirettoreInvio(null); }
+        if ($data->data_direttore_ritorno != null){ $delibere->setDataDirettoreRitorno(new \DateTime($this->formatDateStringCustom($data->data_direttore_ritorno)));} else {$delibere->setDataDirettoreRitorno(null); }
         $delibere->setNoteDirettore($data->note_direttore);
         $delibere->setInvioMef($data->invio_mef);
-        if ($data->data_mef_invio != null){ $delibere->setDataMefInvio(new \DateTime($this->formatDateStringCustom($data->data_mef_invio)));}
-        if ($data->data_mef_pec != null){ $delibere->setDataMefPec(new \DateTime($this->formatDateStringCustom($data->data_mef_pec))); }
-        if ($data->data_mef_ritorno != null){ $delibere->setDataMefRitorno(new \DateTime($this->formatDateStringCustom($data->data_mef_ritorno)));}
+        if ($data->data_mef_invio != null){ $delibere->setDataMefInvio(new \DateTime($this->formatDateStringCustom($data->data_mef_invio)));} else {$delibere->setDataMefInvio(null); }
+        if ($data->data_mef_pec != null){ $delibere->setDataMefPec(new \DateTime($this->formatDateStringCustom($data->data_mef_pec))); } else {$delibere->setDataMefPec(null); }
+        if ($data->data_mef_ritorno != null){ $delibere->setDataMefRitorno(new \DateTime($this->formatDateStringCustom($data->data_mef_ritorno)));} else {$delibere->setDataMefRitorno(null); }
         $delibere->setIdSegretario($data->id_segretario);
-        if ($data->data_segretario_invio != null){ $delibere->setDataSegretarioInvio(new \DateTime($this->formatDateStringCustom($data->data_segretario_invio)));}
-        if ($data->data_segretario_ritorno != null){ $delibere->setDataSegretarioRitorno(new \DateTime($this->formatDateStringCustom($data->data_segretario_ritorno)));}
+        if ($data->data_segretario_invio != null){ $delibere->setDataSegretarioInvio(new \DateTime($this->formatDateStringCustom($data->data_segretario_invio)));} else {$delibere->setDataSegretarioInvio(null); }
+        if ($data->data_segretario_ritorno != null){ $delibere->setDataSegretarioRitorno(new \DateTime($this->formatDateStringCustom($data->data_segretario_ritorno)));} else {$delibere->setDataSegretarioRitorno(null); }
         $delibere->setNoteSegretario($data->note_segretario);
         $delibere->setIdPresidente($data->id_presidente);
-        if ($data->data_presidente_invio != null){ $delibere->setDataPresidenteInvio(new \DateTime($this->formatDateStringCustom($data->data_presidente_invio)));}
-        if ($data->data_presidente_ritorno != null){ $delibere->setDataPresidenteRitorno(new \DateTime($this->formatDateStringCustom($data->data_presidente_ritorno)));}
+        if ($data->data_presidente_invio != null){ $delibere->setDataPresidenteInvio(new \DateTime($this->formatDateStringCustom($data->data_presidente_invio)));} else {$delibere->setDataPresidenteInvio(null); }
+        if ($data->data_presidente_ritorno != null){ $delibere->setDataPresidenteRitorno(new \DateTime($this->formatDateStringCustom($data->data_presidente_ritorno)));} else {$delibere->setDataPresidenteRitorno(null); }
         $delibere->setNotePresidente($data->note_presidente);
-        if ($data->data_invio_cc != null){ $delibere->setDataInvioCC(new \DateTime($this->formatDateStringCustom($data->data_invio_cc)));}
+        if ($data->data_invio_cc != null){ $delibere->setDataInvioCC(new \DateTime($this->formatDateStringCustom($data->data_invio_cc)));} else {$delibere->setDataInvioCC(null); }
         $delibere->setNumeroCC($data->numero_cc);
-        if ($data->data_registrazione_cc != null){ $delibere->setDataRegistrazioneCC(new \DateTime($this->formatDateStringCustom($data->data_registrazione_cc)));}
+        if ($data->data_registrazione_cc != null){ $delibere->setDataRegistrazioneCC(new \DateTime($this->formatDateStringCustom($data->data_registrazione_cc)));} else {$delibere->setDataRegistrazioneCC(null); }
         $delibere->setIdRegistroCC($data->id_registro_cc);
         $delibere->setFoglioCC($data->foglio_cc);
         $delibere->setTipoRegistrazioneCC($data->tipo_registrazione_cc);
         $delibere->setNoteCC($data->note_cc);
-        if ($data->data_invio_p != null){ $delibere->setDataInvioP(new \DateTime($this->formatDateStringCustom($data->data_invio_p)));}
-        if ($data->data_invio_gu != null){ $delibere->setDataInvioGU(new \DateTime($this->formatDateStringCustom($data->data_invio_gu)));}
+        if ($data->data_invio_p != null){ $delibere->setDataInvioP(new \DateTime($this->formatDateStringCustom($data->data_invio_p)));} else {$delibere->setDataInvioP(null); }
+        if ($data->data_invio_gu != null){ $delibere->setDataInvioGU(new \DateTime($this->formatDateStringCustom($data->data_invio_gu)));} else {$delibere->setDataInvioGU(null); }
         $delibere->setNumeroInvioGU($data->numero_invio_gu);
         $delibere->setTipoGU($data->tipo_gu);
-        if ($data->data_gu != null){ $delibere->setDataGU(new \DateTime($this->formatDateStringCustom($data->data_gu)));}
+        if ($data->data_gu != null){ $delibere->setDataGU(new \DateTime($this->formatDateStringCustom($data->data_gu)));} else {$delibere->setDataGU(null); }
         $delibere->setNumeroGU($data->numero_gu);
-        if ($data->data_ec_gu != null){ $delibere->setDataEcGU(new \DateTime($this->formatDateStringCustom($data->data_ec_gu)));}
+        if ($data->data_ec_gu != null){ $delibere->setDataEcGU(new \DateTime($this->formatDateStringCustom($data->data_ec_gu)));} else {$delibere->setDataEcGU(null); }
         $delibere->setNumeroEcGU($data->numero_ec_gu);
-        if ($data->data_co_gu != null){ $delibere->setDataCoGU(new \DateTime($this->formatDateStringCustom($data->data_co_gu)));}
+        if ($data->data_co_gu != null){ $delibere->setDataCoGU(new \DateTime($this->formatDateStringCustom($data->data_co_gu)));} else {$delibere->setDataCoGU(null); }
         $delibere->setNumeroCoGU($data->numero_co_gu);
         $delibere->setPubblicazioneGU($data->pubblicazione_gu);
         $delibere->setNoteGU($data->note_gu);
@@ -281,7 +361,7 @@ class DelibereController extends Controller
             $delibereGiorni->setIdDelibere($id);
         }
         $delibereGiorni->setAcquisizioneSegretario($delibere->getDataConsegna());
-        $delibereGiorni->setGiorniCapoDipartimento($this->differenceDate($data->data, $data->data_direttore_invio));
+        $delibereGiorni->setGiorniCapoDipartimento($this->differenceDate($data->data, $data->data_direttore_ritorno));
         $delibereGiorni->setGiorniMef($this->differenceDate($data->data_mef_invio,$data->data_mef_ritorno));
         $delibereGiorni->setGiorniSegretario($this->differenceDate($data->data_segretario_invio,$data->data_segretario_ritorno));
         $delibereGiorni->setGiorniPresidente($this->differenceDate($data->data_segretario_invio,$data->data_presidente_ritorno));
@@ -565,7 +645,7 @@ class DelibereController extends Controller
             $em->flush(); //esegue query
 
             //copio fisicamente il file
-            $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+            $file->move($path_file, $nome_file);
 
         } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
             echo "Exception Found - " . $ex->getMessage() . "<br/>";

@@ -204,7 +204,7 @@ class GenericController extends Controller
             if ($item->data_registrazione_cc != "") {
                 $arrayDelibere[$item->data][$item->id]['analisi_cc'] = ($item->data_registrazione_cc - $item->data_invio_cc) / 86400000;
             }
-            if ($item->data_gu != "") {
+            if ($item->data_gu != "" && $item->data_invio_gu != 0) {
                 $arrayDelibere[$item->data][$item->id]['analisi_gu'] = ($item->data_gu - $item->data_invio_gu) / 86400000;
             }
 
@@ -359,6 +359,22 @@ class GenericController extends Controller
 
         //#### RAGGRUPPO PER DATA
         foreach ($arrayDelibere as $i => $v) {
+            $arrayDelibereGroup[$i]['situazione']['count'] = count($arrayDelibere[$i]);
+            $arrayDelibereGroup[$i]['situazione']['da_aquisire'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['CD_inviare'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['CD_firma'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['MEF_inviare'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['MEF_firma'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['SEG_inviare'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['SEG_firma'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['PRE_inviare'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['PRE_firma'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['CC_inviare'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['CC_firma'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['GU_inviare'] = 0;
+            $arrayDelibereGroup[$i]['situazione']['GU_firma'] = 0;
+
+
             $arrayDelibereGroup[$i]['analisi']['count'] = count($arrayDelibere[$i]);
             $arrayDelibereGroup[$i]['analisi']['consegna'] = 0;
             $arrayDelibereGroup[$i]['analisi']['consegna_media'] = 0;
@@ -376,6 +392,47 @@ class GenericController extends Controller
             $arrayDelibereGroup[$i]['analisi']['gu_media'] = 0;
 
             foreach ($arrayDelibere[$i] as $k => $z) {
+                if ($arrayDelibere[$i][$k]['da_aquisire'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['da_aquisire'] = $arrayDelibereGroup[$i]['situazione']['da_aquisire'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['CD_inviare'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['CD_inviare'] = $arrayDelibereGroup[$i]['situazione']['CD_inviare'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['CD_firma'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['CD_firma'] = $arrayDelibereGroup[$i]['situazione']['CD_firma'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['MEF_inviare'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['MEF_inviare'] = $arrayDelibereGroup[$i]['situazione']['MEF_inviare'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['MEF_firma'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['MEF_firma'] = $arrayDelibereGroup[$i]['situazione']['MEF_firma'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['SEG_inviare'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['SEG_inviare'] = $arrayDelibereGroup[$i]['situazione']['SEG_inviare'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['SEG_firma'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['SEG_firma'] = $arrayDelibereGroup[$i]['situazione']['SEG_firma'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['PRE_inviare'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['PRE_inviare'] = $arrayDelibereGroup[$i]['situazione']['PRE_inviare'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['PRE_firma'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['PRE_firma'] = $arrayDelibereGroup[$i]['situazione']['PRE_firma'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['CC_inviare'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['CC_inviare'] = $arrayDelibereGroup[$i]['situazione']['CC_inviare'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['CC_firma'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['CC_firma'] = $arrayDelibereGroup[$i]['situazione']['CC_firma'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['GU_inviare'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['GU_inviare'] = $arrayDelibereGroup[$i]['situazione']['GU_inviare'] + 1;
+                }
+                if ($arrayDelibere[$i][$k]['GU_firma'] != null) {
+                    $arrayDelibereGroup[$i]['situazione']['GU_firma'] = $arrayDelibereGroup[$i]['situazione']['GU_firma'] + 1;
+                }
+
+
                 if ($arrayDelibere[$i][$k]['analisi_consegna'] != null) {
                     $arrayDelibereGroup[$i]['analisi']['consegna'] = $arrayDelibereGroup[$i]['analisi']['consegna'] + 1;
                     $arrayDelibereGroup[$i]['analisi']['consegna_media'] = $arrayDelibereGroup[$i]['analisi']['consegna_media'] + $arrayDelibere[$i][$k]['analisi_consegna'];
@@ -406,7 +463,7 @@ class GenericController extends Controller
                     $arrayDelibereGroup[$i]['analisi']['cc_media'] = $arrayDelibereGroup[$i]['analisi']['cc_media'] + $arrayDelibere[$i][$k]['analisi_cc'];
                 }
 
-                if ($arrayDelibere[$i][$k]['analisi_gu'] != null || $arrayDelibere[$i][$k]['analisi_gu'] == 0) {
+                if ($arrayDelibere[$i][$k]['analisi_gu'] != null ) {
                     $arrayDelibereGroup[$i]['analisi']['gu'] = $arrayDelibereGroup[$i]['analisi']['gu'] + 1;
                     $arrayDelibereGroup[$i]['analisi']['gu_media'] = $arrayDelibereGroup[$i]['analisi']['gu_media'] + $arrayDelibere[$i][$k]['analisi_gu'];
                 }
@@ -415,10 +472,14 @@ class GenericController extends Controller
             $arrayDelibereGroup[$i]['analisi']['consegna_media'] = round($arrayDelibereGroup[$i]['analisi']['consegna_media'] / $arrayDelibereGroup[$i]['analisi']['consegna']);
             $arrayDelibereGroup[$i]['analisi']['cd_media'] = round($arrayDelibereGroup[$i]['analisi']['cd_media'] / $arrayDelibereGroup[$i]['analisi']['cd']);
             $arrayDelibereGroup[$i]['analisi']['mef_media'] = round($arrayDelibereGroup[$i]['analisi']['mef_media'] / $arrayDelibereGroup[$i]['analisi']['mef']);
-            $arrayDelibereGroup[$i]['analisi']['seg_media'] = round($arrayDelibereGroup[$i]['analisi']['seg_media'] / $arrayDelibereGroup[$i]['analisi']['seg']);
+            if ($arrayDelibereGroup[$i]['analisi']['seg'] != 0) {
+                $arrayDelibereGroup[$i]['analisi']['seg_media'] = round($arrayDelibereGroup[$i]['analisi']['seg_media'] / $arrayDelibereGroup[$i]['analisi']['seg']);
+            }
             $arrayDelibereGroup[$i]['analisi']['pre_media'] = round($arrayDelibereGroup[$i]['analisi']['pre_media'] / $arrayDelibereGroup[$i]['analisi']['pre']);
             $arrayDelibereGroup[$i]['analisi']['cc_media'] = round($arrayDelibereGroup[$i]['analisi']['cc_media'] / $arrayDelibereGroup[$i]['analisi']['cc']);
-            $arrayDelibereGroup[$i]['analisi']['gu_media'] = round($arrayDelibereGroup[$i]['analisi']['gu_media'] / $arrayDelibereGroup[$i]['analisi']['gu']);
+            if ($arrayDelibereGroup[$i]['analisi']['gu'] != 0) {
+                $arrayDelibereGroup[$i]['analisi']['gu_media'] = round($arrayDelibereGroup[$i]['analisi']['gu_media'] / $arrayDelibereGroup[$i]['analisi']['gu']);
+            }
         }
 
 

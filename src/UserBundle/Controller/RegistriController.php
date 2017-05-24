@@ -346,6 +346,10 @@ class RegistriController extends Controller
 
         $path_file = Costanti::URL_ALLEGATI_REGISTRI . "/" . $codice_titolario . " - " . $denominazione_titolario . "/" . $codice_fascicolo . "/";
 
+        //$response = new Response(json_encode($path_file), Response::HTTP_OK);
+        //return $this->setBaseHeaders($response, "upload");
+
+
         $file = $request->files->get('file');
 
         //controllo se è un file che è stato già caricato
@@ -413,7 +417,7 @@ class RegistriController extends Controller
                 $em->flush(); //esegue query
 
                 //copio fisicamente il file
-                $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+                $file->move($path_file, $nome_file);
 
             } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
                 echo "Exception Found - " . $ex->getMessage() . "<br/>";
@@ -423,6 +427,8 @@ class RegistriController extends Controller
 
         $response = new Response(json_encode($array), Response::HTTP_OK);
         return $this->setBaseHeaders($response, "upload");
+
+
     }
 
 
