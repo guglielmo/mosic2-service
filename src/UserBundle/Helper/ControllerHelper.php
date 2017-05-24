@@ -79,8 +79,8 @@ trait ControllerHelper
         foreach ($data as $key => $item) {
             foreach ($array_date as $item_date) {
 
-                if (substr($item[$item_date], 0, 1) == "-" || $item[$item_date] == '0000-00-00') {
-                    $data[$key][$item_date] = '';
+                if (substr($item[$item_date], 0, 1) == "-" || $item[$item_date] == '0000-00-00' || $item[$item_date] == null) {
+                    $data[$key][$item_date] = null;
                 } else {
                     $data[$key][$item_date] = substr($data[$key][$item_date], 0, 10);
                     $data[$key][$item_date] = strtotime($data[$key][$item_date]) * 1000;
@@ -194,8 +194,9 @@ trait ControllerHelper
 
         return $diffInDays;
     }
-    
-		
+
+
+
 //    /**
 //     * Per inserire le relazioni nella risposta .
 //     *
@@ -514,15 +515,6 @@ trait ControllerHelper
                 $data[$key]['situazione'] = 8;
             }
 
-            unset($data[$key]['data_consegna']);
-            unset($data[$key]['data_segretario_invio']);
-            unset($data[$key]['data_segretario_ritorno']);
-            unset($data[$key]['data_presidente_invio']);
-            unset($data[$key]['data_presidente_ritorno']);
-            unset($data[$key]['data_invio_cc']);
-            unset($data[$key]['data_registrazione_cc']);
-            unset($data[$key]['data_invio_gu']);
-            unset($data[$key]['data_gu']);
         }
         return $data;
     }

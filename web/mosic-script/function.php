@@ -1199,7 +1199,23 @@ function setUtentiAdempimenti() {
 
 
 
+function differenzaDate($data_iniziale,$data_finale,$unita) {
+    if ($data_iniziale == null || $data_iniziale == "" || $data_iniziale == "0000-00-00" || $data_finale == null || $data_finale == "" || $data_finale == "0000-00-00") {
+        return null;
+    }
+    $data1 = strtotime($data_iniziale);
+    $data2 = strtotime($data_finale);
 
+    switch($unita) {
+        case "m": $unita = 1/60; break; 	//MINUTI
+        case "h": $unita = 1; break;		//ORE
+        case "g": $unita = 24; break;		//GIORNI
+        case "a": $unita = 8760; break;         //ANNI
+    }
+
+    $differenza = (($data2-$data1)/3600)/$unita;
+    return $differenza;
+}
 function monitor() {
     global $db;
 
@@ -1211,9 +1227,8 @@ function monitor() {
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
 
-            if (!isset($arrayDelibere[$row['data']])){
-                $arrayDelibere[$row['data']] = array(
-                    "num" => 0,
+            if (!isset($arrayDelibere[$row['data']][$row['id']])){
+                $arrayDelibere[$row['data']][$row['id']] = array(
                     "da_aquisire" => 0,
                     "CD_inviare" => 0,
                     "CD_firma" => 0,
@@ -1231,28 +1246,136 @@ function monitor() {
             }
 
 
-            $arrayDelibere[$row['data']]['num'] = $arrayDelibere[$row['data']]['num'] + 1;
-            
+            //Analisi delle fasi
+            $arrayDelibere[$row['data']][$row['id']]['analisi_nr'] = $row['numero'];
+            $arrayDelibere[$row['data']][$row['id']]['analisi_consegna'] = round(differenzaDate($row['data'], $row['data_consegna'], g));
+            $arrayDelibere[$row['data']][$row['id']]['analisi_cd'] = round(differenzaDate($row['data_direttore_invio'], $row['data_direttore_ritorno'], g));
+            if ($row['data_mef_pec'] == null || $row['data_mef_pec'] == "" || $row['data_mef_pec'] == "0000-00-00") {
+                $arrayDelibere[$row['data']][$row['id']]['analisi_mef'] = round(differenzaDate($row['data_mef_invio'], $row['data_mef_ritorno'], g));
+            } else {
+                $arrayDelibere[$row['data']][$row['id']]['analisi_mef'] = round(differenzaDate($row['data_mef_pec'], $row['data_mef_ritorno'], g));
+            }
+            $arrayDelibere[$row['data']][$row['id']]['analisi_seg'] = round(differenzaDate($row['data_segretario_invio'], $row['data_segretario_ritorno'], g));
+            $arrayDelibere[$row['data']][$row['id']]['analisi_pre'] = round(differenzaDate($row['data_presidente_invio'], $row['data_presidente_ritorno'], g));
+            $arrayDelibere[$row['data']][$row['id']]['analisi_cc'] = round(differenzaDate($row['data_invio_cc'], $row['data_registrazione_cc'], g));
+            $arrayDelibere[$row['data']][$row['id']]['analisi_gu'] = round(differenzaDate($row['data_invio_gu'], $row['data_gu'], g));
+
+
+
+            //statistica
+            $arrayDelibere[$row['data']][$row['id']]['statistica_arrivo'] = round(differenzaDate($row['data'], $row['data_consegna'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cd_invio_giorni'] = round(differenzaDate($row['data_consegna'], $row['data_direttore_invio'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cd_invio_giorni_tot'] = round(differenzaDate($row['data'], $row['data_direttore_invio'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cd_ritorno_giorni'] = round(differenzaDate($row['data_direttore_invio'], $row['data_direttore_ritorno'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cd_ritorno_giorni_tot'] = round(differenzaDate($row['data'], $row['data_direttore_ritorno'], g));
+
+
+            if ($row['data_mef_pec'] == null || $row['data_mef_pec'] == "" || $row['data_mef_pec'] == "0000-00-00") {
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_invio_giorni'] = round(differenzaDate($row['data_direttore_ritorno'], $row['data_mef_invio'], g));
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_invio_giorni_tot'] = round(differenzaDate($row['data'], $row['data_mef_invio'], g));
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_ritorno_giorni'] = round(differenzaDate($row['data_mef_invio'], $row['data_mef_ritorno'], g));
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_ritorno_giorni_tot'] = round(differenzaDate($row['data'], $row['data_mef_ritorno'], g));
+            } else {
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_invio_giorni'] = round(differenzaDate($row['data_direttore_ritorno'], $row['data_mef_pec'], g));
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_invio_giorni_tot'] = round(differenzaDate($row['data'], $row['data_mef_pec'], g));
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_ritorno_giorni'] = round(differenzaDate($row['data_mef_pec'], $row['data_mef_ritorno'], g));
+                $arrayDelibere[$row['data']][$row['id']]['statistica_mef_ritorno_giorni_tot'] = round(differenzaDate($row['data'], $row['data_mef_ritorno'], g));
+            }
+
+            $arrayDelibere[$row['data']][$row['id']]['statistica_seg_invio_giorni'] = round(differenzaDate($row['data_mef_ritorno'], $row['data_segretario_invio'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_seg_invio_giorni_tot'] = round(differenzaDate($row['data'], $row['data_segretario_invio'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_seg_ritorno_giorni'] = round(differenzaDate($row['data_segretario_invio'], $row['data_segretario_ritorno'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_seg_ritorno_giorni_tot'] = round(differenzaDate($row['data'], $row['data_segretario_ritorno'], g));
+
+            $arrayDelibere[$row['data']][$row['id']]['statistica_pre_invio_giorni'] = round(differenzaDate($row['data_segretario_ritorno'], $row['data_presidente_invio'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_pre_invio_giorni_tot'] = round(differenzaDate($row['data'], $row['data_presidente_invio'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_pre_ritorno_giorni'] = round(differenzaDate($row['data_presidente_invio'], $row['data_presidente_ritorno'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_pre_ritorno_giorni_tot'] = round(differenzaDate($row['data'], $row['data_presidente_ritorno'], g));
+
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cc_invio_giorni'] = round(differenzaDate($row['data_presidente_ritorno'], $row['data_registrazione_cc'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cc_invio_giorni_tot'] = round(differenzaDate($row['data'], $row['data_invio_cc'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cc_ritorno_giorni'] = round(differenzaDate($row['data_invio_cc'], $row['data_registrazione_cc'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_cc_ritorno_giorni_tot'] = round(differenzaDate($row['data'], $row['data_registrazione_cc'], g));
+
+            $arrayDelibere[$row['data']][$row['id']]['statistica_gu_invio_giorni'] = round(differenzaDate($row['data_registrazione_cc'], $row['data_gu'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_gu_invio_giorni_tot'] = round(differenzaDate($row['data'], $row['data_invio_gu'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_gu_ritorno_giorni'] = round(differenzaDate($row['data_invio_gu'], $row['data_gu'], g));
+            $arrayDelibere[$row['data']][$row['id']]['statistica_gu_ritorno_giorni_tot'] = round(differenzaDate($row['data'], $row['data_gu'], g));
+
+
+
+
+            //situazione
             if ($row['data_consegna'] == null || $row['data_consegna'] == "" || $row['data_consegna'] == "0000-00-00") {
-                $arrayDelibere[$row['data']]['da_aquisire'] = $arrayDelibere[$row['data']]['da_aquisire'] + 1;
+                $arrayDelibere[$row['data']][$row['id']]['da_aquisire'] = 1;
                 continue;
             }
-            
             if ($row['data_direttore_invio'] == null || $row['data_direttore_invio'] == "" || $row['data_direttore_invio'] == "0000-00-00") {
-                $arrayDelibere[$row['data']]['CD_inviare'] = $arrayDelibere[$row['data']]['CD_inviare'] + 1;
+                $arrayDelibere[$row['data']][$row['id']]['CD_inviare'] = 1;
+                continue;
             }
             if (($row['data_direttore_ritorno'] == null || $row['data_direttore_ritorno'] == "" || $row['data_direttore_ritorno'] == "0000-00-00")
             && (($row['data_direttore_invio'] != null && $row['data_direttore_invio'] != "" && $row['data_direttore_invio'] != "0000-00-00"))) {
-                $arrayDelibere[$row['data']]['CD_firma'] = $arrayDelibere[$row['data']]['CD_firma'] + 1;
+                $arrayDelibere[$row['data']][$row['id']]['CD_firma'] =  1;
+                continue;
             }
 
-            if ($row['data_mef_pec'] == null || $row['data_mef_pec'] == "" || $row['data_mef_pec'] == "0000-00-00") {
-                $arrayDelibere[$row['data']]['MEF_inviare'] = $arrayDelibere[$row['data']]['MEF_inviare'] + 1;
+            if (($row['data_mef_invio'] == null || $row['data_mef_invio'] == "" || $row['data_mef_invio'] == "0000-00-00")
+            && ($row['data_mef_pec'] == null || $row['data_mef_pec'] == "" || $row['data_mef_pec'] == "0000-00-00")) {
+                $arrayDelibere[$row['data']][$row['id']]['MEF_inviare'] = 1;
+                continue;
             }
             if (($row['data_mef_ritorno'] == null || $row['data_mef_ritorno'] == "" || $row['data_mef_ritorno'] == "0000-00-00")
+                && (($row['data_mef_invio'] != null && $row['data_mef_invio'] != "" && $row['data_mef_invio'] != "0000-00-00"))
                 && (($row['data_mef_pec'] != null && $row['data_mef_pec'] != "" && $row['data_mef_pec'] != "0000-00-00"))) {
-                $arrayDelibere[$row['data']]['MEF_firma'] = $arrayDelibere[$row['data']]['MEF_firma'] + 1;
+                $arrayDelibere[$row['data']][$row['id']]['MEF_firma'] = 1;
+                continue;
             }
+
+            if ($row['data_segretario_invio'] == null || $row['data_segretario_invio'] == "" || $row['data_segretario_invio'] == "0000-00-00") {
+                $arrayDelibere[$row['data']][$row['id']]['SEG_inviare'] = 1;
+                //continue;
+            }
+            if (($row['data_segretario_ritorno'] == null || $row['data_segretario_ritorno'] == "" || $row['data_segretario_ritorno'] == "0000-00-00")
+                && (($row['data_segretario_invio'] != null && $row['data_segretario_invio'] != "" && $row['data_segretario_invio'] != "0000-00-00"))) {
+                $arrayDelibere[$row['data']][$row['id']]['SEG_firma'] = 1;
+                //continue;
+            }
+
+            if ($row['data_presidente_invio'] == null || $row['data_presidente_invio'] == "" || $row['data_presidente_invio'] == "0000-00-00") {
+                $arrayDelibere[$row['data']][$row['id']]['PRE_inviare'] = 1;
+                continue;
+            }
+            if (($row['data_presidente_ritorno'] == null || $row['data_presidente_ritorno'] == "" || $row['data_presidente_ritorno'] == "0000-00-00")
+                && (($row['data_presidente_invio'] != null && $row['data_presidente_invio'] != "" && $row['data_presidente_invio'] != "0000-00-00"))) {
+                $arrayDelibere[$row['data']][$row['id']]['PRE_firma'] = 1;
+                continue;
+            }
+
+            if ($row['data_invio_cc'] == null || $row['data_invio_cc'] == "" || $row['data_invio_cc'] == "0000-00-00") {
+                $arrayDelibere[$row['data']][$row['id']]['CC_inviare'] = 1;
+                continue;
+            }
+            if (($row['data_registrazione_cc'] == null || $row['data_registrazione_cc'] == "" || $row['data_registrazione_cc'] == "0000-00-00")
+                && (($row['data_invio_cc'] != null && $row['data_invio_cc'] != "" && $row['data_invio_cc'] != "0000-00-00"))) {
+                $arrayDelibere[$row['data']][$row['id']]['CC_firma'] = 1;
+                continue;
+            }
+
+            if ($row['data_invio_gu'] == null || $row['data_invio_gu'] == "" || $row['data_invio_gu'] == "0000-00-00") {
+                $arrayDelibere[$row['data']][$row['id']]['GU_inviare'] = 1;
+                continue;
+            }
+            if (($row['data_gu'] == null || $row['data_gu'] == "" || $row['data_gu'] == "0000-00-00")
+                && (($row['data_invio_gu'] != null && $row['data_invio_gu'] != "" && $row['data_invio_gu'] != "0000-00-00"))) {
+                $arrayDelibere[$row['data']][$row['id']]['GU_firma'] = 1;
+                continue;
+            }
+
+
+
+
+
 
 
 

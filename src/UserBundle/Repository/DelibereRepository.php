@@ -203,5 +203,90 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
 
     }
-    
+
+
+    public function getDelibereByYear($year = false) {
+        $parameters = array ();
+        $filter = "";
+        if ($year != false) {
+            $filter .= " AND d.data > :from AND d.data <= :to ";
+            $parameters['from'] = $year."-01-01";
+            $parameters['to'] = $year."-12-31";
+        }
+
+        $qb = $this->getEntityManager();
+
+        $query = $qb
+            ->createQueryBuilder()->select('d.id as id,
+                                            d.data as data,
+                                            d.dataConsegna as data_consegna,
+                                            d.numero as numero,
+                                            d.dataDirettoreInvio as data_direttore_invio,
+                                            d.dataDirettoreRitorno as data_direttore_ritorno,
+                                            d.dataMefInvio as data_mef_invio,
+                                            d.dataMefPec as data_mef_pec,
+                                            d.dataMefRitorno as data_mef_ritorno,
+                                            d.dataSegretarioInvio as data_segretario_invio,
+                                            d.dataSegretarioRitorno as data_segretario_ritorno,
+                                            d.dataPresidenteInvio as data_presidente_invio,
+                                            d.dataPresidenteRitorno as data_presidente_ritorno,
+                                            d.dataInvioCC as data_invio_cc,
+                                            d.dataRegistrazioneCC as data_registrazione_cc,
+                                            d.dataInvioGU as data_invio_gu,
+                                            d.dataGU as data_gu
+                                            ')
+            ->from('UserBundle:Delibere', 'd')
+            ->where('1=1' . $filter)
+            ->setParameters($parameters)
+            ->orderBy('d.data');
+
+        //print_r($query->getDql());
+        //print_r($query->getQuery()->getSql());
+
+        return $query->getQuery()->getResult();
+
+    }
+
+
+    public function getDelibereByData($data = false) {
+        $parameters = array ();
+        $filter = "";
+        if ($data != false) {
+            $filter .= " AND d.data = :data ";
+            $parameters['data'] = $data;
+        }
+
+        $qb = $this->getEntityManager();
+
+        $query = $qb
+            ->createQueryBuilder()->select('d.id as id,
+                                            d.data as data,
+                                            d.dataConsegna as data_consegna,
+                                            d.numero as numero,
+                                            d.dataDirettoreInvio as data_direttore_invio,
+                                            d.dataDirettoreRitorno as data_direttore_ritorno,
+                                            d.dataMefInvio as data_mef_invio,
+                                            d.dataMefPec as data_mef_pec,
+                                            d.dataMefRitorno as data_mef_ritorno,
+                                            d.dataSegretarioInvio as data_segretario_invio,
+                                            d.dataSegretarioRitorno as data_segretario_ritorno,
+                                            d.dataPresidenteInvio as data_presidente_invio,
+                                            d.dataPresidenteRitorno as data_presidente_ritorno,
+                                            d.dataInvioCC as data_invio_cc,
+                                            d.dataRegistrazioneCC as data_registrazione_cc,
+                                            d.dataInvioGU as data_invio_gu,
+                                            d.dataGU as data_gu
+                                            ')
+            ->from('UserBundle:Delibere', 'd')
+            ->where('1=1' . $filter)
+            ->setParameters($parameters)
+            ->orderBy('d.data');
+
+        //print_r($query->getDql());
+        //print_r($query->getQuery()->getSql());
+
+        return $query->getQuery()->getResult();
+
+    }
+
 }
