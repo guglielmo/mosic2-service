@@ -416,8 +416,8 @@ class RegistriController extends Controller
                 $em->persist($allegatoRel);
                 $em->flush(); //esegue query
 
-                //copio fisicamente il file
-                $file->move($path_file, $nome_file);
+		//copio fisicamente il file
+		$file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
 
             } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
                 echo "Exception Found - " . $ex->getMessage() . "<br/>";
