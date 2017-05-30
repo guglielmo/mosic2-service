@@ -39,6 +39,16 @@ class AdempimentiController extends Controller
         //funzione per formattare le date del json
         $serialize = $this->formatDateJsonArrayCustom(json_decode($serialize), array('data_scadenza', 'data_modifica'));
 
+//        //ricavo data e numero delibera per ogni adempimento
+//        $repositoryDelibere = $this->getDoctrine()->getRepository('UserBundle:Delibere');
+//        foreach ($serialize as $item => $value) {
+//            $delibere = $repositoryDelibere->findOneBy(["id" => $value->id]);
+//            $numeroDelibera = $delibere->getNumero();
+//            $dataDelibera = $delibere->getData();
+//            $serialize[$item]->data_delibera = strtotime($dataDelibera->format('Y-m-d')) * 1000;
+//            $serialize[$item]->numero_delibera = $numeroDelibera;
+//        }
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($adempimenti),
@@ -61,16 +71,20 @@ class AdempimentiController extends Controller
         $repository = $this->getDoctrine()->getRepository('UserBundle:Adempimenti');
         $adempimento = $repository->findOneById($id);
 
-				
+        //converte i risultati in json
+        $serialize = json_decode($this->serialize($adempimento));
+        //funzione per formattare le date del json
+        $serialize = $this->formatDateJsonArrayCustom([$serialize], array('data_scadenza', 'data_modifica'));
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($adempimento),
             "limit" => 1,
             "offset" => 0,
-            "data" => json_decode($this->serialize($adempimento)),
+            "data" => $serialize[0],
         );
-        $response = new Response(json_encode($response_array), Response::HTTP_OK);
 
+        $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
 		
@@ -87,8 +101,8 @@ class AdempimentiController extends Controller
         $repository = $em->getRepository('UserBundle:Adempimenti');
         $adempimento = $repository->findOneBy(["id" => $data->id]);
 
-        $token = $this->get('security.token_storage')->getToken();
-        $user = $token->getUser();
+        //$token = $this->get('security.token_storage')->getToken();
+        //$user = $token->getUser();
 
 
         $adempimento->setCodice($data->codice);
@@ -169,7 +183,6 @@ class AdempimentiController extends Controller
     /**
      * @Route("/adempimenti/{id}", name="adempimenti_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_Adempimenti')")
      */
     public function adempimentiItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

@@ -43,9 +43,9 @@ class RegistrationController extends BaseController
         $user->setFirstName($data['firstName']);
         $user->setLastName($data['lastName']);
         $user->setIdUffici($data['id_uffici']);
-        $user->setCessatoServizio($data->cessatoServizio);
-        $user->setIp($data['ip']);
-        $user->setStazione($data['stazione']);
+        if (isset($data->cessatoServizio)) { $user->setCessatoServizio($data->cessatoServizio); }
+        if (isset($data->ip)) { $user->setIp($data['ip']); }
+        if (isset($data->stazione)) { $user->setStazione($data['stazione']); }
         $user->setIdRuoliCipe($data['id_ruoli_cipe']);
 
 
@@ -71,9 +71,11 @@ class RegistrationController extends BaseController
                 return $this->setBaseHeaders($response);
         }
 
-        //associo l'utente al gruppo Uffici (di default)
+
+
+        //associo l'utente al gruppo
         $repository_group = $em->getRepository('UserBundle:Group');
-        $gruppo_default = $repository_group->findOneByName('Base');
+        $gruppo_default = $repository_group->findOneById($data['id_groups']);
         $user->addGroup($gruppo_default);
 
 

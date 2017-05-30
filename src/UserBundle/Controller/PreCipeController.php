@@ -30,6 +30,7 @@ class PreCipeController extends Controller
     /**
      * @Route("/precipe", name="precipe")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_PRECIPE')")
      */
     public function precipeAction(Request $request)
     {
@@ -95,6 +96,7 @@ class PreCipeController extends Controller
     /**
      * @Route("/precipe/{id}", name="precipe_item")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_PRECIPE')")
      */
     public function precipeItemAction(Request $request, $id)
     {
@@ -213,20 +215,29 @@ class PreCipeController extends Controller
 
         //salvo ogni odg del precipe
         foreach ($data->precipe_odg as $item => $value) {
-            $precipeodg = $repository_odg->findOneById((int)$value->id);
+
+            if (isset($value->id)) {
+                $precipeodg = $repository_odg->findOneById((int)$value->id);
+            } else {
+                $precipeodg = new PreCipeOdg();
+            }
 
             $precipeodg->setIdPrecipe($id);
-            $precipeodg->setProgressivo($value->progressivo);
+            //$precipeodg->setProgressivo($value->progressivo);
             $precipeodg->setIdTitolari($value->id_titolari);
             $precipeodg->setIdFascicoli($value->id_fascicoli);
-            $precipeodg->setIdArgomenti($value->id_argomenti);
-            //$precipeodg->setIdUffici($value->id_uffici);
-            $precipeodg->setNumeroOdg($value->numero_odg);
+            //$precipeodg->setIdArgomenti($value->id_argomenti);
             $precipeodg->setOrdine($value->ordine);
             $precipeodg->setDenominazione($value->denominazione);
             $precipeodg->setRisultanza($value->risultanza);
             $precipeodg->setAnnotazioni($value->annotazioni);
-            $precipeodg->setStato($value->stato);
+            //$precipeodg->setStato($value->stato);
+
+            if (!isset($value->id)) {
+                $em->persist($precipeodg);
+                $em->flush(); //esegue l'update
+                $value->id = $precipeodg->getId();
+            }
 
             $relRegistriOdg_delete = $repository_rel_registri_odg->findByIdOdg((int)$value->id);
             // REGISTRI
@@ -288,8 +299,59 @@ class PreCipeController extends Controller
         $data = json_decode($request->getContent());
 
         $precipe = new PreCipe();
-
         $precipe->setData(new \DateTime($this->formatDateStringCustom($data->data)));
+
+        $em->persist($precipe);
+        $em->flush(); //esegue l'update
+
+        //salvo ogni odg del precipe
+        foreach ($data->precipe_odg as $item => $value) {
+            $precipeodg = new PreCipeOdg();
+
+            $precipeodg->setIdPrecipe($precipe->getId());
+            //$precipeodg->setProgressivo($value->progressivo);
+            $precipeodg->setIdTitolari($value->id_titolari);
+            $precipeodg->setIdFascicoli($value->id_fascicoli);
+            //$precipeodg->setIdArgomenti($value->id_argomenti);
+            $precipeodg->setOrdine($value->ordine);
+            $precipeodg->setDenominazione($value->denominazione);
+            $precipeodg->setRisultanza($value->risultanza);
+            $precipeodg->setAnnotazioni($value->annotazioni);
+            //$precipeodg->setStato($value->stato);
+
+            $em->persist($precipeodg);
+            $em->flush(); //esegue l'update
+
+            //creo le relazioni da aggiornare nella tabella RelRegistriOdg
+            foreach ($value->id_registri as $k) {
+                $relRegistriOdg = new RelRegistriOdg();
+                $relRegistriOdg->setIdOdg($precipeodg->getId());
+                $relRegistriOdg->setIdRegistri($k);
+
+                //aggiorno (in realt� ricreo) le relazioni del registro
+                $em->persist($relRegistriOdg); //create
+            }
+            foreach ($value->id_uffici as $k) {
+                $relUfficiOdg = new RelUfficiPreCipe();
+                $relUfficiOdg->setIdOdgPreCipe($precipeodg->getId());
+                $relUfficiOdg->setIdUffici($k);
+
+                //aggiorno (in realt� ricreo) le relazioni del registro
+                $em->persist($relUfficiOdg); //create
+            }
+
+
+
+            $em->persist($precipeodg);
+            $em->flush(); //esegue l'update
+            //$response = new Response(json_encode($value->id_registri), Response::HTTP_OK);
+            //return $this->setBaseHeaders($response);
+        }
+
+
+
+
+
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -333,8 +395,8 @@ class PreCipeController extends Controller
             $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
 
-            //$em->remove($precipe); //delete
-            //$em->flush(); //esegue l'update
+            $em->remove($precipe); //delete
+            $em->flush(); //esegue l'update
 
             $response = new Response($this->serialize($precipe), Response::HTTP_OK);
             return $this->setBaseHeaders($response);
@@ -411,7 +473,7 @@ class PreCipeController extends Controller
             $em->flush(); //esegue query
 
             //copio fisicamente il file
-	    $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+            $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
 
         } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
             echo "Exception Found - " . $ex->getMessage() . "<br/>";
@@ -471,6 +533,7 @@ class PreCipeController extends Controller
     /**
      * @Route("/areariservata/precipe/{id}", name="precipe_area_riservata_delete")
      * @Method("DELETE")
+     * @Security("is_granted('ROLE_DELETE_AREARISERVATA_PRECIPE')")
      */
     public function precipeAreaRiservataDeleteAction(Request $request, $id)
     {
@@ -577,6 +640,7 @@ class PreCipeController extends Controller
     /**
      * @Route("/areariservata/precipe/{id}", name="precipe_area_riservata")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_AREARISERVATA_PRECIPE')")
      */
     public function precipeAreaRiservataAction(Request $request, $id)
     {
@@ -922,6 +986,7 @@ class PreCipeController extends Controller
     /**
      * @Route("/areariservata/precipe/check/{id}", name="precipe_area_riservata_check")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_AREARISERVATA_PRECIPE_CHECK')")
      */
     public function precipeAreaRiservataCheckAction(Request $request, $id) {
 

@@ -162,8 +162,8 @@ class PreCipeOdgController extends Controller
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
 
-        //$em->remove($precipeodg); //delete
-        //$em->flush(); //esegue l'update
+        $em->remove($precipeodg); //delete
+        $em->flush(); //esegue l'update
 
         $response = new Response($this->serialize($precipeodg), Response::HTTP_OK);
         return $this->setBaseHeaders($response);

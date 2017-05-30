@@ -69,10 +69,13 @@ class FascicoliRepository extends \Doctrine\ORM\EntityRepository
                                             f.idNumeriDelibera as id_numeri_delibera,
                                             f.idEsitiCipe as id_esiti_cipe,
                                             f.idArchivioRepertorio as id_archivio_repertorio,
-                                            r.idAmministrazioni as id_amministrazioni'
-																						)
+                                            
+                                            r.idAmministrazioni as id_amministrazioni,
+                                            tf.idTags as id_tags'
+                                            )
             ->from('UserBundle:Fascicoli', 'f')
             ->leftJoin('UserBundle:RelAmministrazioniFascicoli', 'r', 'WITH', 'f.id = r.idFascicoli')
+            ->leftJoin('UserBundle:RelTagsFascicoli', 'tf', 'WITH', 'f.id = tf.idFascicoli')
             ->where('1=1' . $filter)
             ->setParameters($parameters)
             ->setFirstResult( $offset )

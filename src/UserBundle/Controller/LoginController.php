@@ -87,7 +87,10 @@ class LoginController extends Controller
             ->findOneBy(['email' => $userEmail]);
 
         if (!$user) {
-            throw $this->createNotFoundException();
+            $response_array = array("error" =>  ["code" => 403, "message" => "Il nome utente inserito non è corretto."]);
+            $response = new Response(json_encode($response_array), 403);
+            return $this->setBaseHeaders($response);
+            //throw $this->createNotFoundException();
         }
 				
 //$user = new User();
@@ -107,6 +110,9 @@ class LoginController extends Controller
             ->isPasswordValid($user, $password);
 
         if (!$isValid) {
+            $response_array = array("error" =>  ["code" => 403, "message" => "La password inserita non è corretta."]);
+            $response = new Response(json_encode($response_array), 403);
+            return $this->setBaseHeaders($response);
             throw new BadCredentialsException();
         }
 

@@ -18,6 +18,7 @@ use UserBundle\Entity\Costanti;
 use UserBundle\Entity\Allegati;
 use UserBundle\Entity\RelAllegatiDelibere;
 use UserBundle\Entity\RelFirmatariDelibere;
+use UserBundle\Entity\RelTagsDelibere;
 use UserBundle\Entity\RelUfficiDelibere;
 
 
@@ -35,7 +36,7 @@ class DelibereController extends Controller
         $offset = ($request->query->get('offset') != "") ? $request->query->get('offset') : 0;
 
         $sortBy  = ($request->query->get('sort_by') != "") ? $request->query->get('sort_by') : 'numero';
-        $sortType = ($request->query->get('sort_order') != "") ? $request->query->get('sort_order') : "DESC";
+        $sortType = ($request->query->get('sort_order') != "") ? $request->query->get('sort_order') : "ASC";
 
         $argomento = ($request->query->get('argomento') != "") ? $request->query->get('argomento') : '';
 
@@ -58,6 +59,8 @@ class DelibereController extends Controller
         $em = $this->getDoctrine()->getManager();
         $giorni = array();
         foreach ($serialize as $item => $value) {
+            $tagArrayConvert = array_map('intval', explode(',', $serialize[$item]["id_tags"]));
+            $serialize[$item]["id_tags"] = ($tagArrayConvert[0] == 0 ? array() : $tagArrayConvert);
             $repositoryDelibereGiorni = $em->getRepository('UserBundle:DelibereGiorni');
             $delibereGiorni = $repositoryDelibereGiorni->findOneBy(["idDelibere" => $serialize[$item]["id"]]);
             if (count($delibereGiorni) == 0) {
@@ -244,7 +247,7 @@ class DelibereController extends Controller
             "total_results" => count($delibere),
             "limit" => 1,
             "offset" => 0,
-            "data" => $serialize,
+            "data" => $serialize[0],
         );
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -269,10 +272,16 @@ class DelibereController extends Controller
         $repository_relUfficiDelibere = $em->getRepository('UserBundle:RelUfficiDelibere');
         $relUfficiDelibere_delete = $repository_relUfficiDelibere->findBy(array("idDelibere" => $data->id));
 
+        $repository_DelibereCC = $em->getRepository('UserBundle:DelibereCC');
+        $DelibereCC_delete = $repository_DelibereCC->findBy(array("idDelibere" => $data->id));
+
+        $repository_relTagsDelibere = $em->getRepository('UserBundle:RelTagsDelibere');
+        $relTagsDelibere_delete = $repository_relTagsDelibere->findByIdDelibere($data->id);
 
 
         //$array_id_firmatari = explode(",", $data->id_segretariato); //$data->id_segretariato è già un array
         //$array_id_uffici = explode(",", $data->id_uffici);
+        $array_id_tags = explode(",", $data->id_tags);
 
 
         $delibere->setNumero($data->numero);
@@ -332,8 +341,8 @@ class DelibereController extends Controller
 
             $em->persist($relUfficiDelibere); //create
         }
-        
-        
+
+
         // FIRMATARI (id_segretariato)
         foreach ($relFirmatariDelibere_delete as $relFirmatariDelibere_delete) {
             $em->remove($relFirmatariDelibere_delete);
@@ -345,6 +354,37 @@ class DelibereController extends Controller
 
             $em->persist($relFirmatariDelibere); //create
         }
+
+        // RILIEVI CC (rilievi_CC)
+        foreach ($DelibereCC_delete as $DelibereCC_delete) {
+            $em->remove($DelibereCC_delete);
+        }
+        foreach ($data->rilievi_CC as $item) {
+
+            $response = new Response(json_encode($item), Response::HTTP_OK);
+            return $this->setBaseHeaders($response);
+
+            $relDelibereCC = new DelibereCC();
+            $relDelibereCC->setIdDelibere($data->id);
+            $relDelibereCC->getTipoDocumento($item->tipo_documento);
+
+            $em->persist($relDelibereCC); //create
+        }
+
+        // TAGS
+        //rimuovo tutte le relazioni con l'id del fascicolo (per poi riaggiornale ovvero ricrearle)
+        foreach ($relTagsDelibere_delete as $relTagsDelibere_delete) {
+            $em->remove($relTagsDelibere_delete);
+        }
+        //creo le relazioni da aggiornare nella tabella RelTagsDelibere
+        foreach ($array_id_tags as $item_tags) {
+            $relTagsDelibere = new RelTagsDelibere();
+            $relTagsDelibere->setIdDelibere($data->id);
+            $relTagsDelibere->setIdTags($item_tags);
+            //aggiorno (in realt� ricreo) le relazioni del fascicolo
+            $em->persist($relTagsDelibere); //create
+        }
+
 
 
         //aggiorna la date della modifica nella tabella msc_last_updates
@@ -454,7 +494,15 @@ class DelibereController extends Controller
             $relFirmatariDelibere->setIdFirmatari((int)$item);
             $em->persist($relFirmatariDelibere); //create
         }
-
+        // TAGS
+        //creo le relazioni da creare nella tabella RelTagsFascicoli
+        foreach ($data->id_tags as $item) {
+            $relTagsFascicoli = new RelTagsDelibere();
+            $relTagsFascicoli->setIdFascicoli($id_delibere_creato);
+            $relTagsFascicoli->setIdTags($item);
+            //aggiorno (in realt� ricreo) le relazioni del fascicolo
+            $em->persist($relTagsFascicoli); //create
+        }
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -491,6 +539,8 @@ class DelibereController extends Controller
         $repository_RelAllegatiDelibere = $em->getRepository('UserBundle:RelAllegatiDelibere');
         $RelAllegatiDelibere = $repository_RelAllegatiDelibere->findByIdDelibere($id);//ricavo tutte le relazioni con l'id del delibere
 
+        $repository_rel_tags = $em->getRepository('UserBundle:RelTagsDelibere');
+        $relTagsDelibere_delete = $repository_rel_tags->findByIdDelibere($id);//ricavo tutte le relazioni con l'id del fascicolo
 
         //rimuovo tutte le relazioni con l'id del delibere (per poi riaggiornale ovvero ricrearle)
         foreach ($RelUfficiDelibere as $RelUfficiDelibere) {
@@ -503,6 +553,10 @@ class DelibereController extends Controller
         //rimuovo tutte le relazioni con l'id del delibere (per poi riaggiornale ovvero ricrearle)
         foreach ($RelAllegatiDelibere as $RelAllegatiDelibere) {
             $em->remove($RelAllegatiDelibere);
+        }
+        //rimuovo tutte le relazioni con l'id del delibere (per poi riaggiornale ovvero ricrearle)
+        foreach ($relTagsDelibere_delete as $relTagsDelibere_delete) {
+            $em->remove($relTagsDelibere_delete);
         }
 
         $em->remove($delibere); //delete
@@ -698,10 +752,151 @@ class DelibereController extends Controller
 
             return $this->setBaseHeaders($response);
         }
-    } 
-        
-        
-        
+    }
+
+
+
+
+    /**
+     * @Route("/deliberecc/{id}/upload", name="uploadDelibereCorteConti")
+     * @Method("POST")
+     */
+    public function uploadDelibereCorteContiAction(Request $request, $id, $tipo)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository('UserBundle:Delibere');
+        $delibere = $repository->findOneBy(array("id" => $id));
+
+        $dataDelibere = $delibere->getData()->format('Y');
+        $numeroDelibere = $delibere->getNumero();
+
+        if ($tipo == "ALL" || $tipo == "DEL") {
+            $path_file = Costanti::URL_ALLEGATI_DELIBERE . "per-anno/" . $dataDelibere . "/";
+            $file = $request->files->get('file');
+            $nome_file = $file->getClientOriginalName();
+            $nome_file = "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) . "-" . $tipo . "-" . $this->sostituisciAccenti($nome_file);
+
+
+            if(file_exists($path_file . $nome_file)){
+                // Directory
+                $directory = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/";
+                // Returns array of files
+                $files = scandir($directory);
+                // Count number of files and store them to variable..
+                $num_files = count($files)-2; // Not counting the '.' and '..'.
+
+                $path_file_version = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/". $num_files ."-". $nome_file;
+
+                //memorizzo il file nel database
+                $allegato = new Allegati();
+                $allegato->setData(new \DateTime());
+                $allegato->setFile($path_file_version);
+
+                $em->persist($allegato);
+                $em->flush(); //esegue query
+
+                $id_allegato_creato = $allegato->getId();
+
+                $allegatoRel = new RelAllegatiDelibere();
+                $allegatoRel->setIdAllegati($id_allegato_creato);
+                $allegatoRel->setIdDelibere($id);
+                $allegatoRel->setTipo($tipo);
+
+                $em->persist($allegatoRel);
+
+
+                $repositoryAE = $em->getRepository('UserBundle:Allegati');
+                $allegato_esistente = $repositoryAE->findOneBy(array("file" => $path_file . $nome_file));
+                $repositoryAER = $em->getRepository('UserBundle:RelAllegatiDelibere');
+                $allegato_esistente2 = $repositoryAER->findOneBy(array("idAllegati" => $allegato_esistente->getId()));
+
+
+
+                //$response = new Response($allegato_esistente->getId(), Response::HTTP_OK);
+                //return $this->setBaseHeaders($response, "upload");
+
+                if (copy($path_file . $nome_file, $path_file_version)) {
+                    //unlink($path_file . $nome_file);
+                }
+                $em->remove($allegato_esistente); //delete
+                $em->remove($allegato_esistente2); //delete
+                $em->flush(); //esegue l'update
+            } else {
+
+                //$response = new Response(json_encode("non esiste il file"), Response::HTTP_OK);
+                //return $this->setBaseHeaders($response, "upload");
+
+            }
+
+
+        } else {
+            $path_file = Costanti::URL_ALLEGATI_DELIBERE . $tipo . "/" . $dataDelibere . "-" . $numeroDelibere . "/";
+            $file = $request->files->get('file');
+            $nome_file = $file->getClientOriginalName();
+            $nome_file = $this->sostituisciAccenti($nome_file);
+        }
+
+        //memorizzo il file nel database
+        $allegato = new Allegati();
+        $allegato->setData(new \DateTime());
+        $allegato->setFile($path_file . $nome_file);
+
+        $em->persist($allegato);
+        $em->flush(); //esegue query
+
+        $id_allegato_creato = $allegato->getId();
+
+        $allegatoRel = new RelAllegatiDelibere();
+        $allegatoRel->setIdAllegati($id_allegato_creato);
+        $allegatoRel->setIdDelibere($id);
+        $allegatoRel->setTipo($tipo);
+
+
+        $array = array(
+            'id' => $id_allegato_creato,
+            'id_delibere' => $id,
+            'data' => filemtime($file) * 1000,
+            'dimensione' => $file->getClientSize(),
+            'nome' => $nome_file,
+            'relURI' => $path_file . $nome_file,
+            'tipo' => $this->getExtension($file->getMimeType()),
+            'mime_tipe' => $file->getMimeType(),
+        );
+
+        //se il file è maggiore di 25 MB
+        if ($file->getClientSize() > 26214400) {
+            $response_array = array("error" => ["code" => 409, "message" => "Il file e' troppo grande. (max 25 MB)"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+        //controllo su i tipi di file ammessi
+        if (!in_array($file->getMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword'))) {
+            $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
+
+        try {
+            $em->persist($allegatoRel);
+            $em->flush(); //esegue query
+
+            //copio fisicamente il file
+            $file->move($path_file, $nome_file);
+
+        } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
+            echo "Exception Found - " . $ex->getMessage() . "<br/>";
+        }
+
+
+        $response = new Response(json_encode($array), Response::HTTP_OK);
+        return $this->setBaseHeaders($response, "upload");
+    }
+
+
+
         
         
         

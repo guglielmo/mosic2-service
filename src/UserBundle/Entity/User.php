@@ -91,7 +91,18 @@ class User extends BaseUser
     protected $groups;
 
 
+    public function __construct()
+    {
+        parent::__construct();
 
+        // Add role
+        $this->addRole("");
+        $this->created = new \DateTime();
+        $this->cessatoServizio = 0;
+        $this->ip = "";
+        $this->stazione = "";
+
+    }
 
 
 
@@ -140,18 +151,6 @@ class User extends BaseUser
         return $this->lastName;
     }
 
-    
-
-    
-    public function __construct()
-    {
-        parent::__construct();
-        
-        // Add role
-        $this->addRole("ROLE_ADMIN");
-        $this->created = new \DateTime();
-
-    }
 
     /**
      * Set created

@@ -30,6 +30,7 @@ class CipeController extends Controller
     /**
      * @Route("/cipe", name="cipe")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_CIPE')")
      */
     public function cipeAction(Request $request)
     {
@@ -99,6 +100,7 @@ class CipeController extends Controller
     /**
      * @Route("/cipe/{id}", name="cipe_item")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_CIPE')")
      */
     public function cipeItemAction(Request $request, $id)
     {
@@ -207,7 +209,7 @@ class CipeController extends Controller
     /**
      * @Route("/cipe/{id}", name="cipe_item_save")
      * @Method("PUT")
-     * @Security("is_granted('ROLE_EDIT_UFFICI')")
+     * @Security("is_granted('ROLE_EDIT_CIPE')")
      */
     public function cipeItemSaveAction(Request $request, $id)
     {
@@ -228,19 +230,30 @@ class CipeController extends Controller
 
         //salvo ogni odg del cipe
         foreach ($data->cipe_odg as $item => $value) {
-            $cipeodg = $repository_odg->findOneById((int)$value->id);
+
+            if (isset($value->id)) {
+                $cipeodg = $repository_odg->findOneById((int)$value->id);
+            } else {
+                $cipeodg = new CipeOdg();
+            }
+
 
             $cipeodg->setIdCipe($id);
-            $cipeodg->setProgressivo($value->progressivo);
+            //$cipeodg->setProgressivo($value->progressivo);
             $cipeodg->setIdTitolari($value->id_titolari);
             $cipeodg->setIdFascicoli($value->id_fascicoli);
-            $cipeodg->setIdArgomenti($value->id_argomenti);
-            //$cipeodg->setIdUffici($value->id_uffici);
+            //$cipeodg->setIdArgomenti($value->id_argomenti);
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
             $cipeodg->setRisultanza($value->risultanza);
             $cipeodg->setAnnotazioni($value->annotazioni);
-            $cipeodg->setStato($value->stato);
+            //$precipeodg->setStato($value->stato);
+
+            if (!isset($value->id)) {
+                $em->persist($cipeodg);
+                $em->flush(); //esegue l'update
+                $value->id = $cipeodg->getId();
+            }
 
 
             $relRegistriOdg_delete = $repository_rel_registri_odg->findByIdOdgCipe((int)$value->id);
@@ -298,17 +311,66 @@ class CipeController extends Controller
     /**
      * @Route("/cipe", name="cipe_item_create")
      * @Method("POST")
-     * @Security("is_granted('ROLE_CREATE_UFFICI')")
+     * @Security("is_granted('ROLE_CREATE_CIPE')")
      */
     public function cipeItemCreateAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
         $data = json_decode($request->getContent());
 
         $cipe = new Cipe();
-
         $cipe->setData(new \DateTime($this->formatDateStringCustom($data->data)));
+
+        $em->persist($cipe);
+        $em->flush(); //esegue l'update
+
+
+        //salvo ogni odg del cipe
+        foreach ($data->cipe_odg as $item => $value) {
+            $cipeodg = new CipeOdg();
+
+            $cipeodg->setIdCipe($cipe->getId());
+            //$cipeodg->setProgressivo($value->progressivo);
+            $cipeodg->setIdTitolari($value->id_titolari);
+            $cipeodg->setIdFascicoli($value->id_fascicoli);
+            //$cipeodg->setIdArgomenti($value->id_argomenti);
+            $cipeodg->setOrdine($value->ordine);
+            $cipeodg->setDenominazione($value->denominazione);
+            $cipeodg->setRisultanza($value->risultanza);
+            $cipeodg->setAnnotazioni($value->annotazioni);
+            //$precipeodg->setStato($value->stato);
+
+            $em->persist($cipeodg);
+            $em->flush(); //esegue l'update
+
+
+            // REGISTRI
+            //creo le relazioni da aggiornare nella tabella RelAmministrazioniRegistri
+            foreach ($value->id_registri as $k) {
+                $relRegistriOdg = new RelRegistriOdgCipe();
+                $relRegistriOdg->setIdOdgCipe($cipeodg->getId());
+                $relRegistriOdg->setIdRegistri($k);
+
+                //aggiorno (in realt� ricreo) le relazioni del registro
+                $em->persist($relRegistriOdg); //create
+            }
+            foreach ($value->id_uffici as $k) {
+                $relUfficiOdg = new RelUfficiCipe();
+                $relUfficiOdg->setIdOdgCipe($cipeodg->getId());
+                $relUfficiOdg->setIdUffici($k);
+
+                //aggiorno (in realt� ricreo) le relazioni del registro
+                $em->persist($relUfficiOdg); //create
+            }
+
+            $em->persist($cipeodg);
+            $em->flush(); //esegue l'update
+        }
+
+
+
+
+
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -319,7 +381,6 @@ class CipeController extends Controller
         $em->flush(); //esegue l'update
 
         $response = new Response($this->serialize($cipe), Response::HTTP_OK);
-
         return $this->setBaseHeaders($response);
     }
 
@@ -327,7 +388,7 @@ class CipeController extends Controller
     /**
      * @Route("/cipe/{id}", name="cipe_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_UFFICI')")
+     * @Security("is_granted('ROLE_DELETE_CIPE')")
      */
     public function cipeItemDeleteAction(Request $request, $id)
     {
@@ -352,8 +413,8 @@ class CipeController extends Controller
             $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
 
-            //$em->remove($cipe); //delete
-            //$em->flush(); //esegue l'update
+            $em->remove($cipe); //delete
+            $em->flush(); //esegue l'update
 
             $response = new Response($this->serialize($cipe), Response::HTTP_OK);
             return $this->setBaseHeaders($response);
@@ -430,7 +491,7 @@ class CipeController extends Controller
             $em->flush(); //esegue query
 
             //copio fisicamente il file
-	    $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+            $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
 
         } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
             echo "Exception Found - " . $ex->getMessage() . "<br/>";
@@ -495,6 +556,7 @@ class CipeController extends Controller
     /**
      * @Route("/areariservata/cipe/{id}", name="cipe_area_riservata")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_AREARISERVATA_CIPE')")
      */
     public function precipeAreaRiservataAction(Request $request, $id)
     {
@@ -625,6 +687,7 @@ class CipeController extends Controller
 
     /**
      * @Route("/areariservata/cipe/check/{id}", name="cipe_area_riservata_check")
+     * @Security("is_granted('ROLE_READ_AREARISERVATA_CIPE_CHECK')")
      * @Method("GET")
      */
     public function cipeAreaRiservataCheckAction(Request $request, $id) {

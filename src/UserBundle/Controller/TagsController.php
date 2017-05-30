@@ -48,6 +48,7 @@ class TagsController extends Controller
     /**
      * @Route("/tags/{id}", name="tags_item")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_TAGS')")
      */
     public function tagsItemAction(Request $request, $id) {
 
@@ -158,8 +159,11 @@ class TagsController extends Controller
         $repository_rel_registri = $em->getRepository('UserBundle:RelTagsRegistri');
         $relTagsRegistri_delete = $repository_rel_registri->findByIdTags($id);//ricavo tutte le relazioni con l'id del registro
 
+        $repository_rel_delibere = $em->getRepository('UserBundle:RelTagsDelibere');
+        $relTagsDelibere_delete = $repository_rel_delibere->findByIdTags($id);//ricavo tutte le relazioni con l'id del registro
 
-        if ($relTagsFascicoli_delete || $relTagsRegistri_delete) {
+
+        if ($relTagsFascicoli_delete || $relTagsRegistri_delete || $relTagsDelibere_delete) {
             $response_array = array("error" =>  ["code" => 409, "message" => "Il tags non e' vuoto, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);

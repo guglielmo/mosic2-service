@@ -55,14 +55,24 @@ class RegistriController extends Controller
         $registri = $repository->listaRegistri($limit, $offset, $sortBy, $sortType, $id, $id_titolari, $numero_fascicolo, $id_mittenti, $data_arrivo_from, $data_arrivo_to, $protocollo_arrivo, $protocollo_mittente, $oggetto);
         $totRegistri = $repository->totaleRegistri();
 
-
         //converte i risultati in json
         $serialize = $this->serialize($registri);
-
 
         //funzione per formattare le date del json
         $serialize = $this->formatDateJsonArrayCustom(json_decode($serialize), array('data_arrivo', 'data_mittente'));
 
+        //aggiungo i tags
+        $repositoryTags = $this->getDoctrine()->getRepository('UserBundle:RelTagsRegistri');
+        foreach ($serialize as $item => $value) {
+            $tags = $repositoryTags->findBy(["idRegistri" => $value->id]);
+            $tags = json_decode($this->serialize($tags));
+            foreach ($tags as $i => $v) {
+                $value->id_tags[] = $v->id_tags;
+            }
+            if (count($tags) == 0) {
+                $value->id_tags = [];
+            }
+        }
 
         $response_array = array(
             "response" => Response::HTTP_OK,
@@ -416,8 +426,8 @@ class RegistriController extends Controller
                 $em->persist($allegatoRel);
                 $em->flush(); //esegue query
 
-		//copio fisicamente il file
-		$file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+                //copio fisicamente il file
+                $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
 
             } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
                 echo "Exception Found - " . $ex->getMessage() . "<br/>";

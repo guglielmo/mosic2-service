@@ -36,10 +36,18 @@ if (mysqli_connect_errno($db)) {
 
 error_reporting(0);
 
+
+
 include_once('function.php');
 // imposto il time limit dello script a 2 ore
 set_time_limit(7200);
 
+
+
+
+
+//file_put_contents("file-errori-upload.txt", ini_get('upload_max_filesize'));
+//exit;
 
 function invioFile ($token, $file) {
     $headers = [
@@ -262,9 +270,10 @@ $current_file = file_get_contents("file-errori-upload.txt");
 //conto gli allegati
 foreach ($precipeTemp->punti_odg as $i => $v) {
     foreach ($v->allegati as $item => $k) {
-        $numero_file++;
+            $numero_file++;
     }
 }
+
 
 $array_file_errati = "";
 foreach ($precipeTemp->punti_odg as $i => $v) {

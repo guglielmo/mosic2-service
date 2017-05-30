@@ -62,9 +62,11 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.dataInvioGU as data_invio_gu,
                                             d.dataGU as data_gu,                                       
                                             
-                                            ud.idUffici as id_uffici')
+                                            ud.idUffici as id_uffici,
+                                            td.idTags as id_tags')
             ->from('UserBundle:Delibere', 'd')
             ->leftJoin('UserBundle:RelUfficiDelibere', 'ud', 'WITH', 'd.id = ud.idDelibere')
+            ->leftJoin('UserBundle:RelTagsDelibere', 'td', 'WITH', 'd.id = td.idDelibere')
             ->where('1=1')
             ->setFirstResult($offset)
             ->setMaxResults($limit)
@@ -139,11 +141,13 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.noteGU as note_gu,
                                             
                                             ud.idUffici as id_uffici,
-                                            fd.idFirmatari as id_segretariato
+                                            fd.idFirmatari as id_segretariato,
+                                            td.idTags as id_tags
                                             ')
             ->from('UserBundle:Delibere', 'd')
             ->leftJoin('UserBundle:RelUfficiDelibere', 'ud', 'WITH', 'd.id = ud.idDelibere')
             ->leftJoin('UserBundle:RelFirmatariDelibere', 'fd', 'WITH', 'd.id = fd.idDelibere')
+            ->leftJoin('UserBundle:RelTagsDelibere', 'td', 'WITH', 'd.id = td.idDelibere')
             ->where('1=1' . $filter)
             ->setParameters($parameters);
 
@@ -208,7 +212,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
     public function getDelibereByYear($year = false) {
         $parameters = array ();
         $filter = "";
-        if ($year != false) {
+        if ($year != false && $year != "all") {
             $filter .= " AND d.data > :from AND d.data <= :to ";
             $parameters['from'] = $year."-01-01";
             $parameters['to'] = $year."-12-31";
@@ -231,6 +235,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.dataPresidenteInvio as data_presidente_invio,
                                             d.dataPresidenteRitorno as data_presidente_ritorno,
                                             d.dataInvioCC as data_invio_cc,
+                                            d.tipoRegistrazioneCC as tipo_registrazione_cc,
                                             d.dataRegistrazioneCC as data_registrazione_cc,
                                             d.dataInvioGU as data_invio_gu,
                                             d.dataGU as data_gu
@@ -238,7 +243,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
             ->from('UserBundle:Delibere', 'd')
             ->where('1=1' . $filter)
             ->setParameters($parameters)
-            ->orderBy('d.data');
+            ->orderBy('d.data', "ASC");
 
         //print_r($query->getDql());
         //print_r($query->getQuery()->getSql());
@@ -280,7 +285,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
             ->from('UserBundle:Delibere', 'd')
             ->where('1=1' . $filter)
             ->setParameters($parameters)
-            ->orderBy('d.data');
+            ->orderBy('d.numero', "DESC");
 
         //print_r($query->getDql());
         //print_r($query->getQuery()->getSql());

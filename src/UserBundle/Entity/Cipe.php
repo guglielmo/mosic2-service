@@ -102,6 +102,15 @@ class Cipe
 
     public function __construct() {
         $this->data = new \DateTime("0000-00-00");
+        $this->publicReservedStatus = "";
+        $this->publicReservedUrl = "";
+        $this->ufficialeRiunione = "";
+        $this->giorno = "";
+        $this->ora = "";
+        $this->sede = "";
+        $this->idPresidente = "";
+        $this->idDirettore = "";
+        $this->idSegretario = "";
     }
 
 

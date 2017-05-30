@@ -47,7 +47,7 @@ class Adempimenti
 
    	/**
      * @var string
-     * @ORM\Column(name="descrizione", type="string", length=255, nullable=true)
+     * @ORM\Column(name="descrizione", type="text", nullable=true)
      */
     private $descrizione;
 	
@@ -101,7 +101,7 @@ class Adempimenti
 	
 	/**
      * @var string
-     * @ORM\Column(name="note", type="string", length=255, nullable=true)
+     * @ORM\Column(name="note", type="text", nullable=true)
      */
     private $note;
 	

@@ -270,16 +270,22 @@ trait ControllerHelper
         $data = json_decode($data, true); //trasformo in array
         $array = array();
         $array_amministrazioni = array();
+        $array_tags = array();
         foreach ($data as $item => $value) {
             if (array_key_exists($value['id'],$array)) {
                 if (!in_array($value['id_uffici'],$array_amministrazioni)) {
                     $array[$value['id']]['id_uffici'] = $array[$value['id']]['id_uffici'] . "," . $value['id_uffici'];
                     $array_amministrazioni[] = $value['id_uffici'];
                 }
+                if (!in_array($value['id_tags'],$array_tags)) {
+                    $array[$value['id']]['id_tags'] = $array[$value['id']]['id_tags'] . "," . $value['id_tags'];
+                    $array_tags[] = $value['id_tags'];
+                }
 
             } else {
                 $array[$value['id']] = $value;
                 $array_amministrazioni[] = $value['id_uffici'];
+                $array_tags[] = $value['id_tags'];
             }
             $array[$value['id']]['anno'] = substr($array[$value['id']]['data'], 0, 4);
         }
@@ -291,6 +297,8 @@ trait ControllerHelper
             return $array[0];
         }
     }
+
+
 
     /**
      * (sostituisce la funzione insertRel)
@@ -305,6 +313,7 @@ trait ControllerHelper
         $array = array();
         $array_amministrazioni = array();
         $array_firmatari = array();
+        $array_tags = array();
 
         foreach ($data as $item => $value) {
             if (array_key_exists($value['id'],$array)) {
@@ -316,10 +325,15 @@ trait ControllerHelper
                     $array[$value['id']]['id_segretariato'] = $array[$value['id']]['id_segretariato'] . "," . $value['id_segretariato'];
                     $array_firmatari[] = $value['id_segretariato'];
                 }
+                if (!in_array($value['id_tags'],$array_tags)) {
+                    $array[$value['id']]['id_tags'] = $array[$value['id']]['id_tags'] . "," . $value['id_tags'];
+                    $array_tags[] = $value['id_tags'];
+                }
             } else {
                 $array[$value['id']] = $value;
                 $array_amministrazioni[] = $value['id_uffici'];
                 $array_firmatari[] = $value['id_segretariato'];
+                $array_firmatari[] = $value['id_tags'];
             }
         }
 
@@ -593,6 +607,8 @@ trait ControllerHelper
         return $array;
     }
 
-
+    function negativeToZero($var){
+        return ($var < 0 ? 0 : $var);
+    }
 
 }

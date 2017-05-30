@@ -13,7 +13,6 @@ use UserBundle\Entity\PreCipe;
 use UserBundle\Entity\LastUpdates;
 
 
-
 class CipeOdgController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
@@ -22,11 +21,12 @@ class CipeOdgController extends Controller
      * @Route("/cipeodg", name="cipeodg")
      * @Method("GET")
      */
-    public function cipeodgAction(Request $request) {
+    public function cipeodgAction(Request $request)
+    {
         //prendo i parametri get
-        $limit  = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
+        $limit = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
         $offset = ($request->query->get('offset') != "") ? $request->query->get('offset') : 0;
-        $sortBy  = ($request->query->get('sort_by') != "") ? $request->query->get('sort_by') : 'id';
+        $sortBy = ($request->query->get('sort_by') != "") ? $request->query->get('sort_by') : 'id';
         $sortType = ($request->query->get('sort_order') != "") ? $request->query->get('sort_order') : "DESC";
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:CipeOdg');
@@ -45,18 +45,19 @@ class CipeOdgController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-    
-    
+
+
     /**
      * @Route("/cipeodg/{id}", name="cipeodg_item")
      * @Method("GET")
      */
-    public function cipeodgItemAction(Request $request, $id) {
-            
+    public function cipeodgItemAction(Request $request, $id)
+    {
+
         $repository = $this->getDoctrine()->getRepository('UserBundle:CipeOdg');
         $cipeodg = $repository->findOneById($id);
 
-				
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($cipeodg),
@@ -68,17 +69,18 @@ class CipeOdgController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
-        
+
+
     /**
      * @Route("/cipeodg/{id}", name="cipeodg_item_save")
      * @Method("PUT")
      */
-    public function cipeodgItemSaveAction(Request $request, $id) {
+    public function cipeodgItemSaveAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+
         $repository = $em->getRepository('UserBundle:CipeOdg');
         $cipeodg = $repository->findOneById($data->id);
 
@@ -105,14 +107,14 @@ class CipeOdgController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
-        
-        
-   /**
+
+
+    /**
      * @Route("/cipeodg", name="cipeodg_item_create")
      * @Method("POST")
      */
-    public function cipeodgItemCreateAction(Request $request) {
+    public function cipeodgItemCreateAction(Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
@@ -144,14 +146,15 @@ class CipeOdgController extends Controller
         return $this->setBaseHeaders($response);
     }
 
-    
+
     /**
      * @Route("/cipeodg/{id}", name="cipeodg_item_delete")
      * @Method("DELETE")
      */
-    public function cipeodgItemDeleteAction(Request $request, $id) {
+    public function cipeodgItemDeleteAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
-        
+
         $repository = $em->getRepository('UserBundle:CipeOdg');
         $cipeodg = $repository->findOneById($id);
 
@@ -162,42 +165,33 @@ class CipeOdgController extends Controller
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
 
-        //$em->remove($cipeodg); //delete
-        //$em->flush(); //esegue l'update
+        $em->remove($cipeodg); //delete
+        $em->flush(); //esegue l'update
 
         $response = new Response($this->serialize($cipeodg), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
 
     }
-		
-        
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
     /**
      * @Route("/cipeodg", name="cipeodg_options")
      * @Method("OPTIONS")
      */
-    public function cipeodgOptions(Request $request) {
-			
+    public function cipeodgOptions(Request $request)
+    {
+
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
-    
+
     /**
      * @Route("/cipeodg/{id2}", name="cipeodg_item_options")
      * @Method("OPTIONS")
      */
-    public function cipeodgItemOptions(Request $request, $id2) {
-			
+    public function cipeodgItemOptions(Request $request, $id2)
+    {
+
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }

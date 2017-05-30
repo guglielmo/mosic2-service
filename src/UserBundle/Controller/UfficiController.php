@@ -20,7 +20,6 @@ class UfficiController extends Controller
     /**
      * @Route("/uffici", name="uffici")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_UFFICI')")
      */
     public function ufficiAction(Request $request) {
         //prendo i parametri get
@@ -49,7 +48,6 @@ class UfficiController extends Controller
     /**
      * @Route("/uffici/{id}", name="uffici_item")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_UFFICI')")
      */
     public function ufficiItemAction(Request $request, $id) {
             
@@ -73,7 +71,6 @@ class UfficiController extends Controller
     /**
      * @Route("/uffici/{id}", name="uffici_item_save")
      * @Method("PUT")
-     * @Security("is_granted('ROLE_EDIT_UFFICI')")
      */
     public function ufficiItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -110,7 +107,6 @@ class UfficiController extends Controller
    /**
      * @Route("/uffici", name="uffici_item_create")
      * @Method("POST")
-    * @Security("is_granted('ROLE_CREATE_UFFICI')")
      */
     public function ufficiItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -143,7 +139,6 @@ class UfficiController extends Controller
     /**
      * @Route("/uffici/{id}", name="uffici_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_UFFICI')")
      */
     public function ufficiItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

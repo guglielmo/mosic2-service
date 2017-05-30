@@ -87,7 +87,7 @@ class RegistriRepository extends \Doctrine\ORM\EntityRepository
         //print_r($query->getDql());
 
         return $query->getQuery()->getResult();
-        
+
     }
 		
 		

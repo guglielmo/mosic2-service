@@ -20,7 +20,6 @@ class MittenteController extends Controller
     /**
      * @Route("/mittenti", name="mittenti")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_MITTENTI')")
      */
     public function mittenteAction(Request $request) {
         //prendo i parametri get
@@ -50,7 +49,6 @@ class MittenteController extends Controller
     /**
      * @Route("/mittenti", name="mittenti_item_create")
      * @Method("POST")
-     * @Security("is_granted('ROLE_CREATE_MITTENTI')")
      */
     public function mittentiItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -95,7 +93,6 @@ class MittenteController extends Controller
     /**
      * @Route("/mittenti/{id}", name="mittenti_item")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_MITTENTI')")
      */
     public function mittentiItemAction(Request $request, $id) {
 
@@ -119,7 +116,6 @@ class MittenteController extends Controller
     /**
      * @Route("/mittenti/{id}", name="mittenti_item_save")
      * @Method("PUT")
-     * @Security("is_granted('ROLE_EDIT_MITTENTI')")
      */
     public function mittentiItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -158,7 +154,6 @@ class MittenteController extends Controller
     /**
      * @Route("/mittenti/{id}", name="mittenti_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_MITTENTI')")
      */
     public function mittentiItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

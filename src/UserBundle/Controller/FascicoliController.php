@@ -49,7 +49,12 @@ class FascicoliController extends Controller
         
         //funzione per raggruppare i risultati del join inserendo id_amministrazioni con la virgola
 		$serialize = $this->mergeIdAmministrazioni($serialize);
-				
+
+
+		foreach ($serialize as $item => $value) {
+            $tagArrayConvert = array_map('intval', explode(',', $serialize[$item]["id_tags"]));
+            $serialize[$item]["id_tags"] = ($tagArrayConvert[0] == 0 ? array() : $tagArrayConvert);
+        }
         //funzione per formattare le date del json
         //$serialize = $this->formatDateJsonCustom($serialize, array('data_cipe', 'data_cipe2', 'data_magazzino'));
         

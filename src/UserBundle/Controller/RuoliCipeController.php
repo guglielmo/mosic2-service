@@ -20,7 +20,6 @@ class RuoliCipeController extends Controller
     /**
      * @Route("/ruoli_cipe", name="ruoli_cipe")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_RUOLICIPE')")
      */
     public function ruoli_cipeAction(Request $request) {
         //prendo i parametri get
@@ -49,7 +48,6 @@ class RuoliCipeController extends Controller
     /**
      * @Route("/ruoli_cipe/{id}", name="ruoli_cipe_item")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_RUOLICIPE')")
      */
     public function ruoli_cipeItemAction(Request $request, $id) {
             
@@ -73,7 +71,6 @@ class RuoliCipeController extends Controller
     /**
      * @Route("/ruoli_cipe/{id}", name="ruoli_cipe_item_save")
      * @Method("PUT")
-     * @Security("is_granted('ROLE_EDIT_RUOLICIPE')")
      */
     public function ruoli_cipeItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -105,7 +102,6 @@ class RuoliCipeController extends Controller
    /**
      * @Route("/ruoli_cipe", name="ruoli_cipe_item_create")
      * @Method("POST")
-     * @Security("is_granted('ROLE_CREATE_RUOLICIPE')")
      */
     public function ruoli_cipeItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -134,7 +130,6 @@ class RuoliCipeController extends Controller
     /**
      * @Route("/ruoli_cipe/{id}", name="ruoli_cipe_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_RUOLICIPE')")
      */
     public function ruoli_cipeItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

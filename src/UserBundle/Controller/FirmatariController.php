@@ -22,6 +22,7 @@ class FirmatariController extends Controller
     /**
      * @Route("/firmatari", name="firmatari")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_FIRMATARI')")
      */
     public function firmatariAction(Request $request) {
         //prendo i parametri get
@@ -53,6 +54,7 @@ class FirmatariController extends Controller
     /**
      * @Route("/firmatari/{id}", name="firmatari_item")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_FIRMATARI')")
      */
     public function firmatariItemAction(Request $request, $id) {
             
@@ -76,6 +78,7 @@ class FirmatariController extends Controller
     /**
      * @Route("/firmatari/{id}", name="firmatari_item_save")
      * @Method("PUT")
+     * @Security("is_granted('ROLE_EDIT_FIRMATARI')")
      */
     public function firmatariItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -111,6 +114,7 @@ class FirmatariController extends Controller
    /**
      * @Route("/firmatari", name="firmatari_item_create")
      * @Method("POST")
+     * @Security("is_granted('ROLE_CREATE_FIRMATARI')")
      */
     public function firmatariItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -142,6 +146,7 @@ class FirmatariController extends Controller
     /**
      * @Route("/firmatari/{id}", name="firmatari_item_delete")
      * @Method("DELETE")
+     * @Security("is_granted('ROLE_DELETE_FIRMATARI')")
      */
     public function firmatariItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

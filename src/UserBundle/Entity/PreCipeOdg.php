@@ -100,7 +100,14 @@ class PreCipeOdg
     private $stato;
 
 
-
+    public function __construct()
+    {
+        $this->idUffici = 0;
+        $this->idArgomenti = 0;
+        $this->progressivo = 0;
+        $this->risultanza = 0;
+        $this->stato = 0;
+    }
 
     /**
      * Get id

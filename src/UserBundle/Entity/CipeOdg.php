@@ -135,7 +135,25 @@ class CipeOdg
     private $stato;
 
 
-
+    public function __construct()
+    {
+        $this->idUffici = 0;
+        $this->idArgomenti = 0;
+        $this->idDelibera = 0;
+        $this->progressivo = 0;
+        $this->risultanza = 0;
+        $this->stato = 0;
+        $this->idEsito = 0;
+        $this->idTitolari = 0;
+        $this->idSottoFascicoli = 0;
+        $this->idFascicoli = 0;
+        $this->idCipe = 0;
+        $this->tipoEsito = 0;
+        $this->TipoArgomenti = 0;
+        $this->ordine = 0;
+        $this->denominazione = 0;
+        $this->annotazioni = 0;
+    }
 
     /**
      * Get id

@@ -12,6 +12,8 @@ use UserBundle\Entity\Titolari;
 use UserBundle\Entity\Fascicoli;
 use UserBundle\Entity\Registri;
 use UserBundle\Entity\LastUpdates;
+use UserBundle\Entity\RelTagsTitolari;
+
 
 
 
@@ -36,13 +38,14 @@ class TitolariController extends Controller
         $repository = $this->getDoctrine()->getRepository('UserBundle:Titolari');
         $titolari = $repository->listaTitolari($limit, $offset, $sortBy, $sortType);
 
-        
+        $serialize = json_decode($this->serialize($titolari));
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($titolari),
             "limit" => $limit,
             "offset" => $offset,
-            "data" => json_decode($this->serialize($titolari)),
+            "data" => $serialize,
         );
 
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
@@ -93,7 +96,8 @@ class TitolariController extends Controller
         $titolario->setDescrizione($data->descrizione);
 		$titolario->setIdUffici($data->id_uffici);
 
-        
+
+
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("titolari");
@@ -126,7 +130,7 @@ class TitolariController extends Controller
         $titolario->setDenominazione($data->denominazione);
         $titolario->setDescrizione($data->descrizione);
 		$titolario->setIdUffici($data->id_uffici);
-        
+
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("titolari");

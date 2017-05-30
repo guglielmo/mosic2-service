@@ -57,6 +57,9 @@ class PreCipe
 
     public function __construct() {
         $this->data = new \DateTime("0000-00-00");
+        $this->ufficialeRiunione = 0;
+        $this->publicReservedStatus = "";
+        $this->publicReservedUrl = "";
     }
 
 
