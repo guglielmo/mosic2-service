@@ -27,6 +27,33 @@ class CipeController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Cipe",
+     *   description="Tutte le Api dei Cipe"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/cipe",
+     *     summary="Lista Cipe",
+     *     tags={"Cipe"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":151,"limit":"99999","offset":0,"data":{{"id":153,"data":1496008800000
+,"ufficiale_riunione":"","giorno":"","ora":"","sede":"","id_presidente":0,"id_segretario":0,"id_direttore"
+:0,"public_reserved_status":"","public_reserved_url":"","allegati_TLX":"","allegati_APG":"","allegati_OSS"
+:"","allegati_EST":""}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
+
     /**
      * @Route("/cipe", name="cipe")
      * @Method("GET")
@@ -95,6 +122,36 @@ class CipeController extends Controller
 
         return $this->setBaseHeaders($response);
     }
+
+
+	/**
+     * @SWG\Get(
+     *     path="/api/cipe/{id}",
+     *     summary="Singolo Cipe",
+     *     tags={"Cipe"},
+     *     operationId="idCipe",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":151,"limit":"99999","offset":0,"data":{{"id":153,"data":1496008800000
+,"ufficiale_riunione":"","giorno":"","ora":"","sede":"","id_presidente":0,"id_segretario":0,"id_direttore"
+:0,"public_reserved_status":"","public_reserved_url":"","allegati_TLX":"","allegati_APG":"","allegati_OSS"
+:"","allegati_EST":""}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
 
 
     /**
@@ -206,6 +263,87 @@ class CipeController extends Controller
     }
 
 
+
+	/**
+     * @SWG\Put(
+     *     path="/api/cipe/{id}",
+     *     summary="Salvataggio Cipe e relativi OdG",
+     *     tags={"Cipe"},
+     *     operationId="idCipe",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id del Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="cipe",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="data", type="string"),
+	 *					@SWG\Property(property="ufficiale_riunione", type="integer"),
+	 *					@SWG\Property(property="giorno", type="string"),
+	 *					@SWG\Property(property="ora", type="string"),
+	 *					@SWG\Property(property="sede", type="string"),
+	 *					@SWG\Property(property="id_presidente", type="integer"),
+	 *					@SWG\Property(property="id_segretario", type="integer"),
+	 *					@SWG\Property(property="id_direttore", type="integer"),
+	 *					@SWG\Property(property="public_reserved_status", type="integer"),
+	 *					@SWG\Property(property="cipe_odg",
+	 *						type="array",
+	 *						@SWG\Items(
+	 *							@SWG\Property(property="id", type="integer"),
+	 *							@SWG\Property(property="id_cipe", type="integer"),
+	 *							@SWG\Property(property="progressivo", type="integer"),
+	 *							@SWG\Property(property="id_titolari", type="integer"),
+	 *							@SWG\Property(property="id_fascicoli", type="integer"),
+	 *							@SWG\Property(property="id_sotto_fascicoli", type="integer"),
+	 *							@SWG\Property(property="id_argomenti", type="integer"),
+	 *							@SWG\Property(property="_tipo_argomenti", type="integer"),
+	 *							@SWG\Property(property="id_uffici", type="array"),
+	 *							@SWG\Property(property="ordine", type="integer"),
+	 *							@SWG\Property(property="denominazione", type="string"),
+	 *							@SWG\Property(property="risultanza", type="integer"),
+	 *							@SWG\Property(property="id_esito", type="integer"),
+	 *							@SWG\Property(property="id_delibera", type="integer"),
+	 *							@SWG\Property(property="annotazioni", type="string"),
+	 *							@SWG\Property(property="stato", type="integer"),
+	 *							@SWG\Property(property="id_registri", type="array"),
+	 *							@SWG\Property(property="allegati",
+	 *								type="array",
+	 *								@SWG\Items(
+	 *									@SWG\Property(property="id", type="integer"),
+	 *									@SWG\Property(property="data", type="string"),
+	 *									@SWG\Property(property="nome", type="string"),
+	 *									@SWG\Property(property="tipo", type="string"),
+	 *									@SWG\Property(property="relURI", type="string"),
+	 *									@SWG\Property(property="dimensione", type="string")
+	 *								)	 
+	 *						)
+	 *					),
+	 *					@SWG\Property(property="allegati_TLX", type="string"),
+     *					@SWG\Property(property="allegati_APG", type="string"),
+     *					@SWG\Property(property="allegati_OSS", type="string"),
+     *					@SWG\Property(property="allegati_EST", type="string")
+     *             )
+	 *			)
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/cipe/{id}", name="cipe_item_save")
      * @Method("PUT")
@@ -308,6 +446,20 @@ class CipeController extends Controller
     }
 
 
+	/**
+     * @SWG\Post(
+     *     path="/api/cipe",
+     *     summary="Creazione Cipe e relativi OdG",
+     *     tags={"Cipe"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
+
     /**
      * @Route("/cipe", name="cipe_item_create")
      * @Method("POST")
@@ -385,6 +537,30 @@ class CipeController extends Controller
     }
 
 
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/cipe/{id}",
+     *     summary="Eliminazione cipe",
+     *     tags={"Cipe"},
+     *     operationId="idCipe",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il cipe contiene degli Ordini del Giorno, impossibile eliminarlo.")
+     * )
+     */
+
     /**
      * @Route("/cipe/{id}", name="cipe_item_delete")
      * @Method("DELETE")
@@ -402,7 +578,7 @@ class CipeController extends Controller
 
 
         if ($ordini) {
-            $response_array = array("error" => ["code" => 409, "message" => "Il cipe non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" => ["code" => 409, "message" => "Il cipe contiene degli Ordini del Giorno, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {
@@ -420,6 +596,40 @@ class CipeController extends Controller
             return $this->setBaseHeaders($response);
         }
     }
+
+
+
+	
+	/**
+     * @SWG\Post(
+     *     path="/api/cipe/{id}/{tipo}/upload",
+     *     summary="Upload files di un Cipe",
+     *     tags={"Cipe"},
+     *     produces={"application/json"},
+	 *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="tipo",
+     *         in="path",
+     *         description="tipo di allegato [TLX, APG, OSS]",
+     *         required=true,
+     *         type="string",
+     *         @SWG\Items(type="string"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file e' troppo grande. (max 25 MB)"),
+	 *     @SWG\Response(response=409, description="Tipo di file non permesso (solo PDF)")
+     * )
+     */
 
 
     /**
@@ -502,6 +712,46 @@ class CipeController extends Controller
         return $this->setBaseHeaders($response, "upload");
     }
 
+
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/cipe/{id}/{tipo}/upload/{idallegato}",
+     *     summary="Eliminazione file di un Cipe",
+     *     tags={"Cipe"},
+     *     operationId="idAllegato",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="tipo",
+     *         in="path",
+     *         description="tipo di allegato [TLX, APG, OSS]",
+     *         required=true,
+     *         type="string",
+     *         @SWG\Items(type="string"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="idallegato",
+     *         in="path",
+     *         description="Id dell'allegato da eliminare",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file non esiste")
+     * )
+     */
 
     /**
      * @Route("/cipe/{id}/{tipo}/upload/{idallegato}", name="uploadDeletePrecipe")

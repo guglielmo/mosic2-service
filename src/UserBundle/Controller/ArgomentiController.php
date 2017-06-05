@@ -18,6 +18,10 @@ class ArgomentiController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	
+    
+
     /**
      * @Route("/argomenti", name="argomenti")
      * @Method("GET")
@@ -46,6 +50,9 @@ class ArgomentiController extends Controller
         return $this->setBaseHeaders($response);
     }
     
+	
+	
+	
     
     /**
      * @Route("/argomenti/{id}", name="argomenti_item")
@@ -71,6 +78,9 @@ class ArgomentiController extends Controller
     }
 		
         
+		
+	
+		
     /**
      * @Route("/argomenti/{id}", name="argomenti_item_save")
      * @Method("PUT")
@@ -99,7 +109,9 @@ class ArgomentiController extends Controller
         return $this->setBaseHeaders($response);
     }
 		
-        
+     
+	 
+	   
         
    /**
      * @Route("/argomenti", name="argomenti_item_create")
@@ -129,6 +141,9 @@ class ArgomentiController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+	
+	
     
     /**
      * @Route("/argomenti/{id}", name="argomenti_item_delete")
@@ -146,7 +161,7 @@ class ArgomentiController extends Controller
         
 
         if ($ordini) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "L'argomento non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'argomento è associato ad un ODG di un precipe, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {

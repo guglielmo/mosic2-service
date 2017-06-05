@@ -1,0 +1,116 @@
+"Codice_Firmatario","Chiave","Tipo_Firmatario","Descrizione_firmatario","Descrizione_Estesa","Disattivato_Firmatario"
+36,"",4,"Signorini","Paolo Signorini",TRUE
+37,"",2,"Gelmini","Maria Stella Gelmini",TRUE
+38,"70100",4,"Passarelli","Livia Passarelli",FALSE
+39,"90138",4,"Corsini","Stefano Corsini",FALSE
+40,"90126",4,"Pasquini","Gabriele Pasquini",FALSE
+41,"",4,"Malerba","Angelo Malerba",TRUE
+42,"",4,"Guerrieri","Roberta Guerriri",TRUE
+43,"",4,"Schiavoni","Giulia Schiavoni",TRUE
+0,,1,,,FALSE
+1,,1,"Prodi","Romano Prodi",TRUE
+2,,2,"Gobbo","Fabio Gobbo",TRUE
+3,"",2,"Marcucci","",TRUE
+5,"",1,"Berlusconi","Silvio Berlusconi",TRUE
+6,"",2,"Miccichè","Gianfranco Miccichè",TRUE
+7,"",3,"Signorini","Paolo Signorini",TRUE
+0,,2,,,FALSE
+0,,3,,,FALSE
+8,"",3,"Volpicelli","Piero Volpicelli",TRUE
+9,,2,"Baldassarri",,TRUE
+10,,4,,,FALSE
+11,"55100",4,"Ardigò","Roberto Ardigò",FALSE
+12,"01366",4,"Gattuccio","Alessandro Gattuccio",TRUE
+13,,1,"Padoa Schioppa",,TRUE
+14,"",1,"Tremonti","Giulio Tremonti",TRUE
+15,"03703",4,"Pagliaro","Daniela Pagliaro",FALSE
+16,"04942",4,"Sauda","Daniela Sauda",TRUE
+17,"03599",4,"Di Meglio","Marina Di Meglio",FALSE
+18,"54100",4,"Gorio","Fiorenza Gorio",FALSE
+19,"",4,"Spina","Rosaria Spina",TRUE
+20,,4,"Cammarano","Alfredo Cammarano",TRUE
+21,"05445",4,"Senesi","Amalia Senesi",FALSE
+22,"03189",4,"Volpicelli","Piero Volpicelli",TRUE
+23,"70200",4,"Soda","Luca Soda",FALSE
+24,"57100",4,"Cappellaro","Patrizia Cappellaro",FALSE
+4,,3,"Marinali","Barbara Marinali",TRUE
+25,"",4,"Ruggero","Fioravanti Ruggero",TRUE
+26,"03367",4,"Forti","Carla Forti",FALSE
+27,"",4,"Guglielmi","Fabio Guglielmi",TRUE
+28,"",3,"Poli","Emanuela Poli",TRUE
+29,"",3,"Imperato","Isabella Imperato",FALSE
+30,"55555",4,"Imperato","Isabella Imperato",FALSE
+31,"",4,"Poli","Emanuela Poli",TRUE
+32,"13043",4,"Gigli","Gemma Gigli",FALSE
+33,"",4,"Romani","Lamberto Romani",TRUE
+34,"",4,"De Calboli","Manfredo Paulucci De Calboli",TRUE
+35,"90137",4,"Pedacchio","Caterina Pedacchio",FALSE
+44,"90154",4,"Menduni","Enrico Menduni de Rossi",FALSE
+45,"90003",4,"De Stefanis","Francesco De Stefanis",FALSE
+46,"",2,"Fitto","Raffaele Fitto",TRUE
+47,"03534",4,"Torroni","Alessandra Torroni",FALSE
+48,"61103",4,"Rabito","Angelica Rabito",TRUE
+49,"90156",4,"De Masi","Massimiliano De Masi",FALSE
+50,"01946",4,"Gemignani","Marco Gemignani",FALSE
+51,"90160",4,"Einaudi","Luca Einaudi",FALSE
+52,"00308",4,"Pernozzoli","Michele Pernozzoli",FALSE
+53,"",1,"Monti","Mario Monti",TRUE
+54,"",2,"Barca","Fabrizio Barca",TRUE
+55,"90163",4,"Cesi","Caudio Cesi",FALSE
+56,"90164",4,"Marasco","Pasquale Marasco",FALSE
+57,"",4,"Vignola","Francesca Vignola",TRUE
+58,"90147",4,"Vicari","Francesco Vicari",FALSE
+59,"",4,"Celio","Celio Micaela",TRUE
+60,"",4,"Salvi","Salvi Dino",TRUE
+61,"05515",4,"Piergallini","Giuseppe Piergallini",FALSE
+62,"90165",4,"Bosco","Marina Bosco",FALSE
+63,"05631",4,"Di Marcello","Pamela Di Marcello",FALSE
+64,"05490",4,"Tirittera","Silvia Tirittera",FALSE
+65,"80000",4,"Casagrande","Giulia Casagrande",FALSE
+66,"03442",4,"Fontana","Daniela Fontana",FALSE
+67,"",4,"Bartolini","Giovanna Bartolini",TRUE
+68,"90167",4,"Sbrescia","Rosario Sbrescia",FALSE
+69,"90173",4,"Valli","Silvia Valli",FALSE
+70,"04213",4,"Valentini","Cinzia Valentini",FALSE
+71,"",1,"V.P. Grilli","Vittorio Grilli",TRUE
+72,"",2,"Passera","Corrado Passera",TRUE
+73,"90168",4,"Sicurelli","Ivana Sicurelli",TRUE
+75,"",1,"E. Letta","Enrico Letta",TRUE
+76,"",2,"De Girolamo","Nunzia De Girolamo",TRUE
+77,"",3,"Ferrara","Ferdinando Ferrara",TRUE
+78,"",2,"Girlanda","Rocco GIRLANDA",TRUE
+79,"90185",4,"achiacchiararelli","Andrea Chiacchiararelli",TRUE
+80,"",2,"Lupi","Maurizio Lupi",TRUE
+81,"90177",4,"Surdi","Giuseppe Surdi",FALSE
+82,"",1,"Saccomanni","Fabrizio Saccomanni",TRUE
+83,"",3,"Caponetto","Antonio Caponetto",FALSE
+85,"",2,"Orlando","Orlando",TRUE
+86,"",1,"Renzi","Matteo Renzi",FALSE
+87,"90176",4,"Piacenza","Paolo Piacenza",FALSE
+88,"90191",4,"Ricciardi","Francesco Ricciardi",FALSE
+89,"90194",4,"Marasco","Pasquale Marasco",FALSE
+90,"90195",4,"Scialanga","Daniela Scialanga",FALSE
+93,"",3,"Sepe","Ferruccio Sepe",FALSE
+94,"",2,"Martina","Maurizio Martina",TRUE
+95,"90198",4,"Resse","Loredana Resse",FALSE
+96,"",2,"Lotti","Luca Lotti",FALSE
+97,"90202",4,"Fabbrini","Fabbrini Valeria",TRUE
+98,"90204",4,"Camarda","Camarda Maria Elena",FALSE
+99,"90205",4,"Forte","Forte Annaelisa",FALSE
+100,"",1,"Padoan","Piercarlo Padoan",FALSE
+101,"90186",4,"Caponetto","Antonio Caponetto",FALSE
+102,"90207",4,"Gorgoni","Raffaella Gorgoni",FALSE
+103,"90208",4,"Germanà","Marco Germanà",FALSE
+104,"06430",4,"Miraglia","Domenica Miraglia",FALSE
+105,"90210",4,"D'Elia","Teresa D'Elia",FALSE
+106,"90211",4,"Foggetti","Paola Foggetti",FALSE
+107,"90212",4,"Saitta","Silvia Saitta",FALSE
+108,"90213",4,"Marini","Giovanni Marini",FALSE
+109,"90214",4,"Casalino","Elda Casalino",FALSE
+110,"",4,"Bertolazzi","Ennio Bertolazzi",FALSE
+111,"90231",4,"Aiello","Lucia Aiello",FALSE
+112,"90235",4,"Petullà","Petullà Roberto",FALSE
+113,"",2,"Calenda","Carlo Calenda",FALSE
+114,"",2,"Bianchi","Dorina Bianchi",FALSE
+115,"90237",4,"Marandola","Barbara Marandola",FALSE
+116,"",1,"Gentiloni","Paolo Gentiloni",FALSE

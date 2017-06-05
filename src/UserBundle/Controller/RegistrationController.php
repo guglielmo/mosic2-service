@@ -19,6 +19,31 @@ class RegistrationController extends BaseController
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Utenti",
+     *   description="Tutte le Api degli utenti"
+     * )
+     */
+
+
+
+	/**
+     * @SWG\Post(
+     *     path="/api/users",
+     *     summary="Creazione utente",
+     *     tags={"Utenti"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Email e/o username già in uso."))
+     * )
+     */	
+    
+
     /**
      * @Route("/users", name="user_register")
      * @Method("POST")
@@ -31,22 +56,30 @@ class RegistrationController extends BaseController
         $user = $userManager->createUser();
         
         $data = json_decode($request->getContent(), true); //converto il json in array
-                    
+
         $user->setPassword($data['password']);
         $encoder = $this->container->get('security.password_encoder');
         $encoded = $encoder->encodePassword($user, $data['password']);
 
         $user->setEmail($data['eMail']);
         $user->setUsername($data['userName']);
-        $user->setEnabled(0);
         $user->setPassword($encoded);
         $user->setFirstName($data['firstName']);
         $user->setLastName($data['lastName']);
         $user->setIdUffici($data['id_uffici']);
-        if (isset($data->cessatoServizio)) { $user->setCessatoServizio($data->cessatoServizio); }
+        $user->setEnabled(1);
+        if (isset($data['cessatoServizio'])) {
+            $user->setEnabled(0);
+            $user->setCessatoServizio(1);
+        }
+
         if (isset($data->ip)) { $user->setIp($data['ip']); }
         if (isset($data->stazione)) { $user->setStazione($data['stazione']); }
         $user->setIdRuoliCipe($data['id_ruoli_cipe']);
+
+
+        //$response = new Response(json_encode($data), Response::HTTP_CREATED);
+        //return $this->setBaseHeaders($response);
 
 
         //cerco l'utente dall'email
@@ -97,6 +130,21 @@ class RegistrationController extends BaseController
         return $this->setBaseHeaders($response);
     }
 		
+
+
+	/**
+     * @SWG\Get(
+     *     path="/api/users",
+     *     summary="Lista utenti",
+     *     tags={"Utenti"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":165,"limit":165,"offset":0,"data":{{"id":1,"userName":"string","firstName":"string","lastName":"string","eMail":"string","id_uffici":1,"cessatoServizio":"0","ip":"string","stazione":"sting","id_ruoli_cipe":2,"registrationDate":"date","id_groups":{6}}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
 		
     /**
      * @Route("/users", name="users")
@@ -149,6 +197,33 @@ class RegistrationController extends BaseController
         return $this->setBaseHeaders($response);
     }
     
+
+
+	/**
+     * @SWG\Get(
+     *     path="/api/users/{id}",
+     *     summary="Singolo utente",
+     *     tags={"Utenti"},
+     *     operationId="idMittenti",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'utente",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json":{"response":200,"total_results":165,"limit":165,"offset":0,"data":{{"id":1,"userName":"string","firstName":"string","lastName":"string","eMail":"string","id_uffici":1,"cessatoServizio":"0","ip":"string","stazione":"sting","id_ruoli_cipe":2,"registrationDate":"date","id_groups":{6}}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
     
     
     /**
@@ -196,7 +271,51 @@ class RegistrationController extends BaseController
     }
     
     
-    
+/**
+     * @SWG\Put(
+     *     path="/api/users/{id}",
+     *     summary="Salvataggio utente",
+     *     tags={"Utenti"},
+     *     operationId="idUtente",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'utente",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="utenti",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *					@SWG\Property(property="userName", type="string"),
+	 *					@SWG\Property(property="firstName", type="string"),
+	 *					@SWG\Property(property="lastName", type="string"),
+	 *					@SWG\Property(property="eMail", type="string"),
+	 *					@SWG\Property(property="id_uffici", type="array"),
+	 *					@SWG\Property(property="cessatoServizio", type="integer"),
+	 *					@SWG\Property(property="ip", type="string"),
+	 *					@SWG\Property(property="stazione", type="string"),
+	 *					@SWG\Property(property="id_ruoli_cipe", type="array"),
+	 *					@SWG\Property(property="registrationDate", type="string"),
+	 *					@SWG\Property(property="id_groups", type="array")
+	 *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */	    
     
     /**
      * @Route("/users/{id}", name="users_item_save")
@@ -217,6 +336,12 @@ class RegistrationController extends BaseController
         $user->setEmail($data->eMail);
         $user->setIdUffici($data->id_uffici);
         $user->setCessatoServizio($data->cessatoServizio);
+        if ($data->cessatoServizio == 1) {
+            $user->setEnabled(0);
+        } else {
+            $user->setEnabled(1);
+        }
+
         $user->setIp($data->ip);
         $user->setStazione($data->stazione);
         $user->setIdRuoliCipe($data->id_ruoli_cipe);
@@ -277,6 +402,28 @@ class RegistrationController extends BaseController
     }
     
     
+
+/**
+     * @SWG\Delete(
+     *     path="/api/users/{id}",
+     *     summary="Eliminazione utente",
+     *     tags={"Utenti"},
+     *     operationId="idUtente",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'utente",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata")
+     * )
+     */  
     
     /**
      * @Route("/users/{id}", name="users_item_delete")

@@ -1,0 +1,44 @@
+"Codice_Ufficio","Codice_Direzione","Descrizione_Ufficio","Ordine_Ufficio","Disattivo_Ufficio","Solo_Delibere"
+1,,"Ufficio I",10,TRUE,FALSE
+2,,"Ufficio II",11,TRUE,FALSE
+5,,"Ufficio V",14,TRUE,FALSE
+6,,"Ufficio VI",15,TRUE,FALSE
+8,,"Segreteria Direttore",18,TRUE,FALSE
+0,,,,FALSE,TRUE
+9,,"CUP",19,TRUE,FALSE
+3,,"Ufficio III",12,TRUE,FALSE
+4,,"Ufficio IV",13,TRUE,FALSE
+7,,"Ufficio VII",16,TRUE,FALSE
+10,,"CIPE - Servizio 1",20,TRUE,FALSE
+11,,"CIPE - Servizio 2",21,TRUE,FALSE
+12,,"CIPE - Servizio 3",22,TRUE,FALSE
+13,,"CIPE - Servizio 4",23,TRUE,FALSE
+15,,"R.S.P.U. - Servizio 1",24,TRUE,FALSE
+16,,"R.S.P.U. - Servizio 2",25,TRUE,FALSE
+18,,"DPCPE - Segretariato",26,TRUE,FALSE
+19,1,"Ufficio I - Serv. 1",1,FALSE,TRUE
+20,1,"Ufficio I - Serv. 2",2,FALSE,TRUE
+21,2,"Ufficio II - Serv. 1",3,FALSE,TRUE
+22,2,"Ufficio II - Serv. 2",4,FALSE,TRUE
+23,3,"Ufficio III - Serv. 1",7,FALSE,TRUE
+24,3,"Ufficio III - Serv. 2",8,FALSE,TRUE
+25,3,"Ufficio III - Serv. 3",9,FALSE,TRUE
+26,,"Ufficio VIII",17,TRUE,FALSE
+27,2,"Ufficio II - Serv. 3",5,FALSE,TRUE
+28,,"UTFP",10,FALSE,TRUE
+29,2,"Ufficio II - Serv. 4",6,FALSE,FALSE
+30,,"Segreteria Segretario CIPE",11,FALSE,FALSE
+31,,"Ufficio Affari Generali e Personale",0,FALSE,FALSE
+32,,"Segreteria Capo Dipartimento",0,FALSE,FALSE
+33,2,"Ufficio II",0,FALSE,FALSE
+34,3,"Ufficio III - Dirigente",0,FALSE,FALSE
+35,3,"Ufficio III",0,FALSE,FALSE
+36,1,"Ufficio I",0,FALSE,FALSE
+37,,"MIP/CUP",0,FALSE,FALSE
+38,,"Segreteria Tecnica programmazione economica",0,FALSE,FALSE
+39,2,"NARS",12,FALSE,TRUE
+41,,"Nucleo val. verifica investimenti pubblici",0,FALSE,FALSE
+42,,"Dipartimento",0,FALSE,FALSE
+43,2,"Ufficio II - Dirigente",0,FALSE,FALSE
+44,1,"Ufficio I - Dirigente",0,FALSE,FALSE
+45,,"Roma Capitale",0,FALSE,FALSE

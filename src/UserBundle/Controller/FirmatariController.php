@@ -19,6 +19,30 @@ class FirmatariController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Firmatari",
+     *   description="Tutte le Api dei Firmatari"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/firmatari",
+     *     summary="Lista firmatari",
+     *     tags={"Firmatari"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":107,"limit":"99999","offset":0,"data":{{"id":2,"chiave":0,"tipo":2,"denominazione"
+:"Gobbo","denominazione_estesa":"Fabio Gobbo","disattivato":1}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/firmatari", name="firmatari")
      * @Method("GET")
@@ -50,6 +74,34 @@ class FirmatariController extends Controller
         return $this->setBaseHeaders($response);
     }
     
+
+
+	/**
+     * @SWG\Get(
+     *     path="/api/firmatari/{id}",
+     *     summary="Singolo firmatario",
+     *     tags={"Firmatari"},
+     *     operationId="idFirmatari",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del firmatario",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":107,"limit":"99999","offset":0,"data":{{"id":2,"chiave":0,"tipo":2,"denominazione"
+:"Gobbo","denominazione_estesa":"Fabio Gobbo","disattivato":1}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
     
     /**
      * @Route("/firmatari/{id}", name="firmatari_item")
@@ -73,7 +125,50 @@ class FirmatariController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
+
+
+
+	/**
+     * @SWG\Put(
+     *     path="/api/firmatari/{id}",
+     *     summary="Salvataggio firmatario",
+     *     tags={"Firmatari"},
+     *     operationId="idFirmatario",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id del firmatario",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="firmatari",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="chiave", type="integer"),
+	 *					@SWG\Property(property="tipo", type="integer"),
+	 *					@SWG\Property(property="denominazione", type="string"),
+	 *					@SWG\Property(property="denominazione_estesa", type="string"),
+	 *					@SWG\Property(property="disattivato", type="integer")
+     *     			)
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */		
         
     /**
      * @Route("/firmatari/{id}", name="firmatari_item_save")
@@ -110,6 +205,20 @@ class FirmatariController extends Controller
     }
 		
         
+
+
+	/**
+     * @SWG\Post(
+     *     path="/api/firmatari",
+     *     summary="Creazione firmatario",
+     *     tags={"Firmatari"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */	
         
    /**
      * @Route("/firmatari", name="firmatari_item_create")
@@ -142,6 +251,32 @@ class FirmatariController extends Controller
         return $this->setBaseHeaders($response);
     }
     
+
+
+
+	
+ 	/**
+     * @SWG\Delete(
+     *     path="/api/firmatari/{id}",
+     *     summary="Eliminazione firmatario",
+     *     tags={"Firmatari"},
+     *     operationId="idFirmatario",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del firmatario",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il firmatario è associato ad una Delibero a ad un Cipe, impossibile eliminarlo.")
+     * )
+     */  
     
     /**
      * @Route("/firmatari/{id}", name="firmatari_item_delete")
@@ -163,7 +298,7 @@ class FirmatariController extends Controller
         $FirmatariDelibere = $repositoryFirmatariDelibere->findOneByIdFirmatari($id);
 
         if ($cipeP || $cipeS || $cipeD || $FirmatariDelibere) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Il firmatario non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il firmatario è associato ad una Delibero a ad un Cipe, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {

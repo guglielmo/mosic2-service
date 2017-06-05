@@ -18,6 +18,14 @@ class PreCipeOdgController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="PreCipe OdG",
+     *   description="Cancellazione dell'Ordine del Giorno di un PreCipe"
+     * )
+     */
+
     /**
      * @Route("/precipeodg", name="precipeodg")
      * @Method("GET")
@@ -143,6 +151,30 @@ class PreCipeOdgController extends Controller
 
         return $this->setBaseHeaders($response);
     }
+
+
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/precipeodg/{id}",
+     *     summary="Eliminazione OdG di un PreCipe",
+     *     tags={"PreCipe OdG"},
+     *     operationId="idPreCipeOdg",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'OdG del Precipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
 
     
     /**

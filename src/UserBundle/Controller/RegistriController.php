@@ -26,6 +26,31 @@ class RegistriController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Registri",
+     *   description="Tutte le Api dei Registri"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/registri",
+     *     summary="Lista registri",
+     *     tags={"Registri"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":6939,"filter_results":6939,"limit":"99999","offset":0,"data":{{"id":7179,"data_arrivo":1494972000000,"protocollo_arrivo":"test testtest test","data_mittente":1494194400000,"protocollo_mittente":"9999","oggetto":"test test2","id_amministrazione":0,"mittente":"","codice_titolario":0,"numero_fascicolo":0,"numero_sottofascicolo":0,"denominazione_sottofascicolo":"","proposta_cipe":false,"annotazioni":"test test","id_sottofascicoli":0,"id_mittenti":2,"id_titolari":3,"id_fascicoli":896,"id_tags":{12,14,28,29,30}}}}
+
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
+
     /**
      * @Route("/registri", name="registri")
      * @Method("GET")
@@ -88,6 +113,33 @@ class RegistriController extends Controller
     }
 
 
+	/**
+     * @SWG\Get(
+     *     path="/api/registri/{id}",
+     *     summary="Singolo registro",
+     *     tags={"Registri"},
+     *     operationId="idRegistro",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del registro",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":6939,"filter_results":6939,"limit":"99999","offset":0,"data":{"id":7179,"data_arrivo":1494972000000,"protocollo_arrivo":"test testtest test","data_mittente":1494194400000,"protocollo_mittente":"9999","oggetto":"test test2","id_amministrazione":0,"mittente":"","codice_titolario":0,"numero_fascicolo":0,"numero_sottofascicolo":0,"denominazione_sottofascicolo":"","proposta_cipe":false,"annotazioni":"test test","id_sottofascicoli":0,"id_mittenti":2,"id_titolari":3,"id_fascicoli":896,"id_tags":{12,14,28,29,30}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+
+
     /**
      * @Route("/registri/{id}", name="registri_item")
      * @Method("GET")
@@ -131,6 +183,73 @@ class RegistriController extends Controller
 
         return $this->setBaseHeaders($response);
     }
+
+
+	/**
+     * @SWG\Put(
+     *     path="/api/registri/{id}",
+     *     summary="Salvataggio registro",
+     *     tags={"Registri"},
+     *     operationId="idRegistro",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id del registro",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="registri",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="data_arrivo", type="string"),
+	 *					@SWG\Property(property="protocollo_arrivo", type="integer"),
+	 *					@SWG\Property(property="data_mittente", type="string"),
+	 *					@SWG\Property(property="protocollo_mittente", type="integer"),
+	 *					@SWG\Property(property="oggetto", type="string"),
+	 *					@SWG\Property(property="mittente", type="string"),
+	 *					@SWG\Property(property="codice_titolario", type="integer"),
+	 *					@SWG\Property(property="numero_fascicolo", type="integer"),
+	 *					@SWG\Property(property="numero_sottofascicolo", type="string"),
+	 *					@SWG\Property(property="denominazione_sottofascicolo", type="string"),
+	 *					@SWG\Property(property="proposta_cipe", type="integer"),
+	 *					@SWG\Property(property="annotazioni", type="string"),
+	 *					@SWG\Property(property="id_sottofascicoli", type="integer"),
+	 *					@SWG\Property(property="id_mittenti", type="array"),
+	 *					@SWG\Property(property="id_titolari", type="array"),
+	 *					@SWG\Property(property="id_fascicoli", type="array"),
+	 *					@SWG\Property(property="id_amministrazioni", type="array"),
+	 *					@SWG\Property(property="id_tags", type="array"),
+	 *					@SWG\Property(property="allegati_DEL",
+	 *						type="array",
+	 *						@SWG\Items(
+	 *							@SWG\Property(property="id", type="integer"),
+	 *							@SWG\Property(property="data", type="string"),
+	 *							@SWG\Property(property="nome", type="string"),
+	 *							@SWG\Property(property="tipo", type="string"),
+	 *							@SWG\Property(property="relURI", type="string"),
+	 *							@SWG\Property(property="dimensione", type="string")
+	 *						)	 
+	 *					),
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
 
 
     /**
@@ -217,6 +336,20 @@ class RegistriController extends Controller
     }
 
 
+
+	/**
+     * @SWG\Post(
+     *     path="/api/registri",
+     *     summary="Creazione registro",
+     *     tags={"Registri"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/registri", name="registri_item_create")
      * @Method("POST")
@@ -291,6 +424,28 @@ class RegistriController extends Controller
     }
 
 
+	/**
+     * @SWG\Delete(
+     *     path="/api/registri/{id}",
+     *     summary="Eliminazione registro",
+     *     tags={"Registri"},
+     *     operationId="idRegistro",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'ufficio",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/registri/{id}", name="registri_item_delete")
      * @Method("DELETE")
@@ -331,6 +486,25 @@ class RegistriController extends Controller
 
         return $this->setBaseHeaders($response);
     }
+
+
+	/**
+     * @SWG\Post(
+     *     path="/api/registri/{id}/upload",
+     *     summary="Upload files di un registro",
+     *     tags={"Registri"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file e' troppo grande. (max 25 MB)"),
+	 *     @SWG\Response(response=409, description="Tipo di file non permesso (solo PDF)")
+     * )
+     */
 
 
     /**
@@ -440,6 +614,29 @@ class RegistriController extends Controller
 
 
     }
+
+	/**
+     * @SWG\Delete(
+     *     path="/registri/{id}/upload/{idallegato}",
+     *     summary="Eliminazione file di un registro",
+     *     tags={"Registri"},
+     *     operationId="idAllegato",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id del file allegato",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file non esiste")
+     * )
+     */
 
 
     /**

@@ -17,6 +17,29 @@ class RuoliCipeController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Ruoli",
+     *   description="Tutte le Api dei Ruoli interni all'Ufficio"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/ruoli_cipe",
+     *     summary="Lista Ruoli interni all'Ufficio",
+     *     tags={"Ruoli"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":8,"limit":"99999","offset":0,"data":{{"id":1,"codice":0,"denominazione":""}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/ruoli_cipe", name="ruoli_cipe")
      * @Method("GET")
@@ -44,6 +67,34 @@ class RuoliCipeController extends Controller
         return $this->setBaseHeaders($response);
     }
     
+
+
+	/**
+     * @SWG\Get(
+     *     path="/api/ruoli_cipe/{id}",
+     *     summary="Singolo Ruolo",
+     *     tags={"Ruoli"},
+     *     operationId="idRuoli",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del ruolo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":8,"limit":"99999","offset":0,"data":{{"id":1,"codice":0,"denominazione":""}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+
     
     /**
      * @Route("/ruoli_cipe/{id}", name="ruoli_cipe_item")
@@ -67,6 +118,39 @@ class RuoliCipeController extends Controller
         return $this->setBaseHeaders($response);
     }
 		
+
+
+	/**
+     * @SWG\Put(
+     *     path="/api/ruoli_cipe/{id}",
+     *     summary="Salvataggio ruolo",
+     *     tags={"Ruoli"},
+     *     operationId="idRuoli",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id del ruolo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="ruoli",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+	 *       	schema={}
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */		
         
     /**
      * @Route("/ruoli_cipe/{id}", name="ruoli_cipe_item_save")
@@ -98,6 +182,20 @@ class RuoliCipeController extends Controller
     }
 		
         
+
+	/**
+     * @SWG\Post(
+     *     path="/api/ruoli_cipe",
+     *     summary="Creazione ruolo",
+     *     tags={"Ruoli"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */	
+
         
    /**
      * @Route("/ruoli_cipe", name="ruoli_cipe_item_create")
@@ -126,6 +224,30 @@ class RuoliCipeController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/ruoli_cipe/{id}",
+     *     summary="Eliminazione ruolo",
+     *     tags={"Ruoli"},
+     *     operationId="idRuoli",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del ruolo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il ruolo è associato ad un utente, impossibile eliminarlo.")
+     * )
+     */  
     
     /**
      * @Route("/ruoli_cipe/{id}", name="ruoli_cipe_item_delete")
@@ -142,7 +264,7 @@ class RuoliCipeController extends Controller
         
 
         if ($utenti) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Il ruolo non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il ruolo è associato ad un utente, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {

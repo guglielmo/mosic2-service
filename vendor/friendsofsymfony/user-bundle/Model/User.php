@@ -78,7 +78,7 @@ abstract class User implements UserInterface, GroupableInterface
     /**
      * Random string sent to the user email address in order to verify it
      *
-     * @var string
+     * @var text
      */
     protected $confirmationToken;
 

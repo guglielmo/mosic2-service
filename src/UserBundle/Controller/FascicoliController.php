@@ -20,6 +20,33 @@ class FascicoliController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Fascicoli",
+     *   description="Tutte le Api dei Fascicoli"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/fascicoli",
+     *     summary="Lista fascicoli",
+     *     tags={"Fascicoli"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":1326,"filter_results":1336,"limit":"99999","offset":0,"data":{{"id":"1325"
+,"codice_repertorio":"0","id_titolari":"2","numero_fascicolo":"0","argomento":"qwerty","id_amministrazione"
+:"0","data_magazzino":"2017-01-20","data_cipe":"0000-00-00","data_cipe2":"0000-00-00","archiviazione_repertorio"
+:"0","annotazioni":"qwerty","id_numeri_delibera":"0","id_esiti_cipe":"0","id_archivio_repertorio":"0"
+,"id_amministrazioni":"5,4,1","id_tags":{16,15,14}}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/fascicoli", name="fascicoli")
      * @Method("GET")
@@ -72,6 +99,38 @@ class FascicoliController extends Controller
 
         return $this->setBaseHeaders($response);
     }
+
+
+
+	/**
+     * @SWG\Get(
+     *     path="/api/fascicoli/{id}",
+     *     summary="Singolo fascicolo",
+     *     tags={"Fascicoli"},
+     *     operationId="idFascicolo",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del fascicoli",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":1326,"filter_results":1336,"limit":"99999","offset":0,"data":{{"id":"1325"
+,"codice_repertorio":"0","id_titolari":"2","numero_fascicolo":"0","argomento":"qwerty","id_amministrazione"
+:"0","data_magazzino":"2017-01-20","data_cipe":"0000-00-00","data_cipe2":"0000-00-00","archiviazione_repertorio"
+:"0","annotazioni":"qwerty","id_numeri_delibera":"0","id_esiti_cipe":"0","id_archivio_repertorio":"0"
+,"id_amministrazioni":"5,4,1","id_tags":{16,15,14}}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
 		
     /**
      * @Route("/fascicoli/{id}", name="fascicoli_item")
@@ -105,6 +164,61 @@ class FascicoliController extends Controller
         return $this->setBaseHeaders($response);
     }
     
+ 
+ 
+ 
+ 	/**
+     * @SWG\Put(
+     *     path="/api/fascicoli/{id}",
+     *     summary="Salvataggio fascicolo",
+     *     tags={"Fascicoli"},
+     *     operationId="idFascicolo",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del fascicolo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+		 *     @SWG\Parameter(
+     *         name="fascicoli",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+   *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="codice_repertorio", type="integer"),
+	 *					@SWG\Property(property="id_titolari", type="array"),
+	 *					@SWG\Property(property="numero_fascicolo", type="integer"),
+	 *					@SWG\Property(property="argomento", type="string"),
+	 *					@SWG\Property(property="id_amministrazione", type="integer"),
+	 *					@SWG\Property(property="data_magazzino", type="string"),
+	 *					@SWG\Property(property="data_cipe", type="string"),
+	 *					@SWG\Property(property="data_cipe2", type="string"),
+	 *					@SWG\Property(property="archiviazione_repertorio", type="string"),
+	 *					@SWG\Property(property="annotazioni", type="string"),
+	 *					@SWG\Property(property="id_numeri_delibera", type="array"),
+	 *					@SWG\Property(property="id_esiti_cipe", type="array"),
+	 *					@SWG\Property(property="id_archivio_repertorio", type="integer"),
+	 *					@SWG\Property(property="id_amministrazioni", type="array"),
+	 *					@SWG\Property(property="id_tags", type="array")
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
     
     /**
      * @Route("/fascicoli/{id}", name="fascicoli_item_save")
@@ -186,7 +300,22 @@ class FascicoliController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
+
+
+
+
+	/**
+     * @SWG\Post(
+     *     path="/api/fascicoli",
+     *     summary="Creazione fascicolo",
+     *     tags={"Fascicoli"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */		
         
    /**
      * @Route("/fascicoli", name="fascicoli_item_create")
@@ -265,7 +394,30 @@ class FascicoliController extends Controller
         return $this->setBaseHeaders($response);
     }
         
-        
+ 
+ 
+ 	/**
+     * @SWG\Delete(
+     *     path="/api/fascicoli/{id}",
+     *     summary="Eliminazione fascicolo",
+     *     tags={"Fascicoli"},
+     *     operationId="idFascicolo",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del fascicolo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il Fascicolo ha dei registri associati, impossibile eliminarlo.")
+     * )
+     */       
         
     /**
      * @Route("/fascicoli/{id}", name="fascicoli_item_delete")
@@ -284,7 +436,7 @@ class FascicoliController extends Controller
   
         
         if ($registri) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Il Fascicolo non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il Fascicolo ha dei registri associati, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {    

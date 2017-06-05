@@ -17,6 +17,30 @@ class UfficiController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+	
+    /**
+     * @SWG\Tag(
+     *   name="Uffici",
+     *   description="Tutte le Api degli Uffici"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/uffici",
+     *     summary="Lista uffici",
+     *     tags={"Uffici"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":43,"limit":"99999","offset":0,"data":{{"id":1,"codice":1,"codice_direzione":"","denominazione":"Ufficio I","ordine_ufficio":"10","disattivo_ufficio":"1","solo_delibere":"0"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
+
     /**
      * @Route("/uffici", name="uffici")
      * @Method("GET")
@@ -45,6 +69,32 @@ class UfficiController extends Controller
     }
     
     
+	/**
+     * @SWG\Get(
+     *     path="/api/uffici/{id}",
+     *     summary="Singolo ufficio",
+     *     tags={"Uffici"},
+     *     operationId="idUfficio",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'ufficio",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":43,"limit":"99999","offset":0,"data":{{"id":1,"codice":1,"codice_direzione":"","denominazione":"Ufficio I","ordine_ufficio":"10","disattivo_ufficio":"1","solo_delibere":"0"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+	
     /**
      * @Route("/uffici/{id}", name="uffici_item")
      * @Method("GET")
@@ -66,7 +116,48 @@ class UfficiController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
+	
+	
+	/**
+     * @SWG\Put(
+     *     path="/api/uffici/{id}",
+     *     summary="Salvataggio ufficio",
+     *     tags={"Uffici"},
+     *     operationId="idUfficio",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id dell'ufficio",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="uffici",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="codice", type="integer"),
+	 *                 	@SWG\Property(property="codice_direzione", type="integer"),
+	 *					@SWG\Property(property="denominazione", type="string"),
+	 *					@SWG\Property(property="ordine_ufficio", type="integer"),
+	 *					@SWG\Property(property="disattivo_ufficio", type="integer"),
+	 *					@SWG\Property(property="solo_delibere", type="integer")
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
         
     /**
      * @Route("/uffici/{id}", name="uffici_item_save")
@@ -101,7 +192,20 @@ class UfficiController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
+	
+	
+	/**
+     * @SWG\Post(
+     *     path="/api/uffici",
+     *     summary="Creazione ufficio",
+     *     tags={"Uffici"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
         
         
    /**
@@ -135,6 +239,31 @@ class UfficiController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+	
+	
+	/**
+     * @SWG\Delete(
+     *     path="/api/uffici/{id}",
+     *     summary="Eliminazione ufficio",
+     *     tags={"Uffici"},
+     *     operationId="idTitolario",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'ufficio",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="L'ufficio ha utenti associati, impossibile eliminarlo.")
+     * )
+     */
+
     
     /**
      * @Route("/uffici/{id}", name="uffici_item_delete")
@@ -151,7 +280,7 @@ class UfficiController extends Controller
         
 
         if ($utenti) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha utenti associati, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {

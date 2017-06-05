@@ -17,6 +17,29 @@ class GroupController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Gruppi",
+     *   description="Tutte le Api dei Gruppi di utenti"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/groups",
+     *     summary="Lista gruppi",
+     *     tags={"Gruppi"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":8,"limit":"99999","offset":0,"data":{{"id":1,"name":"striing","roles":{"array"},"codice":"0"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/groups", name="groups")
      * @Method("GET")
@@ -44,6 +67,33 @@ class GroupController extends Controller
     }
 
 
+
+	/**
+     * @SWG\Get(
+     *     path="/api/groups/{id}",
+     *     summary="Singolo gruppo",
+     *     tags={"Gruppi"},
+     *     operationId="idGruppo",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del gruppo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json":{"response":200,"total_results":8,"limit":"99999","offset":0,"data":{"id":1,"name":"striing","roles":{"array"},"codice":"0"}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+
     /**
      * @Route("/groups/{id}", name="groups_item")
      * @Method("GET")
@@ -66,6 +116,45 @@ class GroupController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+	
+	/**
+     * @SWG\Put(
+     *     path="/api/groups/{id}",
+     *     summary="Salvataggio gruppo",
+     *     tags={"Gruppi"},
+     *     operationId="idGruppo",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del gruppo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="gruppi",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *					@SWG\Property(property="name", type="string"),
+	 *					@SWG\Property(property="roles", type="array"),
+	 *					@SWG\Property(property="codice", type="integer")
+	 *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata")
+     * )
+     */	
 
 
     /**
@@ -99,7 +188,18 @@ class GroupController extends Controller
         return $this->setBaseHeaders($response);
     }
 
-
+	/**
+     * @SWG\Post(
+     *     path="/api/groups",
+     *     summary="Creazione gruppo",
+     *     tags={"Gruppi"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */	
 
     /**
      * @Route("/groups", name="groups_item_create")
@@ -131,6 +231,30 @@ class GroupController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/groups/{id}",
+     *     summary="Eliminazione gruppo",
+     *     tags={"Gruppi"},
+     *     operationId="idGruppo",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del gruppo",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il gruppo non e' vuoto, impossibile eliminarlo.")
+     * )
+     */
 
     /**
      * @Route("/groups/{id}", name="groups_item_delete")

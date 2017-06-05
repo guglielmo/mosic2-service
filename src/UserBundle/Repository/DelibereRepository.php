@@ -256,7 +256,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
     public function getDelibereByData($data = false) {
         $parameters = array ();
         $filter = "";
-        if ($data != false) {
+        if ($data != false && $data != "all") {
             $filter .= " AND d.data = :data ";
             $parameters['data'] = $data;
         }
@@ -292,6 +292,50 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getQuery()->getResult();
 
+    }
+
+
+
+    public function getAllegatiCCRByIdCCR($id) {
+        $parameters = array ();
+        $filter = "";
+        $filter .= " AND rar.idDelibereCCR = :id ";
+        $parameters['id'] = $id;
+
+        $qb = $this->getEntityManager();
+
+        $query = $qb
+            ->createQueryBuilder()->select('a.id as id,
+                                            a.data as data,
+                                            a.file as file,
+                                            rar.idAllegati as id_allegati,
+                                            rar.idDelibereCCR as id_delibere_ccr
+                                            ')
+            ->from('UserBundle:Allegati', 'a')
+            ->leftJoin('UserBundle:RelAllegatiDelibereCCR', 'rar', 'WITH', 'a.id = rar.idAllegati')
+            ->where('1=1' . $filter)
+            ->setParameters($parameters);
+
+        //print_r($query->getDql());
+        //print_r($query->getQuery()->getSql());
+
+        $array = array ();
+        foreach ($query->getQuery()->getResult() as $item) {
+            $path_parts = pathinfo($item['file']);
+
+            $array[] = array(
+                'id' => $item['id'],
+                'data' => filemtime($item['file']) * 1000,
+                'nome' => $path_parts['basename'],
+                'tipo' => $path_parts['extension'],
+                'relURI' => $item['file'],
+                'dimensione' => filesize($item['file'])
+            );
+        }
+
+
+
+        return $array;
     }
 
 }

@@ -17,6 +17,7 @@ use UserBundle\Entity\LastUpdates;
 use UserBundle\Entity\Costanti;
 use UserBundle\Entity\Allegati;
 use UserBundle\Entity\RelAllegatiDelibere;
+use UserBundle\Entity\RelAllegatiDelibereCCR;
 use UserBundle\Entity\RelFirmatariDelibere;
 use UserBundle\Entity\RelTagsDelibere;
 use UserBundle\Entity\RelUfficiDelibere;
@@ -26,9 +27,42 @@ class DelibereController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	    /**
+     * @SWG\Tag(
+     *   name="Delibere",
+     *   description="Tutte le Api delle delibere"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/delibere",
+     *     summary="Lista delibere",
+     *     tags={"Delibere"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":5110,"limit":"99999","offset":0,"data":{{"id":2584,"data":1494367200000
+,"id_stato":null,"numero":99,"argomento":"test1234","finanziamento":0,"note":{"cd":null,"mef":null,"seg"
+:null,"pre":null,"cc":null,"pa":null,"gu":null,"an":"aabb","ns":"sss"},"foglio_cc":null,"numero_cc":null
+,"registro_cc":null,"id_uffici":{1},"id_tags":{11,15,16},"anno":"2017","situazione":0,"giorni_iter":
+{"dipe":6,"mef":0,"firme":0,"cc":0,"gu":10},"oss_cc":{{"id":534,"tipo_documento":1,"data_max_risposta"
+:1497823200000,"data_risposta":1495922400000}},"registrazione_cc":{"data":1494367200000,"foglio":null
+,"numero":null},"firme":{"uff_a":1494367200000,"cd_i":1493589600000,"cd_r":1494885600000,"mef_i":1494367200000
+,"mef_r":1494367200000,"seg_i":1494367200000,"seg_r":1494367200000,"pre_i":1494367200000,"pre_r":1494367200000
+,"cc_i":1494367200000,"cc_r":1494367200000,"gu_i":1494885600000,"gu_r":1495749600000},"pub_gu":{"nr"
+:null,"data":1495749600000}}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/delibere", name="delibere")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_DELIBERE')")
      */
     public function delibereAction(Request $request) {
         //prendo i parametri get
@@ -168,11 +202,47 @@ class DelibereController extends Controller
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
-    
+
+
+	/**
+     * @SWG\Get(
+     *     path="/api/delibere/{id}",
+     *     summary="Singola delibera",
+     *     tags={"Delibere"},
+     *     operationId="idDelibera",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id della delibera",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":5110,"limit":"99999","offset":0,"data":{{"id":2584,"data":1494367200000
+,"id_stato":null,"numero":99,"argomento":"test1234","finanziamento":0,"note":{"cd":null,"mef":null,"seg"
+:null,"pre":null,"cc":null,"pa":null,"gu":null,"an":"aabb","ns":"sss"},"foglio_cc":null,"numero_cc":null
+,"registro_cc":null,"id_uffici":{1},"id_tags":{11,15,16},"anno":"2017","situazione":0,"giorni_iter":
+{"dipe":6,"mef":0,"firme":0,"cc":0,"gu":10},"oss_cc":{{"id":534,"tipo_documento":1,"data_max_risposta"
+:1497823200000,"data_risposta":1495922400000}},"registrazione_cc":{"data":1494367200000,"foglio":null
+,"numero":null},"firme":{"uff_a":1494367200000,"cd_i":1493589600000,"cd_r":1494885600000,"mef_i":1494367200000
+,"mef_r":1494367200000,"seg_i":1494367200000,"seg_r":1494367200000,"pre_i":1494367200000,"pre_r":1494367200000
+,"cc_i":1494367200000,"cc_r":1494367200000,"gu_i":1494885600000,"gu_r":1495749600000},"pub_gu":{"nr"
+:null,"data":1495749600000}}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */    
     
     /**
      * @Route("/delibere/{id}", name="delibere_item")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_DELIBERE')")
      */
     public function delibereItemAction(Request $request, $id) {
 
@@ -183,6 +253,11 @@ class DelibereController extends Controller
         $delibereCC = $repositoryCC->findBy(array("idDelibere" => $id));
 
         $delibereCC = $this->formatDateJsonArrayCustom(json_decode($this->serialize($delibereCC)),array("data_rilievo","data_risposta") );
+        
+        foreach ($delibereCC as $i => $v) {
+            $allegatiCC = $repository->getAllegatiCCRByIdCCR($v->id);
+            $v->allegati = $allegatiCC;
+        }
 
         //converte i risultati in json
         $serialize = $this->serialize($delibere);
@@ -254,9 +329,125 @@ class DelibereController extends Controller
     }
 
 
+
+	/**
+     * @SWG\Put(
+     *     path="/api/delibere/{id}",
+     *     summary="Salvataggio delibera",
+     *     tags={"Delibere"},
+     *     operationId="idDelibera",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id della delibera",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="body",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="data", type="string"),
+	 *					@SWG\Property(property="numero", type="integer"),
+	 *					@SWG\Property(property="id_stato", type="integer"),
+	 *					@SWG\Property(property="argomento", type="string"),
+	 *					@SWG\Property(property="note", type="string"),
+	 *					@SWG\Property(property="note_servizio", type="string"),
+	 *					@SWG\Property(property="scheda", type="integer"),
+	 *					@SWG\Property(property="finanziamento", type="integer"),
+	 *					@SWG\Property(property="data_consegna", type="string"),
+	 *					@SWG\Property(property="data_direttore_invio", type="string"),
+	 *					@SWG\Property(property="data_direttore_ritorno", type="string"),
+	 *					@SWG\Property(property="note_direttore", type="string"),
+	 *					@SWG\Property(property="invio_mef", type="integer"),
+	 *					@SWG\Property(property="data_mef_invio", type="string"),
+	 *					@SWG\Property(property="data_mef_pec", type="string"),
+	 *					@SWG\Property(property="data_mef_ritorno", type="string"),
+	 *					@SWG\Property(property="note_mef", type="string"),
+	 *					@SWG\Property(property="id_segretario", type="integer"),
+	 *					@SWG\Property(property="data_segretario_invio", type="string"),
+	 *					@SWG\Property(property="data_segretario_ritorno", type="string"),
+	 *					@SWG\Property(property="note_segretario", type="string"),
+	 *					@SWG\Property(property="id_presidente", type="integer"),
+	 *					@SWG\Property(property="data_presidente_invio", type="string"),
+	 *					@SWG\Property(property="data_presidente_ritorno", type="string"),
+	 *					@SWG\Property(property="note_presidente", type="string"),
+	 *					@SWG\Property(property="data_invio_cc", type="string"),
+	 *					@SWG\Property(property="numero_cc", type="string"),
+	 *					@SWG\Property(property="data_registrazione_cc", type="string"),
+	 *					@SWG\Property(property="id_registro_cc", type="integer"),
+	 *					@SWG\Property(property="foglio_cc", type="integer"),
+	 *					@SWG\Property(property="tipo_registrazione_cc", type="integer"),
+	 *					@SWG\Property(property="note_cc", type="string"),
+	 *					@SWG\Property(property="data_invio_p", type="string"),
+	 *					@SWG\Property(property="note_p", type="string"),
+	 *					@SWG\Property(property="data_invio_gu", type="string"),
+	 *					@SWG\Property(property="numero_invio_gu", type="string"),
+	 *					@SWG\Property(property="tipo_gu", type="integer"),
+	 *					@SWG\Property(property="data_gu", type="string"),
+	 *					@SWG\Property(property="numero_gu", type="integer"),
+	 *					@SWG\Property(property="data_ec_gu", type="string"),
+	 *					@SWG\Property(property="numero_ec_gu", type="integer"),
+	 *					@SWG\Property(property="data_co_gu", type="string"),
+	 *					@SWG\Property(property="numero_co_gu", type="integer"),
+	 *					@SWG\Property(property="pubblicazione_gu", type="integer"),
+	 *					@SWG\Property(property="note_gu", type="string"),
+	 *					@SWG\Property(property="id_uffici", type="array"),
+	 *					@SWG\Property(property="id_segretariato", type="array"),
+	 *					@SWG\Property(property="id_tags", type="array"),
+	 *					@SWG\Property(property="allegati_MEF", type="string"),
+	 *					@SWG\Property(property="allegati_CC", type="string"),
+	 *					@SWG\Property(property="allegati_GU", type="string"),
+	 *					@SWG\Property(property="allegati_DEL",
+	 *						type="array",
+	 *						@SWG\Items(
+	 *							@SWG\Property(property="id", type="integer"),
+	 *							@SWG\Property(property="data", type="string"),
+	 *							@SWG\Property(property="nome", type="string"),
+	 *							@SWG\Property(property="tipo", type="string"),
+	 *							@SWG\Property(property="relURI", type="string"),
+	 *							@SWG\Property(property="dimensione", type="string")
+	 *						)	 
+	 *					),
+	 *					@SWG\Property(property="allegati_ALL", type="string"),
+	 *					@SWG\Property(property="rilievi_CC",
+	 *						type="array",
+	 *						@SWG\Items(
+	 *							@SWG\Property(property="id", type="integer"),
+	 *							@SWG\Property(property="id_delibere", type="integer"),
+	 *							@SWG\Property(property="tipo_documento", type=""),
+	 *							@SWG\Property(property="data_rilievo", type="string"),
+	 *							@SWG\Property(property="numero_rilievo", type="integer"),
+	 *							@SWG\Property(property="data_risposta", type="string"),
+	 *							@SWG\Property(property="numero_risposta", type="integer"),
+	 *							@SWG\Property(property="giorni_rilievo", type="string"),
+	 *							@SWG\Property(property="tipo_rilievo", type="string"),
+	 *							@SWG\Property(property="note_rilievo", type="string")
+	 *						)	 
+	 *					),
+	 *					@SWG\Property(property="giorni_iter", type="string")
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/delibere/{id}", name="delibere_item_save")
      * @Method("PUT")
+     * @Security("is_granted('ROLE_EDIT_DELIBERE')")
      */
     public function delibereItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -294,7 +485,7 @@ class DelibereController extends Controller
         $delibere->setScheda($data->scheda);
         if ($data->data_consegna != null){ $delibere->setDataConsegna(new \DateTime($this->formatDateStringCustom($data->data_consegna)));} else {$delibere->setDataConsegna(null); }
         $delibere->setIdDirettore($data->id_direttore);
-        if ($data->data_direttore_invio != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->formatDateStringCustom($data->data_direttore_invio)));} else {$delibere->setDataDirettoreInvio(null); }
+        if ($data->data_direttore_invio   != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->formatDateStringCustom($data->data_direttore_invio)));} else {$delibere->setDataDirettoreInvio(null); }
         if ($data->data_direttore_ritorno != null){ $delibere->setDataDirettoreRitorno(new \DateTime($this->formatDateStringCustom($data->data_direttore_ritorno)));} else {$delibere->setDataDirettoreRitorno(null); }
         $delibere->setNoteDirettore($data->note_direttore);
         $delibere->setInvioMef($data->invio_mef);
@@ -330,6 +521,9 @@ class DelibereController extends Controller
         $delibere->setNoteGU($data->note_gu);
 
 
+        $em->persist($delibere); //create
+        $em->flush(); //esegue l'update
+
         // UFFICI
         foreach ($relUfficiDelibere_delete as $relUfficiDelibere_delete) {
             $em->remove($relUfficiDelibere_delete);
@@ -361,12 +555,16 @@ class DelibereController extends Controller
         }
         foreach ($data->rilievi_CC as $item) {
 
-            $response = new Response(json_encode($item), Response::HTTP_OK);
-            return $this->setBaseHeaders($response);
-
             $relDelibereCC = new DelibereCC();
-            $relDelibereCC->setIdDelibere($data->id);
-            $relDelibereCC->getTipoDocumento($item->tipo_documento);
+            $relDelibereCC->setIdDelibere($id);
+            $relDelibereCC->setTipoDocumento($item->tipo_documento);
+            if ($item->data_rilievo != null){ $relDelibereCC->setDataRilievo(new \DateTime($this->formatDateStringCustom($item->data_rilievo)));} else {$relDelibereCC->setDataRilievo(null); }
+            $relDelibereCC->setNumeroRilievo($item->numero_rilievo);
+            if ($item->data_risposta != null){ $relDelibereCC->setDataRisposta(new \DateTime($this->formatDateStringCustom($item->data_risposta)));} else {$relDelibereCC->setDataRisposta(null); }
+            $relDelibereCC->setNumeroRisposta($item->numero_risposta);
+            $relDelibereCC->setGiorniRilievo($item->giorni_rilievo);
+            //$relDelibereCC->setTipoRilievo(0);
+            $relDelibereCC->setNoteRilievo($item->note_rilievo);
 
             $em->persist($relDelibereCC); //create
         }
@@ -391,6 +589,14 @@ class DelibereController extends Controller
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("delibere");
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+		
+		$repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+        $lastUpdates = $repositoryLastUpdates->findOneByTabella("monitor");
+        $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+		
+		$repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+        $lastUpdates = $repositoryLastUpdates->findOneByTabella("monitor_group");
+        $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
 
         //Aggiorno/creo la tabella msc_delibere_giorni
@@ -413,15 +619,29 @@ class DelibereController extends Controller
         $em->persist($delibereGiorni); //create
         $em->flush(); //esegue l'update
 
-        $response = new Response($this->serialize($relUfficiDelibere), Response::HTTP_OK);
+        $response = new Response($this->serialize($relDelibereCC), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
+
+
+	    /**
+     * @SWG\Post(
+     *     path="/api/delibere",
+     *     summary="Creazione delibera",
+     *     tags={"Delibere"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
 
 
     /**
      * @Route("/delibere", name="delibere_item_create")
      * @Method("POST")
-     * @Security("is_granted('ROLE_CREATE_FASCICOLI')")
+     * @Security("is_granted('ROLE_CREATE_DELIBERE')")
      */
     public function delibereItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -508,6 +728,14 @@ class DelibereController extends Controller
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("delibere");
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+		
+		$repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+        $lastUpdates = $repositoryLastUpdates->findOneByTabella("monitor");
+        $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+		
+		$repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+        $lastUpdates = $repositoryLastUpdates->findOneByTabella("monitor_group");
+        $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
 
         $em->flush(); //esegue query
 
@@ -517,12 +745,32 @@ class DelibereController extends Controller
     }
 
 
-
+    /**
+     * @SWG\Delete(
+     *     path="/api/delibere/{id}",
+     *     summary="Eliminazione delibera",
+     *     tags={"Delibere"},
+     *     operationId="idDelibera",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id della delibera",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
 
     /**
      * @Route("/delibere/{id}", name="delibere_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_FASCICOLI')")
+     * @Security("is_granted('ROLE_DELETE_DELIBERE')")
      */
     public function delibereItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -572,8 +820,41 @@ class DelibereController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+	/**
+     * @SWG\Post(
+     *     path="/delibere/{id}/{tipo}/upload",
+     *     summary="Upload files di una Delibera",
+     *     tags={"Delibere"},
+     *     produces={"application/json"},
+	 *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id della Delibera",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="tipo",
+     *         in="path",
+     *         description="tipo di allegato [GU, CC, DEL, ALL, MEF]",
+     *         required=true,
+     *         type="string",
+     *         @SWG\Items(type="string"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file e' troppo grande. (max 25 MB)"),
+	 *     @SWG\Response(response=409, description="Tipo di file non permesso (solo PDF)")
+     * )
+     */
+
+
     /**
-     * @Route("/delibere/{id}/{tipo}/upload", name="uploadDelibere")
+     * @Route("/api/delibere/{id}/{tipo}/upload", name="uploadDelibere")
      * @Method("POST")
      */
     public function uploadDelibereAction(Request $request, $id, $tipo)
@@ -710,6 +991,47 @@ class DelibereController extends Controller
         return $this->setBaseHeaders($response, "upload");
     }
 
+
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/delibere/{id}/{tipo}/upload/{idallegato}",
+     *     summary="Eliminazione file di una Delibera",
+     *     tags={"Delibere"},
+     *     operationId="idDelibera",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id della Delibera",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="tipo",
+     *         in="path",
+     *         description="tipo di allegato [GU, CC, DEL, ALL, MEF]",
+     *         required=true,
+     *         type="string",
+     *         @SWG\Items(type="string"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="idallegato",
+     *         in="path",
+     *         description="Id dell'allegato da eliminare",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file non esiste")
+     * )
+     */
+
     /**
      * @Route("/delibere/{id}/{tipo}/upload/{idallegato}", name="uploadDeleteDelibere")
      * @Method("DELETE")
@@ -758,7 +1080,7 @@ class DelibereController extends Controller
 
 
     /**
-     * @Route("/deliberecc/{id}/upload", name="uploadDelibereCorteConti")
+     * @Route("/rilievicc/{id}/upload", name="uploadDelibereCorteConti")
      * @Method("POST")
      */
     public function uploadDelibereCorteContiAction(Request $request, $id, $tipo)
@@ -766,77 +1088,15 @@ class DelibereController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $repository = $em->getRepository('UserBundle:Delibere');
-        $delibere = $repository->findOneBy(array("id" => $id));
+        $repository = $em->getRepository('UserBundle:DelibereCC');
+        $delibereCC = $repository->findOneBy(array("id" => $id));
 
-        $dataDelibere = $delibere->getData()->format('Y');
-        $numeroDelibere = $delibere->getNumero();
+        $idDelibera = $delibereCC->getIdDelibere();
+        $path_file = Costanti::URL_ALLEGATI_DELIBERE . "CCR/" . $idDelibera . "/";
 
-        if ($tipo == "ALL" || $tipo == "DEL") {
-            $path_file = Costanti::URL_ALLEGATI_DELIBERE . "per-anno/" . $dataDelibere . "/";
-            $file = $request->files->get('file');
-            $nome_file = $file->getClientOriginalName();
-            $nome_file = "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) . "-" . $tipo . "-" . $this->sostituisciAccenti($nome_file);
-
-
-            if(file_exists($path_file . $nome_file)){
-                // Directory
-                $directory = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/";
-                // Returns array of files
-                $files = scandir($directory);
-                // Count number of files and store them to variable..
-                $num_files = count($files)-2; // Not counting the '.' and '..'.
-
-                $path_file_version = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/". $num_files ."-". $nome_file;
-
-                //memorizzo il file nel database
-                $allegato = new Allegati();
-                $allegato->setData(new \DateTime());
-                $allegato->setFile($path_file_version);
-
-                $em->persist($allegato);
-                $em->flush(); //esegue query
-
-                $id_allegato_creato = $allegato->getId();
-
-                $allegatoRel = new RelAllegatiDelibere();
-                $allegatoRel->setIdAllegati($id_allegato_creato);
-                $allegatoRel->setIdDelibere($id);
-                $allegatoRel->setTipo($tipo);
-
-                $em->persist($allegatoRel);
-
-
-                $repositoryAE = $em->getRepository('UserBundle:Allegati');
-                $allegato_esistente = $repositoryAE->findOneBy(array("file" => $path_file . $nome_file));
-                $repositoryAER = $em->getRepository('UserBundle:RelAllegatiDelibere');
-                $allegato_esistente2 = $repositoryAER->findOneBy(array("idAllegati" => $allegato_esistente->getId()));
-
-
-
-                //$response = new Response($allegato_esistente->getId(), Response::HTTP_OK);
-                //return $this->setBaseHeaders($response, "upload");
-
-                if (copy($path_file . $nome_file, $path_file_version)) {
-                    //unlink($path_file . $nome_file);
-                }
-                $em->remove($allegato_esistente); //delete
-                $em->remove($allegato_esistente2); //delete
-                $em->flush(); //esegue l'update
-            } else {
-
-                //$response = new Response(json_encode("non esiste il file"), Response::HTTP_OK);
-                //return $this->setBaseHeaders($response, "upload");
-
-            }
-
-
-        } else {
-            $path_file = Costanti::URL_ALLEGATI_DELIBERE . $tipo . "/" . $dataDelibere . "-" . $numeroDelibere . "/";
-            $file = $request->files->get('file');
-            $nome_file = $file->getClientOriginalName();
-            $nome_file = $this->sostituisciAccenti($nome_file);
-        }
+        $file = $request->files->get('file');
+        $nome_file = $file->getClientOriginalName();
+        $nome_file = $id . "-" . $this->sostituisciAccenti($nome_file);
 
         //memorizzo il file nel database
         $allegato = new Allegati();
@@ -848,15 +1108,15 @@ class DelibereController extends Controller
 
         $id_allegato_creato = $allegato->getId();
 
-        $allegatoRel = new RelAllegatiDelibere();
+
+        $allegatoRel = new RelAllegatiDelibereCCR();
         $allegatoRel->setIdAllegati($id_allegato_creato);
-        $allegatoRel->setIdDelibere($id);
-        $allegatoRel->setTipo($tipo);
+        $allegatoRel->setIdDelibereCCR($id);
 
 
         $array = array(
             'id' => $id_allegato_creato,
-            'id_delibere' => $id,
+            'id_delibere_ccr' => $id,
             'data' => filemtime($file) * 1000,
             'dimensione' => $file->getClientSize(),
             'nome' => $nome_file,
@@ -897,6 +1157,49 @@ class DelibereController extends Controller
 
 
 
+    /**
+     * @Route("/rielievicc/{id}/upload/{idallegato}", name="uploadDeleteDelibereCCR")
+     * @Method("DELETE")
+     */
+    public function delibereCCRAllegatiItemDeleteAction(Request $request, $id, $tipo, $idallegato)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository('UserBundle:RelAllegatiDelibereCCR');
+        $relazione_allegato = $repository->findBy(array('idAllegati' => $idallegato, 'idDelibereCCR' => $id));
+        //$relazione_allegato = $repository->findOneById($idallegato);
+
+        $repository_file = $em->getRepository('UserBundle:Allegati');
+        $file = $repository_file->findOneById($idallegato);
+
+        //$idRelAllegatiRegistri = $relazione_allegato[0]->getId();
+
+        if (!$relazione_allegato[0]) {
+            $response_array = array("error" => ["code" => 409, "message" => "Questo file non e' allegato a questa delibera."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        } else {
+            //aggiorna la date della modifica nella tabella msc_last_updates
+            $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+            $lastUpdates = $repositoryLastUpdates->findOneByTabella("delibere");
+            $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+
+            $response = new Response($this->serialize($relazione_allegato[0]), Response::HTTP_OK);
+
+            try {
+                $em->remove($relazione_allegato[0]); //delete
+                $em->flush(); //esegue l'update
+
+                //elimino fisicamente il file
+                unlink($file->getFile()); //il path
+            } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
+                echo "Exception Found - " . $ex->getMessage() . "<br/>";
+            }
+
+
+            return $this->setBaseHeaders($response);
+        }
+    }
         
         
         
@@ -943,4 +1246,28 @@ class DelibereController extends Controller
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
+
+    /**
+     * @Route("/rilievicc/{id}/upload", name="DelibereCCRUpload_item_options")
+     * @Method("OPTIONS")
+     */
+    public function delibereCCRUploadItemOptions(Request $request, $id)
+    {
+
+        $response = new Response(Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
+
+    /**
+     * @Route("/rilievicc/{id}/upload/{idallegato}", name="DelibereCCRDeleteUpload_item_options")
+     * @Method("OPTIONS")
+     */
+    public function delibereCCRDeleteUploadItemOptions(Request $request, $id, $idallegato)
+    {
+
+        $response = new Response(Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
+
+
 }

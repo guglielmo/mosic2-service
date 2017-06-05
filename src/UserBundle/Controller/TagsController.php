@@ -17,6 +17,29 @@ class TagsController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Etichette",
+     *   description="Tutte le Api delle etichette"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/tags",
+     *     summary="Lista etichette",
+     *     tags={"Etichette"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":22,"limit":"99999","offset":0,"data":{{"id":2,"denominazione":"secondo tags"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/tags", name="tags")
      * @Method("GET")
@@ -45,6 +68,33 @@ class TagsController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+	/**
+     * @SWG\Get(
+     *     path="/api/tags/{id}",
+     *     summary="Singola etichetta",
+     *     tags={"Etichette"},
+     *     operationId="idTag",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'etichetta",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json":{"response":200,"total_results":22,"limit":"99999","offset":0,"data":{{"id":2,"denominazione":"secondo tags"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+
     /**
      * @Route("/tags/{id}", name="tags_item")
      * @Method("GET")
@@ -68,6 +118,21 @@ class TagsController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+
+
+	/**
+     * @SWG\Post(
+     *     path="/api/tags",
+     *     summary="Creazione etichetta",
+     *     tags={"Etichette"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */	
 
     /**
      * @Route("/tags", name="tags_item_create")
@@ -113,6 +178,46 @@ class TagsController extends Controller
     }
 
 
+
+
+	/**
+     * @SWG\Put(
+     *     path="/api/tags/{id}",
+     *     summary="Salvataggio etichetta",
+     *     tags={"Etichette"},
+     *     operationId="idEtichetta",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id dell'etichetta",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="etichette",
+     *         in="body",
+     *         description="Richiesta",
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *					@SWG\Property(property="denominazione", type="string")
+	 *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */	
+
     /**
      * @Route("/tags/{id}", name="tags_item_save")
      * @Method("PUT")
@@ -140,6 +245,30 @@ class TagsController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/tags/{id}",
+     *     summary="Eliminazione etichetta",
+     *     tags={"Etichette"},
+     *     operationId="idEtichetta",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'etichetta",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Etichetta è associata ad un registro o ad un fascicolo o ad una delibera, impossibile eliminarla.")
+     * )
+     */  
 
 
     /**

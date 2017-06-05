@@ -17,6 +17,16 @@ class CipeOdgController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	
+    /**
+     * @SWG\Tag(
+     *   name="Cipe OdG",
+     *   description="Cancellazione dell'Ordine del Giorno di un Cipe"
+     * )
+     */
+
+
     /**
      * @Route("/cipeodg", name="cipeodg")
      * @Method("GET")
@@ -146,6 +156,29 @@ class CipeOdgController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+
+	/**
+     * @SWG\Delete(
+     *     path="/api/cipeodg/{id}",
+     *     summary="Eliminazione OdG di un Cipe",
+     *     tags={"Cipe OdG"},
+     *     operationId="idCipeOdg",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'OdG",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
 
     /**
      * @Route("/cipeodg/{id}", name="cipeodg_item_delete")

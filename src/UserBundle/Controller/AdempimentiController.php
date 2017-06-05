@@ -20,9 +20,33 @@ class AdempimentiController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+	
+    /**
+     * @SWG\Tag(
+     *   name="Adempimenti",
+     *   description="Tutte le Api degli adempimenti"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/adempimenti",
+     *     summary="Lista adempimenti",
+     *     tags={"Adempimenti"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":280,"limit":"99999","offset":0,"data":{{"id":281,"codice":null,"progressivo":null,"codice_scheda":null,"id_delibere":418,"descrizione":"test date","codice_descrizione":null,"codice_fonte":null,"codice_esito":null,"data_scadenza":1495749600000,"giorni_scadenza":null,"mesi_scadenza":null,"anni_scadenza":null,"vincolo":null,"note":"","utente":null,"data_modifica":1495922400000},{"id":258,"codice":1,"progressivo":1,"codice_scheda":616,"id_delibere":2346,"descrizione":" ","codice_descrizione":0,"codice_fonte":0,"codice_esito":0,"data_scadenza":1495317600000,"giorni_scadenza":1,"mesi_scadenza":2,"anni_scadenza":3,"vincolo":1,"note":"","utente":90138,"data_modifica":1412632800000}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/adempimenti", name="adempimenti")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_ADEMPIMENTI')")
      */
     public function adempimentiAction(Request $request) {
         //prendo i parametri get
@@ -62,9 +86,37 @@ class AdempimentiController extends Controller
     }
     
     
+	
+	/**
+     * @SWG\Get(
+     *     path="/api/adempimenti/{id}",
+     *     summary="Singolo adempimento",
+     *     tags={"Adempimenti"},
+     *     operationId="idAdempimento",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'adempimento",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":280,"limit":"99999","offset":0,"data":{{"id":281,"codice":null,"progressivo":null,"codice_scheda":null,"id_delibere":418,"descrizione":"test date","codice_descrizione":null,"codice_fonte":null,"codice_esito":null,"data_scadenza":1495749600000,"giorni_scadenza":null,"mesi_scadenza":null,"anni_scadenza":null,"vincolo":null,"note":"","utente":null,"data_modifica":1495922400000},{"id":258,"codice":1,"progressivo":1,"codice_scheda":616,"id_delibere":2346,"descrizione":" ","codice_descrizione":0,"codice_fonte":0,"codice_esito":0,"data_scadenza":1495317600000,"giorni_scadenza":1,"mesi_scadenza":2,"anni_scadenza":3,"vincolo":1,"note":"","utente":90138,"data_modifica":1412632800000}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+	
     /**
      * @Route("/adempimenti/{id}", name="adempimenti_item")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_ADEMPIMENTI')")
      */
     public function adempimentiItemAction(Request $request, $id) {
             
@@ -87,11 +139,65 @@ class AdempimentiController extends Controller
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
-		
+	
+	
+	/**
+     * @SWG\Put(
+     *     path="/api/adempimenti/{id}",
+     *     summary="Salvataggio adempimento",
+     *     tags={"Adempimenti"},
+     *     operationId="idAdempimento",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id dell'adempimento",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="adempimenti",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="id_delibere", type="integer"),
+	 *					@SWG\Property(property="descrizione", type="string"),
+	 *					@SWG\Property(property="codice_descrizione", type="integer"),
+	 *					@SWG\Property(property="codice_fonte", type="integer"),
+	 *					@SWG\Property(property="codice_esito", type="integer"),
+	 *					@SWG\Property(property="fonti", type="string"),
+	 *					@SWG\Property(property="data_scadenza", type="string"),
+	 *					@SWG\Property(property="vincolo", type="integer"),
+	 *					@SWG\Property(property="note", type="string"),
+	 *					@SWG\Property(property="codice", type="integer"),
+	 *					@SWG\Property(property="progressivo", type="integer"),
+	 *					@SWG\Property(property="codice_scheda", type="integer"),
+	 *					@SWG\Property(property="giorni_scadenza", type="integer"),
+	 *					@SWG\Property(property="mesi_scadenza", type="integer"),
+	 *					@SWG\Property(property="anni_scadenza", type="integer"),
+	 *					@SWG\Property(property="utente", type="integer"),
+	 *					@SWG\Property(property="data_modifica", type="string"),
+	 *					@SWG\Property(property="id_cipe", type="integer")
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
         
     /**
      * @Route("/adempimenti/{id}", name="adempimenti_item_save")
      * @Method("PUT")
+     * @Security("is_granted('ROLE_EDIT_ADEMPIMENTI')")
      */
     public function adempimentiItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -137,12 +243,27 @@ class AdempimentiController extends Controller
         return $this->setBaseHeaders($response);
     }
 		
-        
+   
+   /**
+     * @SWG\Post(
+     *     path="/api/adempimenti",
+     *     summary="Creazione adempimento",
+     *     tags={"Adempimenti"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+   
+   
         
    /**
      * @Route("/adempimenti", name="adempimenti_item_create")
      * @Method("POST")
-     */
+     * @Security("is_granted('ROLE_CREATE_ADEMPIMENTI')")
+    */
     public function adempimentiItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
@@ -179,10 +300,33 @@ class AdempimentiController extends Controller
         return $this->setBaseHeaders($response);
     }
     
+	
+	/**
+     * @SWG\Delete(
+     *     path="/api/adempimentu/{id}",
+     *     summary="Eliminazione adempimento",
+     *     tags={"Adempimenti"},
+     *     operationId="idAdempimento",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'adempimento",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
     
     /**
      * @Route("/adempimenti/{id}", name="adempimenti_item_delete")
      * @Method("DELETE")
+     * @Security("is_granted('ROLE_DELETE_ADEMPIMENTI')")
      */
     public function adempimentiItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

@@ -46,7 +46,7 @@ class Titolari
     private $descrizione;
 
 
-	
+
     /**
      * @var string
      *

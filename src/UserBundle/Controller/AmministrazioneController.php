@@ -19,6 +19,30 @@ class AmministrazioneController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+	
+    /**
+     * @SWG\Tag(
+     *   name="Amministrazioni",
+     *   description="Tutte le Api delle amministrazioni"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/amministrazioni",
+     *     summary="Lista amministrazioni",
+     *     tags={"Amministrazioni"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":185,"limit":"99999","offset":0,"data":{{"id":1,"codice":"1","denominazione"
+:"Presidenza del Consiglio dei Ministri"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
     /**
      * @Route("/amministrazioni", name="amministrazioni")
      * @Method("GET")
@@ -48,6 +72,36 @@ class AmministrazioneController extends Controller
     }
 
 
+
+	
+	/**
+     * @SWG\Get(
+     *     path="/api/amministrazioni/{id}",
+     *     summary="Singola amministrazione",
+     *     tags={"Amministrazioni"},
+     *     operationId="idAmministrazione",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'amministrazione",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":185,"limit":"99999","offset":0,"data":{{"id":1,"codice":"1","denominazione"
+:"Presidenza del Consiglio dei Ministri"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+	
+
     /**
      * @Route("/amministrazioni/{id}", name="amministrazioni_item")
      * @Method("GET")
@@ -72,8 +126,21 @@ class AmministrazioneController extends Controller
     }
 
 
+	/**
+     * @SWG\Post(
+     *     path="/api/amministrazioni",
+     *     summary="Creazione amministrazione",
+     *     tags={"Amministrazioni"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
 
-    /**
+
+	/**
      * @Route("/amministrazioni", name="amministrazioni_item_create")
      * @Method("POST")
      * @Security("is_granted('ROLE_CREATE_AMMINISTRAZIONI')")
@@ -123,7 +190,47 @@ class AmministrazioneController extends Controller
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
-
+	
+	
+	/**
+     * @SWG\Put(
+     *     path="/api/amministrazioni/{id}",
+     *     summary="Salvataggio amministrazione",
+     *     tags={"Amministrazioni"},
+     *     operationId="idAmministrazione",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'amministrazione",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="amministrazioni",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="codice", type="integer"),
+	 *					@SWG\Property(property="denominazione", type="string")
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
 
     /**
      * @Route("/amministrazioni/{id}", name="amministrazioni_item_save")
@@ -164,6 +271,29 @@ class AmministrazioneController extends Controller
     }
 
 
+	/**
+     * @SWG\Delete(
+     *     path="/api/amministrazioni/{id}",
+     *     summary="Eliminazione amministrazione",
+     *     tags={"Amministrazioni"},
+     *     operationId="idAmministrazione",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id dell'amministrazione",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="L'Amministrazione è associata ad un fasciolo o ad un registro, impossibile eliminarla.")
+     * )
+     */
+
 
     /**
      * @Route("/amministrazioni/{id}", name="amministrazioni_item_delete")
@@ -183,7 +313,7 @@ class AmministrazioneController extends Controller
         $fascicoli = $repositoryFascicoli->findOneByIdAmministrazioni($id);
 
         if ($registri || $fascicoli) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "L'Amministrazione non e' vuota, impossibile eliminarla."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'Amministrazione è associata ad un fasciolo o ad un registro, impossibile eliminarla."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {

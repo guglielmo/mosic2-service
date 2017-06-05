@@ -204,9 +204,6 @@ class RegistriRepository extends \Doctrine\ORM\EntityRepository
 
 
         return $array;
-
-
-
     }
 
 

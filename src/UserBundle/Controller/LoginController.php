@@ -68,6 +68,44 @@ class LoginController extends Controller
     }*/
 
 
+	/**
+     * @SWG\Tag(
+     *   name="Autenticazione",
+     *   description="Api per autenticazione"
+     * )
+     */
+
+
+    /**
+     * @SWG\Post(
+     *     path="/api/authenticate",
+     *     summary="Autenticazione utente",
+     *     tags={"Autenticazione"},
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="body",
+     *         in="body",
+     *         description="username e password dell'utente",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="email", type="string"),
+	 *					@SWG\Property(property="password", type="string")
+	 *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"total_results":1,"data":{"id":1,"username":"string","firstName":"string","lastName":"string","id_group":"[int]","capabilities":"[string]","token":"string"}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=403, description="Nome utente e/o password inseriti non sono corretti."))
+     */
+
+
     /**
      * @Route("/authenticate", name="user_login")
      * @Method("POST")

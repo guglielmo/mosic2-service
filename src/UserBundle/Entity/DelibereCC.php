@@ -77,6 +77,16 @@ class DelibereCC
 
 
 
+    public function __construct() {
+        $this->data = new \DateTime("0000-00-00");
+        $this->noteRilievo = "";
+        $this->tipoRilievo = 0;
+    }
+
+
+
+
+
     /**
      * Get id
      *

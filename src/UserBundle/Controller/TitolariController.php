@@ -13,13 +13,44 @@ use UserBundle\Entity\Fascicoli;
 use UserBundle\Entity\Registri;
 use UserBundle\Entity\LastUpdates;
 use UserBundle\Entity\RelTagsTitolari;
-
+use Swagger\Annotations\Swagger;
 
 
 
 class TitolariController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
+
+
+
+    /**
+     * @SWG\Info(
+     *     title="Mosic 2.0 API",
+     *     version="1.0"
+     * )
+     */
+
+    /**
+     * @SWG\Tag(
+     *   name="Titolari",
+     *   description="Tutte le Api dei titolari"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/titolari",
+     *     summary="Lista titolari",
+     *     tags={"Titolari"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
 
     /**
      * @Route("/titolari", name="titolari")
@@ -52,8 +83,34 @@ class TitolariController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-    
-    
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/titolari/{id}",
+     *     summary="Singolo titolario",
+     *     tags={"Titolari"},
+     *     operationId="idTitolario",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del titolario",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+
     /**
      * @Route("/titolari/{id}", name="titolari_item")
      * @Method("GET")
@@ -76,8 +133,51 @@ class TitolariController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
-        
+
+
+    /**
+     * @SWG\Put(
+     *     path="/api/titolari/{id}",
+     *     summary="Salvataggio titolario",
+     *     tags={"Titolari"},
+     *     operationId="idTitolario",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id del titolario",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="titolari",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+  	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="codice", type="integer"),
+	 *					@SWG\Property(property="denominazione", type="string"),
+	 *					@SWG\Property(property="descrizione", type="string"),
+	 *					@SWG\Property(property="id_uffici", type="array")
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/titolari/{id}", name="titolari_item_save")
      * @Method("PUT")
@@ -111,9 +211,23 @@ class TitolariController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-		
-        
-        
+
+
+
+    /**
+     * @SWG\Post(
+     *     path="/api/titolari",
+     *     summary="Creazione titolario",
+     *     tags={"Titolari"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
+
    /**
      * @Route("/titolari", name="titolari_item_create")
      * @Method("POST")
@@ -143,8 +257,31 @@ class TitolariController extends Controller
 
         return $this->setBaseHeaders($response);
     }
-    
-    
+
+
+
+    /**
+     * @SWG\Delete(
+     *     path="/api/titolari/{id}",
+     *     summary="Eliminazione titolario",
+     *     tags={"Titolari"},
+     *     operationId="idTitolario",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del titolario",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/titolari/{id}", name="titolari_item_delete")
      * @Method("DELETE")

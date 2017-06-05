@@ -27,6 +27,33 @@ class PreCipeController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	
+	/**
+     * @SWG\Tag(
+     *   name="Pre-Cipe",
+     *   description="Tutte le Api dei PreCipe"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/precipe",
+     *     summary="Lista Pre-Cipe",
+     *     tags={"Pre-Cipe"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":144,"limit":"99999","offset":0,"data":{{"id":151,"data":1496008800000
+,"ufficiale_riunione":"0","public_reserved_status":"","public_reserved_url":"","allegati_TLX":"","allegati_APG"
+:"","allegati_OSS":""}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
+
     /**
      * @Route("/precipe", name="precipe")
      * @Method("GET")
@@ -92,6 +119,34 @@ class PreCipeController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+	/**
+     * @SWG\Get(
+     *     path="/api/precipe/{id}",
+     *     summary="Singolo Pre-Cipe",
+     *     tags={"Pre-Cipe"},
+     *     operationId="idPreCipe",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del Pre-Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":144,"limit":"99999","offset":0,"data":{{"id":151,"data":1496008800000
+,"ufficiale_riunione":"0","public_reserved_status":"","public_reserved_url":"","allegati_TLX":"","allegati_APG"
+:"","allegati_OSS":""}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
 
     /**
      * @Route("/precipe/{id}", name="precipe_item")
@@ -192,6 +247,75 @@ class PreCipeController extends Controller
     }
 
 
+	/**
+     * @SWG\Put(
+     *     path="/api/precipe/{id}",
+     *     summary="Salvataggio Pre-Cipe e relativi OdG",
+     *     tags={"Pre-Cipe"},
+     *     operationId="idPreCipe",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="id del Pre-Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="precipe",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+ 	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *                 	@SWG\Property(property="data", type="string"),
+	 *					@SWG\Property(property="ufficiale_riunione", type="integer"),
+	 *					@SWG\Property(property="public_reserved_status", type="integer"),
+	 *					@SWG\Property(property="precipe_odg",
+	 *						type="array",
+	 *						@SWG\Items(
+	 *							@SWG\Property(property="id", type="integer"),
+	 *							@SWG\Property(property="id_pre_cipe", type="integer"),
+	 *							@SWG\Property(property="progressivo", type="integer"),
+	 *							@SWG\Property(property="id_titolari", type="integer"),
+	 *							@SWG\Property(property="id_fascicoli", type="integer"),
+	 *							@SWG\Property(property="id_argomenti", type="integer"),
+	 *							@SWG\Property(property="id_uffici", type="array"),
+	 *							@SWG\Property(property="ordine", type="integer"),
+	 *							@SWG\Property(property="denominazione", type="string"),
+	 *							@SWG\Property(property="risultanza", type="integer"),
+	 *							@SWG\Property(property="annotazioni", type="string"),
+	 *							@SWG\Property(property="stato", type="integer"),
+	 *							@SWG\Property(property="id_registri", type="array"),
+	 *							@SWG\Property(property="allegati",
+	 *								type="array",
+	 *								@SWG\Items(
+	 *									@SWG\Property(property="id", type="integer"),
+	 *									@SWG\Property(property="data", type="string"),
+	 *									@SWG\Property(property="nome", type="string"),
+	 *									@SWG\Property(property="tipo", type="string"),
+	 *									@SWG\Property(property="relURI", type="string"),
+	 *									@SWG\Property(property="dimensione", type="string")
+	 *								)	 
+	 *						)
+	 *					),
+	 *					@SWG\Property(property="allegati_TLX", type="string"),
+     *					@SWG\Property(property="allegati_APG", type="string"),
+     *					@SWG\Property(property="allegati_OSS", type="string")
+     *             )
+	 *			),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/precipe/{id}", name="precipe_item_save")
      * @Method("PUT")
@@ -287,6 +411,20 @@ class PreCipeController extends Controller
     }
 
 
+
+	/**
+     * @SWG\Post(
+     *     path="/api/precipe",
+     *     summary="Creazione Pre-Cipe e relativi OdG",
+     *     tags={"Pre-Cipe"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */
+
     /**
      * @Route("/precipe", name="precipe_item_create")
      * @Method("POST")
@@ -367,6 +505,30 @@ class PreCipeController extends Controller
     }
 
 
+	/**
+     * @SWG\Delete(
+     *     path="/api/precipe/{id}",
+     *     summary="Eliminazione Pre-Cipe",
+     *     tags={"Pre-Cipe"},
+     *     operationId="idCPreCipe",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del Pre-Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il Pre-Cipe contiene degli Ordini del Giorno, impossibile eliminarlo.")
+     * )
+     */
+
+
     /**
      * @Route("/precipe/{id}", name="precipe_item_delete")
      * @Method("DELETE")
@@ -384,7 +546,7 @@ class PreCipeController extends Controller
 
 
         if ($ordini) {
-            $response_array = array("error" => ["code" => 409, "message" => "Il precipe non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" => ["code" => 409, "message" => "Il Pre-Cipe contiene degli Ordini del Giorno, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {
@@ -403,6 +565,40 @@ class PreCipeController extends Controller
         }
     }
 
+
+	/**
+     * @SWG\Post(
+     *     path="/api/precipe/{id}/{tipo}/upload",
+     *     summary="Upload files di un Pre-Cipe",
+     *     tags={"Pre-Cipe"},
+     *     produces={"application/json"},
+	 *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del Pre-Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="tipo",
+     *         in="path",
+     *         description="tipo di allegato [TLX, APG, OSS]",
+     *         required=true,
+     *         type="string",
+     *         @SWG\Items(type="string"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file e' troppo grande. (max 25 MB)"),
+	 *     @SWG\Response(response=409, description="Tipo di file non permesso (solo PDF)")
+     * )
+     */
 
     /**
      * @Route("/precipe/{id}/{tipo}/upload", name="uploadPreCipe")
@@ -485,6 +681,47 @@ class PreCipeController extends Controller
     }
 
 
+	/**
+     * @SWG\Delete(
+     *     path="/api/precipe/{id}/{tipo}/upload/{idallegato}",
+     *     summary="Eliminazione file di un Pre-Cipe",
+     *     tags={"Pre-Cipe"},
+     *     operationId="idAllegato",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del Cipe",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="tipo",
+     *         in="path",
+     *         description="tipo di allegato [TLX, APG, OSS]",
+     *         required=true,
+     *         type="string",
+     *         @SWG\Items(type="string"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="idallegato",
+     *         in="path",
+     *         description="Id dell'allegato da eliminare",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il file non esiste")
+     * )
+     */
+
+
+
     /**
      * @Route("/precipe/{id}/{tipo}/upload/{idallegato}", name="uploadDeletePrecipe")
      * @Method("DELETE")
@@ -530,10 +767,13 @@ class PreCipeController extends Controller
     }
 
 
+
+	
+
     /**
      * @Route("/areariservata/precipe/{id}", name="precipe_area_riservata_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_AREARISERVATA_PRECIPE')")
+     * //@Security("is_granted('ROLE_DELETE_AREARISERVATA_PRECIPE')")
      */
     public function precipeAreaRiservataDeleteAction(Request $request, $id)
     {
@@ -640,95 +880,13 @@ class PreCipeController extends Controller
     /**
      * @Route("/areariservata/precipe/{id}", name="precipe_area_riservata")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_AREARISERVATA_PRECIPE')")
+     * //@Security("is_granted('ROLE_READ_AREARISERVATA_PRECIPE')")
      */
     public function precipeAreaRiservataAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('UserBundle:PreCipe');
         $precipe = $repository->findOneById($id);
-
-
-//        //#########
-//        //######### chiamo l'api per il LOGIN
-//        //#########
-//        $browser = $this->container->get('buzz');
-//
-//        $fields = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
-//        $response = $browser->submit("http://area-riservata.mosic2.celata.com/api-token-auth/", $fields, "POST");
-//        $content = json_decode($response->getContent());
-//        //$response = json_decode($response->getContent());
-//        $token = $content->token;
-//
-//
-//        //Aggiorno lo stato del precipe
-//        if ($response->getStatusCode() == 200) {
-//            $response_array = array("success" => ["code" => 200, "message" => "Procedura presa in carico"]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//
-//            $response_array = array(
-//                "response" => Response::HTTP_OK,
-//                "total_results" => 1,
-//                "limit" => 1,
-//                "offset" => 0,
-//                "data" => "Procedura presa in carico"
-//            );
-//            $response = new Response(json_encode($response_array), Response::HTTP_OK);
-//            $response = $this->setBaseHeaders($response);
-//            $response->send();
-//
-//        } else {
-//            $response_array = array("error" => ["code" => 401, "message" => "Errore nella login"]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//
-//            $response_array = array(
-//                "response" => 401,
-//                "total_results" => 1,
-//                "limit" => 1,
-//                "offset" => 0,
-//                "data" => "Errore nella login"
-//            );
-//            $response = new Response(json_encode($response_array), Response::HTTP_OK);
-//            $response = $this->setBaseHeaders($response);
-//            $response->send();
-//            exit;
-//        }
-//
-//
-//
-//        //#########
-//        //######### chiamo l'api della delete
-//        //#########
-//        $browser = $this->container->get('buzz');
-//
-//        $headers = array(
-//            'Accept' => '*/*',
-//            'Cache-Control' => 'no-cache',
-//            'Authorization' => 'JWT ' . $token
-//            // Add any other header needed by the API
-//        );
-//
-//        $response = $browser->delete("http://area-riservata.mosic2.celata.com/precipe/". $id, $headers);
-//
-//        //Aggiorno lo stato del precipe
-//        if ($response->getStatusCode() == 204) {
-//            $response_array = array("success" => ["code" => 204, "message" => "Procedura in corso"]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//        } else {
-//            $response_array = array("error" => ["code" => 409, "message" => "Errore nella rimozione del precipe"]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//        }
-
-
-
 
 
 
@@ -838,144 +996,6 @@ class PreCipeController extends Controller
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
 
-
-
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-//        //#########
-//        //######### chiamo l'api per l'inserimento metadati (precipe)
-//        //#########
-//
-//
-//        $browser = $this->container->get('buzz');
-//
-//        $headers = array(
-//            'Accept' => '*/*',
-//            'Content-Type' => 'application/json',
-//            'Cache-Control' => 'no-cache',
-//            'Authorization' => 'JWT ' . $token
-//            // Add any other header needed by the API
-//        );
-//        $content = json_encode($precipeTemp);
-//        $response = $browser->post("http://area-riservata.mosic2.celata.com/precipe", $headers, $content);
-//
-//
-//        //Aggiorno lo stato del precipe
-//        if ($response->getStatusCode() == 201) {
-//            $response_array = array("success" => ["code" => 201, "message" => "Procedura in corso"]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//        } else {
-//            $response_array = array("error" => ["code" => 409, "message" => "Errore nell'invio dei metadati"]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//        }
-//
-//
-//
-//        //#########
-//        //######### chiamo l'api per prendere l'url dell'area riservata
-//        //#########
-//
-//
-//        $browser = $this->container->get('buzz');
-//
-//        $headers = array(
-//            'Accept' => '*/*',
-//            'Content-Type' => 'application/json',
-//            'Cache-Control' => 'no-cache',
-//            'Authorization' => 'JWT ' . $token
-//            // Add any other header needed by the API
-//        );
-//        $response = $browser->get("http://area-riservata.mosic2.celata.com/seduta/precipe/". $id, $headers);
-//        $content = json_decode($response->getContent());
-//        $url_area_riservata = $content->url;
-//
-//
-//        //#########
-//        //######### invio fisicamente i files
-//        //#########
-//        $numero_file = 0;
-//        $numero_file_caricati = 0;
-//        //conto gli allegati
-//        foreach ($precipeTemp->punti_odg as $i => $v) {
-//            foreach ($v->allegati as $item => $k) {
-//                $numero_file++;
-//            }
-//        }
-//        foreach ($precipeTemp->punti_odg as $i => $v) {
-//            foreach ($v->allegati as $item => $k) {
-//                $headers = [
-//                    'Accept: */*',
-//                    'Content-Type: multipart/form-data',
-//					'Content-Disposition: form-data; name=\"'.$k['relURI'].'\"',
-//                    'Cache-Control: no-cache',
-//                    'Authorization: JWT ' . $token
-//                ];
-//
-//                $target = 'http://area-riservata.mosic2.celata.com/upload_file/'. $k['relURI'];
-//                //$file_name_with_full_path = $k['relURI'];
-//                $post = new \CURLFile($k['relURI'], 'application/pdf', $k['relURI']);
-//
-//                $data_array = array(
-//                    'file' => new \CurlFile($k['relURI'])
-//                );
-//
-//                $ch = curl_init();
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                curl_setopt($ch, CURLOPT_URL,$target);
-//                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-//                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_array);
-//                curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
-//                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//
-//                $result=curl_exec ($ch);
-//                $result_info =curl_getinfo($ch);
-//
-//                //Aggiorno lo stato del precipe
-//                if ($result_info['http_code'] != 204) {
-//                    //$precipe->setStatus("Errore nell'invio di " . $file_errati . " files");
-//                    //$em->persist($precipe);
-//                    //$em->flush(); //esegue l'update
-//                    echo $k['relURI'] . $result_info['http_code'] . "\n";
-//                } else {
-//                    $numero_file_caricati++;
-//                    $response_array = array("success" => ["code" => 204, "message" => "Caricati ".$numero_file_caricati." file di " . $numero_file]);
-//                    $precipe->setStatus(json_encode($response_array));
-//                    $em->persist($precipe);
-//                    $em->flush(); //esegue l'update
-//
-//                }
-//                curl_close ($ch);
-//            }
-//        }
-//
-//        //se ho inviato tutti i file correttamente
-//        if ($numero_file == $numero_file_caricati) {
-//            $response_array = array("success" => ["code" => 200, "message" => "Procedura conclusa - Caricati ".$numero_file_caricati." file di " . $numero_file, "url" => $url_area_riservata]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//        } else {
-//            $response_array = array("error" => ["code" => 409, "message" => "Errore procedura - Caricati ".$numero_file_caricati." file di " . $numero_file, "url" => $url_area_riservata]);
-//            $precipe->setStatus(json_encode($response_array));
-//            $em->persist($precipe);
-//            $em->flush(); //esegue l'update
-//        }
-
-
-
         $response = new Response();
         return $this->setBaseHeaders($response);
     }
@@ -986,7 +1006,7 @@ class PreCipeController extends Controller
     /**
      * @Route("/areariservata/precipe/check/{id}", name="precipe_area_riservata_check")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_AREARISERVATA_PRECIPE_CHECK')")
+     * //@Security("is_granted('ROLE_READ_AREARISERVATA_PRECIPE_CHECK')")
      */
     public function precipeAreaRiservataCheckAction(Request $request, $id) {
 

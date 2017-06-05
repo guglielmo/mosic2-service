@@ -1,0 +1,4237 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Mosic 2.0 API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/adempimenti": {
+            "get": {
+                "tags": [
+                    "Adempimenti"
+                ],
+                "summary": "Lista adempimenti",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 280,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 281,
+                                        "codice": null,
+                                        "progressivo": null,
+                                        "codice_scheda": null,
+                                        "id_delibere": 418,
+                                        "descrizione": "test date",
+                                        "codice_descrizione": null,
+                                        "codice_fonte": null,
+                                        "codice_esito": null,
+                                        "data_scadenza": 1495749600000,
+                                        "giorni_scadenza": null,
+                                        "mesi_scadenza": null,
+                                        "anni_scadenza": null,
+                                        "vincolo": null,
+                                        "note": "",
+                                        "utente": null,
+                                        "data_modifica": 1495922400000
+                                    },
+                                    {
+                                        "id": 258,
+                                        "codice": 1,
+                                        "progressivo": 1,
+                                        "codice_scheda": 616,
+                                        "id_delibere": 2346,
+                                        "descrizione": " ",
+                                        "codice_descrizione": 0,
+                                        "codice_fonte": 0,
+                                        "codice_esito": 0,
+                                        "data_scadenza": 1495317600000,
+                                        "giorni_scadenza": 1,
+                                        "mesi_scadenza": 2,
+                                        "anni_scadenza": 3,
+                                        "vincolo": 1,
+                                        "note": "",
+                                        "utente": 90138,
+                                        "data_modifica": 1412632800000
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Adempimenti"
+                ],
+                "summary": "Creazione adempimento",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/adempimenti/{id}": {
+            "get": {
+                "tags": [
+                    "Adempimenti"
+                ],
+                "summary": "Singolo adempimento",
+                "operationId": "idAdempimento",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'adempimento",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 280,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 281,
+                                        "codice": null,
+                                        "progressivo": null,
+                                        "codice_scheda": null,
+                                        "id_delibere": 418,
+                                        "descrizione": "test date",
+                                        "codice_descrizione": null,
+                                        "codice_fonte": null,
+                                        "codice_esito": null,
+                                        "data_scadenza": 1495749600000,
+                                        "giorni_scadenza": null,
+                                        "mesi_scadenza": null,
+                                        "anni_scadenza": null,
+                                        "vincolo": null,
+                                        "note": "",
+                                        "utente": null,
+                                        "data_modifica": 1495922400000
+                                    },
+                                    {
+                                        "id": 258,
+                                        "codice": 1,
+                                        "progressivo": 1,
+                                        "codice_scheda": 616,
+                                        "id_delibere": 2346,
+                                        "descrizione": " ",
+                                        "codice_descrizione": 0,
+                                        "codice_fonte": 0,
+                                        "codice_esito": 0,
+                                        "data_scadenza": 1495317600000,
+                                        "giorni_scadenza": 1,
+                                        "mesi_scadenza": 2,
+                                        "anni_scadenza": 3,
+                                        "vincolo": 1,
+                                        "note": "",
+                                        "utente": 90138,
+                                        "data_modifica": 1412632800000
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Adempimenti"
+                ],
+                "summary": "Salvataggio adempimento",
+                "operationId": "idAdempimento",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id dell'adempimento",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "adempimenti",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "id_delibere": {
+                                        "type": "integer"
+                                    },
+                                    "descrizione": {
+                                        "type": "string"
+                                    },
+                                    "codice_descrizione": {
+                                        "type": "integer"
+                                    },
+                                    "codice_fonte": {
+                                        "type": "integer"
+                                    },
+                                    "codice_esito": {
+                                        "type": "integer"
+                                    },
+                                    "fonti": {
+                                        "type": "string"
+                                    },
+                                    "data_scadenza": {
+                                        "type": "string"
+                                    },
+                                    "vincolo": {
+                                        "type": "integer"
+                                    },
+                                    "note": {
+                                        "type": "string"
+                                    },
+                                    "codice": {
+                                        "type": "integer"
+                                    },
+                                    "progressivo": {
+                                        "type": "integer"
+                                    },
+                                    "codice_scheda": {
+                                        "type": "integer"
+                                    },
+                                    "giorni_scadenza": {
+                                        "type": "integer"
+                                    },
+                                    "mesi_scadenza": {
+                                        "type": "integer"
+                                    },
+                                    "anni_scadenza": {
+                                        "type": "integer"
+                                    },
+                                    "utente": {
+                                        "type": "integer"
+                                    },
+                                    "data_modifica": {
+                                        "type": "string"
+                                    },
+                                    "id_cipe": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/adempimentu/{id}": {
+            "delete": {
+                "tags": [
+                    "Adempimenti"
+                ],
+                "summary": "Eliminazione adempimento",
+                "operationId": "idAdempimento",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'adempimento",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/amministrazioni": {
+            "get": {
+                "tags": [
+                    "Amministrazioni"
+                ],
+                "summary": "Lista amministrazioni",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 185,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "codice": "1",
+                                        "denominazione": "Presidenza del Consiglio dei Ministri"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Amministrazioni"
+                ],
+                "summary": "Creazione amministrazione",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/amministrazioni/{id}": {
+            "get": {
+                "tags": [
+                    "Amministrazioni"
+                ],
+                "summary": "Singola amministrazione",
+                "operationId": "idAmministrazione",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'amministrazione",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 185,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "codice": "1",
+                                        "denominazione": "Presidenza del Consiglio dei Ministri"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Amministrazioni"
+                ],
+                "summary": "Salvataggio amministrazione",
+                "operationId": "idAmministrazione",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'amministrazione",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "amministrazioni",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "codice": {
+                                        "type": "integer"
+                                    },
+                                    "denominazione": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Amministrazioni"
+                ],
+                "summary": "Eliminazione amministrazione",
+                "operationId": "idAmministrazione",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'amministrazione",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "L'Amministrazione \u00e8 associata ad un fasciolo o ad un registro, impossibile eliminarla."
+                    }
+                }
+            }
+        },
+        "/api/cipe": {
+            "get": {
+                "tags": [
+                    "Cipe"
+                ],
+                "summary": "Lista Cipe",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 151,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 153,
+                                        "data": 1496008800000,
+                                        "ufficiale_riunione": "",
+                                        "giorno": "",
+                                        "ora": "",
+                                        "sede": "",
+                                        "id_presidente": 0,
+                                        "id_segretario": 0,
+                                        "id_direttore": 0,
+                                        "public_reserved_status": "",
+                                        "public_reserved_url": "",
+                                        "allegati_TLX": "",
+                                        "allegati_APG": "",
+                                        "allegati_OSS": "",
+                                        "allegati_EST": ""
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cipe"
+                ],
+                "summary": "Creazione Cipe e relativi OdG",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/cipe/{id}": {
+            "get": {
+                "tags": [
+                    "Cipe"
+                ],
+                "summary": "Singolo Cipe",
+                "operationId": "idCipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 151,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 153,
+                                        "data": 1496008800000,
+                                        "ufficiale_riunione": "",
+                                        "giorno": "",
+                                        "ora": "",
+                                        "sede": "",
+                                        "id_presidente": 0,
+                                        "id_segretario": 0,
+                                        "id_direttore": 0,
+                                        "public_reserved_status": "",
+                                        "public_reserved_url": "",
+                                        "allegati_TLX": "",
+                                        "allegati_APG": "",
+                                        "allegati_OSS": "",
+                                        "allegati_EST": ""
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cipe"
+                ],
+                "summary": "Salvataggio Cipe e relativi OdG",
+                "operationId": "idCipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id del Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cipe",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "data": {
+                                        "type": "string"
+                                    },
+                                    "ufficiale_riunione": {
+                                        "type": "integer"
+                                    },
+                                    "giorno": {
+                                        "type": "string"
+                                    },
+                                    "ora": {
+                                        "type": "string"
+                                    },
+                                    "sede": {
+                                        "type": "string"
+                                    },
+                                    "id_presidente": {
+                                        "type": "integer"
+                                    },
+                                    "id_segretario": {
+                                        "type": "integer"
+                                    },
+                                    "id_direttore": {
+                                        "type": "integer"
+                                    },
+                                    "public_reserved_status": {
+                                        "type": "integer"
+                                    },
+                                    "cipe_odg": {
+                                        "properties": {
+                                            "allegati_TLX": {
+                                                "type": "string"
+                                            },
+                                            "allegati_APG": {
+                                                "type": "string"
+                                            },
+                                            "allegati_OSS": {
+                                                "type": "string"
+                                            },
+                                            "allegati_EST": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "id_cipe": {
+                                                    "type": "integer"
+                                                },
+                                                "progressivo": {
+                                                    "type": "integer"
+                                                },
+                                                "id_titolari": {
+                                                    "type": "integer"
+                                                },
+                                                "id_fascicoli": {
+                                                    "type": "integer"
+                                                },
+                                                "id_sotto_fascicoli": {
+                                                    "type": "integer"
+                                                },
+                                                "id_argomenti": {
+                                                    "type": "integer"
+                                                },
+                                                "_tipo_argomenti": {
+                                                    "type": "integer"
+                                                },
+                                                "id_uffici": {
+                                                    "type": "array"
+                                                },
+                                                "ordine": {
+                                                    "type": "integer"
+                                                },
+                                                "denominazione": {
+                                                    "type": "string"
+                                                },
+                                                "risultanza": {
+                                                    "type": "integer"
+                                                },
+                                                "id_esito": {
+                                                    "type": "integer"
+                                                },
+                                                "id_delibera": {
+                                                    "type": "integer"
+                                                },
+                                                "annotazioni": {
+                                                    "type": "string"
+                                                },
+                                                "stato": {
+                                                    "type": "integer"
+                                                },
+                                                "id_registri": {
+                                                    "type": "array"
+                                                },
+                                                "allegati": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "data": {
+                                                                "type": "string"
+                                                            },
+                                                            "nome": {
+                                                                "type": "string"
+                                                            },
+                                                            "tipo": {
+                                                                "type": "string"
+                                                            },
+                                                            "relURI": {
+                                                                "type": "string"
+                                                            },
+                                                            "dimensione": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Cipe"
+                ],
+                "summary": "Eliminazione cipe",
+                "operationId": "idCipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il cipe contiene degli Ordini del Giorno, impossibile eliminarlo."
+                    }
+                }
+            }
+        },
+        "/api/cipe/{id}/{tipo}/upload": {
+            "post": {
+                "tags": [
+                    "Cipe"
+                ],
+                "summary": "Upload files di un Cipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tipo",
+                        "in": "path",
+                        "description": "tipo di allegato [TLX, APG, OSS]",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file e' troppo grande. (max 25 MB)"
+                    }
+                }
+            }
+        },
+        "/api/cipe/{id}/{tipo}/upload/{idallegato}": {
+            "delete": {
+                "tags": [
+                    "Cipe"
+                ],
+                "summary": "Eliminazione file di un Cipe",
+                "operationId": "idAllegato",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tipo",
+                        "in": "path",
+                        "description": "tipo di allegato [TLX, APG, OSS]",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "idallegato",
+                        "in": "path",
+                        "description": "Id dell'allegato da eliminare",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file non esiste"
+                    }
+                }
+            }
+        },
+        "/api/cipeodg/{id}": {
+            "delete": {
+                "tags": [
+                    "Cipe OdG"
+                ],
+                "summary": "Eliminazione OdG di un Cipe",
+                "operationId": "idCipeOdg",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'OdG",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/delibere": {
+            "get": {
+                "tags": [
+                    "Delibere"
+                ],
+                "summary": "Lista delibere",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 5110,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 2584,
+                                        "data": 1494367200000,
+                                        "id_stato": null,
+                                        "numero": 99,
+                                        "argomento": "test1234",
+                                        "finanziamento": 0,
+                                        "note": {
+                                            "cd": null,
+                                            "mef": null,
+                                            "seg": null,
+                                            "pre": null,
+                                            "cc": null,
+                                            "pa": null,
+                                            "gu": null,
+                                            "an": "aabb",
+                                            "ns": "sss"
+                                        },
+                                        "foglio_cc": null,
+                                        "numero_cc": null,
+                                        "registro_cc": null,
+                                        "id_uffici": [
+                                            1
+                                        ],
+                                        "id_tags": [
+                                            11,
+                                            15,
+                                            16
+                                        ],
+                                        "anno": "2017",
+                                        "situazione": 0,
+                                        "giorni_iter": {
+                                            "dipe": 6,
+                                            "mef": 0,
+                                            "firme": 0,
+                                            "cc": 0,
+                                            "gu": 10
+                                        },
+                                        "oss_cc": [
+                                            {
+                                                "id": 534,
+                                                "tipo_documento": 1,
+                                                "data_max_risposta": 1497823200000,
+                                                "data_risposta": 1495922400000
+                                            }
+                                        ],
+                                        "registrazione_cc": {
+                                            "data": 1494367200000,
+                                            "foglio": null,
+                                            "numero": null
+                                        },
+                                        "firme": {
+                                            "uff_a": 1494367200000,
+                                            "cd_i": 1493589600000,
+                                            "cd_r": 1494885600000,
+                                            "mef_i": 1494367200000,
+                                            "mef_r": 1494367200000,
+                                            "seg_i": 1494367200000,
+                                            "seg_r": 1494367200000,
+                                            "pre_i": 1494367200000,
+                                            "pre_r": 1494367200000,
+                                            "cc_i": 1494367200000,
+                                            "cc_r": 1494367200000,
+                                            "gu_i": 1494885600000,
+                                            "gu_r": 1495749600000
+                                        },
+                                        "pub_gu": {
+                                            "nr": null,
+                                            "data": 1495749600000
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Delibere"
+                ],
+                "summary": "Creazione delibera",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/delibere/{id}": {
+            "get": {
+                "tags": [
+                    "Delibere"
+                ],
+                "summary": "Singola delibera",
+                "operationId": "idDelibera",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id della delibera",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 5110,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 2584,
+                                        "data": 1494367200000,
+                                        "id_stato": null,
+                                        "numero": 99,
+                                        "argomento": "test1234",
+                                        "finanziamento": 0,
+                                        "note": {
+                                            "cd": null,
+                                            "mef": null,
+                                            "seg": null,
+                                            "pre": null,
+                                            "cc": null,
+                                            "pa": null,
+                                            "gu": null,
+                                            "an": "aabb",
+                                            "ns": "sss"
+                                        },
+                                        "foglio_cc": null,
+                                        "numero_cc": null,
+                                        "registro_cc": null,
+                                        "id_uffici": [
+                                            1
+                                        ],
+                                        "id_tags": [
+                                            11,
+                                            15,
+                                            16
+                                        ],
+                                        "anno": "2017",
+                                        "situazione": 0,
+                                        "giorni_iter": {
+                                            "dipe": 6,
+                                            "mef": 0,
+                                            "firme": 0,
+                                            "cc": 0,
+                                            "gu": 10
+                                        },
+                                        "oss_cc": [
+                                            {
+                                                "id": 534,
+                                                "tipo_documento": 1,
+                                                "data_max_risposta": 1497823200000,
+                                                "data_risposta": 1495922400000
+                                            }
+                                        ],
+                                        "registrazione_cc": {
+                                            "data": 1494367200000,
+                                            "foglio": null,
+                                            "numero": null
+                                        },
+                                        "firme": {
+                                            "uff_a": 1494367200000,
+                                            "cd_i": 1493589600000,
+                                            "cd_r": 1494885600000,
+                                            "mef_i": 1494367200000,
+                                            "mef_r": 1494367200000,
+                                            "seg_i": 1494367200000,
+                                            "seg_r": 1494367200000,
+                                            "pre_i": 1494367200000,
+                                            "pre_r": 1494367200000,
+                                            "cc_i": 1494367200000,
+                                            "cc_r": 1494367200000,
+                                            "gu_i": 1494885600000,
+                                            "gu_r": 1495749600000
+                                        },
+                                        "pub_gu": {
+                                            "nr": null,
+                                            "data": 1495749600000
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Delibere"
+                ],
+                "summary": "Salvataggio delibera",
+                "operationId": "idDelibera",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id della delibera",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "data": {
+                                        "type": "string"
+                                    },
+                                    "numero": {
+                                        "type": "integer"
+                                    },
+                                    "id_stato": {
+                                        "type": "integer"
+                                    },
+                                    "argomento": {
+                                        "type": "string"
+                                    },
+                                    "note": {
+                                        "type": "string"
+                                    },
+                                    "note_servizio": {
+                                        "type": "string"
+                                    },
+                                    "scheda": {
+                                        "type": "integer"
+                                    },
+                                    "finanziamento": {
+                                        "type": "integer"
+                                    },
+                                    "data_consegna": {
+                                        "type": "string"
+                                    },
+                                    "data_direttore_invio": {
+                                        "type": "string"
+                                    },
+                                    "data_direttore_ritorno": {
+                                        "type": "string"
+                                    },
+                                    "note_direttore": {
+                                        "type": "string"
+                                    },
+                                    "invio_mef": {
+                                        "type": "integer"
+                                    },
+                                    "data_mef_invio": {
+                                        "type": "string"
+                                    },
+                                    "data_mef_pec": {
+                                        "type": "string"
+                                    },
+                                    "data_mef_ritorno": {
+                                        "type": "string"
+                                    },
+                                    "note_mef": {
+                                        "type": "string"
+                                    },
+                                    "id_segretario": {
+                                        "type": "integer"
+                                    },
+                                    "data_segretario_invio": {
+                                        "type": "string"
+                                    },
+                                    "data_segretario_ritorno": {
+                                        "type": "string"
+                                    },
+                                    "note_segretario": {
+                                        "type": "string"
+                                    },
+                                    "id_presidente": {
+                                        "type": "integer"
+                                    },
+                                    "data_presidente_invio": {
+                                        "type": "string"
+                                    },
+                                    "data_presidente_ritorno": {
+                                        "type": "string"
+                                    },
+                                    "note_presidente": {
+                                        "type": "string"
+                                    },
+                                    "data_invio_cc": {
+                                        "type": "string"
+                                    },
+                                    "numero_cc": {
+                                        "type": "string"
+                                    },
+                                    "data_registrazione_cc": {
+                                        "type": "string"
+                                    },
+                                    "id_registro_cc": {
+                                        "type": "integer"
+                                    },
+                                    "foglio_cc": {
+                                        "type": "integer"
+                                    },
+                                    "tipo_registrazione_cc": {
+                                        "type": "integer"
+                                    },
+                                    "note_cc": {
+                                        "type": "string"
+                                    },
+                                    "data_invio_p": {
+                                        "type": "string"
+                                    },
+                                    "note_p": {
+                                        "type": "string"
+                                    },
+                                    "data_invio_gu": {
+                                        "type": "string"
+                                    },
+                                    "numero_invio_gu": {
+                                        "type": "string"
+                                    },
+                                    "tipo_gu": {
+                                        "type": "integer"
+                                    },
+                                    "data_gu": {
+                                        "type": "string"
+                                    },
+                                    "numero_gu": {
+                                        "type": "integer"
+                                    },
+                                    "data_ec_gu": {
+                                        "type": "string"
+                                    },
+                                    "numero_ec_gu": {
+                                        "type": "integer"
+                                    },
+                                    "data_co_gu": {
+                                        "type": "string"
+                                    },
+                                    "numero_co_gu": {
+                                        "type": "integer"
+                                    },
+                                    "pubblicazione_gu": {
+                                        "type": "integer"
+                                    },
+                                    "note_gu": {
+                                        "type": "string"
+                                    },
+                                    "id_uffici": {
+                                        "type": "array"
+                                    },
+                                    "id_segretariato": {
+                                        "type": "array"
+                                    },
+                                    "id_tags": {
+                                        "type": "array"
+                                    },
+                                    "allegati_MEF": {
+                                        "type": "string"
+                                    },
+                                    "allegati_CC": {
+                                        "type": "string"
+                                    },
+                                    "allegati_GU": {
+                                        "type": "string"
+                                    },
+                                    "allegati_DEL": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "string"
+                                                },
+                                                "nome": {
+                                                    "type": "string"
+                                                },
+                                                "tipo": {
+                                                    "type": "string"
+                                                },
+                                                "relURI": {
+                                                    "type": "string"
+                                                },
+                                                "dimensione": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "allegati_ALL": {
+                                        "type": "string"
+                                    },
+                                    "rilievi_CC": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "id_delibere": {
+                                                    "type": "integer"
+                                                },
+                                                "tipo_documento": {
+                                                    "type": ""
+                                                },
+                                                "data_rilievo": {
+                                                    "type": "string"
+                                                },
+                                                "numero_rilievo": {
+                                                    "type": "integer"
+                                                },
+                                                "data_risposta": {
+                                                    "type": "string"
+                                                },
+                                                "numero_risposta": {
+                                                    "type": "integer"
+                                                },
+                                                "giorni_rilievo": {
+                                                    "type": "string"
+                                                },
+                                                "tipo_rilievo": {
+                                                    "type": "string"
+                                                },
+                                                "note_rilievo": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "giorni_iter": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Delibere"
+                ],
+                "summary": "Eliminazione delibera",
+                "operationId": "idDelibera",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id della delibera",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/delibere/{id}/{tipo}/upload": {
+            "post": {
+                "tags": [
+                    "Delibere"
+                ],
+                "summary": "Upload files di una Delibera",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id della Delibera",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tipo",
+                        "in": "path",
+                        "description": "tipo di allegato [GU, CC, DEL, ALL, MEF]",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file e' troppo grande. (max 25 MB)"
+                    }
+                }
+            }
+        },
+        "/api/delibere/{id}/{tipo}/upload/{idallegato}": {
+            "delete": {
+                "tags": [
+                    "Delibere"
+                ],
+                "summary": "Eliminazione file di una Delibera",
+                "operationId": "idDelibera",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id della Delibera",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tipo",
+                        "in": "path",
+                        "description": "tipo di allegato [GU, CC, DEL, ALL, MEF]",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "idallegato",
+                        "in": "path",
+                        "description": "Id dell'allegato da eliminare",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file non esiste"
+                    }
+                }
+            }
+        },
+        "/api/fascicoli": {
+            "get": {
+                "tags": [
+                    "Fascicoli"
+                ],
+                "summary": "Lista fascicoli",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 1326,
+                                "filter_results": 1336,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": "1325",
+                                        "codice_repertorio": "0",
+                                        "id_titolari": "2",
+                                        "numero_fascicolo": "0",
+                                        "argomento": "qwerty",
+                                        "id_amministrazione": "0",
+                                        "data_magazzino": "2017-01-20",
+                                        "data_cipe": "0000-00-00",
+                                        "data_cipe2": "0000-00-00",
+                                        "archiviazione_repertorio": "0",
+                                        "annotazioni": "qwerty",
+                                        "id_numeri_delibera": "0",
+                                        "id_esiti_cipe": "0",
+                                        "id_archivio_repertorio": "0",
+                                        "id_amministrazioni": "5,4,1",
+                                        "id_tags": [
+                                            16,
+                                            15,
+                                            14
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Fascicoli"
+                ],
+                "summary": "Creazione fascicolo",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/fascicoli/{id}": {
+            "get": {
+                "tags": [
+                    "Fascicoli"
+                ],
+                "summary": "Singolo fascicolo",
+                "operationId": "idFascicolo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del fascicoli",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 1326,
+                                "filter_results": 1336,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": "1325",
+                                        "codice_repertorio": "0",
+                                        "id_titolari": "2",
+                                        "numero_fascicolo": "0",
+                                        "argomento": "qwerty",
+                                        "id_amministrazione": "0",
+                                        "data_magazzino": "2017-01-20",
+                                        "data_cipe": "0000-00-00",
+                                        "data_cipe2": "0000-00-00",
+                                        "archiviazione_repertorio": "0",
+                                        "annotazioni": "qwerty",
+                                        "id_numeri_delibera": "0",
+                                        "id_esiti_cipe": "0",
+                                        "id_archivio_repertorio": "0",
+                                        "id_amministrazioni": "5,4,1",
+                                        "id_tags": [
+                                            16,
+                                            15,
+                                            14
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Fascicoli"
+                ],
+                "summary": "Salvataggio fascicolo",
+                "operationId": "idFascicolo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del fascicolo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "fascicoli",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "codice_repertorio": {
+                                        "type": "integer"
+                                    },
+                                    "id_titolari": {
+                                        "type": "array"
+                                    },
+                                    "numero_fascicolo": {
+                                        "type": "integer"
+                                    },
+                                    "argomento": {
+                                        "type": "string"
+                                    },
+                                    "id_amministrazione": {
+                                        "type": "integer"
+                                    },
+                                    "data_magazzino": {
+                                        "type": "string"
+                                    },
+                                    "data_cipe": {
+                                        "type": "string"
+                                    },
+                                    "data_cipe2": {
+                                        "type": "string"
+                                    },
+                                    "archiviazione_repertorio": {
+                                        "type": "string"
+                                    },
+                                    "annotazioni": {
+                                        "type": "string"
+                                    },
+                                    "id_numeri_delibera": {
+                                        "type": "array"
+                                    },
+                                    "id_esiti_cipe": {
+                                        "type": "array"
+                                    },
+                                    "id_archivio_repertorio": {
+                                        "type": "integer"
+                                    },
+                                    "id_amministrazioni": {
+                                        "type": "array"
+                                    },
+                                    "id_tags": {
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Fascicoli"
+                ],
+                "summary": "Eliminazione fascicolo",
+                "operationId": "idFascicolo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del fascicolo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il Fascicolo ha dei registri associati, impossibile eliminarlo."
+                    }
+                }
+            }
+        },
+        "/api/firmatari": {
+            "get": {
+                "tags": [
+                    "Firmatari"
+                ],
+                "summary": "Lista firmatari",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 107,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 2,
+                                        "chiave": 0,
+                                        "tipo": 2,
+                                        "denominazione": "Gobbo",
+                                        "denominazione_estesa": "Fabio Gobbo",
+                                        "disattivato": 1
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Firmatari"
+                ],
+                "summary": "Creazione firmatario",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/firmatari/{id}": {
+            "get": {
+                "tags": [
+                    "Firmatari"
+                ],
+                "summary": "Singolo firmatario",
+                "operationId": "idFirmatari",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del firmatario",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 107,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 2,
+                                        "chiave": 0,
+                                        "tipo": 2,
+                                        "denominazione": "Gobbo",
+                                        "denominazione_estesa": "Fabio Gobbo",
+                                        "disattivato": 1
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Firmatari"
+                ],
+                "summary": "Salvataggio firmatario",
+                "operationId": "idFirmatario",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id del firmatario",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "firmatari",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "chiave": {
+                                        "type": "integer"
+                                    },
+                                    "tipo": {
+                                        "type": "integer"
+                                    },
+                                    "denominazione": {
+                                        "type": "string"
+                                    },
+                                    "denominazione_estesa": {
+                                        "type": "string"
+                                    },
+                                    "disattivato": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Firmatari"
+                ],
+                "summary": "Eliminazione firmatario",
+                "operationId": "idFirmatario",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del firmatario",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il firmatario \u00e8 associato ad una Delibero a ad un Cipe, impossibile eliminarlo."
+                    }
+                }
+            }
+        },
+        "/api/groups": {
+            "get": {
+                "tags": [
+                    "Gruppi"
+                ],
+                "summary": "Lista gruppi",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 8,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "name": "striing",
+                                        "roles": [
+                                            "array"
+                                        ],
+                                        "codice": "0"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Gruppi"
+                ],
+                "summary": "Creazione gruppo",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/groups/{id}": {
+            "get": {
+                "tags": [
+                    "Gruppi"
+                ],
+                "summary": "Singolo gruppo",
+                "operationId": "idGruppo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del gruppo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 8,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": {
+                                    "id": 1,
+                                    "name": "striing",
+                                    "roles": [
+                                        "array"
+                                    ],
+                                    "codice": "0"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Gruppi"
+                ],
+                "summary": "Salvataggio gruppo",
+                "operationId": "idGruppo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del gruppo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "gruppi",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "roles": {
+                                        "type": "array"
+                                    },
+                                    "codice": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Gruppi"
+                ],
+                "summary": "Eliminazione gruppo",
+                "operationId": "idGruppo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del gruppo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il gruppo non e' vuoto, impossibile eliminarlo."
+                    }
+                }
+            }
+        },
+        "/api/authenticate": {
+            "post": {
+                "tags": [
+                    "Autenticazione"
+                ],
+                "summary": "Autenticazione utente",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "username e password dell'utente",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "total_results": 1,
+                                "data": {
+                                    "id": 1,
+                                    "username": "string",
+                                    "firstName": "string",
+                                    "lastName": "string",
+                                    "id_group": "[int]",
+                                    "capabilities": "[string]",
+                                    "token": "string"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Nome utente e/o password inseriti non sono corretti."
+                    }
+                }
+            }
+        },
+        "/api/mittenti": {
+            "get": {
+                "tags": [
+                    "Mittenti"
+                ],
+                "summary": "Lista mittenti",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 147,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "denominazione": "Conferenza Stato Regioni"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Mittenti"
+                ],
+                "summary": "Creazione mittente",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "La denominazione del mittente \u00e8 gi\u00e0 stata utilizzata. Impossibile crearlo."
+                    }
+                }
+            }
+        },
+        "/api/mittenti/{id}": {
+            "get": {
+                "tags": [
+                    "Mittenti"
+                ],
+                "summary": "Singolo mittente",
+                "operationId": "idMittenti",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del mittente",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 147,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "denominazione": "Conferenza Stato Regioni"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Mittenti"
+                ],
+                "summary": "Salvataggio mittente",
+                "operationId": "idMittente",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del mittente",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "mittenti",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "denominazione": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Mittenti"
+                ],
+                "summary": "Eliminazione mittente",
+                "operationId": "idMittenti",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del mittente",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il firmatario \u00e8 associato ad un registro o ad un fascicolo, impossibile eliminarlo."
+                    }
+                }
+            }
+        },
+        "/api/precipe": {
+            "get": {
+                "tags": [
+                    "Pre-Cipe"
+                ],
+                "summary": "Lista Pre-Cipe",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 144,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 151,
+                                        "data": 1496008800000,
+                                        "ufficiale_riunione": "0",
+                                        "public_reserved_status": "",
+                                        "public_reserved_url": "",
+                                        "allegati_TLX": "",
+                                        "allegati_APG": "",
+                                        "allegati_OSS": ""
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pre-Cipe"
+                ],
+                "summary": "Creazione Pre-Cipe e relativi OdG",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/precipe/{id}": {
+            "get": {
+                "tags": [
+                    "Pre-Cipe"
+                ],
+                "summary": "Singolo Pre-Cipe",
+                "operationId": "idPreCipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del Pre-Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 144,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 151,
+                                        "data": 1496008800000,
+                                        "ufficiale_riunione": "0",
+                                        "public_reserved_status": "",
+                                        "public_reserved_url": "",
+                                        "allegati_TLX": "",
+                                        "allegati_APG": "",
+                                        "allegati_OSS": ""
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Pre-Cipe"
+                ],
+                "summary": "Salvataggio Pre-Cipe e relativi OdG",
+                "operationId": "idPreCipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id del Pre-Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "precipe",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "data": {
+                                        "type": "string"
+                                    },
+                                    "ufficiale_riunione": {
+                                        "type": "integer"
+                                    },
+                                    "public_reserved_status": {
+                                        "type": "integer"
+                                    },
+                                    "precipe_odg": {
+                                        "properties": {
+                                            "allegati_TLX": {
+                                                "type": "string"
+                                            },
+                                            "allegati_APG": {
+                                                "type": "string"
+                                            },
+                                            "allegati_OSS": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "id_pre_cipe": {
+                                                    "type": "integer"
+                                                },
+                                                "progressivo": {
+                                                    "type": "integer"
+                                                },
+                                                "id_titolari": {
+                                                    "type": "integer"
+                                                },
+                                                "id_fascicoli": {
+                                                    "type": "integer"
+                                                },
+                                                "id_argomenti": {
+                                                    "type": "integer"
+                                                },
+                                                "id_uffici": {
+                                                    "type": "array"
+                                                },
+                                                "ordine": {
+                                                    "type": "integer"
+                                                },
+                                                "denominazione": {
+                                                    "type": "string"
+                                                },
+                                                "risultanza": {
+                                                    "type": "integer"
+                                                },
+                                                "annotazioni": {
+                                                    "type": "string"
+                                                },
+                                                "stato": {
+                                                    "type": "integer"
+                                                },
+                                                "id_registri": {
+                                                    "type": "array"
+                                                },
+                                                "allegati": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "data": {
+                                                                "type": "string"
+                                                            },
+                                                            "nome": {
+                                                                "type": "string"
+                                                            },
+                                                            "tipo": {
+                                                                "type": "string"
+                                                            },
+                                                            "relURI": {
+                                                                "type": "string"
+                                                            },
+                                                            "dimensione": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Pre-Cipe"
+                ],
+                "summary": "Eliminazione Pre-Cipe",
+                "operationId": "idCPreCipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del Pre-Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il Pre-Cipe contiene degli Ordini del Giorno, impossibile eliminarlo."
+                    }
+                }
+            }
+        },
+        "/api/precipe/{id}/{tipo}/upload": {
+            "post": {
+                "tags": [
+                    "Pre-Cipe"
+                ],
+                "summary": "Upload files di un Pre-Cipe",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del Pre-Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tipo",
+                        "in": "path",
+                        "description": "tipo di allegato [TLX, APG, OSS]",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file e' troppo grande. (max 25 MB)"
+                    }
+                }
+            }
+        },
+        "/api/precipe/{id}/{tipo}/upload/{idallegato}": {
+            "delete": {
+                "tags": [
+                    "Pre-Cipe"
+                ],
+                "summary": "Eliminazione file di un Pre-Cipe",
+                "operationId": "idAllegato",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del Cipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tipo",
+                        "in": "path",
+                        "description": "tipo di allegato [TLX, APG, OSS]",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "idallegato",
+                        "in": "path",
+                        "description": "Id dell'allegato da eliminare",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file non esiste"
+                    }
+                }
+            }
+        },
+        "/api/precipeodg/{id}": {
+            "delete": {
+                "tags": [
+                    "PreCipe OdG"
+                ],
+                "summary": "Eliminazione OdG di un PreCipe",
+                "operationId": "idPreCipeOdg",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'OdG del Precipe",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Utenti"
+                ],
+                "summary": "Lista utenti",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 165,
+                                "limit": 165,
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "userName": "string",
+                                        "firstName": "string",
+                                        "lastName": "string",
+                                        "eMail": "string",
+                                        "id_uffici": 1,
+                                        "cessatoServizio": "0",
+                                        "ip": "string",
+                                        "stazione": "sting",
+                                        "id_ruoli_cipe": 2,
+                                        "registrationDate": "date",
+                                        "id_groups": [
+                                            6
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Utenti"
+                ],
+                "summary": "Creazione utente",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Email e/o username gi\u00e0 in uso."
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Utenti"
+                ],
+                "summary": "Singolo utente",
+                "operationId": "idMittenti",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'utente",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 165,
+                                "limit": 165,
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "userName": "string",
+                                        "firstName": "string",
+                                        "lastName": "string",
+                                        "eMail": "string",
+                                        "id_uffici": 1,
+                                        "cessatoServizio": "0",
+                                        "ip": "string",
+                                        "stazione": "sting",
+                                        "id_ruoli_cipe": 2,
+                                        "registrationDate": "date",
+                                        "id_groups": [
+                                            6
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Utenti"
+                ],
+                "summary": "Salvataggio utente",
+                "operationId": "idUtente",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'utente",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "utenti",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "firstName": {
+                                        "type": "string"
+                                    },
+                                    "lastName": {
+                                        "type": "string"
+                                    },
+                                    "eMail": {
+                                        "type": "string"
+                                    },
+                                    "id_uffici": {
+                                        "type": "array"
+                                    },
+                                    "cessatoServizio": {
+                                        "type": "integer"
+                                    },
+                                    "ip": {
+                                        "type": "string"
+                                    },
+                                    "stazione": {
+                                        "type": "string"
+                                    },
+                                    "id_ruoli_cipe": {
+                                        "type": "array"
+                                    },
+                                    "registrationDate": {
+                                        "type": "string"
+                                    },
+                                    "id_groups": {
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Utenti"
+                ],
+                "summary": "Eliminazione utente",
+                "operationId": "idUtente",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'utente",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/registri": {
+            "get": {
+                "tags": [
+                    "Registri"
+                ],
+                "summary": "Lista registri",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 6939,
+                                "filter_results": 6939,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 7179,
+                                        "data_arrivo": 1494972000000,
+                                        "protocollo_arrivo": "test testtest test",
+                                        "data_mittente": 1494194400000,
+                                        "protocollo_mittente": "9999",
+                                        "oggetto": "test test2",
+                                        "id_amministrazione": 0,
+                                        "mittente": "",
+                                        "codice_titolario": 0,
+                                        "numero_fascicolo": 0,
+                                        "numero_sottofascicolo": 0,
+                                        "denominazione_sottofascicolo": "",
+                                        "proposta_cipe": false,
+                                        "annotazioni": "test test",
+                                        "id_sottofascicoli": 0,
+                                        "id_mittenti": 2,
+                                        "id_titolari": 3,
+                                        "id_fascicoli": 896,
+                                        "id_tags": [
+                                            12,
+                                            14,
+                                            28,
+                                            29,
+                                            30
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Registri"
+                ],
+                "summary": "Creazione registro",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/registri/{id}": {
+            "get": {
+                "tags": [
+                    "Registri"
+                ],
+                "summary": "Singolo registro",
+                "operationId": "idRegistro",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del registro",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 6939,
+                                "filter_results": 6939,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": {
+                                    "id": 7179,
+                                    "data_arrivo": 1494972000000,
+                                    "protocollo_arrivo": "test testtest test",
+                                    "data_mittente": 1494194400000,
+                                    "protocollo_mittente": "9999",
+                                    "oggetto": "test test2",
+                                    "id_amministrazione": 0,
+                                    "mittente": "",
+                                    "codice_titolario": 0,
+                                    "numero_fascicolo": 0,
+                                    "numero_sottofascicolo": 0,
+                                    "denominazione_sottofascicolo": "",
+                                    "proposta_cipe": false,
+                                    "annotazioni": "test test",
+                                    "id_sottofascicoli": 0,
+                                    "id_mittenti": 2,
+                                    "id_titolari": 3,
+                                    "id_fascicoli": 896,
+                                    "id_tags": [
+                                        12,
+                                        14,
+                                        28,
+                                        29,
+                                        30
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Registri"
+                ],
+                "summary": "Salvataggio registro",
+                "operationId": "idRegistro",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id del registro",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "registri",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "data_arrivo": {
+                                        "type": "string"
+                                    },
+                                    "protocollo_arrivo": {
+                                        "type": "integer"
+                                    },
+                                    "data_mittente": {
+                                        "type": "string"
+                                    },
+                                    "protocollo_mittente": {
+                                        "type": "integer"
+                                    },
+                                    "oggetto": {
+                                        "type": "string"
+                                    },
+                                    "mittente": {
+                                        "type": "string"
+                                    },
+                                    "codice_titolario": {
+                                        "type": "integer"
+                                    },
+                                    "numero_fascicolo": {
+                                        "type": "integer"
+                                    },
+                                    "numero_sottofascicolo": {
+                                        "type": "string"
+                                    },
+                                    "denominazione_sottofascicolo": {
+                                        "type": "string"
+                                    },
+                                    "proposta_cipe": {
+                                        "type": "integer"
+                                    },
+                                    "annotazioni": {
+                                        "type": "string"
+                                    },
+                                    "id_sottofascicoli": {
+                                        "type": "integer"
+                                    },
+                                    "id_mittenti": {
+                                        "type": "array"
+                                    },
+                                    "id_titolari": {
+                                        "type": "array"
+                                    },
+                                    "id_fascicoli": {
+                                        "type": "array"
+                                    },
+                                    "id_amministrazioni": {
+                                        "type": "array"
+                                    },
+                                    "id_tags": {
+                                        "type": "array"
+                                    },
+                                    "allegati_DEL": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "string"
+                                                },
+                                                "nome": {
+                                                    "type": "string"
+                                                },
+                                                "tipo": {
+                                                    "type": "string"
+                                                },
+                                                "relURI": {
+                                                    "type": "string"
+                                                },
+                                                "dimensione": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Registri"
+                ],
+                "summary": "Eliminazione registro",
+                "operationId": "idRegistro",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'ufficio",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/registri/{id}/upload": {
+            "post": {
+                "tags": [
+                    "Registri"
+                ],
+                "summary": "Upload files di un registro",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file e' troppo grande. (max 25 MB)"
+                    }
+                }
+            }
+        },
+        "/registri/{id}/upload/{idallegato}": {
+            "delete": {
+                "tags": [
+                    "Registri"
+                ],
+                "summary": "Eliminazione file di un registro",
+                "operationId": "idAllegato",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id del file allegato",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il file non esiste"
+                    }
+                }
+            }
+        },
+        "/api/ruoli_cipe": {
+            "get": {
+                "tags": [
+                    "Ruoli"
+                ],
+                "summary": "Lista Ruoli interni all'Ufficio",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 8,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "codice": 0,
+                                        "denominazione": ""
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ruoli"
+                ],
+                "summary": "Creazione ruolo",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/ruoli_cipe/{id}": {
+            "get": {
+                "tags": [
+                    "Ruoli"
+                ],
+                "summary": "Singolo Ruolo",
+                "operationId": "idRuoli",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del ruolo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 8,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "codice": 0,
+                                        "denominazione": ""
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Ruoli"
+                ],
+                "summary": "Salvataggio ruolo",
+                "operationId": "idRuoli",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id del ruolo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "ruoli",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Ruoli"
+                ],
+                "summary": "Eliminazione ruolo",
+                "operationId": "idRuoli",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del ruolo",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Il ruolo \u00e8 associato ad un utente, impossibile eliminarlo."
+                    }
+                }
+            }
+        },
+        "/api/tags": {
+            "get": {
+                "tags": [
+                    "Etichette"
+                ],
+                "summary": "Lista etichette",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 22,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 2,
+                                        "denominazione": "secondo tags"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Etichette"
+                ],
+                "summary": "Creazione etichetta",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/tags/{id}": {
+            "get": {
+                "tags": [
+                    "Etichette"
+                ],
+                "summary": "Singola etichetta",
+                "operationId": "idTag",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'etichetta",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 22,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 2,
+                                        "denominazione": "secondo tags"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Etichette"
+                ],
+                "summary": "Salvataggio etichetta",
+                "operationId": "idEtichetta",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id dell'etichetta",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "etichette",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "denominazione": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Etichette"
+                ],
+                "summary": "Eliminazione etichetta",
+                "operationId": "idEtichetta",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'etichetta",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "Etichetta \u00e8 associata ad un registro o ad un fascicolo o ad una delibera, impossibile eliminarla."
+                    }
+                }
+            }
+        },
+        "/api/titolari": {
+            "get": {
+                "tags": [
+                    "Titolari"
+                ],
+                "summary": "Lista titolari",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Titolari"
+                ],
+                "summary": "Creazione titolario",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/titolari/{id}": {
+            "get": {
+                "tags": [
+                    "Titolari"
+                ],
+                "summary": "Singolo titolario",
+                "operationId": "idTitolario",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del titolario",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Titolari"
+                ],
+                "summary": "Salvataggio titolario",
+                "operationId": "idTitolario",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id del titolario",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "titolari",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "codice": {
+                                        "type": "integer"
+                                    },
+                                    "denominazione": {
+                                        "type": "string"
+                                    },
+                                    "descrizione": {
+                                        "type": "string"
+                                    },
+                                    "id_uffici": {
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "id": 1,
+                                "codice": 0,
+                                "denominazione": "Documenti di seduta",
+                                "descrizione": "Telex, Appunto generale, passi, etc...",
+                                "id_uffici": 2
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Titolari"
+                ],
+                "summary": "Eliminazione titolario",
+                "operationId": "idTitolario",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id del titolario",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/uffici": {
+            "get": {
+                "tags": [
+                    "Uffici"
+                ],
+                "summary": "Lista uffici",
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 43,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "codice": 1,
+                                        "codice_direzione": "",
+                                        "denominazione": "Ufficio I",
+                                        "ordine_ufficio": "10",
+                                        "disattivo_ufficio": "1",
+                                        "solo_delibere": "0"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Uffici"
+                ],
+                "summary": "Creazione ufficio",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            }
+        },
+        "/api/uffici/{id}": {
+            "get": {
+                "tags": [
+                    "Uffici"
+                ],
+                "summary": "Singolo ufficio",
+                "operationId": "idUfficio",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'ufficio",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo",
+                        "examples": {
+                            "application/json": {
+                                "response": 200,
+                                "total_results": 43,
+                                "limit": "99999",
+                                "offset": 0,
+                                "data": [
+                                    {
+                                        "id": 1,
+                                        "codice": 1,
+                                        "codice_direzione": "",
+                                        "denominazione": "Ufficio I",
+                                        "ordine_ufficio": "10",
+                                        "disattivo_ufficio": "1",
+                                        "solo_delibere": "0"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Uffici"
+                ],
+                "summary": "Salvataggio ufficio",
+                "operationId": "idUfficio",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id dell'ufficio",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "uffici",
+                        "in": "body",
+                        "description": "Richiesta",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "codice": {
+                                        "type": "integer"
+                                    },
+                                    "codice_direzione": {
+                                        "type": "integer"
+                                    },
+                                    "denominazione": {
+                                        "type": "string"
+                                    },
+                                    "ordine_ufficio": {
+                                        "type": "integer"
+                                    },
+                                    "disattivo_ufficio": {
+                                        "type": "integer"
+                                    },
+                                    "solo_delibere": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Uffici"
+                ],
+                "summary": "Eliminazione ufficio",
+                "operationId": "idTitolario",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id dell'ufficio",
+                        "required": true,
+                        "type": "integer",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operazione avvenuta con successo"
+                    },
+                    "401": {
+                        "description": "Autorizzazione negata"
+                    },
+                    "409": {
+                        "description": "L'ufficio ha utenti associati, impossibile eliminarlo."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "tags": [
+        {
+            "name": "Adempimenti",
+            "description": "Tutte le Api degli adempimenti"
+        },
+        {
+            "name": "Amministrazioni",
+            "description": "Tutte le Api delle amministrazioni"
+        },
+        {
+            "name": "Cipe",
+            "description": "Tutte le Api dei Cipe"
+        },
+        {
+            "name": "Cipe OdG",
+            "description": "Cancellazione dell'Ordine del Giorno di un Cipe"
+        },
+        {
+            "name": "Delibere",
+            "description": "Tutte le Api delle delibere"
+        },
+        {
+            "name": "Fascicoli",
+            "description": "Tutte le Api dei Fascicoli"
+        },
+        {
+            "name": "Firmatari",
+            "description": "Tutte le Api dei Firmatari"
+        },
+        {
+            "name": "Gruppi",
+            "description": "Tutte le Api dei Gruppi di utenti"
+        },
+        {
+            "name": "Autenticazione",
+            "description": "Api per autenticazione"
+        },
+        {
+            "name": "Mittenti",
+            "description": "Tutte le Api dei Mittenti"
+        },
+        {
+            "name": "Pre-Cipe",
+            "description": "Tutte le Api dei PreCipe"
+        },
+        {
+            "name": "PreCipe OdG",
+            "description": "Cancellazione dell'Ordine del Giorno di un PreCipe"
+        },
+        {
+            "name": "Utenti",
+            "description": "Tutte le Api degli utenti"
+        },
+        {
+            "name": "Registri",
+            "description": "Tutte le Api dei Registri"
+        },
+        {
+            "name": "Ruoli",
+            "description": "Tutte le Api dei Ruoli interni all'Ufficio"
+        },
+        {
+            "name": "Etichette",
+            "description": "Tutte le Api delle etichette"
+        },
+        {
+            "name": "Titolari",
+            "description": "Tutte le Api dei titolari"
+        },
+        {
+            "name": "Uffici",
+            "description": "Tutte le Api degli Uffici"
+        }
+    ]
+}

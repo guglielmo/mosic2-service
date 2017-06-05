@@ -17,6 +17,30 @@ class MittenteController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
 
+
+	/**
+     * @SWG\Tag(
+     *   name="Mittenti",
+     *   description="Tutte le Api dei Mittenti"
+     * )
+     */
+
+
+    /**
+     * @SWG\Get(
+     *     path="/api/mittenti",
+     *     summary="Lista mittenti",
+     *     tags={"Mittenti"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"response":200,"total_results":147,"limit":"99999","offset":0,"data":{{"id":1,"denominazione":"Conferenza Stato Regioni"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     */
+
+
     /**
      * @Route("/mittenti", name="mittenti")
      * @Method("GET")
@@ -46,6 +70,21 @@ class MittenteController extends Controller
 
 
 
+	/**
+     * @SWG\Post(
+     *     path="/api/mittenti",
+     *     summary="Creazione mittente",
+     *     tags={"Mittenti"},
+     *     produces={"application/json"},
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+     *     @SWG\Response(response=409, description="La denominazione del mittente è già stata utilizzata. Impossibile crearlo."))
+     * )
+     */	
+
+
     /**
      * @Route("/mittenti", name="mittenti_item_create")
      * @Method("POST")
@@ -59,7 +98,7 @@ class MittenteController extends Controller
         $mittente = $repository->findOneByDenominazione($data->denominazione);
         //controllo se già esiste il mittente
         if ($mittente) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Il mittente ".$data->denominazione." è già utilizzato"]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il mittente ".$data->denominazione." è già utilizzato. Impossibile crearlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         }
@@ -90,6 +129,32 @@ class MittenteController extends Controller
 
 
 
+	/**
+     * @SWG\Get(
+     *     path="/api/mittenti/{id}",
+     *     summary="Singolo mittente",
+     *     tags={"Mittenti"},
+     *     operationId="idMittenti",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del mittente",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json":{"response":200,"total_results":147,"limit":"99999","offset":0,"data":{{"id":1,"denominazione":"Conferenza Stato Regioni"}}}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+
+     * )
+     */
+
     /**
      * @Route("/mittenti/{id}", name="mittenti_item")
      * @Method("GET")
@@ -112,6 +177,45 @@ class MittenteController extends Controller
         return $this->setBaseHeaders($response);
     }
 
+
+
+	/**
+     * @SWG\Put(
+     *     path="/api/mittenti/{id}",
+     *     summary="Salvataggio mittente",
+     *     tags={"Mittenti"},
+     *     operationId="idMittente",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del mittente",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+	 *     @SWG\Parameter(
+     *         name="mittenti",
+     *         in="body",
+     *         description="Richiesta",
+     *         required=true,
+	 *         @SWG\Schema(
+	 *				type="array",
+     *              @SWG\Items(
+     *                 type="object",
+     *                 	@SWG\Property(property="id", type="integer"),
+	 *					@SWG\Property(property="denominazione", type="string")
+     *     			)
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *       examples={
+     *       "application/json": {"id":1,"codice":0,"denominazione":"Documenti di seduta","descrizione":"Telex, Appunto generale, passi, etc...","id_uffici":2}
+     *       }
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"))
+     * )
+     */	
 
     /**
      * @Route("/mittenti/{id}", name="mittenti_item_save")
@@ -150,7 +254,30 @@ class MittenteController extends Controller
     }
 
 
-
+	
+	/**
+     * @SWG\Delete(
+     *     path="/api/mittenti/{id}",
+     *     summary="Eliminazione mittente",
+     *     tags={"Mittenti"},
+     *     operationId="idMittenti",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id del mittente",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo"
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+	 *     @SWG\Response(response=409, description="Il firmatario è associato ad un registro o ad un fascicolo, impossibile eliminarlo.")
+     * )
+     */  
+	
     /**
      * @Route("/mittenti/{id}", name="mittenti_item_delete")
      * @Method("DELETE")
@@ -168,7 +295,7 @@ class MittenteController extends Controller
         $fascicoli = $repositoryFascicoli->findOneByIdTitolari($id);
 
         if ($registri || $fascicoli) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "Il titolario non e' vuoto, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il firmatario è associato ad un registro o ad un fascicolo, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {
