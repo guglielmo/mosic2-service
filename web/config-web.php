@@ -13,5 +13,5 @@ if (mysqli_connect_errno($db)) {
 // imposto il time limit dello script a 2 ore
 set_time_limit(7200);
 
-$filePath = "service/";
+$filePath = "";
 
