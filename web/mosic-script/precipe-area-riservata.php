@@ -20,23 +20,7 @@ ob_start('mb_output_handler');
 setlocale(LC_CTYPE, 'it_IT');
 
 
-// DB INFO
-$indirizzoHost = "localhost";
-$nomeUser = "mosic_symfony";
-$password = "_um3c1pdf_";
-$nomeDb= "mosic_symfony";
-
-//CONNESSIONE AL DB
-$db = mysqli_connect( $indirizzoHost, $nomeUser, $password, $nomeDb);
-mysqli_set_charset($db,"utf8");
-
-if (mysqli_connect_errno($db)) {      
-    echo "Errore in connessione al DB: ".mysqli_connect_error(); 
-}
-
-error_reporting(0);
-
-
+require_once "../config-web.php";
 
 include_once('function.php');
 // imposto il time limit dello script a 2 ore
