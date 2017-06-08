@@ -4,12 +4,11 @@ namespace UserBundle\Entity;
 
 class Costanti {
 
-    const PATH_ALLEGATI_REGISTRI = "/var/www/clients/client1/web11/web/web/files/REGISTRO_MOSIC/";
-    const PATH_ASSOLUTO_ALLEGATI = "/var/www/mosic2/service/web";
-    const URL_ALLEGATI_REGISTRI = "files/REGISTRO_MOSIC";
-    const URL_ALLEGATI_PRECIPE = "files/RIUNIONI_PRECIPE";
-    const URL_ALLEGATI_DELIBERE = "files/DELIBERE";
+    const PATH_IN_DATABASE = "service/";
+    const PATH_IN_SERVER = "";
 
-
+    const URL_ALLEGATI_REGISTRI = Costanti::PATH_IN_DATABASE . "files/REGISTRO_MOSIC";
+    const URL_ALLEGATI_PRECIPE = Costanti::PATH_IN_DATABASE . "files/RIUNIONI_PRECIPE";
+    const URL_ALLEGATI_DELIBERE = Costanti::PATH_IN_DATABASE . "files/DELIBERE";
 
 }

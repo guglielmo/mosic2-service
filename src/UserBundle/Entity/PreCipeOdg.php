@@ -107,6 +107,7 @@ class PreCipeOdg
         $this->progressivo = 0;
         $this->risultanza = 0;
         $this->stato = 0;
+        $this->annotazioni = "";
     }
 
     /**

@@ -530,11 +530,13 @@ class RegistriController extends Controller
 
         $path_file = Costanti::URL_ALLEGATI_REGISTRI . "/" . $codice_titolario . " - " . $denominazione_titolario . "/" . $codice_fascicolo . "/";
 
-        //$response = new Response(json_encode($path_file), Response::HTTP_OK);
-        //return $this->setBaseHeaders($response, "upload");
 
 
         $file = $request->files->get('file');
+
+
+        //$response = new Response(json_encode($path_file), Response::HTTP_OK);
+        //return $this->setBaseHeaders($response, "upload");
 
         //controllo se è un file che è stato già caricato
         $check_file = explode("-", $file->getClientOriginalName());
@@ -595,13 +597,20 @@ class RegistriController extends Controller
         }
 
 
+
+
+
         if (!is_numeric($check_file[0])) {
             try {
                 $em->persist($allegatoRel);
                 $em->flush(); //esegue query
 
+                //$response = new Response(json_encode(Costanti::PATH_ASSOLUTO_ALLEGATI. $path_file), Response::HTTP_OK);
+                //return $this->setBaseHeaders($response, "upload");
+
+
                 //copio fisicamente il file
-                $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+                $file->move($_SERVER['DOCUMENT_ROOT'] . "/" . Costanti::PATH_IN_SERVER . $path_file, $nome_file);
 
             } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
                 echo "Exception Found - " . $ex->getMessage() . "<br/>";

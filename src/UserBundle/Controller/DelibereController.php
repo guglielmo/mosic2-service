@@ -980,7 +980,7 @@ class DelibereController extends Controller
             $em->flush(); //esegue query
 
             //copio fisicamente il file
-            $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+            $file->move($_SERVER['DOCUMENT_ROOT'] . "/" . Costanti::PATH_IN_SERVER . $path_file, $nome_file);
 
         } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
             echo "Exception Found - " . $ex->getMessage() . "<br/>";

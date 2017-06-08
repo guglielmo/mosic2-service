@@ -1,19 +1,8 @@
 <?php
-    $sqlname='localhost';
-    $username='mosic_symfony';
-    $password='_um3c1pdf_';
-    $db='mosic_symfony';
 
-
-    $db= mysqli_connect("$sqlname", "$username","$password","$db") or die(mysqli_error());
-    if (mysqli_connect_errno($db)) {
-        echo "Errore in connessione al DB: ".mysqli_connect_error();
-    }
+    require_once "../config-web.php";
 
     require_once "function.php";
-    // imposto il time limit dello script a 2 ore
-    set_time_limit(7200);
-
 
 
     if (isset($_REQUEST['step1'])) {
@@ -23,70 +12,70 @@
     
     if (isset($_REQUEST['step2'])) {
 
-//        createTipoArgomentiCipe();
-//        createTipoEsitiCipe();
-//
-//        createFirmatari();
-//        createTipoFirmatari();
-//        createRuoliCipe(); //per gli utenti
-//
-//        createLastUpdates(); //per gli utenti
-//        createGroups();
-//
-//        ################################ REGISTRI / FASCICOLI
-//        createTitolari();
-//        createMittenti();
-//        createRegistri();
-//
-//        createAmministrazioni();
-//
-//        createEsitiCipe();
-//        createFascicoli();
+        createTipoArgomentiCipe();
+        createTipoEsitiCipe();
+
+        createFirmatari();
+        createTipoFirmatari();
+        createRuoliCipe(); //per gli utenti
+
+        createLastUpdates(); //per gli utenti
+        createGroups();
+
+        ################################ REGISTRI / FASCICOLI
+        createTitolari();
+        createMittenti();
+        createRegistri();
+
+        createAmministrazioni();
+
+        createEsitiCipe();
+        createFascicoli();
         setIdFascicoliRegistri();
-//
-//        setRelAmministrazioniFascicoli();
-//        setRelAmministrazioniRegistri();
-//
-//        ################################ PRECIPE
-//        raggruppaPreCipe();
-//
-//        createArgomenti();
-//        createUffici();
-//        createRisultanze();
-//
-//        setOrdiniPreCipe();
-//        setRegistriPrecipe();
-//        setUfficiPreCipeOdg();
-//
-//        ################################ CIPE
-//        raggruppaCipe();
-//        setOrdiniCipe();
-//        setRegistriCipe();
-//        setUfficiCipeOdg();
-//
-//        ################################ DELIBERE
-//        setDelibere();
-//        setUfficiDelibere();
-//        setCorteDeiContiDelibere();
-//        setFunzionariDelibere();
-//        setDateDelibereGiorni();
-//
-//
-//        ################################ UTENTI
-//        createUtenti();
-//
-//        ################################ ADEMPIMENTI
-//        createAdempimenti(); // da aggiornare l'utente!
-        
+
+        setRelAmministrazioniFascicoli();
+        setRelAmministrazioniRegistri();
+
+        ################################ PRECIPE
+        raggruppaPreCipe();
+
+        createArgomenti();
+        createUffici();
+        createRisultanze();
+
+        setOrdiniPreCipe();
+        setRegistriPrecipe();
+        setUfficiPreCipeOdg();
+
+        ################################ CIPE
+        raggruppaCipe();
+        setOrdiniCipe();
+        setRegistriCipe();
+        setUfficiCipeOdg();
+
+        ################################ DELIBERE
+        setDelibere();
+        setUfficiDelibere();
+        setCorteDeiContiDelibere();
+        setFunzionariDelibere();
+        setDateDelibereGiorni();
+
+
+        ################################ UTENTI
+        createUtenti();
+
+        ################################ ADEMPIMENTI
+        createAdempimenti(); // da aggiornare l'utente!
+      
         $fineStep2 = "true";
     }
     
     if (isset($_REQUEST['step3'])) {
-        //renameFile("../files/REGISTRO_MOSIC");
-        gestioneFilesRegistri("../files/REGISTRO_MOSIC"); //(+ sottofasicoli) và usata sul server in quanto ci devono essere fisicamente i file
-        gestioneFilesPreCipe("../files/RIUNIONI_PRECIPE");
-        gestioneFilesCipe("../files/SEDUTE_CIPE");
-        setAllegatiDelibere("../files/DELIBERE/per-anno");
+        renameFile("../files/REGISTRO_MOSIC");
+        gestioneFilesRegistri($filePath , "../files/REGISTRO_MOSIC"); //(+ sottofasicoli) và usata sul server in quanto ci devono essere fisicamente i file
+        gestioneFilesPreCipe($filePath, "../files/RIUNIONI_PRECIPE");
+        gestioneFilesCipe($filePath, "../files/SEDUTE_CIPE");
+        setAllegatiDelibere($filePath, "../files/DELIBERE/per-anno");
         $fineStep3 = "true";
     }
     

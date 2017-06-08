@@ -100,6 +100,7 @@ class PreCipeOdgController extends Controller
         $precipeodg->setDenominazione($data->denominazione);
         $precipeodg->setRisultanza($data->risultanza);
         $precipeodg->setAnnotazioni($data->annotazioni);
+        if (isset($data->annotazioni)) { $precipeodg->setAnnotazioni($data->annotazioni);}
         $precipeodg->setStato($data->stato);
 
         //aggiorna la date della modifica nella tabella msc_last_updates

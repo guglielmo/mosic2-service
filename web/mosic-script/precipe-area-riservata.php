@@ -145,12 +145,12 @@ $urlRiservata =json_decode($server_output)->url;
 $idRiservata =json_decode($server_output)->id;
 
 
-if ($info['http_code'] == 200) {
+//if ($info['http_code'] == 200) {
     //aggiorniamo lo stato del precipe (nel db)
     aggiornaURL($argv[1], $urlRiservata);
-} else {
+//} else {
     //aggiornaStato($argv[1], "Errore nella get dell'url dell'area riservata del precipe.");
-}
+//}
 
 
 
@@ -250,12 +250,12 @@ $urlRiservata =json_decode($server_output)->url;
 $idRiservata =json_decode($server_output)->id;
 
 
-if ($info['http_code'] == 200) {
+//if ($info['http_code'] == 200) {
     //aggiorniamo lo stato del precipe (nel db)
     aggiornaURL($argv[1], $urlRiservata);
-} else {
-    aggiornaStato($argv[1], "Errore nella get dell'url dell'area riservata del precipe.");
-}
+//} else {
+    //aggiornaStato($argv[1], "Errore nella get dell'url dell'area riservata del precipe.");
+//}
 
 
 

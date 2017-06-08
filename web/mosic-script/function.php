@@ -25,7 +25,7 @@ function aggiornaStato($id, $stato) {
 function aggiornaURL($id, $stato) {
     global $db;
 
-    $query = 'UPDATE `msc_precipe` SET `public_reserved_URL`= "' . $stato . '"  WHERE id = "' . $id . '"';
+    $query = 'UPDATE `msc_precipe` SET `public_reserved_URL`= "' . $stato . '", `ufficiale_riunione` = 1  WHERE id = "' . $id . '"';
     $res2 = mysqli_query($db, $query);
 }
 
@@ -40,7 +40,7 @@ function aggiornaStatoCipe($id, $stato) {
 function aggiornaURLCipe($id, $stato) {
     global $db;
 
-    $query = 'UPDATE `msc_cipe` SET `public_reserved_URL`= "' . $stato . '"  WHERE id = "' . $id . '"';
+    $query = 'UPDATE `msc_cipe` SET `public_reserved_URL`= "' . $stato . '", `ufficiale_riunione` = 1    WHERE id = "' . $id . '"';
     $res2 = mysqli_query($db, $query);
 }
 

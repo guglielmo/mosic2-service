@@ -152,7 +152,7 @@ class CipeOdg
         $this->TipoArgomenti = 0;
         $this->ordine = 0;
         $this->denominazione = 0;
-        $this->annotazioni = 0;
+        $this->annotazioni = "";
     }
 
     /**

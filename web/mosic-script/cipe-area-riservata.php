@@ -137,12 +137,12 @@ $urlRiservata =json_decode($server_output)->url;
 $idRiservata =json_decode($server_output)->id;
 
 
-if ($info['http_code'] == 200) {
+//if ($info['http_code'] == 200) {
     //aggiorniamo lo stato del cipe (nel db)
     aggiornaURLCipe($argv[1], $urlRiservata);
-} else {
+//} else {
     //aggiornaStatoCipe($argv[1], "Errore nella get dell'url dell'area riservata del cipe.");
-}
+//}
 
 
 
@@ -244,12 +244,12 @@ $urlRiservata =json_decode($server_output)->url;
 $idRiservata =json_decode($server_output)->id;
 
 
-if ($info['http_code'] == 200) {
+//if ($info['http_code'] == 200) {
     //aggiorniamo lo stato del cipe (nel db)
     aggiornaURLCipe($argv[1], $urlRiservata);
-} else {
-    aggiornaStatoCipe($argv[1], "Errore nella get dell'url dell'area riservata del cipe.");
-}
+//} else {
+//    aggiornaStatoCipe($argv[1], "Errore nella get dell'url dell'area riservata del cipe.");
+//}
 
 
 

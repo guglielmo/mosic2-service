@@ -354,7 +354,7 @@ class PreCipeController extends Controller
             $precipeodg->setOrdine($value->ordine);
             $precipeodg->setDenominazione($value->denominazione);
             $precipeodg->setRisultanza($value->risultanza);
-            $precipeodg->setAnnotazioni($value->annotazioni);
+            if (isset($value->annotazioni)) { $precipeodg->setAnnotazioni($value->annotazioni);}
             //$precipeodg->setStato($value->stato);
 
             if (!isset($value->id)) {
@@ -454,7 +454,8 @@ class PreCipeController extends Controller
             $precipeodg->setOrdine($value->ordine);
             $precipeodg->setDenominazione($value->denominazione);
             $precipeodg->setRisultanza($value->risultanza);
-            $precipeodg->setAnnotazioni($value->annotazioni);
+            if (isset($value->annotazioni)) { $precipeodg->setAnnotazioni($value->annotazioni);}
+
             //$precipeodg->setStato($value->stato);
 
             $em->persist($precipeodg);
@@ -669,7 +670,7 @@ class PreCipeController extends Controller
             $em->flush(); //esegue query
 
             //copio fisicamente il file
-            $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+            $file->move($_SERVER['DOCUMENT_ROOT'] . "/" . Costanti::PATH_IN_SERVER . $path_file, $nome_file);
 
         } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
             echo "Exception Found - " . $ex->getMessage() . "<br/>";
@@ -863,6 +864,7 @@ class PreCipeController extends Controller
                 "response" => 204,
                 "data" => array("message" => "Documenti e o.d.g. rimossi dall'area riservata")
             );
+            $precipe->setufficialeRiunione("");
             $precipe->setPublicReservedStatus("");
             $precipe->setPublicReservedUrl("");
             $em->persist($precipe);
@@ -903,7 +905,7 @@ class PreCipeController extends Controller
         $repositoryRelRegistriOdg = $this->getDoctrine()->getRepository('UserBundle:RelRegistriOdg');
 
         $limite_ordini =0;
-        $array_no_doppioni = "";
+        $array_no_doppioni = [];
         foreach ($ordini as $i => $v) {
             if ($limite_ordini < 100000) {
                 $limite_ordini++;
@@ -930,7 +932,7 @@ class PreCipeController extends Controller
                         $arrayTemp->id_registri = $registri_precipe;
                 }
 
-                $array_allegati = "";
+                $array_allegati = [];
                 //ricavo gli allegati per ogni registro nella lista $arrayTemp->id_registri
                 foreach ($arrayTemp->id_registri as $i => $v) {
                     $repositoryRegistri = $this->getDoctrine()->getRepository('UserBundle:Registri');
@@ -987,7 +989,7 @@ class PreCipeController extends Controller
 
 
 
-        $command = "/opt/php-5.6.25/bin/php -f mosic-script/precipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
+        $command = "/usr/bin/php -f mosic-script/precipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
         exec( "$command > /dev/null &", $arrOutput );
 
 

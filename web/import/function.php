@@ -110,7 +110,7 @@ function setUfficiDelibere()
     }
 }
 
-function setAllegatiDelibere($path)
+function setAllegatiDelibere($filePath, $path)
 {
     global $db;
     //$path = "../files/DELIBERE/per-anno";
@@ -156,7 +156,7 @@ function setAllegatiDelibere($path)
                     echo $filename . " ------>>>> " . $explod_path[4] . " ----- anno: " . $anno . " ----- numero: " . $numero . " ----- Delibera: " . $idDelibera . " ----- " .$tipo. "<br>";
 
 
-                    $query = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'". $filename ."')";
+                    $query = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'". $filePath . $filename ."')";
                     echo $query . "<br>";
                     $res2 = mysqli_query($db, $query);
 
@@ -1334,7 +1334,7 @@ function updateIdTitolari()
 }
 
 
-function gestioneFilesRegistri($path)
+function gestioneFilesRegistri($filePath, $path)
 {
     global $db;
     //$path = "../files/REGISTRO_MOSIC";
@@ -1360,7 +1360,7 @@ function gestioneFilesRegistri($path)
             }
 
             //inserisco nella tabella allegati Data e $item
-            $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'". $filename ."')";
+            $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'". $filePath . $filename ."')";
             $res2 = mysqli_query($db, $query2);
             //echo $query2."<br>";
 
@@ -1391,7 +1391,7 @@ function setSottofascicoliDenominazioneSuRegistri() {
 
 
 
-function gestioneFilesPreCipe($path)
+function gestioneFilesPreCipe($filePath, $path)
 {
     global $db;
     //$path = "../files/RIUNIONI_PRECIPE";
@@ -1413,7 +1413,7 @@ function gestioneFilesPreCipe($path)
                 echo $filename . "<br>";
 
                 //inserisco nella tabella allegati Data e $item
-                $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filename . "')";
+                $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filePath . $filename . "')";
                 $res2 = mysqli_query($db, $query2);
 
                 $last_id = mysqli_insert_id($db); //ultimo id inserito
@@ -1445,7 +1445,7 @@ function gestioneFilesPreCipe($path)
 
 
 
-function gestioneFilesCipe($path)
+function gestioneFilesCipe($filePath, $path)
 {
     global $db;
     //$path = "../files/SEDUTE_CIPE";
@@ -1466,7 +1466,7 @@ function gestioneFilesCipe($path)
                 echo $filename . "<br>";
 
                 //inserisco nella tabella allegati Data e $item
-                $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filename . "')";
+                $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filePath . $filename . "')";
                 $res2 = mysqli_query($db, $query2);
 
                 $last_id = mysqli_insert_id($db); //ultimo id inserito

@@ -384,7 +384,8 @@ class CipeController extends Controller
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
             $cipeodg->setRisultanza($value->risultanza);
-            $cipeodg->setAnnotazioni($value->annotazioni);
+            if (isset($value->annotazioni)) { $cipeodg->setAnnotazioni($value->annotazioni);}
+
             //$precipeodg->setStato($value->stato);
 
             if (!isset($value->id)) {
@@ -489,7 +490,7 @@ class CipeController extends Controller
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
             $cipeodg->setRisultanza($value->risultanza);
-            $cipeodg->setAnnotazioni($value->annotazioni);
+            if (isset($value->annotazioni)) { $cipeodg->setAnnotazioni($value->annotazioni);}
             //$precipeodg->setStato($value->stato);
 
             $em->persist($cipeodg);
@@ -701,7 +702,7 @@ class CipeController extends Controller
             $em->flush(); //esegue query
 
             //copio fisicamente il file
-            $file->move(Costanti::PATH_ASSOLUTO_ALLEGATI. "/" . $path_file, $nome_file);
+            $file->move($_SERVER['DOCUMENT_ROOT'] . "/" . Costanti::PATH_IN_SERVER . $path_file, $nome_file);
 
         } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
             echo "Exception Found - " . $ex->getMessage() . "<br/>";
@@ -806,7 +807,7 @@ class CipeController extends Controller
     /**
      * @Route("/areariservata/cipe/{id}", name="cipe_area_riservata")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_AREARISERVATA_CIPE')")
+     * //@Security("is_granted('ROLE_READ_AREARISERVATA_CIPE')")
      */
     public function precipeAreaRiservataAction(Request $request, $id)
     {
@@ -915,7 +916,7 @@ class CipeController extends Controller
 
 
 
-        $command = "/opt/php-5.6.25/bin/php -f mosic-script/cipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
+        $command = "/usr/bin/php -f mosic-script/cipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
         exec( "$command > /dev/null &", $arrOutput );
 
 
@@ -936,8 +937,117 @@ class CipeController extends Controller
 
 
     /**
+     * @Route("/areariservata/cipe/{id}", name="cipe_area_riservata_delete")
+     * @Method("DELETE")
+     * //@Security("is_granted('ROLE_DELETE_AREARISERVATA_PRECIPE')")
+     */
+    public function cipeAreaRiservataDeleteAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('UserBundle:Cipe');
+        $cipe = $repository->findOneById($id);
+
+
+
+        //#########
+        //######### chiamo l'api per il LOGIN
+        //#########
+        $browser = $this->container->get('buzz');
+
+        $fields = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
+        $response = $browser->submit("http://area-riservata.mosic2.celata.com/api-token-auth/", $fields, "POST");
+        $content = json_decode($response->getContent());
+        //$response = json_decode($response->getContent());
+        $token = $content->token;
+
+
+        //Aggiorno lo stato del cipe
+        if ($response->getStatusCode() == 200) {
+            $response_array = array("success" => ["code" => 200, "message" => "Procedura presa in carico"]);
+            $cipe->setPublicReservedStatus(json_encode($response_array));
+
+            $em->persist($cipe);
+            $em->flush(); //esegue l'update
+
+            $response_array = array(
+                "response" => Response::HTTP_OK,
+                "data" => "Procedura presa in carico"
+            );
+
+        } else {
+            $response_array = array("error" => ["code" => 401, "message" => "Errore nella login"]);
+            $cipe->setPublicReservedStatus(json_encode($response_array));
+
+            $em->persist($cipe);
+            $em->flush(); //esegue l'update
+
+            $response_array = array(
+                "response" => 401,
+                "data" => "Errore nella login"
+            );
+            $response = new Response(json_encode($response_array), Response::HTTP_OK);
+            return $this->setBaseHeaders($response);
+        }
+
+
+        //#########
+        //######### chiamo l'api per prendere l'url dell'area riservata
+        //#########
+        $browser = $this->container->get('buzz');
+
+        $headers = array(
+            'Accept' => '*/*',
+            'Content-Type' => 'application/json',
+            'Cache-Control' => 'no-cache',
+            'Authorization' => 'JWT ' . $token
+            // Add any other header needed by the API
+        );
+        $response = $browser->get("http://area-riservata.mosic2.celata.com/seduta/cipe/". $id, $headers);
+        $content = json_decode($response->getContent());
+        $id_cipe = $content->id;
+
+
+
+
+        //#########
+        //######### chiamo l'api della delete
+        //#########
+        $browser = $this->container->get('buzz');
+
+        $headers = array(
+            'Accept' => '*/*',
+            'Cache-Control' => 'no-cache',
+            'Authorization' => 'JWT ' . $token
+            // Add any other header needed by the API
+        );
+
+        $response = $browser->delete("http://area-riservata.mosic2.celata.com/cipe/". $id_cipe, $headers);
+
+        //Aggiorno lo stato del cipe
+        if ($response->getStatusCode() == 204) {
+            $response_array = array(
+                "response" => 204,
+                "data" => array("message" => "Documenti e o.d.g. rimossi dall'area riservata")
+            );
+            $cipe->setufficialeRiunione("");
+            $cipe->setPublicReservedStatus("");
+            $cipe->setPublicReservedUrl("");
+            $em->persist($cipe);
+            $em->flush(); //esegue l'update
+        } else {
+            $response_array = array("error" => ["code" => 409, "message" => "Errore nella rimozione del cipe"]);
+        }
+
+        $response = new Response(json_encode($response_array), Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+
+
+    }
+
+
+    /**
      * @Route("/areariservata/cipe/check/{id}", name="cipe_area_riservata_check")
-     * @Security("is_granted('ROLE_READ_AREARISERVATA_CIPE_CHECK')")
+     * //@Security("is_granted('ROLE_READ_AREARISERVATA_CIPE_CHECK')")
      * @Method("GET")
      */
     public function cipeAreaRiservataCheckAction(Request $request, $id) {
@@ -1030,7 +1140,7 @@ class CipeController extends Controller
 
     
     /**
-     * @Route("/areariservata/cipe/{id}", name="PreCipeAreaRiservata")
+     * @Route("/areariservata/cipe/{id}", name="CipeAreaRiservata")
      * @Method("OPTIONS")
      */
     public function cipeAreaRiservataOptions(Request $request, $id)
