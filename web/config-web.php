@@ -17,8 +17,8 @@ set_time_limit(7200);
 
 
 
-$filePath = "service/";
-//$filePath = "";
+//$filePath = "service/";
+$filePath = "";
 
 // PATH PER AREA RISERVATA
 // $area_ris_base_url = "http://area-riservata.mosic2.celata.com";
