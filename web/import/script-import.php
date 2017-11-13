@@ -12,7 +12,7 @@ if (isset($_REQUEST['step1'])) {
     if (isset($_REQUEST['step2'])) {
         $tempo1 = microtime(true);
 
-        $return = createTipoArgomentiCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
+       $return = createTipoArgomentiCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = createTipoEsitiCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = createFirmatari(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = createTipoFirmatari(); if(isset($return)) { $fineStep2 = $return; goto jump;}

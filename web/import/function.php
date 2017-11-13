@@ -1087,8 +1087,8 @@ function createUtenti() {
     $saltADMIN = uniqid(mt_rand());
     $passwordADMIN = password_hash('Tick-Tack-Tock!1000$"', PASSWORD_DEFAULT);
     $login = "mosic-admin@governo.it";
-    $queryUser = "INSERT INTO `fos_user` (`id`, `username`, `email`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `username_canonical`, `email_canonical`, `firstName`, `lastName`, `created`, `id_uffici`, `cessato_servizio`, `ip`, `stazione`, `id_ruoli_cipe`) VALUES
-(1,  '".$login."', '".$login."', 1, '".$saltADMIN."',  '".$passwordADMIN."', '2017-11-01 11:48:39', 0, 0, '2020-12-31 00:00:00', NULL, '2018-12-31 00:00:00', 'a:0:{}', 0, '2020-12-31 00:00:00', '".$login."', '".$login."', 'Mosic', 'Admin', '2017-01-01 00:00:00', 1, '0', '1111', 'qqqq', 2);";
+    $queryUser = "INSERT INTO `fos_user` (`id`, `username`, `email`, `enabled`, `salt`, `password`, `confirmation_token`, `password_requested_at`, `roles`, `username_canonical`, `email_canonical`, `firstName`, `lastName`, `created`, `id_uffici`, `cessato_servizio`, `ip`, `stazione`, `id_ruoli_cipe`) VALUES
+(1,  '".$login."', '".$login."', 1, '".$saltADMIN."',  '".$passwordADMIN."', NULL, '2018-12-31 00:00:00', 'a:0:{}', '".$login."', '".$login."', 'Mosic', 'Admin', '2017-01-01 00:00:00', 1, '0', '1111', 'qqqq', 2);";
     $resUser = mysqli_query($db, $queryUser);
     if (!$resUser) { return mysqli_error($db); }
 
