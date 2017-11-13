@@ -56,7 +56,12 @@ class RegistrationController extends BaseController
         $user = $userManager->createUser();
         
         $data = json_decode($request->getContent(), true); //converto il json in array
-
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["userName","firstName","lastName","password","repeatPassword","id_groups","id_uffici","id_ruoli_cipe"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
         $user->setPassword($data['password']);
         $encoder = $this->container->get('security.password_encoder');
         $encoded = $encoder->encodePassword($user, $data['password']);
@@ -326,7 +331,13 @@ class RegistrationController extends BaseController
         $em = $this->getDoctrine()->getManager();
     
         $data = json_decode($request->getContent());
-        
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["userName","firstName","lastName","password","repeatPassword","id_groups","id_uffici","id_ruoli_cipe"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $repository = $em->getRepository('UserBundle:User');
         $user = $repository->findOneBy(["id" => $data->id]);
         

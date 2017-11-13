@@ -17,7 +17,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use FOS\UserBundle\Model\UserInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use FOS\UserBundle\Util\CanonicalFieldsUpdater;
+use FOS\UserBundle\Util\PasswordUpdaterInterface;
 
 /**
  * Doctrine listener updating the canonical username and password fields.
@@ -27,26 +28,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class UserListener implements EventSubscriber
 {
-    /**
-     * @var \FOS\UserBundle\Model\UserManagerInterface
-     */
-    private $userManager;
+    private $passwordUpdater;
+    private $canonicalFieldsUpdater;
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * Constructor
-     *
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+    public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater)
     {
-        $this->container = $container;
+        $this->passwordUpdater = $passwordUpdater;
+        $this->canonicalFieldsUpdater = $canonicalFieldsUpdater;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscribedEvents()
     {
         return array(
@@ -56,7 +49,7 @@ class UserListener implements EventSubscriber
     }
 
     /**
-     * Pre persist listener based on doctrine common
+     * Pre persist listener based on doctrine common.
      *
      * @param LifecycleEventArgs $args
      */
@@ -69,7 +62,7 @@ class UserListener implements EventSubscriber
     }
 
     /**
-     * Pre update listener based on doctrine common
+     * Pre update listener based on doctrine common.
      *
      * @param LifecycleEventArgs $args
      */
@@ -89,12 +82,8 @@ class UserListener implements EventSubscriber
      */
     private function updateUserFields(UserInterface $user)
     {
-        if (null === $this->userManager) {
-            $this->userManager = $this->container->get('fos_user.user_manager');
-        }
-
-        $this->userManager->updateCanonicalFields($user);
-        $this->userManager->updatePassword($user);
+        $this->canonicalFieldsUpdater->updateCanonicalFields($user);
+        $this->passwordUpdater->hashPassword($user);
     }
 
     /**

@@ -31,7 +31,7 @@ class Fascicoli
      * @ORM\Column(name="codice_repertorio", type="integer")
      */
     private $codiceRepertorio;
-		
+
     /**
      * @var int
      *
@@ -60,7 +60,7 @@ class Fascicoli
      * @ORM\Column(name="argomento", type="string", length=255)
      */
     private $argomento;
-		
+
     /**
      * @var int
      *
@@ -75,7 +75,7 @@ class Fascicoli
      * @ORM\Column(name="data_magazzino", type="date")
      */
     private $dataMagazzino;
-		
+
     /**
      * @var \Date
      *
@@ -89,14 +89,14 @@ class Fascicoli
      * @ORM\Column(name="data_cipe2", type="date")
      */
     private $dataCipe2;
-		
-		/**
+
+    /**
      * @var \int
      *
-     * @ORM\Column(name="archiviazione_repertorio", type="integer")
+     * @ORM\Column(name="archiviazione_repertorio", type="string", length=255)
      */
     private $archiviazioneRepertorio;
-		
+
     /**
      * @var \string
      *
@@ -104,29 +104,28 @@ class Fascicoli
      */
     private $annotazioni;
 
-		/**
+    /**
      * @var \int
      *
      * @ORM\Column(name="id_numeri_delibera", type="integer")
      */
     private $idNumeriDelibera;
 
-		/**
+    /**
      * @var \int
      *
      * @ORM\Column(name="id_esiti_cipe", type="integer")
      */
     private $idEsitiCipe;
 
-		/**
+    /**
      * @var \int
      *
      * @ORM\Column(name="id_archivio_repertorio", type="integer")
      */
     private $idArchivioRepertorio;
 
-		
-    
+
     public function __construct()
     {
 
@@ -138,11 +137,9 @@ class Fascicoli
         $this->dataCipe2 = new \DateTime("0000-00-00");
         $this->idNumeriDelibera = 0;
         $this->idEsitiCipe = 0;
-        $this->idArchivioRepertorio = 0;
+        $this->idArchivioRepertorio = "";
         $this->idAmministrazione = new ArrayCollection();
     }
-   
-
 
 
 
@@ -375,7 +372,7 @@ class Fascicoli
     /**
      * Set archiviazioneRepertorio
      *
-     * @param integer $archiviazioneRepertorio
+     * @param string $archiviazioneRepertorio
      *
      * @return Fascicoli
      */
@@ -389,7 +386,7 @@ class Fascicoli
     /**
      * Get archiviazioneRepertorio
      *
-     * @return integer
+     * @return string
      */
     public function getArchiviazioneRepertorio()
     {

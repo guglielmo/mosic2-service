@@ -65,6 +65,7 @@ class DelibereController extends Controller
      * @Security("is_granted('ROLE_READ_DELIBERE')")
      */
     public function delibereAction(Request $request) {
+
         //prendo i parametri get
         $limit  = ($request->query->get('limit') != "") ? $request->query->get('limit') : 200;
         $offset = ($request->query->get('offset') != "") ? $request->query->get('offset') : 0;
@@ -75,23 +76,45 @@ class DelibereController extends Controller
         $argomento = ($request->query->get('argomento') != "") ? $request->query->get('argomento') : '';
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:Delibere');
+
+
+
+$mscListaDelibere = microtime(true);
         $delibere = $repository->listaDelibere($limit, $offset, $sortBy, $sortType, $argomento);
+$mscListaDelibere = microtime(true) - $mscListaDelibere;
+//echo "<br><br> listaDelibere (cioè la query): ". $mscListaDelibere . ' seconds';
+
+
+$mscSerialize = microtime(true);
 
         //converte i risultati in json
-        $serialize = $this->serialize($delibere);
+        //$serialize = $this->serialize($delibere);
+        $serialize = json_encode($delibere, JSON_NUMERIC_CHECK);
+$mscSerialize = microtime(true) - $mscSerialize;
+//echo "<br><br> Serialize (cioè converte i dati in json): ". $mscSerialize . ' seconds';
 
+
+$mscFormatDate = microtime(true);
+
+        //crea gli array di id separati con la virgola Es [1,2,3]
         $serialize = $this->mergeRelDelibereAll($serialize);
+        //formatta le date
+//        $serialize = $this->formatDateJsonArrayCustom2($serialize, array('data', 'data_consegna', 'data_segretario_ritorno', 'data_segretario_invio',
+//                                                            'data_presidente_ritorno', 'data_presidente_invio', 'data_registrazione_cc',
+//                                                            'data_invio_cc', 'data_invio_gu', 'data_gu','data_direttore_invio','data_direttore_ritorno',
+//                                                            'data_mef_invio','data_mef_ritorno'));
 
-        $serialize = $this->formatDateJsonArrayCustom2($serialize, array('data', 'data_consegna', 'data_segretario_ritorno', 'data_segretario_invio',
-                                                            'data_presidente_ritorno', 'data_presidente_invio', 'data_registrazione_cc',
-                                                            'data_invio_cc', 'data_invio_gu', 'data_gu','data_direttore_invio','data_direttore_ritorno',
-                                                            'data_mef_invio','data_mef_ritorno'));
-        $serialize = $this->setFaseProceduraleDelibere($serialize);
         $serialize = $this->setCastDelibere($serialize, "all");
+
+$mscFormatDate = microtime(true) - $mscFormatDate;
+//echo "<br><br> Formatta le date e altro..". $mscFormatDate . ' seconds';
 
 
         $em = $this->getDoctrine()->getManager();
         $giorni = array();
+
+$mscForSerialize = microtime(true);
+
         foreach ($serialize as $item => $value) {
             $tagArrayConvert = array_map('intval', explode(',', $serialize[$item]["id_tags"]));
             $serialize[$item]["id_tags"] = ($tagArrayConvert[0] == 0 ? array() : $tagArrayConvert);
@@ -198,6 +221,15 @@ class DelibereController extends Controller
             "offset" => $offset,
             "data" => $serialize,
         );
+
+
+$mscForSerialize = microtime(true) - $mscForSerialize;
+//echo "<br><br> Ciclo che esegue operazioni per aggiungere dati al json: ". $mscForSerialize . ' seconds';
+
+//echo "<br><br> TOTALE: ". ($mscListaDelibere + $mscSerialize + $mscFormatDate + $mscForSerialize) . " seconds";
+
+//exit;
+
 
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -308,8 +340,9 @@ class DelibereController extends Controller
         $serialize[0]['allegati_ALL'] = $allegatiALL;
 
         foreach ($delibereCC as $item => $value) {
-            $value->numero_rilievo = (int) $value->numero_rilievo;
-            $value->numero_risposta = (int) $value->numero_risposta;
+            if ($value->numero_rilievo == "") {$value->numero_rilievo = null;} else {$value->numero_rilievo = (int) $value->numero_rilievo;}
+            if ($value->numero_risposta == "") {$value->numero_risposta = null;} else {$value->numero_risposta = (int) $value->numero_risposta;}
+            if ($value->giorni_rilievo == "") {$value->giorni_rilievo = null;} else {$value->giorni_rilievo = (int) $value->giorni_rilievo;}
         }
 
         $serialize[0]['rilievi_CC'] = $delibereCC;
@@ -453,6 +486,12 @@ class DelibereController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["numero","argomento","data","id_uffici"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $repository = $em->getRepository('UserBundle:Delibere');
         $delibere = $repository->findOneBy(array("id" =>$data->id));
@@ -476,49 +515,56 @@ class DelibereController extends Controller
 
 
         $delibere->setNumero($data->numero);
-        if ($data->data != null){ $delibere->setData(new \DateTime($this->formatDateStringCustom($data->data))); } else {$delibere->setData(null); }
+        if ($data->data != null){ $delibere->setData(new \DateTime($this->zulu_to_rome($data->data))); } else {$delibere->setData(null); }
         $delibere->setIdStato($data->id_stato);
         $delibere->setArgomento($data->argomento);
         $delibere->setFinanziamento($data->finanziamento);
         $delibere->setNote($data->note);
         $delibere->setNoteServizio($data->note_servizio);
         $delibere->setScheda($data->scheda);
-        if ($data->data_consegna != null){ $delibere->setDataConsegna(new \DateTime($this->formatDateStringCustom($data->data_consegna)));} else {$delibere->setDataConsegna(null); }
+        if ($data->data_consegna != null){ $delibere->setDataConsegna(new \DateTime($this->zulu_to_rome($data->data_consegna)));} else {$delibere->setDataConsegna(null); }
         $delibere->setIdDirettore($data->id_direttore);
-        if ($data->data_direttore_invio   != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->formatDateStringCustom($data->data_direttore_invio)));} else {$delibere->setDataDirettoreInvio(null); }
-        if ($data->data_direttore_ritorno != null){ $delibere->setDataDirettoreRitorno(new \DateTime($this->formatDateStringCustom($data->data_direttore_ritorno)));} else {$delibere->setDataDirettoreRitorno(null); }
+        if ($data->data_direttore_invio   != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->zulu_to_rome($data->data_direttore_invio)));} else {$delibere->setDataDirettoreInvio(null); }
+        if ($data->data_direttore_ritorno != null){ $delibere->setDataDirettoreRitorno(new \DateTime($this->zulu_to_rome($data->data_direttore_ritorno)));} else {$delibere->setDataDirettoreRitorno(null); }
         $delibere->setNoteDirettore($data->note_direttore);
         $delibere->setInvioMef($data->invio_mef);
-        if ($data->data_mef_invio != null){ $delibere->setDataMefInvio(new \DateTime($this->formatDateStringCustom($data->data_mef_invio)));} else {$delibere->setDataMefInvio(null); }
-        if ($data->data_mef_pec != null){ $delibere->setDataMefPec(new \DateTime($this->formatDateStringCustom($data->data_mef_pec))); } else {$delibere->setDataMefPec(null); }
-        if ($data->data_mef_ritorno != null){ $delibere->setDataMefRitorno(new \DateTime($this->formatDateStringCustom($data->data_mef_ritorno)));} else {$delibere->setDataMefRitorno(null); }
+        if ($data->data_mef_invio != null){ $delibere->setDataMefInvio(new \DateTime($this->zulu_to_rome($data->data_mef_invio)));} else {$delibere->setDataMefInvio(null); }
+        if ($data->data_mef_pec != null){ $delibere->setDataMefPec(new \DateTime($this->zulu_to_rome($data->data_mef_pec))); } else {$delibere->setDataMefPec(null); }
+        if ($data->data_mef_ritorno != null){ $delibere->setDataMefRitorno(new \DateTime($this->zulu_to_rome($data->data_mef_ritorno)));} else {$delibere->setDataMefRitorno(null); }
         $delibere->setIdSegretario($data->id_segretario);
-        if ($data->data_segretario_invio != null){ $delibere->setDataSegretarioInvio(new \DateTime($this->formatDateStringCustom($data->data_segretario_invio)));} else {$delibere->setDataSegretarioInvio(null); }
-        if ($data->data_segretario_ritorno != null){ $delibere->setDataSegretarioRitorno(new \DateTime($this->formatDateStringCustom($data->data_segretario_ritorno)));} else {$delibere->setDataSegretarioRitorno(null); }
+        if ($data->data_segretario_invio != null){ $delibere->setDataSegretarioInvio(new \DateTime($this->zulu_to_rome($data->data_segretario_invio)));} else {$delibere->setDataSegretarioInvio(null); }
+        if ($data->data_segretario_ritorno != null){ $delibere->setDataSegretarioRitorno(new \DateTime($this->zulu_to_rome($data->data_segretario_ritorno)));} else {$delibere->setDataSegretarioRitorno(null); }
         $delibere->setNoteSegretario($data->note_segretario);
         $delibere->setIdPresidente($data->id_presidente);
-        if ($data->data_presidente_invio != null){ $delibere->setDataPresidenteInvio(new \DateTime($this->formatDateStringCustom($data->data_presidente_invio)));} else {$delibere->setDataPresidenteInvio(null); }
-        if ($data->data_presidente_ritorno != null){ $delibere->setDataPresidenteRitorno(new \DateTime($this->formatDateStringCustom($data->data_presidente_ritorno)));} else {$delibere->setDataPresidenteRitorno(null); }
+        if ($data->data_presidente_invio != null){ $delibere->setDataPresidenteInvio(new \DateTime($this->zulu_to_rome($data->data_presidente_invio)));} else {$delibere->setDataPresidenteInvio(null); }
+        if ($data->data_presidente_ritorno != null){ $delibere->setDataPresidenteRitorno(new \DateTime($this->zulu_to_rome($data->data_presidente_ritorno)));} else {$delibere->setDataPresidenteRitorno(null); }
         $delibere->setNotePresidente($data->note_presidente);
-        if ($data->data_invio_cc != null){ $delibere->setDataInvioCC(new \DateTime($this->formatDateStringCustom($data->data_invio_cc)));} else {$delibere->setDataInvioCC(null); }
+        if ($data->data_invio_cc != null){ $delibere->setDataInvioCC(new \DateTime($this->zulu_to_rome($data->data_invio_cc)));} else {$delibere->setDataInvioCC(null); }
         $delibere->setNumeroCC($data->numero_cc);
-        if ($data->data_registrazione_cc != null){ $delibere->setDataRegistrazioneCC(new \DateTime($this->formatDateStringCustom($data->data_registrazione_cc)));} else {$delibere->setDataRegistrazioneCC(null); }
+        if ($data->data_registrazione_cc != null){ $delibere->setDataRegistrazioneCC(new \DateTime($this->zulu_to_rome($data->data_registrazione_cc)));} else {$delibere->setDataRegistrazioneCC(null); }
         $delibere->setIdRegistroCC($data->id_registro_cc);
         $delibere->setFoglioCC($data->foglio_cc);
         $delibere->setTipoRegistrazioneCC($data->tipo_registrazione_cc);
         $delibere->setNoteCC($data->note_cc);
-        if ($data->data_invio_p != null){ $delibere->setDataInvioP(new \DateTime($this->formatDateStringCustom($data->data_invio_p)));} else {$delibere->setDataInvioP(null); }
-        if ($data->data_invio_gu != null){ $delibere->setDataInvioGU(new \DateTime($this->formatDateStringCustom($data->data_invio_gu)));} else {$delibere->setDataInvioGU(null); }
+        if ($data->data_invio_p != null){ $delibere->setDataInvioP(new \DateTime($this->zulu_to_rome($data->data_invio_p)));} else {$delibere->setDataInvioP(null); }
+        if ($data->data_invio_gu != null){ $delibere->setDataInvioGU(new \DateTime($this->zulu_to_rome($data->data_invio_gu)));} else {$delibere->setDataInvioGU(null); }
         $delibere->setNumeroInvioGU($data->numero_invio_gu);
         $delibere->setTipoGU($data->tipo_gu);
-        if ($data->data_gu != null){ $delibere->setDataGU(new \DateTime($this->formatDateStringCustom($data->data_gu)));} else {$delibere->setDataGU(null); }
+        if ($data->data_gu != null){ $delibere->setDataGU(new \DateTime($this->zulu_to_rome($data->data_gu)));} else {$delibere->setDataGU(null); }
         $delibere->setNumeroGU($data->numero_gu);
-        if ($data->data_ec_gu != null){ $delibere->setDataEcGU(new \DateTime($this->formatDateStringCustom($data->data_ec_gu)));} else {$delibere->setDataEcGU(null); }
+        if ($data->data_ec_gu != null){ $delibere->setDataEcGU(new \DateTime($this->zulu_to_rome($data->data_ec_gu)));} else {$delibere->setDataEcGU(null); }
         $delibere->setNumeroEcGU($data->numero_ec_gu);
-        if ($data->data_co_gu != null){ $delibere->setDataCoGU(new \DateTime($this->formatDateStringCustom($data->data_co_gu)));} else {$delibere->setDataCoGU(null); }
+        if ($data->data_co_gu != null){ $delibere->setDataCoGU(new \DateTime($this->zulu_to_rome($data->data_co_gu)));} else {$delibere->setDataCoGU(null); }
         $delibere->setNumeroCoGU($data->numero_co_gu);
         $delibere->setPubblicazioneGU($data->pubblicazione_gu);
         $delibere->setNoteGU($data->note_gu);
+
+        $delibere->setNoteMef($data->note_mef);
+        $delibere->setNoteFirma($data->note_firma);
+        $delibere->setNoteP($data->note_p);
+
+
+        $delibere->setSituazione($this->setFaseProceduraleDelibere($data));
 
 
         $em->persist($delibere); //create
@@ -554,17 +600,17 @@ class DelibereController extends Controller
             $em->remove($DelibereCC_delete);
         }
         foreach ($data->rilievi_CC as $item) {
-
             $relDelibereCC = new DelibereCC();
             $relDelibereCC->setIdDelibere($id);
-            $relDelibereCC->setTipoDocumento($item->tipo_documento);
-            if ($item->data_rilievo != null){ $relDelibereCC->setDataRilievo(new \DateTime($this->formatDateStringCustom($item->data_rilievo)));} else {$relDelibereCC->setDataRilievo(null); }
-            $relDelibereCC->setNumeroRilievo($item->numero_rilievo);
-            if ($item->data_risposta != null){ $relDelibereCC->setDataRisposta(new \DateTime($this->formatDateStringCustom($item->data_risposta)));} else {$relDelibereCC->setDataRisposta(null); }
-            $relDelibereCC->setNumeroRisposta($item->numero_risposta);
-            $relDelibereCC->setGiorniRilievo($item->giorni_rilievo);
-            //$relDelibereCC->setTipoRilievo(0);
-            $relDelibereCC->setNoteRilievo($item->note_rilievo);
+
+            if ($item->tipo_documento != null){ $relDelibereCC->setTipoDocumento($item->tipo_documento);} else {$relDelibereCC->setTipoDocumento(0); }
+            if ($item->data_rilievo != null){ $relDelibereCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));} else {$relDelibereCC->setDataRilievo(null); }
+            if (isset($item->numero_rilievo)) { $relDelibereCC->setNumeroRilievo($item->numero_rilievo); } else { $relDelibereCC->setNumeroRilievo(''); }
+            if ($item->data_risposta != null){ $relDelibereCC->setDataRisposta(new \DateTime($this->zulu_to_rome($item->data_risposta)));} else {$relDelibereCC->setDataRisposta(new \DateTime("0000-00-00")); }
+            if ($item->data_rilievo != null){ $relDelibereCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));} else {$relDelibereCC->setDataRilievo(new \DateTime("0000-00-00")); }
+            if (isset($item->numero_risposta)) { $relDelibereCC->setNumeroRisposta($item->numero_risposta); } else { $relDelibereCC->setNumeroRisposta(''); }
+            if (isset($item->giorni_rilievo) && $item->giorni_rilievo != null) { $relDelibereCC->setGiorniRilievo($item->giorni_rilievo); } else { $relDelibereCC->setGiorniRilievo(0); }
+            if (isset($item->note_rilievo)) { $relDelibereCC->setNoteRilievo($item->note_rilievo); } else { $relDelibereCC->setNoteRilievo(""); }
 
             $em->persist($relDelibereCC); //create
         }
@@ -647,53 +693,65 @@ class DelibereController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["numero","argomento","data","id_uffici"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $delibere = new Delibere();
 
         $delibere->setNumero($data->numero);
-        if ($data->data != null){ $delibere->setData(new \DateTime($this->formatDateStringCustom($data->data))); }
+        if ($data->data != null){ $delibere->setData(new \DateTime($this->zulu_to_rome($data->data))); }
         $delibere->setIdStato($data->id_stato);
         $delibere->setArgomento($data->argomento);
         $delibere->setFinanziamento($data->finanziamento);
         $delibere->setNote($data->note);
         $delibere->setNoteServizio($data->note_servizio);
         $delibere->setScheda($data->scheda);
-        if ($data->data_consegna != null){ $delibere->setDataConsegna(new \DateTime($this->formatDateStringCustom($data->data_consegna)));}
+        if ($data->data_consegna != null){ $delibere->setDataConsegna(new \DateTime($this->zulu_to_rome($data->data_consegna)));}
         $delibere->setIdDirettore($data->id_direttore);
-        if ($data->data_direttore_invio != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->formatDateStringCustom($data->data_direttore_invio)));}
-        if ($data->data_direttore_ritorno != null){ $delibere->setDataDirettoreRitorno(new \DateTime($this->formatDateStringCustom($data->data_direttore_ritorno)));}
+        if ($data->data_direttore_invio != null){ $delibere->setDataDirettoreInvio(new \DateTime($this->zulu_to_rome($data->data_direttore_invio)));}
+        if ($data->data_direttore_ritorno != null){ $delibere->setDataDirettoreRitorno(new \DateTime($this->zulu_to_rome($data->data_direttore_ritorno)));}
         $delibere->setNoteDirettore($data->note_direttore);
         $delibere->setInvioMef($data->invio_mef);
-        if ($data->data_mef_invio != null){ $delibere->setDataMefInvio(new \DateTime($this->formatDateStringCustom($data->data_mef_invio)));}
-        if ($data->data_mef_pec != null){ $delibere->setDataMefPec(new \DateTime($this->formatDateStringCustom($data->data_mef_pec))); }
-        if ($data->data_mef_ritorno != null){ $delibere->setDataMefRitorno(new \DateTime($this->formatDateStringCustom($data->data_mef_ritorno)));}
+        if ($data->data_mef_invio != null){ $delibere->setDataMefInvio(new \DateTime($this->zulu_to_rome($data->data_mef_invio)));}
+        if ($data->data_mef_pec != null){ $delibere->setDataMefPec(new \DateTime($this->zulu_to_rome($data->data_mef_pec))); }
+        if ($data->data_mef_ritorno != null){ $delibere->setDataMefRitorno(new \DateTime($this->zulu_to_rome($data->data_mef_ritorno)));}
         $delibere->setIdSegretario($data->id_segretario);
-        if ($data->data_segretario_invio != null){ $delibere->setDataSegretarioInvio(new \DateTime($this->formatDateStringCustom($data->data_segretario_invio)));}
-        if ($data->data_segretario_ritorno != null){ $delibere->setDataSegretarioRitorno(new \DateTime($this->formatDateStringCustom($data->data_segretario_ritorno)));}
+        if ($data->data_segretario_invio != null){ $delibere->setDataSegretarioInvio(new \DateTime($this->zulu_to_rome($data->data_segretario_invio)));}
+        if ($data->data_segretario_ritorno != null){ $delibere->setDataSegretarioRitorno(new \DateTime($this->zulu_to_rome($data->data_segretario_ritorno)));}
         $delibere->setNoteSegretario($data->note_segretario);
         $delibere->setIdPresidente($data->id_presidente);
-        if ($data->data_presidente_invio != null){ $delibere->setDataPresidenteInvio(new \DateTime($this->formatDateStringCustom($data->data_presidente_invio)));}
-        if ($data->data_presidente_ritorno != null){ $delibere->setDataPresidenteRitorno(new \DateTime($this->formatDateStringCustom($data->data_presidente_ritorno)));}
+        if ($data->data_presidente_invio != null){ $delibere->setDataPresidenteInvio(new \DateTime($this->zulu_to_rome($data->data_presidente_invio)));}
+        if ($data->data_presidente_ritorno != null){ $delibere->setDataPresidenteRitorno(new \DateTime($this->zulu_to_rome($data->data_presidente_ritorno)));}
         $delibere->setNotePresidente($data->note_presidente);
-        if ($data->data_invio_cc != null){ $delibere->setDataInvioCC(new \DateTime($this->formatDateStringCustom($data->data_invio_cc)));}
+        if ($data->data_invio_cc != null){ $delibere->setDataInvioCC(new \DateTime($this->zulu_to_rome($data->data_invio_cc)));}
         $delibere->setNumeroCC($data->numero_cc);
-        if ($data->data_registrazione_cc != null){ $delibere->setDataRegistrazioneCC(new \DateTime($this->formatDateStringCustom($data->data_registrazione_cc)));}
+        if ($data->data_registrazione_cc != null){ $delibere->setDataRegistrazioneCC(new \DateTime($this->zulu_to_rome($data->data_registrazione_cc)));}
         $delibere->setIdRegistroCC($data->id_registro_cc);
         $delibere->setFoglioCC($data->foglio_cc);
         $delibere->setTipoRegistrazioneCC($data->tipo_registrazione_cc);
         $delibere->setNoteCC($data->note_cc);
-        if ($data->data_invio_p != null){ $delibere->setDataInvioP(new \DateTime($this->formatDateStringCustom($data->data_invio_p)));}
-        if ($data->data_invio_gu != null){ $delibere->setDataInvioGU(new \DateTime($this->formatDateStringCustom($data->data_invio_gu)));}
+        if ($data->data_invio_p != null){ $delibere->setDataInvioP(new \DateTime($this->zulu_to_rome($data->data_invio_p)));}
+        if ($data->data_invio_gu != null){ $delibere->setDataInvioGU(new \DateTime($this->zulu_to_rome($data->data_invio_gu)));}
         $delibere->setNumeroInvioGU($data->numero_invio_gu);
         $delibere->setTipoGU($data->tipo_gu);
-        if ($data->data_gu != null){ $delibere->setDataGU(new \DateTime($this->formatDateStringCustom($data->data_gu)));}
+        if ($data->data_gu != null){ $delibere->setDataGU(new \DateTime($this->zulu_to_rome($data->data_gu)));}
         $delibere->setNumeroGU($data->numero_gu);
-        if ($data->data_ec_gu != null){ $delibere->setDataEcGU(new \DateTime($this->formatDateStringCustom($data->data_ec_gu)));}
+        if ($data->data_ec_gu != null){ $delibere->setDataEcGU(new \DateTime($this->zulu_to_rome($data->data_ec_gu)));}
         $delibere->setNumeroEcGU($data->numero_ec_gu);
-        if ($data->data_co_gu != null){ $delibere->setDataCoGU(new \DateTime($this->formatDateStringCustom($data->data_co_gu)));}
+        if ($data->data_co_gu != null){ $delibere->setDataCoGU(new \DateTime($this->zulu_to_rome($data->data_co_gu)));}
         $delibere->setNumeroCoGU($data->numero_co_gu);
         $delibere->setPubblicazioneGU($data->pubblicazione_gu);
         $delibere->setNoteGU($data->note_gu);
+
+        $delibere->setNoteMef($data->note_mef);
+        $delibere->setNoteFirma($data->note_firma);
+        $delibere->setNoteP($data->note_p);
+
+        $delibere->setSituazione($this->setFaseProceduraleDelibere($data));
 
         $em->persist($delibere);
         $em->flush(); //esegue query
@@ -821,13 +879,13 @@ class DelibereController extends Controller
     }
 
 
-	/**
+    /**
      * @SWG\Post(
      *     path="/delibere/{id}/{tipo}/upload",
      *     summary="Upload files di una Delibera",
      *     tags={"Delibere"},
      *     produces={"application/json"},
-	 *     @SWG\Parameter(
+     *     @SWG\Parameter(
      *         name="id",
      *         in="path",
      *         description="id della Delibera",
@@ -835,7 +893,7 @@ class DelibereController extends Controller
      *         type="integer",
      *         @SWG\Items(type="integer"),
      *     ),
-	 *     @SWG\Parameter(
+     *     @SWG\Parameter(
      *         name="tipo",
      *         in="path",
      *         description="tipo di allegato [GU, CC, DEL, ALL, MEF]",
@@ -847,16 +905,16 @@ class DelibereController extends Controller
      *       response="200", description="Operazione avvenuta con successo",
      *     ),
      *     @SWG\Response(response=401, description="Autorizzazione negata"),
-	 *     @SWG\Response(response=409, description="Il file e' troppo grande. (max 25 MB)"),
-	 *     @SWG\Response(response=409, description="Tipo di file non permesso (solo PDF)")
+     *     @SWG\Response(response=409, description="Il file e' troppo grande. (max 25 MB)"),
+     *     @SWG\Response(response=409, description="Tipo di file non permesso (solo PDF)")
      * )
      */
 
-
     /**
-     * @Route("/api/delibere/{id}/{tipo}/upload", name="uploadDelibere")
+     * @Route("/delibere/{id}/{tipo}/upload", name="uploadDelibere")
      * @Method("POST")
      */
+
     public function uploadDelibereAction(Request $request, $id, $tipo)
     {
 
@@ -869,7 +927,7 @@ class DelibereController extends Controller
         $numeroDelibere = $delibere->getNumero();
 
         if ($tipo == "ALL" || $tipo == "DEL") {
-            $path_file = Costanti::URL_ALLEGATI_DELIBERE . "per-anno/" . $dataDelibere . "/";
+            $path_file = Costanti::URL_ALLEGATI_DELIBERE . "/per-anno/" . $dataDelibere . "/";
             $file = $request->files->get('file');
             $nome_file = $file->getClientOriginalName();
             $nome_file = "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) . "-" . $tipo . "-" . $this->sostituisciAccenti($nome_file);
@@ -968,7 +1026,16 @@ class DelibereController extends Controller
             return $this->setBaseHeaders($response);
         }
         //controllo su i tipi di file ammessi
-        if (!in_array($file->getMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword'))) {
+        if (!in_array($file->getMimeType(), array(
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            '"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            '"image/tiff'))) {
             $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
@@ -1132,7 +1199,16 @@ class DelibereController extends Controller
             return $this->setBaseHeaders($response);
         }
         //controllo su i tipi di file ammessi
-        if (!in_array($file->getMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword'))) {
+        if (!in_array($file->getMimeType(), array(
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            '"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            '"image/tiff'))) {
             $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);

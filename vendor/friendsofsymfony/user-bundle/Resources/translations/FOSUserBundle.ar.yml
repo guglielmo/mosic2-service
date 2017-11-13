@@ -9,12 +9,14 @@ group:
         updated: 'تم تحديث المجموعة'
         created: 'تم إنشاء المجموعة'
         deleted: 'تم حـذف المجموعة'
+
 security:
     login:
         username: 'إسم المستخدم'
         password: 'كلمة المرور'
         remember_me: 'حفظ البيانات'
         submit: 'تسجيل دخول'
+
 profile:
     show:
         username: 'إسم المستخدم'
@@ -23,10 +25,12 @@ profile:
         submit: تحديث
     flash:
         updated: 'تم تحديث الملف الشخصي'
+
 change_password:
     submit: 'تغيير كلمة المرور'
     flash:
         success: 'تم تغيير كلمة المرور'
+
 registration:
     check_email: 'لقد تم إرسال رسالة إلكترونية إلى %email% تحتوي على رابط يجب إتباعه لتفعيل حسابك الشخصي.'
     confirmed: 'تهانينا %username%، لقد تم تفعيل حسابك.'
@@ -36,12 +40,24 @@ registration:
         user_created: 'تم إنشاء حسابك بنجاح'
     email:
         subject: '%username%! مرحبا'
-        message: "مرحبا %username%!\n\n\n لتفعيل حسابك يرجى إتباع الرابط التالي %confirmationUrl%\n\nشكرا،\nفريق العمل.\n"
+        message: |
+            مرحبا %username%!
+
+
+             لتفعيل حسابك يرجى إتباع الرابط التالي %confirmationUrl%
+
+             الرابط يمكن إستخدامه مرة واحدة فقط لتفعيل حسابك
+
+            شكرا،
+            فريق العمل.
+
 resetting:
-    password_already_requested: 'لقد تم طلب كلمة المرور لهذا المستخدم خلال ال ٢٤ ساعة الماضية'
-    check_email: 'لقد تم إرسال رسالة إلكترونية إلى %email%  يحتوي على رابط يجب إتباعه لإعادة تعيين كلمة المرور الخاصة بك.'
+    check_email: |
+        لقد تم إرسال رسالة إلكترونية تحتوي على رابط يجب الضغط عليه لإعادة ضبط كلمة المرور الخاصة بك.
+        ملحوظة: يمكنك إعادة ضبط كلمة المرور الخاصة بك خلال %tokenLifetime% ساعة
+
+        يرجى التحقق من ملف السبام إذا لم تستقبل الرسالة الإلكترونية قريبا أو أعد المحاولة
     request:
-        invalid_username: 'إسم المستخدم او  البريد الالكتروني "%username%" غير موجود'
         username: 'إسم المستخدم او البريد الالكتروني'
         submit: 'إعادة ضبط كلمة المرور'
     reset:
@@ -50,12 +66,20 @@ resetting:
         success: 'تم إعادة ضبط كلمة المرور بنجاح'
     email:
         subject: 'إعادة ضبط كلمة المرور'
-        message: "مرحبا %username%!\n\nلإعادة ضبط كلمة المرور يرجى إتباع الرابط التالي %confirmationUrl%\n\nشكرا،\nفريق العمل.\n"
+        message: |
+            مرحبا %username%!
+
+            لإعادة ضبط كلمة المرور يرجى إتباع الرابط التالي %confirmationUrl%
+
+            شكرا،
+            فريق العمل.
+
 layout:
     logout: خروج
     login: دخول
     register: تسجيل
     logged_in_as: 'تم الدخول بإسم %username%'
+
 form:
     group_name: 'إسم المجموعة'
     username: 'إسم المستخدم'

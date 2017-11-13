@@ -399,6 +399,12 @@ class Delibere
      */
     private $noteGU;
 
+    /**
+     * @var int
+     * @ORM\Column(name="situazione", type="integer", nullable=true)
+     */
+    private $situazione;
+    
 
 
     /**
@@ -2041,5 +2047,29 @@ class Delibere
     public function getTipoRegistrazioneCC()
     {
         return $this->tipoRegistrazioneCC;
+    }
+
+    /**
+     * Set situazione
+     *
+     * @param integer $situazione
+     *
+     * @return Delibere
+     */
+    public function setSituazione($situazione)
+    {
+        $this->situazione = $situazione;
+
+        return $this;
+    }
+
+    /**
+     * Get situazione
+     *
+     * @return integer
+     */
+    public function getSituazione()
+    {
+        return $this->situazione;
     }
 }

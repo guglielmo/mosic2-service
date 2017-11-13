@@ -11,6 +11,9 @@ Invitation model
 First we need to add the invitation entity. An invitation is represented
 by a unique code/identifier generated in the constructor::
 
+    <?php
+    // src/AppBundle/Entity/Invitation.php
+
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
@@ -67,6 +70,9 @@ by a unique code/identifier generated in the constructor::
 
 Next we map our ``Invitation`` entity to our ``User`` with a one-to-one association::
 
+    <?php
+    // src/AppBundel/Entity/User.php
+
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
@@ -100,6 +106,9 @@ Add invitation to RegistrationFormType
 --------------------------------------
 
 Override the default registration form with your own::
+
+    <?php
+    // src/AppBundle/Form/RegistrationFormType.php
 
     namespace AppBundle\Form;
 
@@ -138,6 +147,9 @@ Override the default registration form with your own::
 
 Create the invitation field::
 
+    <?php
+    // src/AppBundle/Form/InvitationFormType.php
+
     namespace AppBundle\Form;
 
     use Symfony\Component\Form\AbstractType;
@@ -160,8 +172,6 @@ Create the invitation field::
             $builder->addModelTransformer($this->invitationTransformer);
         }
 
-        // Or setDefaultOptions for Symfony 2.6 and older (which has
-        // a different method signature involving OptionsResolverInterface)
         public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults(array(
@@ -191,6 +201,9 @@ Create the invitation field::
     }
 
 Create the custom data transformer::
+
+    <?php
+    // src/AppBundle/Form/DataTransformer/InvitationToCodeTransformer.php
 
     namespace AppBundle\Form\DataTransformer;
 

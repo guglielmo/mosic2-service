@@ -14,7 +14,8 @@ namespace FOS\UserBundle;
 use Doctrine\Bundle\CouchDBBundle\DependencyInjection\Compiler\DoctrineCouchDBMappingsPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
-use FOS\UserBundle\DependencyInjection\Compiler\RegisterMappingsPass;
+use FOS\UserBundle\DependencyInjection\Compiler\InjectRememberMeServicesPass;
+use FOS\UserBundle\DependencyInjection\Compiler\InjectUserCheckerPass;
 use FOS\UserBundle\DependencyInjection\Compiler\ValidationPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -25,10 +26,15 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class FOSUserBundle extends Bundle
 {
+    /**
+     * @param ContainerBuilder $container
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
         $container->addCompilerPass(new ValidationPass());
+        $container->addCompilerPass(new InjectUserCheckerPass());
+        $container->addCompilerPass(new InjectRememberMeServicesPass());
 
         $this->addRegisterMappingsPass($container);
     }
@@ -39,7 +45,7 @@ class FOSUserBundle extends Bundle
     private function addRegisterMappingsPass(ContainerBuilder $container)
     {
         $mappings = array(
-            realpath(__DIR__ . '/Resources/config/doctrine-mapping') => 'FOS\UserBundle\Model',
+            realpath(__DIR__.'/Resources/config/doctrine-mapping') => 'FOS\UserBundle\Model',
         );
 
         if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {

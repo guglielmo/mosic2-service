@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2013 Johannes M. Schmitt <schmittjoh@gmail.com>
+ * Copyright 2016 Johannes M. Schmitt <schmittjoh@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,20 @@
 
 namespace JMS\Serializer\Handler;
 
-use JMS\Serializer\YamlSerializationVisitor;
-use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\GraphNavigator;
-use JMS\Serializer\GenericSerializationVisitor;
+use JMS\Serializer\JsonSerializationVisitor;
+use JMS\Serializer\VisitorInterface;
+use JMS\Serializer\XmlSerializationVisitor;
+use JMS\Serializer\YamlSerializationVisitor;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Translation\TranslatorInterface;
-use JMS\Serializer\XmlSerializationVisitor;
 
 class FormErrorHandler implements SubscribingHandlerInterface
 {
     private $translator;
+
+    private $translationDomain;
 
     public static function getSubscribingMethods()
     {
@@ -50,9 +52,10 @@ class FormErrorHandler implements SubscribingHandlerInterface
         return $methods;
     }
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator = null, $translationDomain = 'validators')
     {
         $this->translator = $translator;
+        $this->translationDomain = $translationDomain;
     }
 
     public function serializeFormToXml(XmlSerializationVisitor $visitor, Form $form, array $type)
@@ -118,14 +121,19 @@ class FormErrorHandler implements SubscribingHandlerInterface
 
     private function getErrorMessage(FormError $error)
     {
-        if (null !== $error->getMessagePluralization()) {
-            return $this->translator->transChoice($error->getMessageTemplate(), $error->getMessagePluralization(), $error->getMessageParameters(), 'validators');
+
+        if ($this->translator === null){
+            return $error->getMessage();
         }
 
-        return $this->translator->trans($error->getMessageTemplate(), $error->getMessageParameters(), 'validators');
+        if (null !== $error->getMessagePluralization()) {
+            return $this->translator->transChoice($error->getMessageTemplate(), $error->getMessagePluralization(), $error->getMessageParameters(), $this->translationDomain);
+        }
+
+        return $this->translator->trans($error->getMessageTemplate(), $error->getMessageParameters(), $this->translationDomain);
     }
 
-    private function convertFormToArray(GenericSerializationVisitor $visitor, Form $data)
+    private function convertFormToArray(VisitorInterface $visitor, Form $data)
     {
         $isRoot = null === $visitor->getRoot();
 

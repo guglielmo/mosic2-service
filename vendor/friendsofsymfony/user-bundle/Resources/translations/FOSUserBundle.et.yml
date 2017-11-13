@@ -5,6 +5,10 @@ group:
         name: 'Grupi nimi'
     new:
         submit: 'Uus grupp'
+    flash:
+        updated: 'Grupp muudetud.'
+        created: 'Uus grupp loodud.'
+        deleted: 'Grupp kustutatud.'
 security:
     login:
         username: Kasutajanimi
@@ -17,24 +21,55 @@ profile:
         email: E-mail
     edit:
         submit: Uuenda
+    flash:
+        updated: 'Profiil uuendatud.'
+
 change_password:
     submit: 'Muuda salasõna'
+    flash:
+        success: 'Parool muudetud.'
 registration:
-    check_email: 'E-mail on saadetud aadressile %email%. Selles sisaldub viide, mis tuleb konto aktiveerimiseks avada.'
+    check_email: |
+        E-mail on saadetud aadressile %email%. Selles sisaldub viide, mis tuleb konto aktiveerimiseks avada.
     confirmed: 'Palju õnne %username%, Sinu konto on aktiveeritud.'
+    back: 'Tagasi esialgsele lehele.'
     submit: Registreeri
+    flash:
+        user_created: 'Kasutaja edukalt loodud.'
     email:
-        message: "Tere %username%!\n\nKonto valideerimise edukaks lõpetamiseks palun vajutage viitel %confirmationUrl%\n\nParimatega,\nTiim.\n"
+        subject: 'Tere %username%!'
+        message: |
+            Tere %username%!
+
+            Konto aktiveerimiseks palun avage viide %confirmationUrl%
+            
+            Seda viidet saate kasutada vaid ühe korra konto valideerimiseks.
+
+            Parimatega,
+            Tiim.
+
 resetting:
-    password_already_requested: 'Kasutaja salasõna on juba viimase 24 tunni jooksul küsitud.'
-    check_email: 'E-mail on saadetud aadressile %email%. Selles sisaldub viide, mis tuleb salasõna muutmiseks avada.'
+    check_email: |
+        E-mail on saadetud. Selles sisaldub viide, mis tuleb salasõna muutmiseks avada.        
+        Märkus: Saate uue parooli tellida vaid korra %tokenLifetime% tunni jooksul.
+        
+        Kui te ei e-maili ei saanud, kontrollige oma spämmikausta või proovige uuesti.
     request:
-        username: Kasutajanimi
+        username: Kasutajanimi või e-mail
         submit: 'Saada salasõna'
     reset:
         submit: 'Muuda salasõna'
+    flash:
+        success: 'Parooli saatmine õnnestus.'
     email:
-        message: "Tere %username%!\n\nSalasõna muutmiseks palun vajutage viitel %confirmationUrl%\n\nParimatega,\nTiim.\n"
+        message: |
+            Tere %username%!
+
+            Salasõna muutmiseks palun avage viide %confirmationUrl%
+
+            Parimatega,
+            Tiim.
+
 layout:
     logout: Välju
     login: Sisene

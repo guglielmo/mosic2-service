@@ -165,6 +165,12 @@ class GroupController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["codice","name"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $repository = $em->getRepository('UserBundle:Group');
         $group = $repository->findOneById($id);
@@ -209,6 +215,12 @@ class GroupController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["codice","name"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $group = new Group();
 

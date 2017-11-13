@@ -4,7 +4,7 @@
 
 {% block body %}
 {{ "{% block body %}" }}
-    <h1>{{ entity }} list</h1>
+    <h1>{{ entity_pluralized|capitalize }} list</h1>
 
     <table>
         <thead>
@@ -25,7 +25,7 @@
         {%- for field, metadata in fields %}
             {%- if loop.first and ('show' in actions) %}
 
-                <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
+                <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { '"~ identifier ~"': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
 
             {%- elseif metadata.type in ['datetime'] %}
 
@@ -61,7 +61,7 @@
                     {%- for action in record_actions %}
 
                         <li>
-                            <a href="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ action }}</a>
+                            <a href="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { '"~ identifier ~"': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ action }}</a>
                         </li>
 
                     {%- endfor %}
@@ -80,7 +80,7 @@
     {% if 'new' in actions -%}
     <ul>
         <li>
-            <a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">Create a new entry</a>
+            <a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">Create a new {{ entity_singularized }}</a>
         </li>
     </ul>
     {%- endif %}

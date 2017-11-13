@@ -3,11 +3,12 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * RelAllegatiRegistri
  *
- * @ORM\Table(name="msc_rel_allegati_registri")
+ * @ORM\Table(name="msc_rel_allegati_registri",indexes={@Index(name="allegati_idx", columns={"id_registri","id_allegati"})})
  * @ORM\Entity(repositoryClass="UserBundle\Repository\RelAllegatiRegistriRepository")
  */
 class RelAllegatiRegistri

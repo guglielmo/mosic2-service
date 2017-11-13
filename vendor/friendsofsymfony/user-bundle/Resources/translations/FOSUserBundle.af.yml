@@ -13,16 +13,16 @@ group:
 security:
     login:
         username: 'Gebruiker Naam'
-        password: 'Wagwoord'
+        password: Wagwoord
         remember_me: 'Onthou my'
         submit: 'Teken in'
 
 profile:
     show:
         username: 'Gebruiker Naam'
-        email: 'E-pos'
+        email: E-pos
     edit:
-        submit: 'Opdateer'
+        submit: Opdateer
     flash:
         updated: 'Die profiel was opgedateer'
 
@@ -32,7 +32,7 @@ change_password:
         success: 'Die wagwoord was verander'
 
 registration:
-    check_emai: "'n e-pos was gestuur na %email%. Dit behels 'n aktiveerings \"link\", waarop jy moet klik om jou rekening te aktiveer"
+    check_email: "'n E-pos was gestuur na %email%. Dit behels aktiveerings skakel, waarop jy moet klik om jou rekening te aktiveer"
     confirmed: 'Geluk %username%, jou rekening is nou geaktiveer'
     back: 'Terug na die oorsprongblad'
     submit: Registreer
@@ -43,16 +43,20 @@ registration:
         message: |
             Hello %username%!
 
-            Om die registrasieproses te finaliseer, besoek asseblief %confirmationUrl%
+            Om die registrasie proses te finaliseer, besoek asseblief %confirmationUrl%
+
+            Hierdie skakel kan slegs een keer gebruik word.
 
             Groete,
             die Span.
 
 resetting:
-    password_already_requested: 'Die wagwoord vir hierdie gebruiker was reeds in die afgelope 24 uur aangevra'
-    check_email: "'n E-pos was gestuur na %email%. Die bevat 'n \"link\" waarop jy moet klik om jou wagwoord te herstel"
+    check_email: |
+         'n E-pos was gestuur na %email%. Dit bevat 'n skakel waarop jy moet klik om jou wagwoord te herstel.
+         Nota: Jy kan eers weer 'n nuwe skakel versoek na %tokenLifetime% ure.
+
+         As jy nie 'n e-pos kry nie, kyk in jou "spam" leer en probeer weer.
     request:
-        invalid_username: 'Die verbruikernaam of e-pos adres %username% bestaan nie.'
         username: 'Verbruikernaam of e-pos adres'
         submit: 'Herstel wagwoord'
     reset:
@@ -79,7 +83,7 @@ layout:
 form:
     group_name: 'Groep naam'
     username: 'Verbruiker Naam'
-    email: 'E-pos'
+    email: E-pos
     current_password: 'Huidige wagwoord'
     password: Wagwoord
     password_confirmation: 'Herhaal wagwoord'

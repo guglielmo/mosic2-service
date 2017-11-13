@@ -13,7 +13,6 @@ namespace FOS\UserBundle\Tests\Command;
 
 use FOS\UserBundle\Command\ActivateUserCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,63 +22,24 @@ class ActivateUserCommandTest extends \PHPUnit_Framework_TestCase
     {
         $commandTester = $this->createCommandTester($this->getContainer('user'));
         $exitCode = $commandTester->execute(array(
-            'command' => 'fos:user:activate', // BC for SF <2.4 see https://github.com/symfony/symfony/pull/8626
             'username' => 'user',
         ), array(
             'decorated' => false,
             'interactive' => false,
         ));
 
-        $this->assertEquals(0, $exitCode, 'Returns 0 in case of success');
-        $this->assertRegExp('/User "user" has been activated/', $commandTester->getDisplay());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testExecuteInteractiveWithDialogHelper()
-    {
-        if (!class_exists('Symfony\Component\Console\Helper\DialogHelper')) {
-            $this->markTestSkipped('Using the DialogHelper is not possible on Symfony 3+.');
-        }
-
-        $application = new Application();
-
-        $dialog = $this->getMock('Symfony\Component\Console\Helper\DialogHelper', array(
-            'askAndValidate',
-        ));
-        $dialog->expects($this->at(0))
-            ->method('askAndValidate')
-            ->will($this->returnValue('user'));
-
-        $helperSet = new HelperSet(array(
-            'dialog' => $dialog,
-        ));
-        $application->setHelperSet($helperSet);
-
-        $commandTester = $this->createCommandTester($this->getContainer('user'), $application);
-        $exitCode = $commandTester->execute(array(
-            'command' => 'fos:user:activate', // BC for SF <2.4 see https://github.com/symfony/symfony/pull/8626
-        ), array(
-            'decorated' => false,
-            'interactive' => true,
-        ));
-
-        $this->assertEquals(0, $exitCode, 'Returns 0 in case of success');
+        $this->assertSame(0, $exitCode, 'Returns 0 in case of success');
         $this->assertRegExp('/User "user" has been activated/', $commandTester->getDisplay());
     }
 
     public function testExecuteInteractiveWithQuestionHelper()
     {
-        if (!class_exists('Symfony\Component\Console\Helper\QuestionHelper')) {
-            $this->markTestSkipped('The question helper not available.');
-        }
-
         $application = new Application();
 
-        $helper = $this->getMock('Symfony\Component\Console\Helper\QuestionHelper', array(
-            'ask',
-        ));
+        $helper = $this->getMockBuilder('Symfony\Component\Console\Helper\QuestionHelper')
+            ->setMethods(array('ask'))
+            ->getMock();
+
         $helper->expects($this->at(0))
             ->method('ask')
             ->will($this->returnValue('user'));
@@ -92,10 +52,16 @@ class ActivateUserCommandTest extends \PHPUnit_Framework_TestCase
             'interactive' => true,
         ));
 
-        $this->assertEquals(0, $exitCode, 'Returns 0 in case of success');
+        $this->assertSame(0, $exitCode, 'Returns 0 in case of success');
         $this->assertRegExp('/User "user" has been activated/', $commandTester->getDisplay());
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @param Application|null   $application
+     *
+     * @return CommandTester
+     */
     private function createCommandTester(ContainerInterface $container, Application $application = null)
     {
         if (null === $application) {
@@ -112,9 +78,14 @@ class ActivateUserCommandTest extends \PHPUnit_Framework_TestCase
         return new CommandTester($application->find('fos:user:activate'));
     }
 
+    /**
+     * @param $username
+     *
+     * @return mixed
+     */
     private function getContainer($username)
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')->getMock();
 
         $manipulator = $this->getMockBuilder('FOS\UserBundle\Util\UserManipulator')
             ->disableOriginalConstructor()

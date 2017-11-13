@@ -167,7 +167,13 @@ class UfficiController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["denominazione"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $repository = $em->getRepository('UserBundle:Uffici');
         $ufficio = $repository->findOneById($data->id);
 
@@ -216,15 +222,42 @@ class UfficiController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["denominazione"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $ufficio = new Uffici();
 
-        $ufficio->setCodice($data->codice);
-        $ufficio->setCodiceDirezione($data->codice_direzione);
+        if (isset($data->codice)) {
+            $ufficio->setCodice($data->codice);
+        } else {
+            $ufficio->setCodice(0);
+        }
+        if (isset($data->codice_direzione)) {
+            $ufficio->setCodiceDirezione($data->codice_direzione);
+        } else {
+            $ufficio->setCodiceDirezione(0);
+        }
         $ufficio->setDenominazione($data->denominazione);
-        $ufficio->setOrdineUfficio($data->ordine_ufficio);
-        $ufficio->setDisattivoUfficio($data->disattivo_ufficio);
-        $ufficio->setSoloDelibere($data->solo_delibere);
+        if (isset($data->ordine_ufficio)) {
+            $ufficio->setOrdineUfficio($data->ordine_ufficio);
+        } else {
+            $ufficio->setOrdineUfficio(0);
+        }
+        if (isset($data->disattivo_ufficio)) {
+            $ufficio->setDisattivoUfficio($data->disattivo_ufficio);
+        } else {
+            $ufficio->setDisattivoUfficio(0);
+        }
+        if (isset($data->solo_delibere)) {
+            $ufficio->setSoloDelibere($data->solo_delibere);
+        } else {
+            $ufficio->setSoloDelibere(0);
+        }
+
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -277,26 +310,30 @@ class UfficiController extends Controller
 
         $repositoryUtenti = $em->getRepository('UserBundle:User');
         $utenti = $repositoryUtenti->findOneByIdUffici($ufficio->getId());
-        
+
+        $repositoryTitolari = $em->getRepository('UserBundle:Titolari');
+        $titolari = $repositoryTitolari->findOneByIdUffici($ufficio->getId());
+
 
         if ($utenti) {
             $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha utenti associati, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
+        } elseif ($titolari) {
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha titolari associati, impossibile eliminarlo."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
         } else {
-            
+
             //aggiorna la date della modifica nella tabella msc_last_updates
             $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
             $lastUpdates = $repositoryLastUpdates->findOneByTabella("uffici");
             $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
-
            
             $em->remove($ufficio); //delete
-    
             $em->flush(); //esegue l'update 
     
             $response = new Response($this->serialize($ufficio), Response::HTTP_OK);
-    
             return $this->setBaseHeaders($response);
         }
     }

@@ -11,6 +11,7 @@ All available configuration options are listed below with their default values.
         user_class:             ~ # Required
         use_listener:           true
         use_flash_notifications: true
+        use_authentication_listener: true
         use_username_form_type: true
         model_manager_name:     null  # change it to the name of your entity/document manager if you don't want to use the default one.
         from_email:
@@ -32,18 +33,19 @@ All available configuration options are listed below with their default values.
                     address:        ...
                     sender_name:    ...
                 enabled:    false # change to true for required email confirmation
-                template:   FOSUserBundle:Registration:email.txt.twig
+                template:   '@FOSUser/Registration/email.txt.twig'
             form:
                 type:               FOS\UserBundle\Form\Type\RegistrationFormType # or 'fos_user_registration' on Symfony < 2.8
                 name:               fos_user_registration_form
                 validation_groups:  [Registration, Default]
         resetting:
+            retry_ttl: 7200 # Value in seconds, logic will use as hours
             token_ttl: 86400
             email:
                 from_email: # Use this node only if you don't want the global email address for the resetting email
                     address:        ...
                     sender_name:    ...
-                template:   FOSUserBundle:Resetting:email.txt.twig
+                template:   '@FOSUser/Resetting/email.txt.twig'
             form:
                 type:               FOS\UserBundle\Form\Type\ResettingFormType # or 'fos_user_resetting' on Symfony < 2.8
                 name:               fos_user_resetting_form

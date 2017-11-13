@@ -215,20 +215,12 @@ class PropertyAccessor implements PropertyAccessorInterface
                 $value = $zval[self::VALUE];
             }
         } catch (\TypeError $e) {
-            try {
-                self::throwInvalidArgumentException($e->getMessage(), $e->getTrace(), 0);
-            } catch (InvalidArgumentException $e) {
+            self::throwInvalidArgumentException($e->getMessage(), $e->getTrace(), 0);
+        } finally {
+            if (PHP_VERSION_ID < 70000 && false !== self::$previousErrorHandler) {
+                restore_error_handler();
+                self::$previousErrorHandler = false;
             }
-        } catch (\Exception $e) {
-        } catch (\Throwable $e) {
-        }
-
-        if (PHP_VERSION_ID < 70000 && false !== self::$previousErrorHandler) {
-            restore_error_handler();
-            self::$previousErrorHandler = false;
-        }
-        if (isset($e)) {
-            throw $e;
         }
     }
 
@@ -247,7 +239,7 @@ class PropertyAccessor implements PropertyAccessorInterface
     private static function throwInvalidArgumentException($message, $trace, $i)
     {
         if (isset($trace[$i]['file']) && __FILE__ === $trace[$i]['file']) {
-            $pos = strpos($message, $delim = 'must be of the type ') ?: strpos($message, $delim = 'must be an instance of ');
+            $pos = strpos($message, $delim = 'must be of the type ') ?: (strpos($message, $delim = 'must be an instance of ') ?: strpos($message, $delim = 'must implement interface '));
             $pos += strlen($delim);
             $type = $trace[$i]['args'][0];
             $type = is_object($type) ? get_class($type) : gettype($type);
@@ -618,6 +610,8 @@ class PropertyAccessor implements PropertyAccessorInterface
             $object->$property = $value;
         } elseif (self::ACCESS_TYPE_MAGIC === $access[self::ACCESS_TYPE]) {
             $object->{$access[self::ACCESS_NAME]}($value);
+        } elseif (self::ACCESS_TYPE_NOT_FOUND === $access[self::ACCESS_TYPE]) {
+            throw new NoSuchPropertyException(sprintf('Could not determine access type for property "%s".', $property));
         } else {
             throw new NoSuchPropertyException($access[self::ACCESS_NAME]);
         }

@@ -4,16 +4,19 @@ Getting Started With FOSUserBundle
 The Symfony Security component provides a flexible security framework that
 allows you to load users from configuration, a database, or anywhere else
 you can imagine. The FOSUserBundle builds on top of this to make it quick
-and easy to store users in a database.
+and easy to store users in a database, as well as functionality for registration,
+reset password and a profile page.
 
 So, if you need to persist and fetch the users in your system to and from
 a database, then you're in the right place.
 
+For a video tutorial, check out `FOSUserBundle FTW`_ by KnpUniversity.
+
 Prerequisites
 -------------
 
-This version of the bundle requires Symfony 2.1+. If you are using Symfony
-2.0.x, please use the 1.2.x releases of the bundle.
+This version of the bundle requires Symfony 2.7+. If you are using an older
+Symfony version, please use the 1.3.x releases of the bundle.
 
 Translations
 ~~~~~~~~~~~~
@@ -50,7 +53,7 @@ Require the bundle with composer:
 
 .. code-block:: bash
 
-    $ composer require friendsofsymfony/user-bundle "~2.0@dev"
+    $ composer require friendsofsymfony/user-bundle "~2.0"
 
 Composer will install the bundle to your project's ``vendor/friendsofsymfony/user-bundle`` directory.
 If you encounter installation errors pointing at a lack of configuration parameters, such as ``The child node "db_driver" at path "fos_user" must be configured``, you should complete the configuration in Step 5 first and then re-run this step.
@@ -84,7 +87,7 @@ The bundle provides base classes which are already mapped for most fields
 to make it easier to create your entity. Here is how you use it:
 
 1. Extend the base ``User`` class (from the ``Model`` folder if you are using
-   any of the doctrine variants, or ``Propel`` for propel 1.x)
+   any of the doctrine variants)
 2. Map the ``id`` field. It must be protected as it is inherited from the parent class.
 
 .. caution::
@@ -242,16 +245,6 @@ like this to start::
         }
     }
 
-d) Propel 1.x User class
-........................
-
-If you don't want to add your own logic in your user class, you can simply use
-``FOS\UserBundle\Propel\User`` as user class and you don't have to create
-another class.
-
-If you want to add your own fields, you can extend the model class by overriding the database schema.
-Just copy the ``Resources/config/propel/schema.xml`` file to ``app/Resources/FOSUserBundle/config/propel/schema.xml``,
-and customize it to fit your needs.
 
 Step 4: Configure your application's security.yml
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -351,9 +344,12 @@ of datastore you are using.
 
         # app/config/config.yml
         fos_user:
-            db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+            db_driver: orm # other valid values are 'mongodb' and 'couchdb'
             firewall_name: main
             user_class: AppBundle\Entity\User
+            from_email:
+                address: "%mailer_user%"
+                sender_name: "%mailer_user%"
 
     .. code-block:: xml
 
@@ -366,11 +362,12 @@ of datastore you are using.
             user-class="AppBundle\Entity\User"
         />
 
-Only three configuration values are required to use the bundle:
+Only four configuration's node are required to use the bundle:
 
-* The type of datastore you are using (``orm``, ``mongodb``, ``couchdb`` or ``propel``).
+* The type of datastore you are using (``orm``, ``mongodb`` or ``couchdb``).
 * The firewall name which you configured in Step 4.
 * The fully qualified class name (FQCN) of the ``User`` class which you created in Step 3.
+* The default email address to use when the bundle send a registration confirmation to the user.
 
 .. note::
 
@@ -430,24 +427,6 @@ For MongoDB users you can run the following command to create the indexes.
     If you use the Symfony 2.x structure in your project, use ``app/console``
     instead of ``bin/console`` in the commands.
 
-For Propel 1 users you have to install the `TypehintableBehavior`_
-before to build your model. First, install it:
-
-.. code-block:: bash
-
-    $ composer require willdurand/propel-typehintable-behavior
-
-You now can run the following command to create the model:
-
-.. code-block:: bash
-
-    $ php bin/console propel:build
-
-.. note::
-
-    To create SQL, run the command ``propel:build --insert-sql`` or use migration
-    commands if you have an existing schema in your database.
-
 You now can log in at ``http://app.com/app_dev.php/login``!
 
 Next Steps
@@ -483,3 +462,4 @@ The following documents are available:
 .. _security component documentation: https://symfony.com/doc/current/book/security.html
 .. _Symfony documentation: https://symfony.com/doc/current/book/translation.html
 .. _TypehintableBehavior: https://github.com/willdurand/TypehintableBehavior
+.. _FOSUserBundle FTW: https://knpuniversity.com/screencast/fosuserbundle

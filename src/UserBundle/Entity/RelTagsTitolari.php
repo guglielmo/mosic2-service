@@ -3,11 +3,12 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * RelTagsTitolari
  *
- * @ORM\Table(name="msc_rel_tags_titolari")
+ * @ORM\Table(name="msc_rel_tags_titolari",indexes={@Index(name="id_titolari_idx", columns={"id_titolari"})})
  * @ORM\Entity(repositoryClass="UserBundle\Repository\RelTagsTitolariRepository")
  */
 class RelTagsTitolari
@@ -25,7 +26,7 @@ class RelTagsTitolari
     /**
      * @var int
      *
-     * @ORM\Column(name="id_delibere", type="integer")
+     * @ORM\Column(name="id_titolari", type="integer")
      */
     private $idTitolari;
 
@@ -38,6 +39,7 @@ class RelTagsTitolari
 
 
  
+
 
 
 

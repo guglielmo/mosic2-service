@@ -358,7 +358,7 @@ class CipeController extends Controller
         $repository = $em->getRepository('UserBundle:Cipe');
         $cipe = $repository->findOneById($data->id);
 
-        $cipe->setData(new \DateTime($this->formatDateStringCustom($data->data)));
+        $cipe->setData(new \DateTime($this->zulu_to_rome($data->data)));
         //$cipe->setData(new \DateTime('2016-07-18'));
 
         $repository_odg = $em->getRepository('UserBundle:CipeOdg');
@@ -470,9 +470,21 @@ class CipeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent());
+        $dataCipeOdg = json_decode($request->getContent());
+        $dataCipeOdg = $dataCipeOdg->cipe_odg;
+        foreach ($dataCipeOdg as $item => $value) {
+            //print_r($value->ordine);
+            $check = $this->checkCampiObbligatori($value,["denominazione","ordine","id_fascicoli","id_registri","id_titolari","id_uffici"]);
+            if ($check != "ok") {
+                $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+                $response = new Response(json_encode($response_array), 409);
+                return $this->setBaseHeaders($response);
+            }
+        }
+
 
         $cipe = new Cipe();
-        $cipe->setData(new \DateTime($this->formatDateStringCustom($data->data)));
+        $cipe->setData(new \DateTime($this->zulu_to_rome($data->data)));
 
         $em->persist($cipe);
         $em->flush(); //esegue l'update
@@ -639,6 +651,7 @@ class CipeController extends Controller
      */
     public function uploadCipeAction(Request $request, $id, $tipo)
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $repository = $em->getRepository('UserBundle:Cipe');
@@ -646,14 +659,12 @@ class CipeController extends Controller
         $dataPrecipe = $cipe->getData()->format('Y-m-d');
 
 
-        $path_file = Costanti::URL_ALLEGATI_PRECIPE . $dataPrecipe . "/" . $tipo . "/";
+        $path_file = Costanti::URL_ALLEGATI_CIPE . "/" . $dataPrecipe . "/" . $tipo . "/";
 
         $file = $request->files->get('file');
 
-
         $nome_file = $file->getClientOriginalName();
         $nome_file = $this->sostituisciAccenti($nome_file);
-
 
         //memorizzo il file nel database
         $allegato = new Allegati();
@@ -666,9 +677,10 @@ class CipeController extends Controller
 
         $id_allegato_creato = $allegato->getId();
 
+
         $allegatoRel = new RelAllegatiCipe();
         $allegatoRel->setIdAllegati($id_allegato_creato);
-        $allegatoRel->setIdPrecipe($id);
+        $allegatoRel->setIdCipe($id);
         $allegatoRel->setTipo($tipo);
 
 
@@ -690,7 +702,16 @@ class CipeController extends Controller
             return $this->setBaseHeaders($response);
         }
         //controllo su i tipi di file ammessi
-        if (!in_array($file->getMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword'))) {
+        if (!in_array($file->getMimeType(), array(
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            '"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            '"image/tiff'))) {
             $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
@@ -859,7 +880,7 @@ class CipeController extends Controller
                         $arrayTemp->id_registri = $registri_precipe;
                 }
 
-                $array_allegati = "";
+                $array_allegati = [];
                 //ricavo gli allegati per ogni registro nella lista $arrayTemp->id_registri
                 foreach ($arrayTemp->id_registri as $i => $v) {
                     $repositoryRegistri = $this->getDoctrine()->getRepository('UserBundle:Registri');
@@ -878,9 +899,9 @@ class CipeController extends Controller
 
                     }
 
-                    $array_allegati[] = $allegatiR;
+                    $array_allegati = $allegatiR;
                 }
-                $arrayTemp->allegati = $allegatiR;
+                $arrayTemp->allegati = $array_allegati;
 
                 $arrayOrdini[] = $arrayTemp;
             }
@@ -895,28 +916,40 @@ class CipeController extends Controller
         foreach ($precipeTemp->precipe_odg as $item) {
             unset($item->id_registri);
             unset($item->id_pre_cipe);
-            unset($item->progressivo);
+            //unset($item->progressivo);
             unset($item->id_titolari);
             unset($item->id_fascicoli);
             unset($item->id_argomenti);
             unset($item->id_uffici);
-            unset($item->ordine);
+            //unset($item->ordine);
             unset($item->risultanza);
             unset($item->annotazioni);
             unset($item->stato);
         }
 
+        unset($precipeTemp->ufficiale);
+        unset($precipeTemp->public_reserved_status);
+        unset($precipeTemp->public_reserved_url);
+
+        unset($precipeTemp->giorno);
+        unset($precipeTemp->ora);
+        unset($precipeTemp->sede);
+        unset($precipeTemp->id_presidente);
+        unset($precipeTemp->id_segretario);
+        unset($precipeTemp->id_direttore);
+
+        $precipeTemp->tipo = "cipe";
         $precipeTemp->id_seduta = $precipeTemp->id; unset($precipeTemp->id);
         $precipeTemp->punti_odg = $precipeTemp->precipe_odg; unset($precipeTemp->precipe_odg);
 
 
         //print_r(json_encode($precipeTemp));
-        //$response = new Response(json_encode("fine"), Response::HTTP_OK);
+        //$response = new Response(json_encode($precipeTemp), Response::HTTP_OK);
         //return $this->setBaseHeaders($response);
 
 
 
-        $command = "/usr/bin/php -f mosic-script/cipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
+        $command = Costanti::PATH_PHP . " -f mosic-script/cipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
         exec( "$command > /dev/null &", $arrOutput );
 
 

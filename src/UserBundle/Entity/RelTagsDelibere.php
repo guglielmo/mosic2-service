@@ -3,11 +3,13 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
+
 
 /**
  * RelTagsDelibere
  *
- * @ORM\Table(name="msc_rel_tags_delibere")
+ * @ORM\Table(name="msc_rel_tags_delibere",indexes={@Index(name="id_delibere_idx", columns={"id_delibere"})})
  * @ORM\Entity(repositoryClass="UserBundle\Repository\RelTagsDelibereRepository")
  */
 class RelTagsDelibere

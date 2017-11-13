@@ -16,9 +16,6 @@ instance of ``FOS\UserBundle\Doctrine\UserManager``.
 If you configure the ``db_driver`` option to ``couchdb``, this service is an
 instance of ``FOS\UserBundle\Doctrine\UserManager``.
 
-If you configure the ``db_driver`` option to ``propel``, this service is an instance
-of ``FOS\UserBundle\Propel\UserManager``.
-
 Accessing the User Manager service
 ----------------------------------
 
@@ -100,11 +97,6 @@ Updating a User object
                 user-class="MyProject\MyBundle\Entity\User"
             />
 
-.. caution::
-
-    The Propel implementation does not have such a listener so you have to
-    call the method of the user manager to save the user.
-
 .. note::
 
     For the Doctrine implementations, the default behavior is to flush the
@@ -115,7 +107,7 @@ Updating a User object
 
 An ORM example::
 
-    public function MainController extends Controller
+    class MainController extends Controller
     {
         public function updateAction($id)
         {

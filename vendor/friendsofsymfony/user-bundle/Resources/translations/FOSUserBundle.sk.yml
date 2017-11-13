@@ -26,7 +26,7 @@ profile:
 change_password:
     submit: 'Zmena hesla'
     flash:
-        success: 'Heslo bolo úspešne zmenené'
+        success: 'Heslo bolo úspešne zmenené.'
 registration:
     check_email: 'Aktivačný email bol zaslaný na adresu %email%. V tele správy je aktivačný link, na ktorý treba kliknúť pre úspešné dokončenie registrácie.'
     confirmed: 'Gratulujeme %username%, Vaše konto bolo aktivované.'
@@ -36,12 +36,17 @@ registration:
         user_created: 'Vaše konto bolo úspešne vytvorené.'
     email:
         subject: 'Vitaj %username%!'
-        message: "Ahoj %username%!\n\nPre ukončenie registrácie, prosím klikni na nasledovný link: %confirmationUrl%\n\nS pozdravom,\nRealizačný tím\n"
+        message: |
+            Ahoj %username%!
+
+            Pre ukončenie registrácie, prosím klikni na nasledovný link: %confirmationUrl%
+
+            S pozdravom,
+            Realizačný tím
+
 resetting:
-    password_already_requested: 'Požiadavka na heslo už bola vykonaná za posledných 24 hodín.'
-    check_email: 'Postup pre zmenu hesla bol zaslaný na adresu %email%. Správa obsahuje link, na ktorú treba kliknúť pre úspešné dokončenie zmeny hesla.'
+#    check_email: 'Postup pre zmenu hesla bol zaslaný na adresu %email%. Správa obsahuje link, na ktorú treba kliknúť pre úspešné dokončenie zmeny hesla.'
     request:
-        invalid_username: 'Používateľské meno alebo emailová adresa "%username%" neexistuje. Skontrolujte si prosím Vami zadané údaje a skúste znovu.'
         username: 'Používateľské meno alebo emailová adresa'
         submit: 'Obnova hesla'
     reset:
@@ -50,7 +55,14 @@ resetting:
         success: 'Heslo bolo úspešne zmenené.'
     email:
         subject: 'Vynulovanie hesla'
-        message: "Ahoj %username%!\n\nPre zmenu hesla, klikni prosím na nasledovný link: %confirmationUrl%\n\nS pozdravom,\nRealizačný tím\n"
+        message: |
+            Ahoj %username%!
+
+            Pre zmenu hesla, klikni prosím na nasledovný link: %confirmationUrl%
+
+            S pozdravom,
+            Realizačný tím
+
 layout:
     logout: Odhlásenie
     login: Prihlásenie

@@ -58,6 +58,7 @@ class RegistriController extends Controller
      */
     public function registriAction(Request $request)
     {
+        //* @Security("is_granted('ROLE_READ_REGISTRI')")
 
         //prendo i parametri get
         $limit = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
@@ -81,16 +82,20 @@ class RegistriController extends Controller
         $totRegistri = $repository->totaleRegistri();
 
         //converte i risultati in json
-        $serialize = $this->serialize($registri);
+        //$serialize = $this->serialize($registri);
+        $serialize = json_encode($registri, JSON_NUMERIC_CHECK);
+        $serialize = json_decode($serialize);
 
         //funzione per formattare le date del json
-        $serialize = $this->formatDateJsonArrayCustom(json_decode($serialize), array('data_arrivo', 'data_mittente'));
+        //$serialize = $this->formatDateJsonArrayCustom(json_decode($serialize), array('data_arrivo', 'data_mittente'));
 
         //aggiungo i tags
         $repositoryTags = $this->getDoctrine()->getRepository('UserBundle:RelTagsRegistri');
         foreach ($serialize as $item => $value) {
             $tags = $repositoryTags->findBy(["idRegistri" => $value->id]);
             $tags = json_decode($this->serialize($tags));
+            //print_r($tags[0]);
+            $value->pippo = "aaa";
             foreach ($tags as $i => $v) {
                 $value->id_tags[] = $v->id_tags;
             }
@@ -262,6 +267,12 @@ class RegistriController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["oggetto","protocollo_arrivo","data_arrivo","id_titolari","id_fascicoli"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $repository = $em->getRepository('UserBundle:Registri');
         $registro = $repository->findOneById($data->id);
@@ -280,8 +291,13 @@ class RegistriController extends Controller
 
         $registro->setAnnotazioni($data->annotazioni);
         //$registro->setCodiceTitolario($data->codice_titolario);
-        $registro->setDataMittente(new \DateTime($this->formatDateStringCustom($data->data_mittente)));
-        $registro->setDataArrivo(new \DateTime($this->formatDateStringCustom($data->data_arrivo)));
+
+        if (isset($data->data_mittente)) {
+            $registro->setDataMittente(new \DateTime($this->zulu_to_rome($data->data_mittente)));
+        } else {
+            $registro->setDataMittente(null);
+        }
+        $registro->setDataArrivo(new \DateTime($this->zulu_to_rome($data->data_arrivo)));
         //$registro->setIdAmministrazione($data->id_amministrazione);
         $registro->setIdFascicoli($data->id_fascicoli);
         $registro->setIdMittenti($data->id_mittenti);
@@ -360,16 +376,33 @@ class RegistriController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["oggetto","protocollo_arrivo","data_arrivo","id_titolari","id_fascicoli"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $registro = new Registri();
 
-        $registro->setAnnotazioni($data->annotazioni);
-        //$registro->setCodiceTitolario($data->codice_titolario);
-        $registro->setDataMittente(new \DateTime($this->formatDateStringCustom($data->data_mittente)));
-        $registro->setDataArrivo(new \DateTime($this->formatDateStringCustom($data->data_arrivo)));
+        if (isset($data->annotazioni)) { $registro->setAnnotazioni($data->annotazioni);} else {$registro->setAnnotazioni(""); }
+
+        if (isset($data->data_mittente)) {
+            $registro->setDataMittente(new \DateTime($this->zulu_to_rome($data->data_mittente)));
+        } else {
+            $registro->setDataMittente(null);
+        }
+
+        $registro->setDataArrivo(new \DateTime($this->zulu_to_rome($data->data_arrivo)));
         //$registro->setIdAmministrazione($data->id_amministrazione);
         //$registro->setIdFascicolo($data->id_fascicoli);
-        $registro->setIdMittenti($data->id_mittenti);
+        if (isset($data->id_mittenti) && $data->id_mittenti != "") {
+            $registro->setIdMittenti($data->id_mittenti);
+        } else {
+            $registro->setIdMittenti(null);
+        }
+
+
         //$registro->setIdSottofascicoli($data->id_sottofascicoli);
         $registro->setIdTitolari($data->id_titolari);
         //$registro->setMittente($data->mittente);
@@ -379,12 +412,18 @@ class RegistriController extends Controller
         $registro->setOggetto($data->oggetto);
         //$registro->setPropostaCipe($data->proposta_cipe);
         $registro->setProtocolloArrivo($data->protocollo_arrivo);
-        $registro->setProtocolloMittente($data->protocollo_mittente);
+
+        if (isset($data->protocollo_mittente)) {
+            $registro->setProtocolloMittente($data->protocollo_mittente);
+        } else {
+            $registro->setProtocolloMittente("");
+        }
 
 
         //ricavo gli tutte le amministrazioni passate dalla tendina
         $array_id_amministrazioni = explode(",", $data->id_amministrazioni);
         //ricavo gli id di tutte i tags passati dalla tendina
+
         $array_id_tags = explode(",", $data->id_tags);
 
         $em->persist($registro);
@@ -401,15 +440,15 @@ class RegistriController extends Controller
             $em->persist($relAmministrazioniRegistri); //create
         }
 
-        // TAGS
-        //creo le relazioni da creare nella tabella RelTagsRegistri
-        foreach ($array_id_tags as $item) {
-            $relTagsRegistri = new RelTagsRegistri();
-            $relTagsRegistri->setIdRegistri($id_registro_creato);
-            $relTagsRegistri->setIdTags($item);
-            //aggiorno (in realt� ricreo) le relazioni del fascicolo
-            $em->persist($relTagsRegistri); //create
-        }
+       // TAGS
+       //creo le relazioni da creare nella tabella RelTagsRegistri
+       foreach ($array_id_tags as $item) {
+           $relTagsRegistri = new RelTagsRegistri();
+           $relTagsRegistri->setIdRegistri($id_registro_creato);
+           $relTagsRegistri->setIdTags($item);
+           //aggiorno (in realt� ricreo) le relazioni del fascicolo
+           $em->persist($relTagsRegistri); //create
+       }
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -418,8 +457,12 @@ class RegistriController extends Controller
 
         $em->flush(); //esegue query
 
-        $response = new Response($this->serialize($registro), Response::HTTP_OK);
 
+        $registro = $this->serialize($registro);
+        $registro = json_decode($registro, true); //trasformo in array
+        $registro['data_arrivo'] = strtotime($this->zulu_to_rome($registro['data_arrivo'])) * 1000;
+
+        $response = new Response(json_encode($registro), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
 
@@ -590,7 +633,16 @@ class RegistriController extends Controller
             return $this->setBaseHeaders($response);
         }
         //controllo su i tipi di file ammessi
-        if (!in_array($file->getMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword'))) {
+        if (!in_array($file->getMimeType(), array(
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            '"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            '"image/tiff'))) {
             $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);

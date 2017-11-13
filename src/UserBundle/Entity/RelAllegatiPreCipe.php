@@ -3,11 +3,12 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * RelAllegatiPreCipe
  *
- * @ORM\Table(name="msc_rel_allegati_precipe")
+ * @ORM\Table(name="msc_rel_allegati_precipe",indexes={@Index(name="allegati_idx", columns={"id_precipe","id_allegati"})})
  * @ORM\Entity(repositoryClass="UserBundle\Repository\RelAllegatiPreCipeRepository")
  */
 class RelAllegatiPreCipe

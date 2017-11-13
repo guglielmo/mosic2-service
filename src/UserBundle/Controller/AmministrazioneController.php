@@ -149,6 +149,12 @@ class AmministrazioneController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["denominazione"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $repository = $em->getRepository('UserBundle:Amministrazione');
         $amministrazione = $repository->findOneByDenominazione($data->denominazione);
@@ -174,7 +180,7 @@ class AmministrazioneController extends Controller
 
         //aggiorno il codice come l'id
         $id_creato = $amministrazione_new->getId();
-        $amministrazione_new->setCodice($id_creato);
+        $amministrazione_new->setCodice($id_creato + 3); //per far coincidere codice e id
         $em->persist($amministrazione_new);
         $em->flush(); //esegue l'update
 
@@ -241,6 +247,13 @@ class AmministrazioneController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["denominazione"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
 
         $repository = $em->getRepository('UserBundle:Amministrazione');
         $amministrazione = $repository->findOneById($data->id);

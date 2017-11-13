@@ -20,9 +20,9 @@ ob_start('mb_output_handler');
 setlocale(LC_CTYPE, 'it_IT');
 
 
-require_once "../config-web.php";
+require_once "config-web.php";
 
-include_once('function.php');
+include_once('mosic-script/function.php');
 // imposto il time limit dello script a 2 ore
 set_time_limit(7200);
 
@@ -33,7 +33,7 @@ set_time_limit(7200);
 //file_put_contents("file-errori-upload.txt", ini_get('upload_max_filesize'));
 //exit;
 
-function invioFile ($token, $file) {
+function invioFile ($token, $file, $targetInvioFile) {
     $headers = [
         'Accept: */*',
         'Content-Type: multipart/form-data',
@@ -42,7 +42,7 @@ function invioFile ($token, $file) {
         'Authorization: JWT ' . $token
     ];
 
-    $target = 'http://area-riservata.mosic2.celata.com/upload_file/'. $file;
+    $target = $targetInvioFile . $file;
 
     $post = new \CURLFile($file, 'application/pdf', $file);
 
@@ -52,7 +52,7 @@ function invioFile ($token, $file) {
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_URL,$target);
+    curl_setopt($ch, CURLOPT_URL,$targetInvioFile . $file);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_array);
     curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
@@ -78,7 +78,7 @@ function invioFile ($token, $file) {
 $ch = curl_init();
 $fields = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
 
-curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/api-token-auth/");
+curl_setopt($ch, CURLOPT_URL,$targetLogin);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
 
@@ -112,7 +112,7 @@ $headers = [
     'Authorization: JWT ' . $token
 ];
 
-curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/seduta/precipe/" . $argv[1]);
+curl_setopt($ch, CURLOPT_URL,$targetGetUrlPreCipe . $argv[1]);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_POSTFIELDS, "");
@@ -148,7 +148,7 @@ $headers = [
     'Authorization: JWT ' . $token
 ];
 
-curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/precipe/" . $idRiservata);
+curl_setopt($ch, CURLOPT_URL,$targetDeletePreCipe . $idRiservata);
 //curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/precipe/144");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -185,7 +185,7 @@ $headers = [
 ];
 
 //$content = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
-curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/precipe");
+curl_setopt($ch, CURLOPT_URL,$targetInvioMetadatiPreCipe);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $argv[2]);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -198,12 +198,15 @@ $info = curl_getinfo($ch);
 
 curl_close ($ch);
 
+//file_put_contents("file-metadati.txt", $argv[2]);
+
 // further processing ....
 if ($info['http_code'] == 201) {
     //aggiorniamo lo stato del precipe (nel db)
     aggiornaStato($argv[1], "Invio dei metadati effettuata con successo.");
 } else {
     aggiornaStato($argv[1], "Errore nell'invio dei metadati");
+    exit;
 }
 
 
@@ -217,7 +220,7 @@ $headers = [
     'Authorization: JWT ' . $token
 ];
 
-curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/seduta/precipe/" . $argv[1]);
+curl_setopt($ch, CURLOPT_URL,$targetGetUrlPreCipe . $argv[1]);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_POSTFIELDS, "");
@@ -228,18 +231,23 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $server_output = curl_exec ($ch);
 $info = curl_getinfo($ch);
 
+
+//file_put_contents("file-url.txt", $server_output);
+
+
 curl_close ($ch);
 
 $urlRiservata =json_decode($server_output)->url;
 $idRiservata =json_decode($server_output)->id;
 
 
-//if ($info['http_code'] == 200) {
+if ($info['http_code'] == 200) {
     //aggiorniamo lo stato del precipe (nel db)
     aggiornaURL($argv[1], $urlRiservata);
-//} else {
-    //aggiornaStato($argv[1], "Errore nella get dell'url dell'area riservata del precipe.");
-//}
+} else {
+    aggiornaStato($argv[1], "Errore nella get dell'url dell'area riservata del precipe.");
+    exit;
+}
 
 
 
@@ -264,16 +272,16 @@ foreach ($precipeTemp->punti_odg as $i => $v) {
     foreach ($v->allegati as $item => $k) {
 
         //invia fisicamente il file (EXEC)
-        $result_info = invioFile($token, $k->relURI);
+        $result_info = invioFile($token, $k->relURI, $targetInvioFile);
 
         //Aggiorno lo stato del precipe
         if ($result_info['http_code'] != 204) {
             $current_file .= $argv[1] . " -------> " . $k->relURI . " --code--> " . $result_info['http_code'] . "\n";
-            file_put_contents("file-errori-upload.txt", $current_file);
+            //file_put_contents("file-errori-upload.txt", $current_file);
             $array_file_errati[] = $k->relURI;
         } else {
             $current_file .= $argv[1] . " -------> " . $k->relURI . " --code--> " . $result_info['http_code'] . "\n";
-            file_put_contents("file-errori-upload.txt", $current_file);
+            //file_put_contents("file-errori-upload.txt", $current_file);
 
             $numero_file_caricati++;
             aggiornaStato($argv[1], "Caricati " .$numero_file_caricati. " file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
@@ -283,12 +291,13 @@ foreach ($precipeTemp->punti_odg as $i => $v) {
 }
 
 $current_file .=  "\n\n";
-file_put_contents("file-errori-upload.txt", $current_file);
+//file_put_contents("file-errori-upload.txt", $current_file);
 
 
 //se ho inviato tutti i file correttamente
 if ($numero_file == $numero_file_caricati) {
     aggiornaStato($argv[1], "Procedura conclusa - Caricati ".$numero_file_caricati." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")" );
+    aggiornaUfficialeRiunione($argv[1],1);
 } else {
     aggiornaStato($argv[1],  "Errore procedura - Caricati ".$numero_file_caricati." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
 
@@ -298,12 +307,12 @@ if ($numero_file == $numero_file_caricati) {
         for ($i=0; $i<1; $i++) { //riprovo x volte
             foreach ($array_file_errati as $key => $value) {
                 //invia fisicamente il file (EXEC)
-                $result_info = invioFile($token, $value);
+                $result_info = invioFile($token, $value, $targetInvioFile);
 
                 //Aggiorno lo stato del precipe
                 if ($result_info['http_code'] != 204) {
                     $current_file .= $argv[1] . " ---tentativo----> " . $value . " --code--> " . $result_info['http_code'] . "\n";
-                    file_put_contents("file-errori-upload.txt", $current_file);
+                    //file_put_contents("file-errori-upload.txt", $current_file);
                     aggiornaStato($argv[1], "Procedura in corso - Caricati " . $numero_file_caricati . " file di " . $numero_file . " - tentativi " . $i . " (".$numero_file_caricati.",".$numero_file.")");
                 } else {
                     aggiornaStato($argv[1], "Procedura in corso - Caricati " . $numero_file_caricati . " file di " . $numero_file . " - tentativi " . $i . " (".$numero_file_caricati.",".$numero_file.")");

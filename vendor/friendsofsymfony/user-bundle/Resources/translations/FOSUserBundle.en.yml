@@ -6,9 +6,9 @@ group:
     new:
         submit: 'Create group'
     flash:
-        updated: 'The group has been updated'
-        created: 'The group has been created'
-        deleted: 'The group has been deleted'
+        updated: 'The group has been updated.'
+        created: 'The group has been created.'
+        deleted: 'The group has been deleted.'
 
 security:
     login:
@@ -24,20 +24,21 @@ profile:
     edit:
         submit: Update
     flash:
-        updated: 'The profile has been updated'
+        updated: 'The profile has been updated.'
 
 change_password:
     submit: 'Change password'
     flash:
-        success: 'The password has been changed'
+        success: 'The password has been changed.'
 
 registration:
-    check_email: 'An email has been sent to %email%. It contains an activation link you must click to activate your account.'
+    check_email: |
+        An email has been sent to %email%. It contains an activation link you must click to activate your account.
     confirmed: 'Congrats %username%, your account is now activated.'
     back: 'Back to the originating page.'
     submit: Register
     flash:
-        user_created: 'The user has been created successfully'
+        user_created: 'The user has been created successfully.'
     email:
         subject: 'Welcome %username%!'
         message: |
@@ -45,20 +46,24 @@ registration:
 
             To finish activating your account - please visit %confirmationUrl%
 
+            This link can only be used once to validate your account.
+
             Regards,
             the Team.
 
 resetting:
-    password_already_requested: 'The password for this user has already been requested within the last 24 hours.'
-    check_email: 'An email has been sent to %email%. It contains a link you must click to reset your password.'
+    check_email: |
+        An email has been sent. It contains a link you must click to reset your password.
+        Note: You can only request a new password once within %tokenLifetime% hours.
+
+        If you don't get an email check your spam folder or try again.
     request:
-        invalid_username: 'The username or email address "%username%" does not exist.'
         username: 'Username or email address'
         submit: 'Reset password'
     reset:
         submit: 'Change password'
     flash:
-        success: 'The password has been reset successfully'
+        success: 'The password has been reset successfully.'
     email:
         subject: 'Reset Password'
         message: |

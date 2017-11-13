@@ -6,15 +6,17 @@ group:
     new:
         submit: 'Crea gruppo'
     flash:
-        updated: 'Il gruppo è stato aggiornato'
-        created: 'Il gruppo è stato creato'
-        deleted: 'Il gruppo è stato cancellato'
+        updated: 'Il gruppo è stato aggiornato.'
+        created: 'Il gruppo è stato creato.'
+        deleted: 'Il gruppo è stato cancellato.'
+
 security:
     login:
         username: Username
         password: Password
         remember_me: Ricordami
         submit: Login
+
 profile:
     show:
         username: Username
@@ -22,40 +24,62 @@ profile:
     edit:
         submit: Aggiorna
     flash:
-        updated: 'Il profilo è stato aggiornato'
+        updated: 'Il profilo è stato aggiornato.'
+
 change_password:
     submit: 'Cambia password'
     flash:
-        success: 'La password è stata cambiata'
+        success: 'La password è stata cambiata.'
+
 registration:
-    check_email: 'Una mail è stata inviata a %email%. Contiene il link d''attivazione che devi utilizzare per attivare il tuo account.'
+    check_email: 'Un''email è stata inviata a %email%. Contiene il link d''attivazione che devi utilizzare per attivare il tuo account.'
     confirmed: 'Congratulazioni %username%, il tuo account è confermato.'
     back: 'Torna alla pagina d''origine.'
     submit: Registra
     flash:
-        user_created: 'Utente creato con successo'
+        user_created: 'Utente creato con successo.'
     email:
         subject: 'Benvenuto %username%!'
-        message: "Ciao %username%!\n\nPer terminare la validazione del tuo account visita %confirmationUrl%\n\nSaluti,\nil Team.\n"
+        message: |
+            Ciao %username%!
+
+            Per terminare la validazione del tuo account visita %confirmationUrl%
+
+            Questo link può essere utilizzato solo una volta per verificare il tuo account.
+
+            Saluti,
+            il Team.
+
 resetting:
-    password_already_requested: 'La password per questo utente è già stata richiesta nelle ultime 24 ore.'
-    check_email: 'Una email è stata inviata a %email%. Contiene il link d''attivazione che devi utilizzare per il reset della password.'
+    check_email: |
+        È stata inviata un'email con il link d'attivazione che devi utilizzare per il reset della password.
+        Nota: è possibile richiedere una password entro %tokenLifetime% ore.
+
+        Se non ricevi un'email verifica la cartella di spam o riprova.
     request:
-        invalid_username: 'Username o indirizzo email "%username%" non esistente.'
         username: 'Username o indirizzo email'
         submit: 'Password reset'
     reset:
         submit: 'Cambia password'
     flash:
-        success: 'La password è stata resettata'
+        success: 'La password è stata resettata.'
     email:
         subject: 'Password reset'
-        message: "Ciao %username%!\n\nPer resettare la password visita %confirmationUrl%\n\nSaluti,\nil Team.\n"
+        message: |
+            Ciao %username%!
+
+            Per resettare la password visita %confirmationUrl%
+
+            Saluti,
+            il Team.
+
+# Global strings
 layout:
     logout: Logout
     login: Login
     register: Registra
     logged_in_as: 'Collegato come %username%'
+
 form:
     group_name: 'Nome gruppo'
     username: Username

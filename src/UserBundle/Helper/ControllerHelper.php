@@ -50,8 +50,31 @@ trait ControllerHelper
 
         return $this->get('jms_serializer')->serialize($data, 'json', $context);
     }
-		
-		
+
+    /**
+     * Per controllare i campi obbligatori
+     */
+    public function checkCampiObbligatori($data, $array_fields_required) {
+        foreach ($array_fields_required as $item) {
+            if (!isset($data->$item) || $data->$item = "" || empty($data->$item)) {
+                //print_r($item);
+                return $item;
+            }
+        }
+        return "ok";
+    }
+
+
+    public function zulu_to_rome($datein) {
+        $tzin  = 'UTC';
+        $tzout = 'Europe/Rome';
+        if( empty( $datein ) ) return $datein;
+        $dt = new \DateTime($datein, new \DateTimeZone($tzin));
+        $dt->setTimezone(new \DateTimeZone($tzout));
+        $dataout = $dt->format("Y-m-d");
+        return $dataout;
+    }
+
     /**
      * Per convertire le date.
      *
@@ -63,9 +86,10 @@ trait ControllerHelper
         foreach ($data as $item) {
                 foreach ($array_date as $item_date) {
 
-                        if (substr($item->$item_date, 0, 1) == "-") {
+                        if (substr($item->$item_date, 0, 1) == "-" || $item->$item_date == null || $item->$item_date == "") {
                             $item->$item_date = '';
                         } else {
+                            //$item->$item_date = $this->zulu_to_rome($item->$item_date) * 1000;
                             $item->$item_date = substr($item->$item_date, 0, 10);
                             //$item->$item_date = strtotime($item->$item_date  . " +1 days") * 1000;
                             $item->$item_date = strtotime($item->$item_date) * 1000;
@@ -100,7 +124,7 @@ trait ControllerHelper
                             $data[$item_date] = '';
                         } else {
                             $data[$item_date] = substr($data[$item_date], 0, 10);
-                            $data[$item_date] = strtotime($data[$item_date] . " +1 days") * 1000;
+                            $data[$item_date] = strtotime($data[$item_date]) * 1000;
                         }
                 }
         return $data;
@@ -233,6 +257,7 @@ trait ControllerHelper
         $array_amministrazioni = array();
         $array_tags = array();
         foreach ($data as $item => $value) {
+            //$array[$value['id']]['numero_fascicolo'] = (int) $array[$value['id']]['numero_fascicolo'];
             if (array_key_exists($value['id'],$array)) {
                 if (!in_array($value['id_amministrazioni'],$array_amministrazioni)) {
                     $array[$value['id']]['id_amministrazioni'] = $array[$value['id']]['id_amministrazioni'] . "," . $value['id_amministrazioni'];
@@ -287,7 +312,8 @@ trait ControllerHelper
                 $array_amministrazioni[] = $value['id_uffici'];
                 $array_tags[] = $value['id_tags'];
             }
-            $array[$value['id']]['anno'] = substr($array[$value['id']]['data'], 0, 4);
+            $array[$value['id']]['anno'] = date('Y', ($array[$value['id']]['data']) / 1000);
+                //substr($array[$value['id']]['data'], 0, 4);
         }
 
         if (count($array) > 1) {
@@ -495,43 +521,71 @@ trait ControllerHelper
     }
 
 
+//    /**
+//     * @param mixed $data
+//     * @return string JSON string
+//     */
+//    public function setFaseProceduraleDelibere($data) {
+//        foreach ($data as $key => $value) {
+//
+//            if ($value['data_gu'] != "") {
+//                $data[$key]['situazione'] = 9; // 9 - Pubblicato Gazzetta Ufficiale
+//            } elseif ($value['data_invio_gu'] != "" && $value['data_gu'] == "") {
+//                $data[$key]['situazione'] = 8; // 8 - Alla Gazzetta Ufficiale
+//            } elseif ($value['data_invio_cc'] != "" && $value['data_registrazione_cc'] == "") {
+//                $data[$key]['situazione'] = 7; // 7 - Alla Corte dei Conti
+//            } elseif ($value['data_consegna'] != "" && $value['data_segretario_invio'] != "" && $value['data_segretario_ritorno'] != "" && $value['data_presidente_invio'] != "" && $value['data_presidente_ritorno'] == "") {
+//                $data[$key]['situazione'] = 6; // 6 - In firma Presidente Cipe
+//            } elseif ($value['data_consegna'] != "" && $value['data_segretario_invio'] != "" && $value['data_segretario_ritorno'] == "") {
+//                $data[$key]['situazione'] = 5; // 5 - In firma Segretario Cipe
+//            } elseif ($value['data_mef_ritorno'] != "") {
+//                $data[$key]['situazione'] = 4; // 4 - Ritorno MEF
+//            } elseif ($value['data_mef_invio'] != "") {
+//                $data[$key]['situazione'] = 3; // 3 - Invio MEF
+//            } elseif ($value['data_consegna'] != "" && $value['data_segretario_invio'] == "" && $value['data_presidente_invio'] == "") {
+//                $data[$key]['situazione'] = 2; // 2 - In lavorazione
+//            } elseif ($value['data_consegna'] == "") {
+//                $data[$key]['situazione'] = 1; // 1 - Da acquisire
+//            } else {
+//                $data[$key]['situazione'] = 0;
+//            }
+//
+//        }
+//        return $data;
+//    }
+
+
     /**
      * @param mixed $data
      * @return string JSON string
      */
     public function setFaseProceduraleDelibere($data) {
-        foreach ($data as $key => $value) {
-            //default
-            $data[$key]['situazione'] = 0;
 
-            // 1 - Da acquisire
-            if ($value['data_consegna'] == "") {
-                $data[$key]['situazione'] = 1;
-            }
-            // 2 - In lavorazione
-            if ($value['data_consegna'] != "" && $value['data_segretario_invio'] == "" && $value['data_presidente_invio'] == "") {
-                $data[$key]['situazione'] = 2;
-            }
-            // 5 - In firma Segretario Cipe
-            if ($value['data_consegna'] != "" && $value['data_segretario_invio'] != "" && $value['data_segretario_ritorno'] == "") {
-                $data[$key]['situazione'] = 5;
-            }
-            // 6 - In firma Presidente Cipe
-            if ($value['data_consegna'] != "" && $value['data_segretario_invio'] != "" && $value['data_segretario_ritorno'] != "" && $value['data_presidente_invio'] != "" && $value['data_presidente_ritorno'] == "") {
-                $data[$key]['situazione'] = 6;
-            }
-            // 7 - Alla Corte dei Conti
-            if ($value['data_invio_cc'] != "" && $value['data_registrazione_cc'] == "") {
-                $data[$key]['situazione'] = 7;
-            }
-            // 8 - Alla Gazzetta Ufficiale
-            if ($value['data_invio_gu'] != "" && $value['data_gu'] == "") {
-                $data[$key]['situazione'] = 8;
+            if ($data->data_gu != "") {
+                $situazione = 9; // 9 - Pubblicato Gazzetta Ufficiale
+            } elseif ($data->data_invio_gu != "" && $data->data_gu == "") {
+                $situazione = 8; // 8 - Alla Gazzetta Ufficiale
+            } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc == "") {
+                $situazione = 7; // 7 - Alla Corte dei Conti
+            } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno != "" && $data->data_presidente_invio != "" && $data->data_presidente_ritorno == "") {
+                $situazione = 6; // 6 - In firma Presidente Cipe
+            } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno == "") {
+                $situazione = 5; // 5 - In firma Segretario Cipe
+            } elseif ($data->data_mef_ritorno != "") {
+                $situazione = 4; // 4 - Ritorno MEF
+            } elseif ($data->data_mef_invio != "") {
+                $situazione = 3; // 3 - Invio MEF
+            } elseif ($data->data_consegna != "" && $data->data_segretario_invio == "" && $data->data_presidente_invio == "") {
+                $situazione = 2; // 2 - In lavorazione
+            } elseif ($data->data_consegna == "") {
+                $situazione = 1; // 1 - Da acquisire
+            } else {
+                $situazione = 0;
             }
 
-        }
-        return $data;
+        return $situazione;
     }
+    
 
 
     public function setCastDelibere($data, $tipo) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2013 Johannes M. Schmitt <schmittjoh@gmail.com>
+ * Copyright 2016 Johannes M. Schmitt <schmittjoh@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,15 @@
 namespace JMS\Serializer;
 
 use JMS\Serializer\Construction\ObjectConstructorInterface;
-use JMS\Serializer\Exception\RuntimeException;
-use JMS\Serializer\Handler\HandlerRegistryInterface;
+use JMS\Serializer\ContextFactory\DefaultDeserializationContextFactory;
+use JMS\Serializer\ContextFactory\DefaultSerializationContextFactory;
+use JMS\Serializer\ContextFactory\DeserializationContextFactoryInterface;
+use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\EventDispatcher\EventDispatcherInterface;
+use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\Exception\UnsupportedFormatException;
+use JMS\Serializer\Expression\ExpressionEvaluatorInterface;
+use JMS\Serializer\Handler\HandlerRegistryInterface;
 use Metadata\MetadataFactoryInterface;
 use PhpCollection\MapInterface;
 
@@ -31,7 +36,7 @@ use PhpCollection\MapInterface;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class Serializer implements SerializerInterface
+class Serializer implements SerializerInterface, ArrayTransformerInterface
 {
     private $factory;
     private $handlerRegistry;
@@ -48,6 +53,16 @@ class Serializer implements SerializerInterface
     private $navigator;
 
     /**
+     * @var SerializationContextFactoryInterface
+     */
+    private $serializationContextFactory;
+
+    /**
+     * @var DeserializationContextFactoryInterface
+     */
+    private $deserializationContextFactory;
+
+    /**
      * Constructor.
      *
      * @param \Metadata\MetadataFactoryInterface $factory
@@ -57,8 +72,18 @@ class Serializer implements SerializerInterface
      * @param \PhpCollection\MapInterface $deserializationVisitors of VisitorInterface
      * @param EventDispatcher\EventDispatcherInterface $dispatcher
      * @param TypeParser $typeParser
+     * @param ExpressionEvaluatorInterface|null $expressionEvaluator
      */
-    public function __construct(MetadataFactoryInterface $factory, HandlerRegistryInterface $handlerRegistry, ObjectConstructorInterface $objectConstructor, MapInterface $serializationVisitors, MapInterface $deserializationVisitors, EventDispatcherInterface $dispatcher = null, TypeParser $typeParser = null)
+    public function __construct(
+        MetadataFactoryInterface $factory,
+        HandlerRegistryInterface $handlerRegistry,
+        ObjectConstructorInterface $objectConstructor,
+        MapInterface $serializationVisitors,
+        MapInterface $deserializationVisitors,
+        EventDispatcherInterface $dispatcher = null,
+        TypeParser $typeParser = null,
+        ExpressionEvaluatorInterface $expressionEvaluator = null
+    )
     {
         $this->factory = $factory;
         $this->handlerRegistry = $handlerRegistry;
@@ -68,63 +93,62 @@ class Serializer implements SerializerInterface
         $this->serializationVisitors = $serializationVisitors;
         $this->deserializationVisitors = $deserializationVisitors;
 
-        $this->navigator = new GraphNavigator($this->factory, $this->handlerRegistry, $this->objectConstructor, $this->dispatcher);
+        $this->navigator = new GraphNavigator($this->factory, $this->handlerRegistry, $this->objectConstructor, $this->dispatcher, $expressionEvaluator);
+
+        $this->serializationContextFactory = new DefaultSerializationContextFactory();
+        $this->deserializationContextFactory = new DefaultDeserializationContextFactory();
     }
 
     public function serialize($data, $format, SerializationContext $context = null)
     {
         if (null === $context) {
-            $context = new SerializationContext();
+            $context = $this->serializationContextFactory->createSerializationContext();
         }
 
         return $this->serializationVisitors->get($format)
-            ->map(function(VisitorInterface $visitor) use ($context, $data, $format) {
-                $this->visit($visitor, $context, $visitor->prepare($data), $format);
+            ->map(function (VisitorInterface $visitor) use ($context, $data, $format) {
+                $type = $context->getInitialType() !== null ? $this->typeParser->parse($context->getInitialType()) : null;
+
+                $this->visit($visitor, $context, $visitor->prepare($data), $format, $type);
 
                 return $visitor->getResult();
             })
-            ->getOrThrow(new UnsupportedFormatException(sprintf('The format "%s" is not supported for serialization.', $format)))
-        ;
+            ->getOrThrow(new UnsupportedFormatException(sprintf('The format "%s" is not supported for serialization.', $format)));
     }
 
     public function deserialize($data, $type, $format, DeserializationContext $context = null)
     {
         if (null === $context) {
-            $context = new DeserializationContext();
+            $context = $this->deserializationContextFactory->createDeserializationContext();
         }
 
         return $this->deserializationVisitors->get($format)
-            ->map(function(VisitorInterface $visitor) use ($context, $data, $format, $type) {
+            ->map(function (VisitorInterface $visitor) use ($context, $data, $format, $type) {
                 $preparedData = $visitor->prepare($data);
                 $navigatorResult = $this->visit($visitor, $context, $preparedData, $format, $this->typeParser->parse($type));
 
                 return $this->handleDeserializeResult($visitor->getResult(), $navigatorResult);
             })
-            ->getOrThrow(new UnsupportedFormatException(sprintf('The format "%s" is not supported for deserialization.', $format)))
-        ;
+            ->getOrThrow(new UnsupportedFormatException(sprintf('The format "%s" is not supported for deserialization.', $format)));
     }
 
     /**
-     * Converts objects to an array structure.
-     *
-     * This is useful when the data needs to be passed on to other methods which expect array data.
-     *
-     * @param mixed $data anything that converts to an array, typically an object or an array of objects
-     *
-     * @return array
+     * {@InheritDoc}
      */
     public function toArray($data, SerializationContext $context = null)
     {
         if (null === $context) {
-            $context = new SerializationContext();
+            $context = $this->serializationContextFactory->createSerializationContext();
         }
 
         return $this->serializationVisitors->get('json')
-            ->map(function(JsonSerializationVisitor $visitor) use ($context, $data) {
-                $this->visit($visitor, $context, $data, 'json');
+            ->map(function (JsonSerializationVisitor $visitor) use ($context, $data) {
+                $type = $context->getInitialType() !== null ? $this->typeParser->parse($context->getInitialType()) : null;
+
+                $this->visit($visitor, $context, $data, 'json', $type);
                 $result = $this->convertArrayObjects($visitor->getRoot());
 
-                if ( ! is_array($result)) {
+                if (!is_array($result)) {
                     throw new RuntimeException(sprintf(
                         'The input data of type "%s" did not convert to an array, but got a result of type "%s".',
                         is_object($data) ? get_class($data) : gettype($data),
@@ -134,32 +158,25 @@ class Serializer implements SerializerInterface
 
                 return $result;
             })
-            ->get()
-        ;
+            ->get();
     }
 
     /**
-     * Restores objects from an array structure.
-     *
-     * @param array $data
-     * @param string $type
-     *
-     * @return mixed this returns whatever the passed type is, typically an object or an array of objects
+     * {@InheritDoc}
      */
     public function fromArray(array $data, $type, DeserializationContext $context = null)
     {
         if (null === $context) {
-            $context = new DeserializationContext();
+            $context = $this->deserializationContextFactory->createDeserializationContext();
         }
 
         return $this->deserializationVisitors->get('json')
-            ->map(function(JsonDeserializationVisitor $visitor) use ($data, $type, $context) {
+            ->map(function (JsonDeserializationVisitor $visitor) use ($data, $type, $context) {
                 $navigatorResult = $this->visit($visitor, $context, $data, 'json', $this->typeParser->parse($type));
 
                 return $this->handleDeserializeResult($visitor->getResult(), $navigatorResult);
             })
-            ->get()
-        ;
+            ->get();
     }
 
     private function visit(VisitorInterface $visitor, Context $context, $data, $format, array $type = null)
@@ -188,8 +205,8 @@ class Serializer implements SerializerInterface
 
     private function convertArrayObjects($data)
     {
-        if ($data instanceof \ArrayObject) {
-            $data = (array) $data;
+        if ($data instanceof \ArrayObject || $data instanceof \stdClass) {
+            $data = (array)$data;
         }
         if (is_array($data)) {
             foreach ($data as $k => $v) {
@@ -206,5 +223,29 @@ class Serializer implements SerializerInterface
     public function getMetadataFactory()
     {
         return $this->factory;
+    }
+
+    /**
+     * @param SerializationContextFactoryInterface $serializationContextFactory
+     *
+     * @return self
+     */
+    public function setSerializationContextFactory(SerializationContextFactoryInterface $serializationContextFactory)
+    {
+        $this->serializationContextFactory = $serializationContextFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param DeserializationContextFactoryInterface $deserializationContextFactory
+     *
+     * @return self
+     */
+    public function setDeserializationContextFactory(DeserializationContextFactoryInterface $deserializationContextFactory)
+    {
+        $this->deserializationContextFactory = $deserializationContextFactory;
+
+        return $this;
     }
 }

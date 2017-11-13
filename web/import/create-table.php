@@ -34,6 +34,7 @@ mysqli_query($db, $queryCreate1) or die( mysqli_error($db));
 $queryLoad1 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table1 .'.csv"
         INTO TABLE '.$table1.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad1) or die( mysqli_error($db));
@@ -59,6 +60,7 @@ mysqli_query($db, $queryCreate2) or die( mysqli_error($db));
 $queryLoad2 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table2 .'.csv"
         INTO TABLE '.$table2.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad2) or die( mysqli_error($db));
@@ -80,6 +82,7 @@ mysqli_query($db, $queryCreate3) or die( mysqli_error($db));
 $queryLoad3 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table3 .'.csv"
         INTO TABLE '.$table3.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad3) or die( mysqli_error($db));
@@ -118,6 +121,7 @@ mysqli_query($db, $queryCreate4) or die( mysqli_error($db));
 $queryLoad4 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table4 .'.csv"
         INTO TABLE '.$table4.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad4) or die( mysqli_error($db));
@@ -252,6 +256,7 @@ mysqli_query($db, $queryCreate5) or die( mysqli_error($db));
 $queryLoad5 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table5 .'.csv"
         INTO TABLE '.$table5.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad5) or die( mysqli_error($db));
@@ -272,6 +277,7 @@ mysqli_query($db, $queryCreate6) or die( mysqli_error($db));
 $queryLoad6 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table6 .'.csv"
         INTO TABLE '.$table6.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad6) or die( mysqli_error($db));
@@ -290,13 +296,14 @@ $queryCreate7 = "CREATE TABLE `Firmatari` (
   `Tipo_Firmatario` int(11) DEFAULT NULL,
   `Descrizione_firmatario` varchar(255) DEFAULT NULL,
   `Descrizione_Estesa` varchar(255) DEFAULT NULL,
-  `Disattivato_Firmatario` tinyint(1) DEFAULT NULL
+  `Disattivato_Firmatario` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 mysqli_query($db, $queryCreate7) or die( mysqli_error($db));
 
 $queryLoad7 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table7 .'.csv"
         INTO TABLE '.$table7.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad7) or die( mysqli_error($db));
@@ -317,6 +324,7 @@ mysqli_query($db, $queryCreate8) or die( mysqli_error($db));
 $queryLoad8 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table8 .'.csv"
         INTO TABLE '.$table8.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad8) or die( mysqli_error($db));
@@ -353,6 +361,7 @@ mysqli_query($db, $queryCreate9) or die( mysqli_error($db));
 $queryLoad9 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table9 .'.csv"
         INTO TABLE '.$table9.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad9) or die( mysqli_error($db));
@@ -374,7 +383,7 @@ $queryCreate10 = "CREATE TABLE `PwUtenti` (
   `Userid` varchar(255) DEFAULT NULL,
   `Password` varchar(255) DEFAULT NULL,
   `PostaElettronica` varchar(255) DEFAULT NULL,
-  `CessatoServizio` tinyint(1) DEFAULT NULL,
+  `CessatoServizio` varchar(255) DEFAULT NULL,
   `Ip` varchar(255) DEFAULT NULL,
   `stazione` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
@@ -383,6 +392,7 @@ mysqli_query($db, $queryCreate10) or die( mysqli_error($db));
 $queryLoad10 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table10 .'.csv"
         INTO TABLE '.$table10.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad10) or die( mysqli_error($db));
@@ -421,6 +431,7 @@ mysqli_query($db, $queryCreate11) or die( mysqli_error($db));
 $queryLoad11 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table11 .'.csv"
         INTO TABLE '.$table11.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad11) or die( mysqli_error($db));
@@ -464,6 +475,7 @@ mysqli_query($db, $queryCreate12) or die( mysqli_error($db));
 $queryLoad12 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table12 .'.csv"
         INTO TABLE '.$table12.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad12) or die( mysqli_error($db));
@@ -484,6 +496,7 @@ mysqli_query($db, $queryCreate13) or die( mysqli_error($db));
 $queryLoad13 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table13 .'.csv"
         INTO TABLE '.$table13.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad13) or die( mysqli_error($db));
@@ -511,6 +524,7 @@ mysqli_query($db, $queryCreate14) or die( mysqli_error($db));
 $queryLoad14 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table14 .'.csv"
         INTO TABLE '.$table14.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad14) or die( mysqli_error($db));
@@ -534,6 +548,7 @@ mysqli_query($db, $queryCreate15) or die( mysqli_error($db));
 $queryLoad15 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table15 .'.csv"
         INTO TABLE '.$table15.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad15) or die( mysqli_error($db));
@@ -554,6 +569,7 @@ mysqli_query($db, $queryCreate16) or die( mysqli_error($db));
 $queryLoad16 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table16 .'.csv"
         INTO TABLE '.$table16.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad16) or die( mysqli_error($db));
@@ -574,6 +590,7 @@ mysqli_query($db, $queryCreate17) or die( mysqli_error($db));
 $queryLoad17 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table17 .'.csv"
         INTO TABLE '.$table17.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad17) or die( mysqli_error($db));
@@ -594,6 +611,7 @@ mysqli_query($db, $queryCreate18) or die( mysqli_error($db));
 $queryLoad18 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table18 .'.csv"
         INTO TABLE '.$table18.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad18) or die( mysqli_error($db));
@@ -615,6 +633,7 @@ mysqli_query($db, $queryCreate19) or die( mysqli_error($db));
 $queryLoad19 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table19 .'.csv"
         INTO TABLE '.$table19.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad19) or die( mysqli_error($db));
@@ -639,6 +658,7 @@ mysqli_query($db, $queryCreate20) or die( mysqli_error($db));
 $queryLoad20 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table20 .'.csv"
         INTO TABLE '.$table20.'
         FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad20) or die( mysqli_error($db));

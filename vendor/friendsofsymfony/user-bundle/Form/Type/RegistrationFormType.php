@@ -15,10 +15,12 @@ use FOS\UserBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * @var string
+     */
     private $class;
 
     /**
@@ -29,6 +31,9 @@ class RegistrationFormType extends AbstractType
         $this->class = $class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -44,28 +49,31 @@ class RegistrationFormType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
             'csrf_token_id' => 'registration',
             // BC for SF < 2.8
-            'intention'  => 'registration',
+            'intention' => 'registration',
         ));
     }
 
-    // BC for SF < 2.7
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     // BC for SF < 3.0
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'fos_user_registration';

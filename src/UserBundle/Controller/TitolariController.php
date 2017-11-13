@@ -187,7 +187,13 @@ class TitolariController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["codice","denominazione","descrizione","id_uffici"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $repository = $em->getRepository('UserBundle:Titolari');
         $titolario = $repository->findOneById($data->id);
         
@@ -237,7 +243,13 @@ class TitolariController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["codice","denominazione","descrizione","id_uffici"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $titolario = new Titolari();
         
         $titolario->setCodice($data->codice);
@@ -245,13 +257,14 @@ class TitolariController extends Controller
         $titolario->setDescrizione($data->descrizione);
 		$titolario->setIdUffici($data->id_uffici);
 
+
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("titolari");
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
         
         $em->persist($titolario);
-        $em->flush(); //esegue l'update 
+        $em->flush(); //esegue l'update
 
         $response = new Response($this->serialize($titolario), Response::HTTP_OK);
 

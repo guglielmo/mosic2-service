@@ -33,7 +33,7 @@ class PreCipe
     /**
      * @var string
      *
-     * @ORM\Column(name="ufficiale_riunione", type="string", length=255)
+     * @ORM\Column(name="ufficiale_riunione", type="integer")
      */
     private $ufficialeRiunione;
 
@@ -61,6 +61,8 @@ class PreCipe
         $this->publicReservedStatus = "";
         $this->publicReservedUrl = "";
     }
+
+
 
 
 
@@ -102,7 +104,7 @@ class PreCipe
     /**
      * Set ufficialeRiunione
      *
-     * @param string $ufficialeRiunione
+     * @param integer $ufficialeRiunione
      *
      * @return PreCipe
      */
@@ -116,7 +118,7 @@ class PreCipe
     /**
      * Get ufficialeRiunione
      *
-     * @return string
+     * @return integer
      */
     public function getUfficialeRiunione()
     {

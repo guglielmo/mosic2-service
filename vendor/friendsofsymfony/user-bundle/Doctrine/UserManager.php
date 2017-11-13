@@ -12,39 +12,50 @@
 namespace FOS\UserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManager as BaseUserManager;
-use FOS\UserBundle\Util\CanonicalizerInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use FOS\UserBundle\Util\CanonicalFieldsUpdater;
+use FOS\UserBundle\Util\PasswordUpdaterInterface;
 
 class UserManager extends BaseUserManager
 {
+    /**
+     * @var ObjectManager
+     */
     protected $objectManager;
-    protected $class;
-    protected $repository;
+
+    /**
+     * @var string
+     */
+    private $class;
 
     /**
      * Constructor.
      *
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param CanonicalizerInterface  $usernameCanonicalizer
-     * @param CanonicalizerInterface  $emailCanonicalizer
-     * @param ObjectManager           $om
-     * @param string                  $class
+     * @param PasswordUpdaterInterface $passwordUpdater
+     * @param CanonicalFieldsUpdater   $canonicalFieldsUpdater
+     * @param ObjectManager            $om
+     * @param string                   $class
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class)
+    public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, $class)
     {
-        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer);
+        parent::__construct($passwordUpdater, $canonicalFieldsUpdater);
 
         $this->objectManager = $om;
-        $this->repository = $om->getRepository($class);
-
-        $metadata = $om->getClassMetadata($class);
-        $this->class = $metadata->getName();
+        $this->class = $class;
     }
 
     /**
-     * {@inheritDoc}
+     * @return ObjectRepository
+     */
+    protected function getRepository()
+    {
+        return $this->objectManager->getRepository($this->getClass());
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function deleteUser(UserInterface $user)
     {
@@ -53,31 +64,36 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getClass()
     {
+        if (false !== strpos($this->class, ':')) {
+            $metadata = $this->objectManager->getClassMetadata($this->class);
+            $this->class = $metadata->getName();
+        }
+
         return $this->class;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findUserBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->getRepository()->findOneBy($criteria);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findUsers()
     {
-        return $this->repository->findAll();
+        return $this->getRepository()->findAll();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reloadUser(UserInterface $user)
     {
@@ -85,10 +101,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * Updates a user.
-     *
-     * @param UserInterface $user
-     * @param Boolean       $andFlush Whether to flush the changes (default true)
+     * {@inheritdoc}
      */
     public function updateUser(UserInterface $user, $andFlush = true)
     {

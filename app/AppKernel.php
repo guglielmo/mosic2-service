@@ -20,7 +20,6 @@ class AppKernel extends Kernel
             new UserBundle\UserBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
-            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

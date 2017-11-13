@@ -3,11 +3,12 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * RelUfficiCipe
  *
- * @ORM\Table(name="msc_rel_uffici_cipe")
+ * @ORM\Table(name="msc_rel_uffici_cipe",indexes={@Index(name="id_odg_cipe_idx", columns={"id_odg_cipe"})})
  * @ORM\Entity(repositoryClass="UserBundle\Repository\RelUfficiCipeRepository")
  */
 class RelUfficiCipe

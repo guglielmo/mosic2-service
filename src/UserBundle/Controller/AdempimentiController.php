@@ -203,7 +203,13 @@ class AdempimentiController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["id_cipe","id_delibere","descrizione","data_scadenza"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $repository = $em->getRepository('UserBundle:Adempimenti');
         $adempimento = $repository->findOneBy(["id" => $data->id]);
 
@@ -219,7 +225,7 @@ class AdempimentiController extends Controller
         $adempimento->setCodiceDescrizione($data->codice_descrizione);
         $adempimento->setCodiceFonte($data->codice_fonte);
         $adempimento->setCodiceEsito($data->codice_esito);
-        $adempimento->setDataScadenza(new \DateTime($this->formatDateStringCustom($data->data_scadenza)));
+        $adempimento->setDataScadenza(new \DateTime($this->zulu_to_rome($data->data_scadenza)));
         $adempimento->setGiorniScadenza($data->giorni_scadenza);
         $adempimento->setMesiScadenza($data->mesi_scadenza);
         $adempimento->setAnniScadenza($data->anni_scadenza);
@@ -268,7 +274,13 @@ class AdempimentiController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["id_cipe","id_delibere","descrizione","data_scadenza"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $adempimento = new Adempimenti();
 
         $adempimento->setCodice($data->codice);
@@ -279,7 +291,7 @@ class AdempimentiController extends Controller
         $adempimento->setCodiceDescrizione($data->codice_descrizione);
         $adempimento->setCodiceFonte($data->codice_fonte);
         $adempimento->setCodiceEsito($data->codice_esito);
-        $adempimento->setDataScadenza(new \DateTime($this->formatDateStringCustom($data->data_scadenza)));
+        $adempimento->setDataScadenza(new \DateTime($this->zulu_to_rome($data->data_scadenza)));
         $adempimento->setGiorniScadenza($data->giorni_scadenza);
         $adempimento->setMesiScadenza($data->mesi_scadenza);
         $adempimento->setAnniScadenza($data->anni_scadenza);

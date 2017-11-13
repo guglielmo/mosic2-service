@@ -39,11 +39,11 @@ class GenerateCommandCommand extends GeneratorCommand
                 new InputArgument('name', InputArgument::OPTIONAL, 'The command\'s name (e.g. app:my-command)'),
             ))
             ->setHelp(<<<EOT
-The <info>generate:command</info> command helps you generate new commands
+The <info>%command.name%</info> command helps you generate new commands
 inside bundles. Provide the bundle name as the first argument and the command
 name as the second argument:
 
-<info>php app/console generate:command AppBundle blog:publish-posts</info>
+<info>php %command.full_name% AppBundle blog:publish-posts</info>
 
 If any of the arguments is missing, the command will ask for their values
 interactively. If you want to disable any user interaction, use
@@ -85,12 +85,12 @@ EOT
                 '',
             ));
 
+            $bundleNames = array_keys($this->getContainer()->get('kernel')->getBundles());
+
             $question = new Question($questionHelper->getQuestion('Bundle name', $bundle), $bundle);
-            $container = $this->getContainer();
-            $question->setValidator(function ($answer) use ($container) {
-                try {
-                   $b = $container->get('kernel')->getBundle($answer);
-                } catch (\Exception $e) {
+            $question->setAutocompleterValues($bundleNames);
+            $question->setValidator(function ($answer) use ($bundleNames) {
+                if (!in_array($answer, $bundleNames)) {
                     throw new \RuntimeException(sprintf('Bundle "%s" does not exist.', $answer));
                 }
 
@@ -116,7 +116,7 @@ EOT
             $question = new Question($questionHelper->getQuestion('Command name', $name), $name);
             $question->setValidator(function ($answer) {
                 if (empty($answer)) {
-                   throw new \RuntimeException('The command name cannot be empty.');
+                    throw new \RuntimeException('The command name cannot be empty.');
                 }
 
                 return $answer;

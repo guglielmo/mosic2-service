@@ -66,6 +66,15 @@ class Uffici
 
 
 
+
+    public function __construct() {
+        $this->disattivo_ufficio = 0;
+        $this->soloDelibere = 0;
+        $this->ordineUfficio = 0;
+        $this->codiceDirezione = 0;
+    }
+
+
     /**
      * Get id
      *

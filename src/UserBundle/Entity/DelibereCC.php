@@ -59,7 +59,7 @@ class DelibereCC
 
     /**
      * @var integer
-     * @ORM\Column(name="giorni_rilievo", type="integer")
+     * @ORM\Column(name="giorni_rilievo", type="integer", nullable= true)
      */
     private $giorniRilievo;
 
@@ -81,6 +81,8 @@ class DelibereCC
         $this->data = new \DateTime("0000-00-00");
         $this->noteRilievo = "";
         $this->tipoRilievo = 0;
+        $this->tipoDocumento = 0;
+        $this->giorni_rilievo = NULL;
     }
 
 

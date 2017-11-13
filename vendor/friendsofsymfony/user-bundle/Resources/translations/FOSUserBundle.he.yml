@@ -36,12 +36,25 @@ registration:
         user_created: 'המשתמש נוצר בהצלחה'
     email:
         subject: 'שלום %username%!'
-        message: "%username% שלום רב,\n\nכדי לסיים הרשמתך יש ללחוץ על קישור זה:  %confirmationUrl%\n\nבברכה,\n   הצוות.\n"
+        message: |
+            %username% שלום רב,
+
+            כדי לסיים הרשמתך יש ללחוץ על קישור זה:  %confirmationUrl%
+
+            זה קישור חד-פעמי לאמת סיסמתך.
+
+            בברכה,
+               הצוות.
+
 resetting:
-    password_already_requested: 'ב24 שעות האחרונות נרשם ניסיון לשחזר סיסמה למשתמש זה.'
-    check_email: 'הודעת דוא"ל נשלחה ל-%email%. ההודעה מכילה קישור לאיפוס סיסמה שלך.'
+    check_email: |
+        הודעת דוא"ל נשלחה. ההודעה מכילה קישור לאיפוס סיסמה שלך.
+
+        ניתן לבקש איפוס סיסמה תוך %tokenLifetime% שעות.
+
+        יש לבדוק תיקיים דואר זבל במידע ולא הגיעה ההודעה.
+
     request:
-        invalid_username: 'שם משתמש או דוא"ל "%username%" לא קיים.'
         username: 'שם משתמש או דואר אלקטרוני'
         submit: 'איפוס סיסמה'
     reset:
@@ -50,18 +63,27 @@ resetting:
         success: 'הסיסמה אופסה בהצלחה'
     email:
         subject: 'איפוס סיסמה'
-        message: "%username% שלום רב,\n\nכדי לאפס סיסמה שלך יש ללחוץ %confirmationUrl%\n\nבברכה,\n   הצוות.\n"
+        message: |
+            %username% שלום רב,
+
+            כדי לאפס סיסמה שלך יש ללחוץ %confirmationUrl%
+
+            בברכה,
+               הצוות.
+
+# Global strings
 layout:
-    logout: יציאה
+    logout: התנתק
     login: כניסה
     register: רישום
-    logged_in_as: 'Logged in as %username%'
+    logged_in_as: 'שלום %username%'
+
 form:
     group_name: 'שם קבוצה'
     username: 'שם משתמש'
     email: 'דוא\"ל'
-    current_password: 'Current password'
+    current_password: 'סיסמה נוכחות'
     password: סיסמה
-    password_confirmation: Verification
+    password_confirmation: 'אימות סיסמה'
     new_password: 'סיסמה חדשה'
-    new_password_confirmation: Verification
+    new_password_confirmation: 'אימות סיסמה חדשה'

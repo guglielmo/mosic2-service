@@ -72,12 +72,19 @@ default constructor uses the `unserialize` function to construct objects. Other
 constructors are configured as services. You can set the constructor by changing
 the service alias:
 
-.. code-block :: yaml
+.. configuration-block ::
 
-    services:
-        jms_serializer.object_constructor:
-            alias: jms_serializer.doctrine_object_constructor
-            public: false
+    .. code-block :: yaml
+        services:
+            jms_serializer.object_constructor:
+                alias: jms_serializer.doctrine_object_constructor
+                public: false
+
+    .. code-block :: xml
+        <services>
+            <service id="jms_serializer.object_constructor" alias="jms_serializer.doctrine_object_constructor" public="false">
+            </service>
+        </services>
 
 Extension Reference
 -------------------
@@ -96,10 +103,23 @@ values:
                 datetime:
                     default_format: "c" # ISO8601
                     default_timezone: "UTC" # defaults to whatever timezone set in php.ini or via date_default_timezone_set
+                array_collection:
+                    initialize_excluded: true # suggested false for better performance
+
+            subscribers:
+                doctrine_proxy:
+                    initialize_virtual_types: true # suggested false for better performance
+                    initialize_excluded: true # suggested false for better performance
+
+            object_constructors:
+                doctrine:
+                    fallback_strategy: "null" # possible values ("null" | "exception" | "fallback")
 
             property_naming:
+                id: ~
                 separator:  _
                 lower_case: true
+                enable_cache: true
 
             metadata:
                 cache: file
@@ -125,12 +145,30 @@ values:
                         namespace_prefix: "My\\BarBundle"
                         path: "@MyBarBundle/Resources/config/serializer"
 
+            expression_evaluator:
+                id: jms_serializer.expression_evaluator # auto detected
+
+            default_context:
+                serialization:
+                    serialize_null: false
+                    version: ~
+                    attributes: {}
+                    groups: ['Default']
+                    enable_max_depth_checks: false
+                deserialization:
+                    serialize_null: false
+                    version: ~
+                    attributes: {}
+                    groups: ['Default']
+                    enable_max_depth_checks: false
+
             visitors:
                 json:
-                    options: 0 # json_encode options bitmask
+                    options: 0 # json_encode options bitmask, suggested JSON_PRETTY_PRINT in development
                 xml:
                     doctype_whitelist:
                         - '<!DOCTYPE authorized SYSTEM "http://some_url">' # an authorized document type for xml deserialization
+                    format_output: true # suggested false in production
 
     .. code-block :: xml
 

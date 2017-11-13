@@ -143,9 +143,16 @@ class TagsController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["denominazione"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $repository = $em->getRepository('UserBundle:Tags');
         $tag = $repository->findOneByDenominazione($data->denominazione);
+
         //controllo se già esiste il tag
         if ($tag) {
             $response_array = array("error" =>  ["code" => 409, "message" => "Il tag ".$data->denominazione." è già utilizzato"]);
@@ -227,6 +234,12 @@ class TagsController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["denominazione"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         $repository = $em->getRepository('UserBundle:Tags');
         $tags = $repository->findOneById($data->id);

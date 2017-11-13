@@ -19,11 +19,34 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class TwigSwiftMailer implements MailerInterface
 {
+    /**
+     * @var \Swift_Mailer
+     */
     protected $mailer;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
     protected $router;
+
+    /**
+     * @var \Twig_Environment
+     */
     protected $twig;
+
+    /**
+     * @var array
+     */
     protected $parameters;
 
+    /**
+     * TwigSwiftMailer constructor.
+     *
+     * @param \Swift_Mailer         $mailer
+     * @param UrlGeneratorInterface $router
+     * @param \Twig_Environment     $twig
+     * @param array                 $parameters
+     */
     public function __construct(\Swift_Mailer $mailer, UrlGeneratorInterface $router, \Twig_Environment $twig, array $parameters)
     {
         $this->mailer = $mailer;
@@ -32,6 +55,9 @@ class TwigSwiftMailer implements MailerInterface
         $this->parameters = $parameters;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function sendConfirmationEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['template']['confirmation'];
@@ -39,12 +65,15 @@ class TwigSwiftMailer implements MailerInterface
 
         $context = array(
             'user' => $user,
-            'confirmationUrl' => $url
+            'confirmationUrl' => $url,
         );
 
-        $this->sendMessage($template, $context, $this->parameters['from_email']['confirmation'], $user->getEmail());
+        $this->sendMessage($template, $context, $this->parameters['from_email']['confirmation'], (string) $user->getEmail());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function sendResettingEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['template']['resetting'];
@@ -52,27 +81,31 @@ class TwigSwiftMailer implements MailerInterface
 
         $context = array(
             'user' => $user,
-            'confirmationUrl' => $url
+            'confirmationUrl' => $url,
         );
 
-        $this->sendMessage($template, $context, $this->parameters['from_email']['resetting'], $user->getEmail());
+        $this->sendMessage($template, $context, $this->parameters['from_email']['resetting'], (string) $user->getEmail());
     }
 
     /**
      * @param string $templateName
      * @param array  $context
-     * @param string $fromEmail
+     * @param array  $fromEmail
      * @param string $toEmail
      */
     protected function sendMessage($templateName, $context, $fromEmail, $toEmail)
     {
-        $context = $this->twig->mergeGlobals($context);
-        $template = $this->twig->loadTemplate($templateName);
+        $template = $this->twig->load($templateName);
         $subject = $template->renderBlock('subject', $context);
         $textBody = $template->renderBlock('body_text', $context);
-        $htmlBody = $template->renderBlock('body_html', $context);
 
-        $message = \Swift_Message::newInstance()
+        $htmlBody = '';
+
+        if ($template->hasBlock('body_html', $context)) {
+            $htmlBody = $template->renderBlock('body_html', $context);
+        }
+
+        $message = (new \Swift_Message())
             ->setSubject($subject)
             ->setFrom($fromEmail)
             ->setTo($toEmail);

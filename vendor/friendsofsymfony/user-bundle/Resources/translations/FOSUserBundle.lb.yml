@@ -6,9 +6,9 @@ group:
     new:
         submit: 'Grupp creéieren'
     flash:
-        updated: 'D''Grupp gouf aktualiséiert'
-        created: 'D''Grupp gouf creéiert'
-        deleted: 'D''Grupp gouf geläscht'
+        updated: 'D''Grupp gouf aktualiséiert.'
+        created: 'D''Grupp gouf creéiert.'
+        deleted: 'D''Grupp gouf geläscht.'
 security:
     login:
         username: Benotzernumm
@@ -22,34 +22,46 @@ profile:
     edit:
         submit: 'Benotzer aktualiséieren'
     flash:
-        updated: 'De Benotzerprofil gouf aktualiséiert'
+        updated: 'De Benotzerprofil gouf aktualiséiert.'
 change_password:
     submit: 'Passwuert ännern'
     flash:
-        success: 'D''Passwuert gouf geännert'
+        success: 'D''Passwuert gouf geännert.'
 registration:
     check_email: 'Eng E-Mail gouf un %email% geschéckt. Se enthält e Link deen s Du uklicke muss, fir Däi Benotzerkonto ze bestätegen.'
     confirmed: 'Gléckwonsch %username%, Däi Benutzerkonto ass elo bestätegt.'
     submit: Registréieren
     flash:
-        user_created: 'De Benotzer gouf erfollegräich creéiert'
+        user_created: 'De Benotzer gouf erfollegräich creéiert.'
     email:
         subject: 'Wëllkomm %username%!'
-        message: "Hallo %username%!\n\nFir Däi Benotzerkonto ze bestätegen, besich wann ech gelift d'Säit %confirmationUrl%\n\nMat beschte Gréiss,\nd'Equipe.\n"
+        message: |
+            Hallo %username%!
+
+            Fir Däi Benotzerkonto ze bestätegen, besich wann ech gelift d'Säit %confirmationUrl%
+
+            Mat beschte Gréiss,
+            d'Equipe.
+
 resetting:
-    password_already_requested: 'Een neit Passwuert gouf an de vergaangene 24 Stunden fir dëse Benotzer schon emol ugefrot.'
-    check_email: 'Eng E-Mail gouf un %email% geschéckt. Se enthält e Link, deen s Du uklicke muss, fir Däi Passwort zeréckzesetzen.'
+#    check_email: 'Eng E-Mail gouf un %email% geschéckt. Se enthält e Link, deen s Du uklicke muss, fir Däi Passwort zeréckzesetzen.'
     request:
-        invalid_username: 'De Benotzer "%username%" existéiert net.'
         username: Benotzernumm
         submit: 'Passwuert zerécksetzen'
     reset:
         submit: 'Passwuert ännern'
     flash:
-        success: 'D''Passwuert gouf erfollegräich zeréckgesat'
+        success: 'D''Passwuert gouf erfollegräich zeréckgesat.'
     email:
-        subject: 'Wëllkomm %username%!'
-        message: "Hallo %username%!\n\nFir Däi Passwuert zeréckzesetzen, besich wann ech gelift d'Säit %confirmationUrl%\n\nMat beschte Gréiss,\nd'Equipe.\n"
+#        subject: 'Wëllkomm %username%!'
+        message: |
+            Hallo %username%!
+
+            Fir Däi Passwuert zeréckzesetzen, besich wann ech gelift d'Säit %confirmationUrl%
+
+            Mat beschte Gréiss,
+            d'Equipe.
+
 layout:
     logout: Ofmellen
     login: Umellen

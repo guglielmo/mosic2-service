@@ -11,10 +11,9 @@
 
 namespace FOS\UserBundle\Tests\DependencyInjection;
 
+use FOS\UserBundle\DependencyInjection\FOSUserExtension;
 use FOS\UserBundle\Util\LegacyFormHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use FOS\UserBundle\DependencyInjection\FOSUserExtension;
 use Symfony\Component\Yaml\Parser;
 
 class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
@@ -245,10 +244,10 @@ class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
         $this->createEmptyConfiguration();
 
         $this->assertParameter(false, 'fos_user.registration.confirmation.enabled');
-        $this->assertParameter(array('webmaster@example.com' => 'webmaster'), 'fos_user.registration.confirmation.from_email');
-        $this->assertParameter('FOSUserBundle:Registration:email.txt.twig', 'fos_user.registration.confirmation.template');
-        $this->assertParameter('FOSUserBundle:Resetting:email.txt.twig', 'fos_user.resetting.email.template');
-        $this->assertParameter(array('webmaster@example.com' => 'webmaster'), 'fos_user.resetting.email.from_email');
+        $this->assertParameter(array('admin@acme.org' => 'Acme Corp'), 'fos_user.registration.confirmation.from_email');
+        $this->assertParameter('@FOSUser/Registration/email.txt.twig', 'fos_user.registration.confirmation.template');
+        $this->assertParameter('@FOSUser/Resetting/email.txt.twig', 'fos_user.resetting.email.template');
+        $this->assertParameter(array('admin@acme.org' => 'Acme Corp'), 'fos_user.resetting.email.from_email');
         $this->assertParameter(86400, 'fos_user.resetting.token_ttl');
     }
 
@@ -261,7 +260,7 @@ class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertParameter('AcmeMyBundle:Registration:mail.txt.twig', 'fos_user.registration.confirmation.template');
         $this->assertParameter('AcmeMyBundle:Resetting:mail.txt.twig', 'fos_user.resetting.email.template');
         $this->assertParameter(array('reset@acme.org' => 'Acme Corp'), 'fos_user.resetting.email.from_email');
-        $this->assertParameter(1800, 'fos_user.resetting.token_ttl');
+        $this->assertParameter(7200, 'fos_user.resetting.retry_ttl');
     }
 
     public function testUserLoadUtilServiceWithDefaults()
@@ -298,6 +297,9 @@ class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider userManagerSetFactoryProvider
+     *
+     * @param $dbDriver
+     * @param $doctrineService
      */
     public function testUserManagerSetFactory($dbDriver, $doctrineService)
     {
@@ -312,14 +314,20 @@ class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertAlias($doctrineService, 'fos_user.doctrine_registry');
 
         if (method_exists($definition, 'getFactory')) {
-            $factory = array(new Reference('fos_user.doctrine_registry'), 'getManager');
-            $this->assertEquals($factory, $definition->getFactory());
+            $factory = $definition->getFactory();
+
+            $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $factory[0]);
+            $this->assertSame('fos_user.doctrine_registry', (string) $factory[0]);
+            $this->assertSame('getManager', $factory[1]);
         } else {
-            $this->assertEquals('fos_user.doctrine_registry', $definition->getFactoryService());
-            $this->assertEquals('getManager', $definition->getFactoryMethod());
+            $this->assertSame('fos_user.doctrine_registry', $definition->getFactoryService());
+            $this->assertSame('getManager', $definition->getFactoryMethod());
         }
     }
 
+    /**
+     * @return array
+     */
     public function userManagerSetFactoryProvider()
     {
         return array(
@@ -348,7 +356,7 @@ class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * getEmptyConfig
+     * getEmptyConfig.
      *
      * @return array
      */
@@ -358,12 +366,18 @@ class FOSUserExtensionTest extends \PHPUnit_Framework_TestCase
 db_driver: mongodb
 firewall_name: fos_user
 user_class: Acme\MyBundle\Document\User
+from_email:
+    address: admin@acme.org
+    sender_name: Acme Corp
 EOF;
         $parser = new Parser();
 
         return $parser->parse($yaml);
     }
 
+    /**
+     * @return mixed
+     */
     protected function getFullConfig()
     {
         $yaml = <<<EOF
@@ -398,7 +412,8 @@ registration:
         name: acme_registration_form
         validation_groups: [acme_registration]
 resetting:
-    token_ttl: 1800
+    retry_ttl: 7200
+    token_ttl: 86400
     email:
         from_email:
             address: reset@acme.org
@@ -431,7 +446,7 @@ EOF;
      */
     private function assertAlias($value, $key)
     {
-        $this->assertEquals($value, (string) $this->configuration->getAlias($key), sprintf('%s alias is correct', $key));
+        $this->assertSame($value, (string) $this->configuration->getAlias($key), sprintf('%s alias is correct', $key));
     }
 
     /**
@@ -440,7 +455,7 @@ EOF;
      */
     private function assertParameter($value, $key)
     {
-        $this->assertEquals($value, $this->configuration->getParameter($key), sprintf('%s parameter is correct', $key));
+        $this->assertSame($value, $this->configuration->getParameter($key), sprintf('%s parameter is correct', $key));
     }
 
     /**

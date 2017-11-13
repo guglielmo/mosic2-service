@@ -53,7 +53,7 @@ class FascicoliController extends Controller
      * @Security("is_granted('ROLE_READ_FASCICOLI')")
      */
     public function fascicoliAction(Request $request) {
-        
+
         //prendo i parametri get
         $limit  = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
         $offset = ($request->query->get('offset') != "") ? $request->query->get('offset') : 0;
@@ -70,10 +70,11 @@ class FascicoliController extends Controller
         $fascicoli = $repository->listaFascicoli($limit, $offset, $sortBy, $sortType, $id_titolari, $numero_fascicolo, $argomento, $id_amministrazione); //effettua un join e restituisce tanti oggetti quante sono le relazioni
         $totFascicoli = $repository->totaleFascicoli();
 
-        
+
         //converte i risultati in json
-        $serialize = $this->serialize($fascicoli);
-        
+        //$serialize = $this->serialize($fascicoli);
+        $serialize = json_encode($fascicoli, JSON_NUMERIC_CHECK); // JSON_NUMERIC_CHECK per non convertire in stringa gli interi
+
         //funzione per raggruppare i risultati del join inserendo id_amministrazioni con la virgola
 		$serialize = $this->mergeIdAmministrazioni($serialize);
 
@@ -230,6 +231,13 @@ class FascicoliController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["id_titolari","data_magazzino","argomento"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $repository = $em->getRepository('UserBundle:Fascicoli');
         $fascicolo = $repository->findOneById($data->id); //ricavo il fascicolo dall'id
 
@@ -255,7 +263,7 @@ class FascicoliController extends Controller
         $fascicolo->setIdTitolari($data->id_titolari);
         //$fascicolo->setDataCipe($data->data_cipe);
         //$fascicolo->setDataCipe2($data->data_cipe2);
-        $fascicolo->setDataMagazzino(new \DateTime($this->formatDateStringCustom($data->data_magazzino))); //22/09/2009
+        $fascicolo->setDataMagazzino(new \DateTime($this->zulu_to_rome($data->data_magazzino))); //22/09/2009
         $fascicolo->setIdEsitiCipe($data->esiti_cipe_id);
         $fascicolo->setIdNumeriDelibera($data->numeri_delibera_id);
         $fascicolo->setNumeroFascicolo($data->numero_fascicolo);
@@ -326,7 +334,12 @@ class FascicoliController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["id_titolari","data_magazzino","argomento"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
 
         //restituisce tutti i fascicoli dell'id titolario ordinati per numero fascicolo discendente
         //in modo tale che sommando 1 al primo otteniamo il nuovo id_titolari per il fascicolo da creare
@@ -341,17 +354,17 @@ class FascicoliController extends Controller
 
         $fascicolo = new Fascicoli();
 
-        $fascicolo->setAnnotazioni($data->annotazioni);
-        $fascicolo->setArchiviazioneRepertorio($data->archiviazione_repertorio);
+        if (isset($data->annotazioni)) { $fascicolo->setAnnotazioni($data->annotazioni); } else { $fascicolo->setAnnotazioni(0); }
+        if (isset($data->archiviazione_repertorio)) { $fascicolo->setArchiviazioneRepertorio($data->archiviazione_repertorio); } else { $fascicolo->setArchiviazioneRepertorio(""); }
         $fascicolo->setArgomento($data->argomento);
         $fascicolo->setIdTitolari($data->id_titolari);
-        $fascicolo->setDataMagazzino(new \DateTime($this->formatDateStringCustom($data->data_magazzino)));
+        $fascicolo->setDataMagazzino(new \DateTime($this->zulu_to_rome($data->data_magazzino)));
         //$fascicolo->setNumeroFascicolo($data->numero_fascicolo);
         $fascicolo->setNumeroFascicolo($id_prossimo_fascicolo);
 
 
         //ricavo gli id di tutte le amministrazioni passate dalla tendina
-        $array_id_amministrazioni = explode(",", $data->id_amministrazione);
+        $array_id_amministrazioni = explode(",", $data->id_amministrazioni);
         //ricavo gli id di tutte i tags passati dalla tendina
         $array_id_tags = explode(",", $data->id_tags);
 
@@ -388,8 +401,12 @@ class FascicoliController extends Controller
         
         $em->flush(); //esegue query
 
+        $fascicolo = $this->serialize($fascicolo);
+        $fascicolo = json_decode($fascicolo, true); //trasformo in array
+        $fascicolo['data_magazzino'] = strtotime($this->zulu_to_rome($fascicolo['data_magazzino'])) * 1000;
+        $fascicolo['id_amministrazioni'] = $data->id_amministrazioni;
 
-        $response = new Response($this->serialize($fascicolo), Response::HTTP_OK);
+        $response = new Response(json_encode($fascicolo), Response::HTTP_OK);
 
         return $this->setBaseHeaders($response);
     }

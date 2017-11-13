@@ -3,7 +3,7 @@
 namespace UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 /**
  * DelibereRepository
  *
@@ -27,7 +27,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
         $query = $qb
             ->createQueryBuilder()->select('d.id as id,
-                                            d.data as data,
+                                            UNIX_TIMESTAMP(d.data) * 1000 as data,
                                             d.idStato as id_stato,
                                             d.numero as numero,
                                             d.argomento as argomento,
@@ -39,10 +39,10 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.numeroCC as numero_cc,
                                             d.idRegistroCC as registro_cc,
                                             d.numeroGU as numero_gu,
-                                            d.dataDirettoreInvio as data_direttore_invio,
-                                            d.dataDirettoreRitorno as data_direttore_ritorno,
-                                            d.dataMefInvio as data_mef_invio,
-                                            d.dataMefRitorno as data_mef_ritorno,
+                                            UNIX_TIMESTAMP(d.dataDirettoreInvio) * 1000 as data_direttore_invio,
+                                            UNIX_TIMESTAMP(d.dataDirettoreRitorno) * 1000 as data_direttore_ritorno,
+                                            UNIX_TIMESTAMP(d.dataMefInvio) * 1000 as data_mef_invio,
+                                            UNIX_TIMESTAMP(d.dataMefRitorno) * 1000 as data_mef_ritorno,
                                             
                                             d.noteDirettore as note_direttore,
                                             d.noteMef as note_mef,
@@ -52,15 +52,16 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.noteP as note_p,
                                             d.noteGU as note_gu,
 
-                                            d.dataConsegna as data_consegna,
-                                            d.dataSegretarioInvio as data_segretario_invio,
-                                            d.dataSegretarioRitorno as data_segretario_ritorno,
-                                            d.dataPresidenteInvio as data_presidente_invio,
-                                            d.dataPresidenteRitorno as data_presidente_ritorno,
-                                            d.dataInvioCC as data_invio_cc,
-                                            d.dataRegistrazioneCC as data_registrazione_cc,
-                                            d.dataInvioGU as data_invio_gu,
-                                            d.dataGU as data_gu,                                       
+                                            UNIX_TIMESTAMP(d.dataConsegna) * 1000 as data_consegna,
+                                            UNIX_TIMESTAMP(d.dataSegretarioInvio) * 1000 as data_segretario_invio,
+                                            UNIX_TIMESTAMP(d.dataSegretarioRitorno) * 1000 as data_segretario_ritorno,
+                                            UNIX_TIMESTAMP(d.dataPresidenteInvio) * 1000 as data_presidente_invio,
+                                            UNIX_TIMESTAMP(d.dataPresidenteRitorno) * 1000 as data_presidente_ritorno,
+                                            UNIX_TIMESTAMP(d.dataInvioCC) * 1000 as data_invio_cc,
+                                            UNIX_TIMESTAMP(d.dataRegistrazioneCC) * 1000 as data_registrazione_cc,
+                                            UNIX_TIMESTAMP(d.dataInvioGU) * 1000 as data_invio_gu,
+                                            UNIX_TIMESTAMP(d.dataGU) * 1000 as data_gu,                                       
+                                            d.situazione as situazione,                                       
                                             
                                             ud.idUffici as id_uffici,
                                             td.idTags as id_tags')
@@ -75,7 +76,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
             
         //print_r($query->getDql());
-        //print_r($query->getQuery()->getSql());
+        //print_r($query->getQuery()->getSql());exit;
 
         return $query->getQuery()->getResult();
     }
@@ -102,6 +103,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.noteServizio as note_servizio,
                                             d.scheda as scheda,
                                             d.dataConsegna as data_consegna,
+                                            d.noteFirma as note_firma,
                                             d.idDirettore as id_direttore,
                                             d.dataDirettoreInvio as data_direttore_invio,
                                             d.dataDirettoreRitorno as data_direttore_ritorno,

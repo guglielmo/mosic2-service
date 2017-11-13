@@ -13,7 +13,7 @@ their logic. All events can be found in the constants of the
 All controllers follow the same convention: they dispatch a ``SUCCESS`` event
 when the form is valid before saving the user, and a ``COMPLETED`` event when
 it is done. Thus, all ``SUCCESS`` events allow you to set a response if you
-don't want the default redirection. and all ``COMPLETED`` events give you access
+don't want the default redirection. And all ``COMPLETED`` events give you access
 to the response before it is returned.
 
 Controllers with a form also dispatch an ``INITIALIZE`` event after the entity is
@@ -45,7 +45,7 @@ resetting to go to the homepage instead of the profile::
         }
 
         /**
-         * {@inheritDoc}
+         * {@inheritdoc}
          */
         public static function getSubscribedEvents()
         {
@@ -72,7 +72,7 @@ You can then register this listener:
         services:
             acme_user.password_resetting:
                 class: Acme\UserBundle\EventListener\PasswordResettingListener
-                arguments: [@router]
+                arguments: ['@router']
                 tags:
                     - { name: kernel.event_subscriber }
 
@@ -84,3 +84,21 @@ You can then register this listener:
             <argument type="service" id="router"/>
         </service>
 
+Registration success listener with enabled confirmation at the same time
+------------------------------------------------------------------------
+
+When you have registration confirmation and you want to hook up to
+``FOSUserEvents::REGISTRATION_SUCCESS`` event you will have to prioritize this listener to be called
+before ``FOS\UserBundle\EventListener\EmailConfirmationListener::onRegistrationSuccess``::
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            FOSUserEvents::REGISTRATION_SUCCESS => [
+                ['onRegistrationSuccess', -10],
+            ],
+        ];
+    }
+
+If you don't do it, ``EmailConfirmationListener`` will be called earlier and you will be redirected to
+``fos_user_registration_check_email`` route.

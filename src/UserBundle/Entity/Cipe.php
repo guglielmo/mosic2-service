@@ -33,7 +33,7 @@ class Cipe
     /**
      * @var string
      *
-     * @ORM\Column(name="ufficiale_riunione", type="string", length=255)
+     * @ORM\Column(name="ufficiale_riunione", type="integer")
      */
     private $ufficialeRiunione;
 
@@ -104,7 +104,7 @@ class Cipe
         $this->data = new \DateTime("0000-00-00");
         $this->publicReservedStatus = "";
         $this->publicReservedUrl = "";
-        $this->ufficialeRiunione = "";
+        $this->ufficialeRiunione = 0;
         $this->giorno = "";
         $this->ora = "";
         $this->sede = "";
@@ -112,6 +112,7 @@ class Cipe
         $this->idDirettore = "";
         $this->idSegretario = "";
     }
+
 
 
 
@@ -152,7 +153,7 @@ class Cipe
     /**
      * Set ufficialeRiunione
      *
-     * @param string $ufficialeRiunione
+     * @param integer $ufficialeRiunione
      *
      * @return Cipe
      */
@@ -166,7 +167,7 @@ class Cipe
     /**
      * Get ufficialeRiunione
      *
-     * @return string
+     * @return integer
      */
     public function getUfficialeRiunione()
     {

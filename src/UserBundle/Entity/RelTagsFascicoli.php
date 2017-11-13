@@ -3,11 +3,12 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * RelTagsFascicoli
  *
- * @ORM\Table(name="msc_rel_tags_fascicoli")
+ * @ORM\Table(name="msc_rel_tags_fascicoli",indexes={@Index(name="id_fascicoli_idx", columns={"id_fascicoli"})})
  * @ORM\Entity(repositoryClass="UserBundle\Repository\RelTagsFascicoliRepository")
  */
 class RelTagsFascicoli

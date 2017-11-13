@@ -229,15 +229,29 @@ class FirmatariController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $data = json_decode($request->getContent());
-        
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["denominazione","denominazione_estesa","tipo"]);
+        if ($check != "ok") {
+            $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
         $firmatario = new Firmatari();
 
-        $firmatario->setChiave($data->chiave);
+        if (isset($data->chiave)) {
+            $firmatario->setChiave($data->chiave);
+        } else {
+            $firmatario->setChiave(0);
+        }
         $firmatario->setDenominazione($data->denominazione);
         $firmatario->setDenominazioneEstesa($data->denominazione_estesa);
         $firmatario->setTipo($data->tipo);
-        $firmatario->setDisattivato($data->disattivato);
-        
+        if (isset($data->disattivato)) {
+            $firmatario->setDisattivato($data->disattivato);
+        } else {
+            $firmatario->setDisattivato(0);
+        }
+
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("firmatari");

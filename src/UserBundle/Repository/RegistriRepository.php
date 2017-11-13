@@ -75,7 +75,23 @@ class RegistriRepository extends \Doctrine\ORM\EntityRepository
         
         $qb = $this->getEntityManager();
         $query = $qb
-            ->createQueryBuilder()->select('f')
+            ->createQueryBuilder()->select('f.id as id,
+                                            UNIX_TIMESTAMP(f.dataArrivo) * 1000 as data_arrivo,
+                                            f.protocolloArrivo as protocollo_arrivo,
+                                            UNIX_TIMESTAMP(f.dataMittente) * 1000 as data_mittente,
+                                            f.protocolloMittente as protocollo_mittente,
+                                            f.oggetto as oggetto,
+                                            f.mittente as mittente,
+                                            f.codiceTitolario as codice_titolario,
+                                            f.numeroFascicolo as numero_fascicolo,
+                                            f.numeroSottofascicolo as numero_sottofascicolo,
+                                            f.denominazioneSottofascicolo as denominazione_sottofascicolo,
+                                            f.propostaCipe as proposta_cipe,
+                                            f.annotazioni as annotazioni,
+                                            f.idSottofascicoli as id_sottofascicoli,
+                                            f.idMittenti as id_mittenti,
+                                            f.idTitolari as id_titolari,
+                                            f.idFascicoli as id_fascicoli')
             ->from('UserBundle:Registri', 'f')
             ->where('1=1' . $filter)
             ->setParameters($parameters)

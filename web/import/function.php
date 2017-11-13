@@ -10,6 +10,9 @@ function setCorteDeiContiDelibere()
     $query = "SELECT * 
               FROM DatiDelibera";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_delibere_cc';
@@ -18,58 +21,75 @@ function setCorteDeiContiDelibere()
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
 
-            if ($row['Data_RilievoCC'] != "") {
+            if ($row['Data_RilievoCC'] != "" && $row['Data_RilievoCC'] != "0000-00-00 00:00:00" && $row['Data_RilievoCC'] != null) {
 //                $array_temp = explode("/", $row['Data_RilievoCC']);
 //                $data_ok = $array_temp[2] . "-" . $array_temp[1] . "-" . $array_temp[0];
 //                $query2 = 'UPDATE `TABLE_delibere_full` SET `Data_RilievoCC`= "' . $data_ok . '"  WHERE Codice_Delibera = "' . $row['Codice_Delibera'] . '"';
 //                echo $query2 . "<br>";
 //                $res2 = mysqli_query($db, $query2);
+                $Nota_RilievoCC = str_replace('"','', $row['Nota_RilievoCC']);
+                if ($row['Giorni_RilievoCC'] == 0) { $giorni_rilievo = null;} else {$giorni_rilievo = $row['Giorni_RilievoCC']; }
                 $query2 = 'INSERT INTO msc_delibere_cc SET id_delibere = "' . $row['Codice_Delibera'] . '", 
                                                            tipo_documento = "' . $row['Tipo_DocumentoCC'] . '",
                                                            data_rilievo = "' . $row['Data_RilievoCC'] . '",
                                                            numero_rilievo = "' . $row['Numero_RilievoCC'] . '",
                                                            data_risposta = "' . $row['Data_RispostaCC'] . '",
                                                            numero_risposta = "' . $row['Numero_RispostaCC'] . '",
-                                                           giorni_rilievo = "' . $row['Giorni_RilievoCC'] . '",
+                                                           giorni_rilievo = "' . $giorni_rilievo . '",
                                                            tipo_rilievo = "' . $row['Tipo_Rilievo'] . '",
-                                                           note_rilievo = "' . $row['Nota_RilievoCC'] . '"
+                                                           note_rilievo = "' . $Nota_RilievoCC . '"
                 ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
-            if ($row['Data_RilievoCC2'] != "") {
+            if ($row['Data_RilievoCC2'] != "" && $row['Data_RilievoCC2'] != "0000-00-00 00:00:00" && $row['Data_RilievoCC2'] != null) {
+                $Nota_RilievoCC2 = str_replace('"','', $row['Nota_RilievoCC2']);
+                if ($row['Giorni_RilievoCC2'] == 0) { $giorni_rilievo = null;} else {$giorni_rilievo = $row['Giorni_RilievoCC2']; }
                 $query2 = 'INSERT INTO msc_delibere_cc SET id_delibere = "' . $row['Codice_Delibera'] . '", 
                                                            tipo_documento = "' . $row['Tipo_DocumentoCC2'] . '",
                                                            data_rilievo = "' . $row['Data_RilievoCC2'] . '",
                                                            numero_rilievo = "' . $row['Numero_RilievoCC2'] . '",
                                                            data_risposta = "' . $row['Data_RispostaCC2'] . '",
                                                            numero_risposta = "' . $row['Numero_RispostaCC2'] . '",
-                                                           giorni_rilievo = "' . $row['Giorni_RilievoCC2'] . '",
+                                                           giorni_rilievo = "' . $giorni_rilievo . '",
                                                            tipo_rilievo = "' . $row['Tipo_Rilievo2'] . '",
-                                                           note_rilievo = "' . $row['Nota_RilievoCC2'] . '"
+                                                           note_rilievo = "' . $Nota_RilievoCC2 . '"
                 ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
-            if ($row['Data_RilievoCC3'] != "") {
+            if ($row['Data_RilievoCC3'] != "" && $row['Data_RilievoCC3'] != "0000-00-00 00:00:00" && $row['Data_RilievoCC3'] != null) {
+                $Nota_RilievoCC3 = str_replace('"','', $row['Nota_RilievoCC3']);
+                if ($row['Giorni_RilievoCC3'] == 0) { $giorni_rilievo = null;} else {$giorni_rilievo = $row['Giorni_RilievoCC3']; }
                 $query2 = 'INSERT INTO msc_delibere_cc SET id_delibere = "' . $row['Codice_Delibera'] . '", 
                                                            tipo_documento = "' . $row['Tipo_DocumentoCC3'] . '",
                                                            data_rilievo = "' . $row['Data_RilievoCC3'] . '",
                                                            numero_rilievo = "' . $row['Numero_RilievoCC3'] . '",
                                                            data_risposta = "' . $row['Data_RispostaCC3'] . '",
                                                            numero_risposta = "' . $row['Numero_RispostaCC3'] . '",
-                                                           giorni_rilievo = "' . $row['Giorni_RilievoCC3'] . '",
+                                                           giorni_rilievo = "' . $giorni_rilievo . '",
                                                            tipo_rilievo = "' . $row['Tipo_Rilievo3'] . '",
-                                                           note_rilievo = "' . $row['Nota_RilievoCC3'] . '"
+                                                           note_rilievo = "' . $Nota_RilievoCC3 . '"
                 ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
         }
     }
+
+    return;
 }
 
 function setUfficiDelibere()
@@ -79,7 +99,9 @@ function setUfficiDelibere()
     $query = "SELECT * 
               FROM DatiDelibera";
     $res = mysqli_query($db, $query);
-
+    if (!$res) {
+        return mysqli_error($db);
+    }
     
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_uffici_delibere';
@@ -90,20 +112,29 @@ function setUfficiDelibere()
 
             if ($row['Codice_Ufficio'] != "") {
                 $query2 = 'INSERT INTO msc_rel_uffici_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_uffici = "' . $row['Codice_Ufficio'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
             if ($row['Codice_Ufficio2'] != "") {
                 $query2 = 'INSERT INTO msc_rel_uffici_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_uffici = "' . $row['Codice_Ufficio2'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
             if ($row['Codice_Ufficio3'] != "") {
                 $query2 = 'INSERT INTO msc_rel_uffici_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_uffici = "' . $row['Codice_Ufficio3'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
         }
@@ -134,6 +165,9 @@ function setAllegatiDelibere($filePath, $path)
                 //ricavo la delibera ad ANNO e NUMERO
                 $query = "SELECT * FROM msc_delibere WHERE YEAR(data) = '$anno' AND numero = '$numero'";
                 $res = mysqli_query($db, $query);
+                if (!$res) {
+                    return mysqli_error($db);
+                }
                 $idDelibera = "non trovato";
                 if (mysqli_num_rows($res) >= 1) {
                     while ($row = mysqli_fetch_array($res)) {
@@ -153,18 +187,28 @@ function setAllegatiDelibere($filePath, $path)
                         $tipo = "DEL";
                     }
 
-                    echo $filename . " ------>>>> " . $explod_path[4] . " ----- anno: " . $anno . " ----- numero: " . $numero . " ----- Delibera: " . $idDelibera . " ----- " .$tipo. "<br>";
+                    //echo $filename . " ------>>>> " . $explod_path[4] . " | " . $explod_path[5] . " ----- anno: " . $anno . " ----- numero: " . $numero . " ----- Delibera: " . $idDelibera . " ----- " .$tipo. "<br>";
 
 
-                    $query = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'". $filePath . $filename ."')";
-                    echo $query . "<br>";
-                    $res2 = mysqli_query($db, $query);
+                    if ($idDelibera != "non trovato" && $explod_path[5] != ".ds_store" && $explod_path[5] != ".DS_STORE") {
+                        $query = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filePath . $filename . "')";
+                        //echo $query . "<br>";
+                        $res2 = mysqli_query($db, $query);
+                        if (!$res2) {
+                            return mysqli_error($db) . " (msc_allegati)";
+                        }
 
-                    $last_id = mysqli_insert_id($db); //ultimo id inserito
+                        $last_id = mysqli_insert_id($db); //ultimo id inserito
 
-                    $query2 = "INSERT INTO `msc_rel_allegati_delibere`(`id_delibere`, `id_allegati`, `tipo`) VALUES ($idDelibera, $last_id, '$tipo')";
-                    echo $query2 . "<br>";
-                    $res2 = mysqli_query($db, $query2);
+                        $query2 = "INSERT INTO `msc_rel_allegati_delibere`(`id_delibere`, `id_allegati`, `tipo`) VALUES ($idDelibera, $last_id, '$tipo')";
+                        //echo $query2 . "<br>";
+                        $res2 = mysqli_query($db, $query2);
+                        if (!$res2) {
+                            return mysqli_error($db) . " (msc_rel_allegati_delibere)";
+                        }
+                    } else {
+                        //echo "ERRORE (non trovato): " . $filename . " ---> " . $explod_path[4] . "<br>";
+                    }
 
 
 
@@ -176,10 +220,12 @@ function setAllegatiDelibere($filePath, $path)
             }
 
         }
+
     }
 
 
 
+    return;
 
 
 
@@ -220,7 +266,10 @@ function setFunzionariDelibere()
     $query = "SELECT * 
               FROM DatiDelibera";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_firmatari_delibere';
     mysqli_query($db, $query);
@@ -231,24 +280,35 @@ function setFunzionariDelibere()
 
             if ($row['Codice_Funzionario'] != "") {
                 $query2 = 'INSERT INTO msc_rel_firmatari_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_firmatari = "' . $row['Codice_Funzionario'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
             if ($row['Codice_Funzionario2'] != "") {
                 $query2 = 'INSERT INTO msc_rel_firmatari_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_firmatari = "' . $row['Codice_Funzionario2'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
             if ($row['Codice_Funzionario3'] != "") {
                 $query2 = 'INSERT INTO msc_rel_firmatari_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_firmatari = "' . $row['Codice_Funzionario3'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
         }
     }
+
+    return;
 }
 
 
@@ -258,13 +318,39 @@ function setDelibere()
 
     $query = "SELECT * FROM DatiDelibera";
     $res = mysqli_query($db, $query);
-
+    if (!$res) {
+        return mysqli_error($db);
+    }
     //svuoto la tabella
     $query = 'TRUNCATE msc_delibere';
     mysqli_query($db, $query);
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
+
+
+            if ($row['Data_GU'] != "0000-00-00 00:00:00") {
+                $situazione = 9; // 9 - Pubblicato Gazzetta Ufficiale
+            } elseif ($row['Data_InvioGU'] != "0000-00-00 00:00:00" && $row['Data_GU'] == "0000-00-00 00:00:00") {
+                $situazione = 8; // 8 - Alla Gazzetta Ufficiale
+            } elseif ($row['Data_InvioCC'] != "0000-00-00 00:00:00" && $row['Data_RegistrazioneCC'] == "0000-00-00 00:00:00") {
+                $situazione = 7; // 7 - Alla Corte dei Conti
+            } elseif ($row['Data_Consegna'] != "0000-00-00 00:00:00" && $row['Data_SegretarioInvio'] != "0000-00-00 00:00:00" && $row['Data_SegretarioRitorno'] != "0000-00-00 00:00:00" && $row['Data_PresidenteInvio'] != "0000-00-00 00:00:00" && $row['Data_PresidenteRitorno'] == "0000-00-00 00:00:00") {
+                $situazione = 6; // 6 - In firma Presidente Cipe
+            } elseif ($row['Data_Consegna'] != "0000-00-00 00:00:00" && $row['Data_SegretarioInvio'] != "0000-00-00 00:00:00" && $row['Data_SegretarioRitorno'] == "0000-00-00 00:00:00") {
+                $situazione = 5; // 5 - In firma Segretario Cipe
+            } elseif ($row['Data_MefRitorno'] != "0000-00-00 00:00:00") {
+                $situazione = 4; // 4 - Ritorno MEF
+            } elseif ($row['Data_MefInvio'] != "0000-00-00 00:00:00") {
+                $situazione = 3; // 3 - Invio MEF
+            } elseif ($row['Data_Consegna'] != "0000-00-00 00:00:00" && $row['Data_SegretarioInvio'] == "0000-00-00 00:00:00" && $row['Data_PresidenteInvio'] == "0000-00-00 00:00:00") {
+                $situazione = 2; // 2 - In lavorazione
+            } elseif ($row['Data_Consegna'] == "0000-00-00 00:00:00") {
+                $situazione = 1; // 1 - Da acquisire
+            } else {
+                $situazione = null;
+            }
+
 
             $query2 = "INSERT INTO `msc_delibere`(
                     `id`, 
@@ -337,7 +423,8 @@ function setDelibere()
                     `data_co_gu`,
                     `numero_co_gu`,
                     `pubblicazione_gu`,
-                    `note_gu`
+                    `note_gu`,
+                    `situazione`
             ) 
             VALUES (
                     '". $row['Codice_Delibera'] ."',
@@ -410,14 +497,20 @@ function setDelibere()
                     '". $row['Data_Co'] ."',
                     '". $row['Numero_Co'] ."',
                     '". $row['Tipo_Pubblicazione'] ."',
-                    '". addslashes($row['Nota_GU']) ."'
+                    '". addslashes($row['Nota_GU']) ."',
+                    '". $situazione ."'
                     
             )";
 
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -429,7 +522,10 @@ function createTitolari() {
     
     $query = "SELECT * FROM Titolario";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_titolari';
     mysqli_query($db, $query);
@@ -449,8 +545,13 @@ function createTitolari() {
                                                 )';
             //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 function createMittenti() {
@@ -458,7 +559,10 @@ function createMittenti() {
 
     $query = "SELECT * FROM Registro GROUP BY Mittente_Registro";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_mittenti';
     mysqli_query($db, $query);
@@ -471,13 +575,18 @@ function createMittenti() {
                                                      `denominazione`
                                                     )
                                                     VALUES (
-                                                    "' . $row['Mittente_Registro'] . '"
+                                                    "' . str_replace('"','',$row['Mittente_Registro']) . '"
                                                     )';
                 //echo $query . "<br>";
-                mysqli_query($db, $query);
+                $res2 = mysqli_query($db, $query);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
         }
     }
+
+    return;
 }
 
 function createAmministrazioni() {
@@ -485,7 +594,10 @@ function createAmministrazioni() {
 
     $query = "SELECT * FROM Amministrazioni ORDER BY Codice_Amministrazione";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_amministrazioni';
     mysqli_query($db, $query);
@@ -502,9 +614,14 @@ function createAmministrazioni() {
                                                 "' . $row['Descrizione_Amministrazione'] . '"
                                                 )';
             //echo $query . "<br>";
-            mysqli_query($db, $query);
+            $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -513,7 +630,10 @@ function createArgomenti() {
     
     $query = "SELECT * FROM ArgomentiCipe";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_argomenti';
     mysqli_query($db, $query);
@@ -531,8 +651,13 @@ function createArgomenti() {
                                                 )';
             //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 function createUffici() {
@@ -540,7 +665,10 @@ function createUffici() {
     
     $query = "SELECT * FROM UfficiDipe";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_uffici';
     mysqli_query($db, $query);
@@ -566,8 +694,13 @@ function createUffici() {
                                                 )';
             //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -576,7 +709,10 @@ function createRisultanze() {
     
     $query = "SELECT * FROM Risultanze_PreCipe";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_risultanze';
     mysqli_query($db, $query);
@@ -594,8 +730,12 @@ function createRisultanze() {
                                                 )';
             //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+    return;
 }
 
 function createTipoArgomentiCipe() {
@@ -603,21 +743,19 @@ function createTipoArgomentiCipe() {
     
     $query = "SELECT * FROM TipoArgomentiCipe";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query2 = 'TRUNCATE msc_argomenti_tipo_cipe';
     mysqli_query($db, $query2);
 
-    echo mysqli_num_rows($res);
+    //echo mysqli_num_rows($res);
 
     //popolo la tabella
     if (mysqli_num_rows($res) >= 1) {
-
-
         while ($row = mysqli_fetch_array($res)) {
-
-
-
             $query = 'INSERT INTO `msc_argomenti_tipo_cipe`(
                                                  `id`,
                                                  `denominazione`
@@ -626,18 +764,27 @@ function createTipoArgomentiCipe() {
                                                 "' . $row['Codice_TipoArgomentoCipe'] . '",
                                                 "' . $row['Descrizione_TipoArgomentoCipe'] . '"
                                                 )';
-            echo $query . "<br>";
+            //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
+
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 function createTipoEsitiCipe() {
     global $db;
-    
+
     $query = "SELECT * FROM TipoEsitiCipe";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_esiti_tipo_cipe';
     mysqli_query($db, $query);
@@ -653,25 +800,36 @@ function createTipoEsitiCipe() {
                                                 "' . $row['Codice_TipoEsitoCipe'] . '",
                                                 "' . $row['Descrizione_TipoEsitoCipe'] . '"
                                                 )';
-            echo $query . "<br>";
+            //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 function createFirmatari() {
     global $db;
     
-    $query = "SELECT * FROM Firmatari";
+    $query = "SELECT * FROM Firmatari WHERE Codice_Firmatario <> 0 ORDER BY `Codice_Firmatario` ASC ";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
     //svuoto la tabella
-    $query = 'TRUNCATE msc_firmatari';
-    mysqli_query($db, $query);
-    
+    $query2 = 'TRUNCATE msc_firmatari';
+    mysqli_query($db, $query2);
+
     //popolo la tabella
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
+                $Disattivato_Firmatario = 0;
+                if ($row['Disattivato_Firmatario'] == 'TRUE') {
+                    $Disattivato_Firmatario = 1;
+                }
                 $query = 'INSERT INTO `msc_firmatari`(
                                                      `id`,
                                                      `chiave`,
@@ -686,12 +844,18 @@ function createFirmatari() {
                                                     "' . $row['Tipo_Firmatario'] . '",
                                                     "' . $row['Descrizione_firmatario'] . '",
                                                     "' . $row['Descrizione_Estesa'] . '",
-                                                    "' . $row['Disattivato_Firmatario'] . '"
+                                                    "' . $Disattivato_Firmatario . '"
                                                     )';
-                echo $query . "<br>";
+                //echo $query . ";<br>";
                 $res2 = mysqli_query($db, $query);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
         }
+
     }
+
+    return;
 }
 
 function createRuoliCipe() {
@@ -699,7 +863,10 @@ function createRuoliCipe() {
     
     $query = "SELECT * FROM Livelli";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_ruoli_cipe';
     mysqli_query($db, $query);
@@ -715,10 +882,15 @@ function createRuoliCipe() {
                                                     "' . $row['Codice_Livello'] . '",
                                                     "' . $row['Descrizione_Livello'] . '"
                                                     )';
-                echo $query . "<br>";
+                //echo $query . "<br>";
                 $res2 = mysqli_query($db, $query);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
         }
     }
+
+    return;
 }
 
 function createLastUpdates() {
@@ -728,48 +900,37 @@ function createLastUpdates() {
     //svuoto la tabella
     $query = 'TRUNCATE msc_last_updates';
     mysqli_query($db, $query);
-    
-    $query1 = "CREATE TABLE IF NOT EXISTS `msc_last_updates` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `tabella` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `lastUpdate` datetime NOT NULL,
-                  PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=25 ;
-                
-                INSERT INTO `msc_last_updates` (`id`, `tabella`, `lastUpdate`) VALUES
-                (1, 'titolari', '2017-06-01 15:15:57'),
-                (2, 'fascicoli', '2017-06-01 15:14:36'),
-                (3, 'registri', '2017-06-02 22:29:02'),
-                (4, 'amministrazioni', '2017-06-02 22:28:30'),
-                (5, 'mittenti', '2017-06-01 14:58:17'),
-                (6, 'tags', '2017-06-01 15:20:38'),
-                (7, 'uffici', '2017-06-01 15:18:45'),
-                (8, 'ruoli_cipe', '2017-03-08 17:34:49'),
-                (9, 'groups', '2017-06-01 15:22:24'),
-                (10, 'argomenti', '2017-03-08 11:07:05'),
-                (11, 'precipe', '2017-06-01 14:24:01'),
-                (12, 'precipeodg', '2017-05-29 21:06:24'),
-                (13, 'firmatari', '2017-06-01 14:51:43'),
-                (14, 'cipe', '2017-06-01 14:55:09'),
-                (15, 'cipeodg', '2017-05-29 19:29:58'),
-                (16, 'firmataritipo', '2017-04-14 02:00:00'),
-                (17, 'cipeesiti', '2017-04-14 02:00:00'),
-                (18, 'cipeesititipo', '2017-04-14 01:00:00'),
-                (19, 'cipeargomentitipo', '2017-04-14 01:00:00'),
-                (20, 'users', '2017-06-01 15:27:20'),
-                (21, 'delibere', '2017-06-02 19:54:26'),
-                (22, 'adempimenti', '2017-06-01 13:49:18'),
-                (23, 'monitor', '2017-06-02 19:54:26'),
-                (24, 'monitor_group', '2017-06-02 19:54:26');";
-    mysqli_query($db, $query1);
 
+    $queryLastUpdates = "INSERT INTO `msc_last_updates` (`id`, `tabella`, `lastUpdate`) VALUES
+                (1, 'titolari', NOW()),
+                (2, 'fascicoli', NOW()),
+                (3, 'registri', NOW()),
+                (4, 'amministrazioni', NOW()),
+                (5, 'mittenti', NOW()),
+                (6, 'tags', NOW()),
+                (7, 'uffici', NOW()),
+                (8, 'ruoli_cipe', NOW()),
+                (9, 'groups', NOW()),
+                (10, 'argomenti', NOW()),
+                (11, 'precipe', NOW()),
+                (12, 'precipeodg', NOW()),
+                (13, 'firmatari', NOW()),
+                (14, 'cipe', NOW()),
+                (15, 'cipeodg', NOW()),
+                (16, 'firmataritipo', NOW()),
+                (17, 'cipeesiti', NOW()),
+                (18, 'cipeesititipo', NOW()),
+                (19, 'cipeargomentitipo', NOW()),
+                (20, 'users', NOW()),
+                (21, 'delibere', NOW()),
+                (22, 'adempimenti', NOW()),
+                (23, 'monitor', NOW()),
+                (24, 'monitor_group', NOW());";
+    $resLastUpdates = mysqli_query($db, $queryLastUpdates);
+    if (!$resLastUpdates) { return mysqli_error($db); }
 
+    return;
 }
-
-
-
-
-
 
 
 function createTipoFirmatari() {
@@ -777,7 +938,9 @@ function createTipoFirmatari() {
     
     $query = "SELECT * FROM TipoFirmatari";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
     //svuoto la tabella
     $query = 'TRUNCATE msc_firmatari_tipo';
     mysqli_query($db, $query);
@@ -794,11 +957,15 @@ function createTipoFirmatari() {
                                                     "' . $row['Codice_TipoFirmatario'] . '",
                                                     "' . $row['Descrizione_TipoFirmatario'] . '"
                                                     )';
-                echo $query . "<br>";
+                //echo $query . "<br>";
                 $res2 = mysqli_query($db, $query);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
         }
     }
+    return;
 }
 
 function createAdempimenti() {
@@ -806,7 +973,9 @@ function createAdempimenti() {
     
     $query = "SELECT * FROM Adempimenti";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
     //svuoto la tabella
     $query = 'TRUNCATE msc_adempimenti';
     mysqli_query($db, $query);
@@ -818,7 +987,10 @@ function createAdempimenti() {
             //ricavo l'id dell'utente
             $query2 = 'SELECT * FROM fos_user WHERE username = "'. $row['Utente_Modifica'] . '"';
             $res2 = mysqli_query($db, $query2);
-        
+            if (!$res2) {
+                return mysqli_error($db);
+            }
+
             $idUtente = 0;
             if (mysqli_num_rows($res2) >= 1) {
                 while ($row2 = mysqli_fetch_array($res2)) {
@@ -826,7 +998,13 @@ function createAdempimenti() {
                 }
             }
 
-            
+            $Descrizione_Adempimento = str_replace('"','',$row['Descrizione_Adempimento']);
+            $Descrizione_Adempimento = str_replace('“','',$Descrizione_Adempimento);
+            $Descrizione_Adempimento = str_replace('”','',$Descrizione_Adempimento);
+            $Note_Adempimento = str_replace('"','',$row['Note_Adempimento']);
+            $Note_Adempimento = str_replace('“','',$Note_Adempimento);
+            $Note_Adempimento = str_replace('”','',$Note_Adempimento);
+
             $query = 'INSERT INTO `msc_adempimenti`(
                                                  `codice`,
                                                  `progressivo`,
@@ -850,7 +1028,7 @@ function createAdempimenti() {
                                                 "' . $row['Progressivo_Adempimento'] . '",
                                                 "' . $row['Codice_Scheda'] . '",
                                                 "' . $row['Codice_Delibera'] . '",
-                                                "' . $row['Descrizione_Adempimento'] . '",
+                                                "' . $Descrizione_Adempimento . '",
                                                 "' . $row['Codice_DescrizioneAdempimento'] . '",
                                                 "' . $row['Codice_FonteAdempimento'] . '",
                                                 "' . $row['Codice_EsitoAdempimento'] . '",
@@ -859,14 +1037,19 @@ function createAdempimenti() {
                                                 "' . $row['Mesi_Scadenza_Adempimento'] . '",
                                                 "' . $row['Anni_Scadenza_Adempimento'] . '",
                                                 "' . $row['Vincolo_Adempimento'] . '",
-                                                "' . $row['Note_Adempimento'] . '",
+                                                "' . $Note_Adempimento . '",
                                                 "' . $idUtente . '",
                                                 "' . $row['Data_UtenteModifica'] . '"
                                                 )';
-            echo $query . "<br>";
-            mysqli_query($db, $query);
+            //echo $query . "<br>";
+            $res3 = mysqli_query($db, $query);
+            if (!$res3) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -875,46 +1058,76 @@ function createUtenti() {
     
     $query = "SELECT * FROM PwUtenti";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE fos_user';
     mysqli_query($db, $query);
-    
-        //svuoto la tabella
+
+    //svuoto la tabella
     $query = 'TRUNCATE fos_user_group';
     mysqli_query($db, $query);
+
+    //svuoto la tabella
+    $query = 'TRUNCATE fos_group';
+    mysqli_query($db, $query);
+
+
+
+
+    $queryGroup = "INSERT INTO `fos_group` (`id`, `codice`, `name`, `roles`) VALUES
+(1, '1', 'Amministratore del sistema', 'a:120:{i:0;s:23:\"ROLE_CREATE_ADEMPIMENTI\";i:1;s:23:\"ROLE_DELETE_ADEMPIMENTI\";i:2;s:21:\"ROLE_EDIT_ADEMPIMENTI\";i:3;s:21:\"ROLE_READ_ADEMPIMENTI\";i:4;s:27:\"ROLE_CREATE_AMMINISTRAZIONI\";i:5;s:25:\"ROLE_EDIT_AMMINISTRAZIONI\";i:6;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:7;s:21:\"ROLE_CREATE_ARGOMENTI\";i:8;s:21:\"ROLE_DELETE_ARGOMENTI\";i:9;s:19:\"ROLE_EDIT_ARGOMENTI\";i:10;s:19:\"ROLE_READ_ARGOMENTI\";i:11;s:16:\"ROLE_CREATE_CIPE\";i:12;s:16:\"ROLE_DELETE_CIPE\";i:13;s:14:\"ROLE_EDIT_CIPE\";i:14;s:14:\"ROLE_READ_CIPE\";i:15;s:19:\"ROLE_CREATE_CIPEODG\";i:16;s:19:\"ROLE_DELETE_CIPEODG\";i:17;s:17:\"ROLE_READ_CIPEODG\";i:18;s:20:\"ROLE_CREATE_DELIBERE\";i:19;s:18:\"ROLE_EDIT_DELIBERE\";i:20;s:18:\"ROLE_READ_DELIBERE\";i:21;s:21:\"ROLE_CREATE_FASCICOLI\";i:22;s:21:\"ROLE_DELETE_FASCICOLI\";i:23;s:19:\"ROLE_EDIT_FASCICOLI\";i:24;s:19:\"ROLE_READ_FASCICOLI\";i:25;s:21:\"ROLE_CREATE_FIRMATARI\";i:26;s:21:\"ROLE_DELETE_FIRMATARI\";i:27;s:19:\"ROLE_EDIT_FIRMATARI\";i:28;s:19:\"ROLE_READ_FIRMATARI\";i:29;s:20:\"ROLE_CREATE_MITTENTI\";i:30;s:18:\"ROLE_EDIT_MITTENTI\";i:31;s:18:\"ROLE_READ_MITTENTI\";i:32;s:20:\"ROLE_DELETE_MITTENTI\";i:33;s:19:\"ROLE_CREATE_PRECIPE\";i:34;s:17:\"ROLE_EDIT_PRECIPE\";i:35;s:17:\"ROLE_READ_PRECIPE\";i:36;s:19:\"ROLE_DELETE_PRECIPE\";i:37;s:22:\"ROLE_CREATE_PRECIPEODG\";i:38;s:20:\"ROLE_READ_PRECIPEODG\";i:39;s:22:\"ROLE_DELETE_PRECIPEODG\";i:40;s:21:\"ROLE_CREATE_RUOLICIPE\";i:41;s:21:\"ROLE_DELETE_RUOLICIPE\";i:42;s:19:\"ROLE_EDIT_RUOLICIPE\";i:43;s:19:\"ROLE_READ_RUOLICIPE\";i:44;s:16:\"ROLE_CREATE_TAGS\";i:45;s:16:\"ROLE_DELETE_TAGS\";i:46;s:14:\"ROLE_EDIT_TAGS\";i:47;s:14:\"ROLE_READ_TAGS\";i:48;s:20:\"ROLE_CREATE_TITOLARI\";i:49;s:20:\"ROLE_DELETE_TITOLARI\";i:50;s:18:\"ROLE_EDIT_TITOLARI\";i:51;s:18:\"ROLE_READ_TITOLARI\";i:52;s:18:\"ROLE_CREATE_UFFICI\";i:53;s:18:\"ROLE_DELETE_UFFICI\";i:54;s:16:\"ROLE_EDIT_UFFICI\";i:55;s:16:\"ROLE_READ_UFFICI\";i:56;s:18:\"ROLE_CREATE_UTENTI\";i:57;s:18:\"ROLE_DELETE_UTENTI\";i:58;s:16:\"ROLE_EDIT_UTENTI\";i:59;s:16:\"ROLE_READ_UTENTI\";i:60;s:21:\"ROLE_CREATE_CIPEESITI\";i:61;s:21:\"ROLE_DELETE_CIPEESITI\";i:62;s:19:\"ROLE_EDIT_CIPEESITI\";i:63;s:19:\"ROLE_READ_CIPEESITI\";i:64;s:25:\"ROLE_CREATE_CIPEESITITIPO\";i:65;s:25:\"ROLE_DELETE_CIPEESITITIPO\";i:66;s:23:\"ROLE_EDIT_CIPEESITITIPO\";i:67;s:23:\"ROLE_READ_CIPEESITITIPO\";i:68;s:29:\"ROLE_CREATE_CIPEARGOMENTITIPO\";i:69;s:29:\"ROLE_DELETE_CIPEARGOMENTITIPO\";i:70;s:27:\"ROLE_EDIT_CIPEARGOMENTITIPO\";i:71;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:72;s:16:\"ROLE_READ_GROUPS\";i:73;s:18:\"ROLE_CREATE_GROUPS\";i:74;s:16:\"ROLE_EDIT_GROUPS\";i:75;s:18:\"ROLE_DELETE_GROUPS\";i:76;s:15:\"ROLE_READ_USERS\";i:77;s:17:\"ROLE_CREATE_USERS\";i:78;s:15:\"ROLE_EDIT_USERS\";i:79;s:17:\"ROLE_DELETE_USERS\";i:80;s:23:\"ROLE_READ_FIRMATARITIPO\";i:81;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:82;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:83;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:84;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:85;s:20:\"ROLE_READ_RUOLI_CIPE\";i:86;s:22:\"ROLE_CREATE_RUOLI_CIPE\";i:87;s:20:\"ROLE_EDIT_RUOLI_CIPE\";i:88;s:22:\"ROLE_DELETE_RUOLI_CIPE\";i:89;s:33:\"ROLE_DELETE_AREARISERVATA_PRECIPE\";i:90;s:31:\"ROLE_EDIT_AREARISERVATA_PRECIPE\";i:91;s:33:\"ROLE_CREATE_AREARISERVATA_PRECIPE\";i:92;s:39:\"ROLE_CREATE_AREARISERVATA_PRECIPE_CHECK\";i:93;s:37:\"ROLE_EDIT_AREARISERVATA_PRECIPE_CHECK\";i:94;s:39:\"ROLE_DELETE_AREARISERVATA_PRECIPE_CHECK\";i:95;s:30:\"ROLE_DELETE_AREARISERVATA_CIPE\";i:96;s:36:\"ROLE_DELETE_AREARISERVATA_CIPE_CHECK\";i:97;s:25:\"ROLE_DELETE_FIRMATARITIPO\";i:98;s:23:\"ROLE_EDIT_FIRMATARITIPO\";i:99;s:34:\"ROLE_EDIT_AREARISERVATA_CIPE_CHECK\";i:100;s:28:\"ROLE_EDIT_AREARISERVATA_CIPE\";i:101;s:30:\"ROLE_CREATE_AREARISERVATA_CIPE\";i:102;s:36:\"ROLE_CREATE_AREARISERVATA_CIPE_CHECK\";i:103;s:25:\"ROLE_CREATE_FIRMATARITIPO\";i:104;s:17:\"ROLE_READ_MONITOR\";i:105;s:19:\"ROLE_CREATE_MONITOR\";i:106;s:17:\"ROLE_EDIT_MONITOR\";i:107;s:19:\"ROLE_DELETE_MONITOR\";i:108;s:23:\"ROLE_READ_MONITOR_GROUP\";i:109;s:25:\"ROLE_CREATE_MONITOR_GROUP\";i:110;s:23:\"ROLE_EDIT_MONITOR_GROUP\";i:111;s:25:\"ROLE_DELETE_MONITOR_GROUP\";i:112;s:27:\"ROLE_DELETE_AMMINISTRAZIONI\";i:113;s:20:\"ROLE_DELETE_DELIBERE\";i:114;s:18:\"ROLE_READ_REGISTRI\";i:115;s:20:\"ROLE_DELETE_REGISTRI\";i:116;s:20:\"ROLE_CREATE_REGISTRI\";i:117;s:18:\"ROLE_EDIT_REGISTRI\";i:118;s:17:\"ROLE_EDIT_CIPEODG\";i:119;s:20:\"ROLE_EDIT_PRECIPEODG\";}'),
+(2, '2', 'Solo lettura delibere', 'a:3:{i:0;s:18:\"ROLE_READ_DELIBERE\";i:1;s:19:\"ROLE_READ_FIRMATARI\";i:2;s:14:\"ROLE_READ_TAGS\";}'),
+(3, '3', 'Lettura di tutti i contenuti', 'a:27:{i:0;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:1;s:18:\"ROLE_READ_MITTENTI\";i:2;s:18:\"ROLE_READ_TITOLARI\";i:3;s:19:\"ROLE_READ_FASCICOLI\";i:4;s:18:\"ROLE_READ_REGISTRI\";i:5;s:16:\"ROLE_READ_GROUPS\";i:6;s:16:\"ROLE_READ_UFFICI\";i:7;s:20:\"ROLE_READ_RUOLI_CIPE\";i:8;s:14:\"ROLE_READ_TAGS\";i:9;s:17:\"ROLE_READ_PRECIPE\";i:10;s:23:\"ROLE_READ_MONITOR_GROUP\";i:11;s:17:\"ROLE_READ_MONITOR\";i:12;s:21:\"ROLE_READ_ADEMPIMENTI\";i:13;s:18:\"ROLE_READ_DELIBERE\";i:14;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:15;s:23:\"ROLE_READ_CIPEESITITIPO\";i:16;s:19:\"ROLE_READ_CIPEESITI\";i:17;s:23:\"ROLE_READ_FIRMATARITIPO\";i:18;s:14:\"ROLE_READ_CIPE\";i:19;s:19:\"ROLE_READ_FIRMATARI\";i:20;s:20:\"ROLE_READ_PRECIPEODG\";i:21;s:17:\"ROLE_READ_CIPEODG\";i:22;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:23;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:24;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:25;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:26;s:15:\"ROLE_READ_USERS\";}');";
+    $resGroup = mysqli_query($db, $queryGroup);
+    if (!$resGroup) { return mysqli_error($db); }
+
+    $saltADMIN = uniqid(mt_rand());
+    $passwordADMIN = password_hash('Tick-Tack-Tock!1000$"', PASSWORD_DEFAULT);
+    $login = "mosic-admin@governo.it";
+    $queryUser = "INSERT INTO `fos_user` (`id`, `username`, `email`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `username_canonical`, `email_canonical`, `firstName`, `lastName`, `created`, `id_uffici`, `cessato_servizio`, `ip`, `stazione`, `id_ruoli_cipe`) VALUES
+(1,  '".$login."', '".$login."', 1, '".$saltADMIN."',  '".$passwordADMIN."', '2017-11-01 11:48:39', 0, 0, '2020-12-31 00:00:00', NULL, '2018-12-31 00:00:00', 'a:0:{}', 0, '2020-12-31 00:00:00', '".$login."', '".$login."', 'Mosic', 'Admin', '2017-01-01 00:00:00', 1, '0', '1111', 'qqqq', 2);";
+    $resUser = mysqli_query($db, $queryUser);
+    if (!$resUser) { return mysqli_error($db); }
+
+    $queryUserGroup = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (1, 1);";
+    $resUserGroup = mysqli_query($db, $queryUserGroup);
+    if (!$resUserGroup) { return mysqli_error($db); }
+
 
     //popolo la tabella
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
             $enabled = 1;
-            if ($row['CessatoServizio'] == 1) {
+            $cessatoServizio = 0;
+            if ($row['CessatoServizio'] == 'TRUE') {
                 $enabled = 0;
+                $cessatoServizio = 1;
             }
             
             $salt = "";
             $password = "";
             $roles = "a:0:{}";
-            
-            
-            
-            
+
             $idRuolo = 0;
             $query4 = 'SELECT * FROM msc_ruoli_cipe WHERE codice = "'.$row['Codice_Livello'].'"';
             $res4 = mysqli_query($db, $query4);
-            echo $query4 . "<br>";
+            if (!$res4) {
+                return mysqli_error($db);
+            }
+            //echo $query4 . "<br>";
             if (mysqli_num_rows($res4) >= 1) {
                 while ($row4 = mysqli_fetch_array($res4)) {
                     $idRuolo = $row4['id'];
                 }
             }
-            
-
 
             $salt = uniqid(mt_rand());
             $password = password_hash($row['Password'], PASSWORD_DEFAULT);
             
-            $query = 'INSERT INTO `fos_user`(
+            $query = 'INSERT IGNORE INTO `fos_user`(
                                                  `id`,
                                                  `username`,
                                                  `email`,
@@ -947,41 +1160,46 @@ function createUtenti() {
                                                 "' . $row['Cognome'] . '",
                                                 NOW(),
                                                 "' . $row['Codice_Ufficio'] . '",
-                                                "' . $row['CessatoServizio'] . '",
+                                                "' . $cessatoServizio . '",
                                                 "' . $row['Ip'] . '",
                                                 "' . $row['Stazione'] . '",
                                                 "' . $idRuolo . '"
                                                 )';
             //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
-            
-            
-            
-            $idGruppo = 0;
-            $query1 = 'SELECT * FROM fos_group WHERE codice = "'.$row['Codice_Livello'].'"';
-            $res1 = mysqli_query($db, $query1);
-            //echo $query1 . "<br>";
-            if (mysqli_num_rows($res1) >= 1) {
-                while ($row1 = mysqli_fetch_array($res1)) {
-                    $idGruppo = $row1['id'];
-                }
+            if (!$res2) {
+                return mysqli_error($db);
             }
             
+            
+            $idGruppo = 3;
+//            $query1 = 'SELECT * FROM fos_group WHERE codice = "'.$row['Codice_Livello'].'"';
+//            $res1 = mysqli_query($db, $query1);
+//            if (!$res1) {
+//                return mysqli_error($db);
+//            }
+//            //echo $query1 . "<br>";
+//            if (mysqli_num_rows($res1) >= 1) {
+//                while ($row1 = mysqli_fetch_array($res1)) {
+//                    $idGruppo = $row1['id'];
+//                }
+//            }
 
-          
-            $query3 = 'INSERT INTO `fos_user_group`(
-                                                 `user_id`,
-                                                 `group_id`
-                                                )
-                                                VALUES (
-                                                "' . $row['chiave'] . '",
-                                                "' . $idGruppo . '"
-                                                )';
-            //echo $query3 . "<br>";
-            mysqli_query($db, $query3);
+          if ($row['Userid'] != "SBANFI") {
+              $query3 = 'INSERT INTO `fos_user_group`(`user_id`,`group_id`) VALUES ("' . $row['chiave'] . '","' . $idGruppo . '")';
+              $res3 = mysqli_query($db, $query3);
+              if (!$res3) {
+                  return mysqli_error($db);
+              }
+          } else {
+              $querySBANFI_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+              $resSBANFI_insert = mysqli_query($db, $querySBANFI_insert);
 
+          }
         }
     }
+
+    return;
 }
 
 
@@ -991,7 +1209,10 @@ function setRelAmministrazioniFascicoli() {
 
     $query = "SELECT id, id_amministrazione FROM msc_fascicoli";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_amministrazioni_fascicoli';
     mysqli_query($db, $query);
@@ -1008,16 +1229,23 @@ function setRelAmministrazioniFascicoli() {
                                                 "' . $row['id_amministrazione'] . '"
                                                 )';
             //echo $query . "<br>";
-            mysqli_query($db, $query);
+            $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 function setRelAmministrazioniRegistri() {
     global $db;
     $query = "SELECT id, id_amministrazione FROM msc_registri";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_amministrazioni_registri';
     mysqli_query($db, $query);
@@ -1025,8 +1253,6 @@ function setRelAmministrazioniRegistri() {
     //popolo la tabella
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
-            echo "aa";
-
             $query = 'INSERT INTO `msc_rel_amministrazioni_registri`(
                                                  `id_registri`,
                                                  `id_amministrazioni`
@@ -1035,19 +1261,26 @@ function setRelAmministrazioniRegistri() {
                                                 "' . $row['id'] . '",
                                                 "' . $row['id_amministrazione'] . '"
                                                 )';
-            echo $query . "<br>";
-            mysqli_query($db, $query);
+            //echo $query . "<br>";
+            $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+    return;
 }
 
 
 function createRegistri() {
     global $db;
     
-    $query = "SELECT * FROM Registro LIMIT 100";
+    $query = "SELECT * FROM Registro ORDER BY Codice_Registro";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_registri';
     mysqli_query($db, $query);
@@ -1062,6 +1295,9 @@ function createRegistri() {
             $query1 = "SELECT Descrizione_SottoFascicolo FROM SottoFascicoli WHERE Numero_SottoFascicolo = '" .$row['Numero_SottoFascicolo']. "'";
             //echo $query1 . "<br>";
             $res1 = mysqli_query($db, $query1);
+            if (!$res1) {
+                return mysqli_error($db);
+            }
             $descrizioneSottofascicolo = "";
             while ($row1 = mysqli_fetch_array($res1)) {
                 $descrizioneSottofascicolo = $row1['Descrizione_SottoFascicolo'];
@@ -1071,22 +1307,32 @@ function createRegistri() {
             $query2 = "SELECT id FROM msc_titolari WHERE codice = '" .$row['Codice_Titolario']. "'";
             //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
             $idTitolario = "";
             while ($row2 = mysqli_fetch_array($res2)) {
                 $idTitolario = $row2['id'];
             }
 
+            $MittenteRegistro = str_replace('"','',$row['Mittente_Registro']);
+
             //GET id_mittenti
-            $query3 = "SELECT id FROM msc_mittenti WHERE denominazione = '" .$row['Mittente_Registro']. "'";
+            $query3 = 'SELECT id FROM msc_mittenti WHERE denominazione = "' .$MittenteRegistro. '"';
             //echo $query3 . "<br>";
             $res3 = mysqli_query($db, $query3);
+            if (!$res3) {
+                return mysqli_error($db) . " aaa";
+            }
             $denominazioneMittente = "";
             while ($row3 = mysqli_fetch_array($res3)) {
                 $denominazioneMittente = $row3['id'];
             }
-            
-            
-            
+
+
+            $oggettoRegistro = str_replace('"','',$row['Oggetto_Registro']);
+            $descrizioneSottofascicolo = str_replace('"','',$descrizioneSottofascicolo);
+            $AnnotazioniRegistro = str_replace('"','',$row['Annotazioni_Registro']);
             $query = 'INSERT INTO `msc_registri`(`id`,
                                                   `data_arrivo`,
                                                   `protocollo_arrivo`,
@@ -1100,7 +1346,6 @@ function createRegistri() {
                                                   `numero_sottofascicolo`,
                                                   `proposta_cipe`,
                                                   `annotazioni`,
-                                                  
                                                   `id_fascicoli`,
                                                   `id_mittenti`,
                                                   `id_titolari`,
@@ -1112,15 +1357,14 @@ function createRegistri() {
                                                   "' . $row['Protocollo_Arrivo'] . '",
                                                   "' . $row['Data_Mittente'] . '",
                                                   "' . $row['Protocollo_Mittente'] . '",
-                                                  "' . str_replace('"','',$row['Oggetto_Registro']) . '",
+                                                  "' . $oggettoRegistro . '",
                                                   "' . $row['Codice_Amministrazione'] . '",
-                                                  "' . $row['Mittente_Registro'] . '",
+                                                  "' . $MittenteRegistro . '",
                                                   "' . $row['Codice_Titolario'] . '",
                                                   "' . $row['Numero_Fascicolo'] . '",
                                                   "' . $row['Numero_SottoFascicolo'] . '",
                                                   "' . $row['Proposta_Cipe'] . '",
-                                                  "' . $row['Annotazioni_Registro'] . '",
-
+                                                  "' . $AnnotazioniRegistro . '",
                                                   "' . 0 . '",
                                                   "' . $denominazioneMittente . '",
                                                   "' . $idTitolario . '",
@@ -1128,10 +1372,16 @@ function createRegistri() {
                                                 )';
 
             //echo $query . "<br><br>";
-            mysqli_query($db, $query);
+            $res4 = mysqli_query($db, $query);
+            if (!$res4) {
+                return mysqli_error($db) . "at LINE " . $row['Codice_Registro'];
+            }
+
+
         }
     }
 
+    return;
 }
 
 
@@ -1140,7 +1390,10 @@ function createEsitiCipe() {
 
     $query = "SELECT * FROM EsitiCipe";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_esiti_cipe';
     mysqli_query($db, $query);
@@ -1158,10 +1411,15 @@ function createEsitiCipe() {
                                                     "' . $row['Descrizione_EsitoCipe'] . '"
                                                     )';
                 //echo $query . "<br>";
-                mysqli_query($db, $query);
+                $res2 = mysqli_query($db, $query);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
         }
     }
+
+    return;
 }
 
 function createFascicoli() {
@@ -1169,7 +1427,9 @@ function createFascicoli() {
     
     $query = "SELECT * FROM Repertorio";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
     //svuoto la tabella
     $query = 'TRUNCATE msc_fascicoli';
     mysqli_query($db, $query);
@@ -1182,6 +1442,9 @@ function createFascicoli() {
             $query1 = "SELECT id FROM msc_esiti_cipe WHERE denominazione = '" .$row['Esito_Cipe']. "'";
             //echo $query1 . "<br>";
             $res1 = mysqli_query($db, $query1);
+            if (!$res1) {
+                return mysqli_error($db);
+            }
             $idEsitoCipe = "";
             while ($row1 = mysqli_fetch_array($res1)) {
                 $idEsitoCipe = $row1['id'];
@@ -1190,13 +1453,22 @@ function createFascicoli() {
             $query2 = "SELECT id FROM msc_titolari WHERE codice = '" .$row['Codice_Titolario']. "'";
             //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
             $idTitolario = "";
             while ($row2 = mysqli_fetch_array($res2)) {
                 $idTitolario = $row2['id'];
             }
-          
-            
-            
+
+            $DataMagazzino = explode("/",$row['Data_Magazzino']);
+            $DataMagazzino = $DataMagazzino[2] . "-" . $DataMagazzino[1] . "-" . $DataMagazzino[0];
+            $DataCipe = explode("/",$row['Data_Cipe']);
+            $DataCipe = $DataCipe[2] . "-" . $DataCipe[1] . "-" . $DataCipe[0];
+            $DataCipe2 = explode("/",$row['Data_Cipe2']);
+            $DataCipe2 = $DataCipe2[2] . "-" . $DataCipe2[1] . "-" . $DataCipe2[0];
+
+
             $query = 'INSERT INTO `msc_fascicoli`(
                                                   `codice_repertorio`,
                                                   `codice_titolario`,
@@ -1220,9 +1492,9 @@ function createFascicoli() {
                                                   "' . $row['Numero_Fascicolo'] . '",
                                                   "' . str_replace('"','',$row['Argomento_Repertorio']) . '",
                                                   "' . $row['Codice_Amministrazione'] . '",
-                                                  "' . $row['Data_Magazzino'] . '",
-                                                  "' . $row['Data_Cipe'] . '",
-                                                  "' . $row['Data_Cipe2'] . '",
+                                                  "' . $DataMagazzino . '",
+                                                  "' . $DataCipe . '",
+                                                  "' . $DataCipe2 . '",
                                                   "' . $row['Archiviazione_Repertorio'] . '",
                                                   "' . str_replace('"','',$row['Annotazioni_Repertorio']) . '",
 
@@ -1233,9 +1505,14 @@ function createFascicoli() {
                                                 )';
 
             //echo $query . "<br><br>";
-            mysqli_query($db, $query);
+            $res3 = mysqli_query($db, $query);
+            if (!$res3) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 function setIdFascicoliRegistri() {
@@ -1246,14 +1523,21 @@ function setIdFascicoliRegistri() {
     $query = "SELECT r.*, r.id as idR, f.id as fascicolo_id FROM `msc_registri` as r
               LEFT JOIN msc_fascicoli as f ON r.numero_fascicolo = f.numero_fascicolo AND r.codice_titolario = f.codice_titolario";
     $res = mysqli_query($db, $query);
-    echo $query . "<br>";
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
+    //echo $query . "<br>";
 
     //aggiorno tabella
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
             $query = 'UPDATE `msc_registri` SET `id_fascicoli`= "' . $row['fascicolo_id'] . '"  WHERE id = "' . $row['idR'] . '"';
-            echo $query . "<br>";
-            mysqli_query($db, $query);
+            //echo $query . "<br>";
+            $res2 = mysqli_query($db, $query);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
 }
@@ -1270,16 +1554,23 @@ function setMittentiRegistri()
 
     $query = "SELECT * FROM msc_mittente as m";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
 
             $query2 = 'UPDATE `msc_registri` SET `id_mittente`= "' . $row['id'] . '"  WHERE mittente = "' . $row['denominazione'] . '"';
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
 
+    return;
 }
 
 
@@ -1291,6 +1582,9 @@ function setOggettoRegistri()
 							LEFT JOIN TABLE16 as t ON r.id = t.id3
 							WHERE r.id >= 7000 AND r.id <= 8000";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
@@ -1299,13 +1593,16 @@ function setOggettoRegistri()
 
             $query2 = 'UPDATE `msc_registri` SET `oggetto`= "' . $row['oggetto3'] . '"  WHERE id = ' . $row['id'];
 
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
-
+            if (!$res2) {
+                return mysqli_error($db);
+            }
 
         }
     }
 
+    return;
 }
 
 
@@ -1316,6 +1613,9 @@ function updateIdTitolari()
     $query = "SELECT * , t.id as idT, r.id as idR FROM msc_fascicoli as r
 		LEFT JOIN msc_titolari as t ON r.codice_titolario = t.codice";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
@@ -1324,13 +1624,16 @@ function updateIdTitolari()
 
             $query2 = 'UPDATE `msc_fascicoli` SET `id_titolari`= "' . $row['idT'] . '"  WHERE id = ' . $row['idR'];
 
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
-
+            if (!$res2) {
+                return mysqli_error($db);
+            }
 
         }
     }
 
+    return;
 }
 
 
@@ -1339,10 +1642,16 @@ function gestioneFilesRegistri($filePath, $path)
     global $db;
     //$path = "../files/REGISTRO_MOSIC";
     //$results = scandir($path);
-    
+
+    //svuoto la tabella
+    $query = 'TRUNCATE msc_allegati';
+    mysqli_query($db, $query);
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_allegati_registri';
     mysqli_query($db, $query);
+
+    $debug = array();
 
     //$path = realpath('yourfolder/examplefolder');
     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path)) as $filename) {
@@ -1353,22 +1662,49 @@ function gestioneFilesRegistri($filePath, $path)
             if (!is_dir("../".$exploda_path[0] . "/" . $exploda_path[1]. "/" . $exploda_path[2]. "/" . $exploda_path[3]. "/" . $exploda_path[4])) { //se NON sono un sottofascicolo
                 $exploda_nome = explode("-", $exploda_path[4]);  //$exploda_path[4] = nome file
                 //echo $exploda_nome[0] . "<br>";
-                echo $filename . " ---> ".$exploda_nome[0]."<br>";
+                //echo $filename . " ---> ".$exploda_nome[0]."<br>";
             } else { //altrimenti sono un sottofascicolo
                 $exploda_nome = explode("-", $exploda_path[5]);  //$exploda_path[4] = nome file
-                echo $filename . " ---> ".$exploda_nome[0]."<br>";
+                //echo $filename . " ---> ".$exploda_nome[0]."<br>";
             }
 
-            //inserisco nella tabella allegati Data e $item
-            $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'". $filePath . $filename ."')";
-            $res2 = mysqli_query($db, $query2);
-            //echo $query2."<br>";
+            if (is_numeric($exploda_nome[0])) {
+                //inserisco nella tabella allegati Data e $item
+                $query2 = 'INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),"' . $filePath . $filename . '")';
+                $res2 = mysqli_query($db, $query2);
 
-            $last_id = mysqli_insert_id($db); //ultimo id inserito
+                //echo $query2 . "<br>";
 
-            $query3 = "INSERT INTO `msc_rel_allegati_registri`(`id_registri`, `id_allegati`) VALUES ($exploda_nome[0], $last_id)";
-            $res3 = mysqli_query($db, $query3);
+                if (!$res2) {
+                    return mysqli_error($db) . " res2";
+                }
+
+                $last_id = mysqli_insert_id($db); //ultimo id inserito
+
+                $query3 = "INSERT INTO `msc_rel_allegati_registri`(`id_registri`, `id_allegati`) VALUES ($exploda_nome[0], $last_id)";
+                $res3 = mysqli_query($db, $query3);
+
+                //echo $query3 . "<br>";
+
+                if (!$res3) {
+                    return mysqli_error($db) . " res3";
+                }
+            } else {
+                if ($exploda_nome[0] != "Thumbs.db") {
+                    $debug[] = "ERRORE: " . $filename . " ---> " . $exploda_nome[0] . "<br>";
+                    //echo "ERRORE: " . $filename . " ---> " . $exploda_nome[0] . "<br>";
+                }
+            }
+
+
+
         }
+    }
+
+    if (count($debug) > 0) {
+        return $debug;
+    } else {
+        return;
     }
 }
 
@@ -1379,14 +1715,22 @@ function setSottofascicoliDenominazioneSuRegistri() {
 
     $query = "SELECT * FROM msc_sottofascicoli";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
-            echo $row['Descrizione_SottoFascicolo'] . "<br>";
+            //echo $row['Descrizione_SottoFascicolo'] . "<br>";
             $query2 = 'UPDATE `msc_registri` SET `denominazione_sottofascicolo`= "' . $row['Descrizione_SottoFascicolo'] . '"  WHERE numero_sottofascicolo = ' . $row['Numero_SottoFascicolo'];
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -1409,17 +1753,22 @@ function gestioneFilesPreCipe($filePath, $path)
             $exploda_path = explode("/", $filename);
 
             if ($exploda_path[4] != "" && $exploda_path[4] != "Thumbs.db") {
-                echo $exploda_path[4] . " ----------> $exploda_path[3] ---------> $exploda_path[2] <br>"; //nome file  ----> tipo -----> data precipe
-                echo $filename . "<br>";
+                //echo $exploda_path[4] . " ----------> $exploda_path[3] ---------> $exploda_path[2] <br>"; //nome file  ----> tipo -----> data precipe
+                //echo $filename . "<br>";
 
                 //inserisco nella tabella allegati Data e $item
                 $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filePath . $filename . "')";
                 $res2 = mysqli_query($db, $query2);
-
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
                 $last_id = mysqli_insert_id($db); //ultimo id inserito
 
                 $query = "SELECT * FROM msc_precipe as p WHERE data = '" . $exploda_path[2] . "'";
                 $res = mysqli_query($db, $query);
+                if (!$res) {
+                    return mysqli_error($db);
+                }
                 $id_precipe = "";
                 if (mysqli_num_rows($res) >= 1) {
                     while ($row = mysqli_fetch_array($res)) {
@@ -1429,18 +1778,23 @@ function gestioneFilesPreCipe($filePath, $path)
                         if ($exploda_path[3] == "APG" || $exploda_path[3] == "OSS" || $exploda_path[3] == "TLX") {
                             $query3 = "INSERT INTO `msc_rel_allegati_precipe`(`id_precipe`, `id_allegati`, `tipo`) VALUES ($id_precipe, $last_id, '$exploda_path[3]')";
                             $res3 = mysqli_query($db, $query3);
-                            echo $query3 . "<br>";
+                            if (!$res3) {
+                                return mysqli_error($db);
+                            }
+                            //echo $query3 . "<br>";
                         }
                     }
                 }
 
             }
 
-            echo "-<br>";
+            //echo "-<br>";
 
 
         }
     }
+
+    return;
 }
 
 
@@ -1462,17 +1816,22 @@ function gestioneFilesCipe($filePath, $path)
             $exploda_path = explode("/", $filename);
 
             if ($exploda_path[4] != "" && $exploda_path[4] != "Thumbs.db") {
-                echo $exploda_path[4] . " ----------> $exploda_path[3] ---------> $exploda_path[2] <br>"; //nome file  ----> tipo -----> data precipe
-                echo $filename . "<br>";
+                //echo $exploda_path[4] . " ----------> $exploda_path[3] ---------> $exploda_path[2] <br>"; //nome file  ----> tipo -----> data precipe
+                //echo $filename . "<br>";
 
                 //inserisco nella tabella allegati Data e $item
                 $query2 = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filePath . $filename . "')";
                 $res2 = mysqli_query($db, $query2);
-
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
                 $last_id = mysqli_insert_id($db); //ultimo id inserito
 
                 $query = "SELECT * FROM msc_cipe as p WHERE data = '" . $exploda_path[2] . "'";
                 $res = mysqli_query($db, $query);
+                if (!$res) {
+                    return mysqli_error($db);
+                }
                 $id_cipe = "";
                 if (mysqli_num_rows($res) >= 1) {
                     while ($row = mysqli_fetch_array($res)) {
@@ -1482,18 +1841,23 @@ function gestioneFilesCipe($filePath, $path)
                         if ($exploda_path[3] == "APG" || $exploda_path[3] == "OSS" || $exploda_path[3] == "TLX" || $exploda_path[3] == "EST") {
                             $query3 = "INSERT INTO `msc_rel_allegati_cipe`(`id_cipe`, `id_allegati`, `tipo`) VALUES ($id_cipe, $last_id, '$exploda_path[3]')";
                             $res3 = mysqli_query($db, $query3);
-                            echo $query3 . "<br>";
+                            if (!$res3) {
+                                return mysqli_error($db);
+                            }
+                            //echo $query3 . "<br>";
                         }
                     }
                 }
 
             }
 
-            echo "-<br>";
+            //echo "-<br>";
 
 
         }
     }
+
+    return;
 }
 
 
@@ -1513,16 +1877,23 @@ function setIdFascicoli()
     //        ON r.numero_fascicolo = f.numero_fascicolo
     //        AND r.codice_titolario = f.codice_titolario";
     $res = mysqli_query($db, $query);
-
+    if (!$res) {
+        return mysqli_error($db);
+    }
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
 
             $query2 = 'UPDATE `msc_registri` SET `id_fascicoli`= "' . $row['idF'] . '"  WHERE id = ' . $row['idR'];
 
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -1537,6 +1908,9 @@ function raggruppaPreCipe()
 
     $query = "SELECT Data_PreCipe FROM PreCipe GROUP BY Data_PreCipe";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
@@ -1544,8 +1918,13 @@ function raggruppaPreCipe()
 
             //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -1555,6 +1934,9 @@ function setOrdiniPreCipe()
 
     $query = "SELECT * FROM msc_precipe";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_precipe_ordini';
@@ -1564,12 +1946,18 @@ function setOrdiniPreCipe()
         while ($row = mysqli_fetch_array($res)) {
             $query2 = 'SELECT * FROM PreCipe WHERE Data_PreCipe = "' . $row['data'] . '"';
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
 
             if (mysqli_num_rows($res2) >= 1) {
                 while ($row2 = mysqli_fetch_array($res2)) {
                     $argomenti = "";
                     $query_argomenti = 'SELECT * FROM msc_argomenti WHERE codice = "' . $row2['Codice_ArgomentoPreCipe'] . '"';
                     $res_argomenti = mysqli_query($db, $query_argomenti);
+                    if (!$res_argomenti) {
+                        return mysqli_error($db);
+                    }
                     while ($row_argomenti = mysqli_fetch_array($res_argomenti)) {
                         $argomenti = $row_argomenti['id'];
                     }
@@ -1577,6 +1965,9 @@ function setOrdiniPreCipe()
                     $titolari = "";
                     $query_titolari = 'SELECT * FROM msc_titolari WHERE codice = "' . $row2['Codice_Titolario'] . '"';
                     $res_titolari = mysqli_query($db, $query_titolari);
+                    if (!$res_titolari) {
+                        return mysqli_error($db);
+                    }
                     while ($row_titolari = mysqli_fetch_array($res_titolari)) {
                         $titolari = $row_titolari['id'];
                     }
@@ -1584,6 +1975,9 @@ function setOrdiniPreCipe()
                     $fascicoli = "";
                     $query_fascicoli = 'SELECT * FROM msc_fascicoli WHERE codice_titolario = "' . $row2['Codice_Titolario'] . '" AND numero_fascicolo = "' . $row2['Numero_Fascicolo'] . '"';
                     $res_fascicoli = mysqli_query($db, $query_fascicoli);
+                    if (!$res_fascicoli) {
+                        return mysqli_error($db);
+                    }
                     while ($row_fascicoli = mysqli_fetch_array($res_fascicoli)) {
                         $fascicoli = $row_fascicoli['id'];
                     }
@@ -1591,6 +1985,9 @@ function setOrdiniPreCipe()
                     $uffici = "";
                     $query_uffici = 'SELECT * FROM msc_uffici WHERE codice = "' . $row2['Codice_Ufficio'] . '"';
                     $res_uffici = mysqli_query($db, $query_uffici);
+                    if (!$res_uffici) {
+                        return mysqli_error($db);
+                    }
                     while ($row_uffici = mysqli_fetch_array($res_uffici)) {
                         $uffici = $row_uffici['id'];
                     }
@@ -1598,11 +1995,14 @@ function setOrdiniPreCipe()
                     $risultanze = "";
                     $query_risultanze = 'SELECT * FROM msc_risultanze WHERE codice = "' . $row2['Codice_RisultanzaPreCipe'] . '"';
                     $res_risultanze = mysqli_query($db, $query_risultanze);
+                    if (!$res_risultanze) {
+                        return mysqli_error($db);
+                    }
                     while ($row_risultanze = mysqli_fetch_array($res_risultanze)) {
                         $risultanze = $row_risultanze['id'];
                     }
 
-
+                    $OggettoPreCipe = str_replace('"','',$row2['Oggetto_PreCipe']);
                     $query3 = 'INSERT INTO msc_precipe_ordini SET 
                         id = "' . $row2['Codice_PreCipe'] . '", 
                         id_precipe = "' . $row['id'] . '", 
@@ -1612,17 +2012,22 @@ function setOrdiniPreCipe()
                         id_argomenti = "' . $argomenti . '", 
                         id_uffici = "' . $uffici . '", 
                         ordine = "' . $row2['Numero_OdgPreCipe'] . '", 
-                        denominazione = "' . $row2['Oggetto_PreCipe'] . '", 
+                        denominazione = "' . $OggettoPreCipe . '", 
                         risultanza = "' . $risultanze . '", 
                         annotazioni = "' . $row2['Annotazioni_PreCipe'] . '"                        
                       ';
 
                     //echo $query3 . "<br>";
                     $res3 = mysqli_query($db, $query3);
+                    if (!$res3) {
+                        return mysqli_error($db) . " (insert risultanze)";
+                    }
                 }
             }
         }
     }
+
+    return;
 }
 
 function setRegistriPrecipe()
@@ -1632,6 +2037,9 @@ function setRegistriPrecipe()
     $query = "SELECT * 
               FROM PreCipe";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_registri_odg';
@@ -1640,26 +2048,38 @@ function setRegistriPrecipe()
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
 
-            if ($row['Codice_Registro'] != "") {
+            if ($row['Codice_Registro'] != "" && $row['Codice_Registro'] != 0 && $row['Codice_Registro'] != null) {
                 $query2 = 'INSERT INTO msc_rel_registri_odg SET id_odg = "' . $row['Codice_PreCipe'] . '", id_registri = "' . $row['Codice_Registro'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
-            if ($row['Codice_Registro2'] != "") {
+
+            if ($row['Codice_Registro2'] != "" && $row['Codice_Registro2'] != 0 && $row['Codice_Registro2'] != null) {
                 $query2 = 'INSERT INTO msc_rel_registri_odg SET id_odg = "' . $row['Codice_PreCipe'] . '", id_registri = "' . $row['Codice_Registro2'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
-            if ($row['Codice_Registro3'] != "") {
+            if ($row['Codice_Registro3'] != "" && $row['Codice_Registro3'] != 0 && $row['Codice_Registro3'] != null) {
                 $query2 = 'INSERT INTO msc_rel_registri_odg SET id_odg = "' . $row['Codice_PreCipe'] . '", id_registri = "' . $row['Codice_Registro3'] . '" ';
-                echo $query2 . "<br>";
+                //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
         }
     }
+
+    return;
 }
 
 
@@ -1670,6 +2090,9 @@ function raggruppaCipe() {
               LEFT JOIN Sedute_Cipe as s ON c.Data_Cipe = s.Data_SedutaCipe
               GROUP BY c.Data_Cipe";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_cipe';
@@ -1690,8 +2113,13 @@ function raggruppaCipe() {
 
             //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -1702,6 +2130,9 @@ function setOrdiniCipe()
 
     $query = "SELECT * FROM msc_cipe";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_cipe_ordini';
@@ -1711,12 +2142,18 @@ function setOrdiniCipe()
         while ($row = mysqli_fetch_array($res)) {
             $query2 = 'SELECT * FROM Cipe WHERE Data_Cipe = "' . $row['data'] . '"';
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
 
             if (mysqli_num_rows($res2) >= 1) {
                 while ($row2 = mysqli_fetch_array($res2)) {
                     $argomenti = "";
                     $query_argomenti = 'SELECT * FROM msc_argomenti WHERE codice = "' . $row2['Codice_ArgomentoCipe'] . '"';
                     $res_argomenti = mysqli_query($db, $query_argomenti);
+                    if (!$res_argomenti) {
+                        return mysqli_error($db);
+                    }
                     while ($row_argomenti = mysqli_fetch_array($res_argomenti)) {
                         $argomenti = $row_argomenti['id'];
                     }
@@ -1724,6 +2161,9 @@ function setOrdiniCipe()
                     $titolari = "";
                     $query_titolari = 'SELECT * FROM msc_titolari WHERE codice = "' . $row2['Codice_Titolario'] . '"';
                     $res_titolari = mysqli_query($db, $query_titolari);
+                    if (!$res_titolari) {
+                        return mysqli_error($db);
+                    }
                     while ($row_titolari = mysqli_fetch_array($res_titolari)) {
                         $titolari = $row_titolari['id'];
                     }
@@ -1731,6 +2171,9 @@ function setOrdiniCipe()
                     $fascicoli = "";
                     $query_fascicoli = 'SELECT * FROM msc_fascicoli WHERE codice_titolario = "' . $row2['Codice_Titolario'] . '" AND numero_fascicolo = "' . $row2['Numero_Fascicolo'] . '"';
                     $res_fascicoli = mysqli_query($db, $query_fascicoli);
+                    if (!$res_fascicoli) {
+                        return mysqli_error($db);
+                    }
                     while ($row_fascicoli = mysqli_fetch_array($res_fascicoli)) {
                         $fascicoli = $row_fascicoli['id'];
                     }
@@ -1738,6 +2181,9 @@ function setOrdiniCipe()
                     $uffici = "";
                     $query_uffici = 'SELECT * FROM msc_uffici WHERE codice = "' . $row2['Codice_Ufficio'] . '"';
                     $res_uffici = mysqli_query($db, $query_uffici);
+                    if (!$res_uffici) {
+                        return mysqli_error($db);
+                    }
                     while ($row_uffici = mysqli_fetch_array($res_uffici)) {
                         $uffici = $row_uffici['id'];
                     }
@@ -1745,11 +2191,14 @@ function setOrdiniCipe()
                     $risultanze = "";
                     $query_risultanze = 'SELECT * FROM msc_risultanze WHERE codice = "' . $row2['Codice_RisultanzaCipe'] . '"';
                     $res_risultanze = mysqli_query($db, $query_risultanze);
+                    if (!$res_risultanze) {
+                        return mysqli_error($db);
+                    }
                     while ($row_risultanze = mysqli_fetch_array($res_risultanze)) {
                         $risultanze = $row_risultanze['id'];
                     }
 
-
+                    $OggettoCipe = str_replace('"','',$row2['Oggetto_Cipe']);
                     $query3 = 'INSERT INTO msc_cipe_ordini SET 
                         id = "' . $row2['Codice_Cipe'] . '", 
                         id_cipe = "' . $row['id'] . '", 
@@ -1761,7 +2210,7 @@ function setOrdiniCipe()
                         tipo_argomenti = "' . $row2['Codice_TipoArgomentoCipe'] . '",  
                         id_uffici = "' . $uffici . '", 
                         ordine = "' . $row2['Numero_OdgCipe'] . '", 
-                        denominazione = "' . $row2['Oggetto_Cipe'] . '", 
+                        denominazione = "' . $OggettoCipe . '", 
                         risultanza = "' . $risultanze . '", 
                         id_esito = "' . $row2['Codice_EsitoCipe'] . '", 
                         tipo_esito = "' . $row2['Codice_TipoEsitoCipe'] . '", 
@@ -1770,10 +2219,15 @@ function setOrdiniCipe()
 
                     //echo $query3 . "<br>";
                     $res3 = mysqli_query($db, $query3);
+                    if (!$res3) {
+                        return mysqli_error($db) . " ( insert msc_cipe_ordini)";
+                    }
                 }
             }
         }
     }
+
+    return;
 }
 
 
@@ -1782,6 +2236,9 @@ function setRegistriCipe() {
 
     $query = "SELECT * FROM Cipe";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_registri_odg_cipe';
@@ -1790,26 +2247,37 @@ function setRegistriCipe() {
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
 
-            if ($row['Codice_Registro'] != "") {
+            if ($row['Codice_Registro'] != "" && $row['Codice_Registro'] != 0 && $row['Codice_Registro'] != null) {
                 $query2 = 'INSERT INTO msc_rel_registri_odg_cipe SET id_odg_cipe = "' . $row['Codice_Cipe'] . '", id_registri = "' . $row['Codice_Registro'] . '" ';
                 //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
-            if ($row['Codice_Registro2'] != "") {
+            if ($row['Codice_Registro2'] != "" && $row['Codice_Registro2'] != 0 && $row['Codice_Registro2'] != null) {
                 $query2 = 'INSERT INTO msc_rel_registri_odg_cipe SET id_odg_cipe = "' . $row['Codice_Cipe'] . '", id_registri = "' . $row['Codice_Registro2'] . '" ';
                 //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
-            if ($row['Codice_Registro3'] != "") {
+            if ($row['Codice_Registro3'] != "" && $row['Codice_Registro3'] != 0 && $row['Codice_Registro3'] != null) {
                 $query2 = 'INSERT INTO msc_rel_registri_odg_cipe SET id_odg_cipe = "' . $row['Codice_Cipe'] . '", id_registri = "' . $row['Codice_Registro3'] . '" ';
                 //echo $query2 . "<br>";
                 $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
             }
 
         }
     }
+
+    return;
 }
 
 
@@ -1820,6 +2288,9 @@ function checkRegistriFascicoli()
     $query = "SELECT * 
               FROM TABLE33_precipe_full";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
@@ -1827,6 +2298,8 @@ function checkRegistriFascicoli()
 
         }
     }
+
+    return;
 }
 
 
@@ -1836,6 +2309,9 @@ function setUfficiPreCipeOdg()
 
     $query = "SELECT * FROM msc_precipe_ordini";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_uffici_precipe';
@@ -1845,11 +2321,16 @@ function setUfficiPreCipeOdg()
         while ($row = mysqli_fetch_array($res)) {
 
             $query2 = 'INSERT INTO msc_rel_uffici_precipe SET id_odg_precipe = "' . $row['id'] . '", id_uffici = "' . $row['id_uffici'] . '" ';
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
 
         }
     }
+
+    return;
 }
 
 function setUfficiCipeOdg()
@@ -1858,6 +2339,9 @@ function setUfficiCipeOdg()
 
     $query = "SELECT * FROM msc_cipe_ordini";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     //svuoto la tabella
     $query = 'TRUNCATE msc_rel_uffici_cipe';
@@ -1867,11 +2351,15 @@ function setUfficiCipeOdg()
         while ($row = mysqli_fetch_array($res)) {
 
             $query2 = 'INSERT INTO msc_rel_uffici_cipe SET id_odg_cipe = "' . $row['id'] . '", id_uffici = "' . $row['id_uffici'] . '" ';
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
-
+            if (!$res2) {
+                return mysqli_error($db);
+            }
         }
     }
+
+    return;
 }
 
 
@@ -1882,6 +2370,11 @@ function testUpdate($test)
 
     $query2 = 'INSERT INTO ... SET id=20, Data_SedutaCipe = "' . $test.'"';
     $res2 = mysqli_query($db, $query2);
+    if (!$res2) {
+        return mysqli_error($db);
+    }
+
+    return;
 }
 
 
@@ -1891,6 +2384,11 @@ function aggiornaStato($id, $stato) {
 
     $query = 'UPDATE `msc_precipe` SET `public_reserved_status`= "' . $stato . '"  WHERE id = "' . $id . '"';
     $res2 = mysqli_query($db, $query);
+    if (!$res2) {
+        return mysqli_error($db);
+    }
+
+    return;
 }
 
 
@@ -1899,6 +2397,11 @@ function aggiornaURL($id, $stato) {
 
     $query = 'UPDATE `msc_precipe` SET `public_reserved_URL`= "' . $stato . '"  WHERE id = "' . $id . '"';
     $res2 = mysqli_query($db, $query);
+    if (!$res2) {
+        return mysqli_error($db);
+    }
+
+    return;
 }
 
 function aggiornaStatoCipe($id, $stato) {
@@ -1906,6 +2409,11 @@ function aggiornaStatoCipe($id, $stato) {
 
     $query = 'UPDATE `msc_cipe` SET `public_reserved_status`= "' . $stato . '"  WHERE id = "' . $id . '"';
     $res2 = mysqli_query($db, $query);
+    if (!$res2) {
+        return mysqli_error($db);
+    }
+
+    return;
 }
 
 
@@ -1914,6 +2422,11 @@ function aggiornaURLCipe($id, $stato) {
 
     $query = 'UPDATE `msc_cipe` SET `public_reserved_URL`= "' . $stato . '"  WHERE id = "' . $id . '"';
     $res2 = mysqli_query($db, $query);
+    if (!$res2) {
+        return mysqli_error($db);
+    }
+
+    return;
 }
 
 
@@ -1953,6 +2466,8 @@ function renameFile($path) {
 
     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path)) as $filename) {
         if (!is_dir($filename)) {
+
+
             $file_info = pathinfo($filename);
 
             $temp = explode(".",$file_info['basename']);
@@ -1962,23 +2477,34 @@ function renameFile($path) {
                 $solo_nome = $solo_nome . $temp[$i];
             }
 
-            $nuovo_nome = sanitizeFilename($solo_nome) . "." . $file_info['extension'];
+            $nuovo_nome = sanitizeFilename($solo_nome) . "." . strtolower($file_info['extension']);
 
             rename($filename, $file_info['dirname'] . "/" . $nuovo_nome);
 
-            echo $file_info['dirname']. "<br/>";
-            echo $nuovo_nome . "<br/>";
-            echo $file_info['extension']. "<br/><br/>";
+            //echo $file_info['dirname']. "<br/>";
+            //echo $nuovo_nome . "<br/>";
+            //echo $file_info['extension']. "<br/><br/>";
 
             //svuoto la tabella
             $query = 'TRUNCATE msc_allegati';
-            mysqli_query($db, $query);
+            $res = mysqli_query($db, $query);
 
 
         }
     }
 }
 
+function renameWithNestedMkdir($oldname , $newname)
+{
+    $targetDir = dirname($newname); // Returns a parent directory's path (operates naively on the input string, and is not aware of the actual filesystem)
+
+    // here $targetDir is "/some/long/nested/path/test2/xxx1"
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0777, true); // third parameter "true" allows the creation of nested directories
+    }
+
+    return rename($oldname , $newname);
+}
 
 
 function setDateDelibereGiorni() {
@@ -1986,7 +2512,10 @@ function setDateDelibereGiorni() {
 
     $query = "SELECT * FROM msc_delibere ORDER BY id DESC";
     $res = mysqli_query($db, $query);
-    
+    if (!$res) {
+        return mysqli_error($db);
+    }
+
     //svuoto la tabella
     $query = 'TRUNCATE msc_delibere_giorni';
     mysqli_query($db, $query);
@@ -2032,18 +2561,22 @@ function setDateDelibereGiorni() {
             giorni_cc = "' . $GiorniCC . '", 
             giorni_gu = "' . $GiorniGU . '"
             ';
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
-
+            if (!$res2) {
+                return mysqli_error($db);
+            }
 
             if ($row['id'] == 2589) {
-                echo $row['id'] . " --> " . $row['data_consegna'] . "</br>";
-                echo $GiorniCC . "</br>";
-                echo $query2 . "<br>";
+                //echo $row['id'] . " --> " . $row['data_consegna'] . "</br>";
+                //echo $GiorniCC . "</br>";
+                //echo $query2 . "<br>";
             }
 
         }
     }
+
+    return;
 }
 
 function setUtentiAdempimenti() {
@@ -2053,16 +2586,24 @@ function setUtentiAdempimenti() {
               FROM Adempimenti as a
               LEFT JOIN fos_user as u ON a.Utente_Modifica = u.username";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
             $query2 = 'UPDATE `msc_adempimenti` SET `utente`= "' . $row['id'] . '" WHERE `progressivo` = "' . $row['Progressivo_Adempimento'] . '" AND `codice_scheda` = "' . $row['Codice_Scheda'] .'" AND `id_delibere` = "' . $row['Codice_Delibera'] .'"';
 
-            echo $query2 . "<br>";
+            //echo $query2 . "<br>";
             $res2 = mysqli_query($db, $query2);
+            if (!$res2) {
+                return mysqli_error($db);
+            }
 
         }
     }
+
+    return;
 }
 
 
@@ -2089,6 +2630,9 @@ function monitor() {
 
     $query = "SELECT * FROM msc_delibere ORDER BY data DESC";
     $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
 
     $arrayDelibere = array();
 
@@ -2251,9 +2795,11 @@ function monitor() {
     }
 
 
-    echo "<pre>";
-    print_r($arrayDelibere);
-    echo "</pre>";
+//    echo "<pre>";
+//    print_r($arrayDelibere);
+//    echo "</pre>";
+
+    return;
 
 }
 

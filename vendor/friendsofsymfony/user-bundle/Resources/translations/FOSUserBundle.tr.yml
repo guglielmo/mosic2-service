@@ -6,9 +6,9 @@ group:
     new:
         submit: 'Grup Yarat'
     flash:
-        updated: 'Grup Güncellendi'
-        created: 'Grup Yaratıldı'
-        deleted: 'Grup Silindi'
+        updated: 'Grup Güncellendi.'
+        created: 'Grup Yaratıldı.'
+        deleted: 'Grup Silindi.'
 security:
     login:
         username: 'Kullanıcı adı'
@@ -22,35 +22,53 @@ profile:
     edit:
         submit: Güncelle
     flash:
-        updated: 'Profil Güncellendi'
+        updated: 'Profil Güncellendi.'
 change_password:
     submit: 'Parolayı Değiştir'
     flash:
-        success: 'Parola değiştirildi'
+        success: 'Parola değiştirildi.'
 registration:
-    check_email: '%email% adresine hesabınızı aktive etmek için kullanacağınız aktivasyon linkini barındıran bir e-posta gönderildi.'
+    check_email: 'E-posta adresinize hesabınızı aktive etmek için kullanacağınız aktivasyon linkini barındıran bir e-posta gönderildi.'
     confirmed: 'Tebrikler %username%. Hesabınız şu anda aktifleştirildi.'
     back: 'Asıl sayfaya geri dön.'
     submit: 'Kayıt ol'
     flash:
-        user_created: 'Kullanıcı başarıyla yaratıldı'
+        user_created: 'Kullanıcı başarıyla yaratıldı.'
     email:
         subject: 'Hoşgeldin %username%!'
-        message: "Hoşgeldiniz %username%!\n\nHesabınızın aktivasyonunu tamamlamak için lütfen  %confirmationUrl%\nadresini ziyaret ediniz.\n\nTeşekkürler,\nWeb Takımı.\n"
+        message: |
+            Hoşgeldiniz %username%!
+
+            Hesabınızın aktivasyonunu tamamlamak için lütfen  %confirmationUrl%
+            adresini ziyaret ediniz.
+
+            Teşekkürler,
+            Web Takımı.
+
 resetting:
-    password_already_requested: 'Son 24 saat içerisinde bu kullanıcı parola için istekte bulunmuş.'
-    check_email: '%email% adresine parolanızı sıfırlama adresi bulunan bir e-posta gönderildi.'
+    check_email: |
+        E-posta adresinize parolanızı sıfırlama adresi bulunan bir e-posta gönderildi.
+        Not: Yeni şifre talep etmek için %tokenLifetime% saat beklemelisiniz.
+        
+        E-posta gelmedi ise spam klasörünü kontrol edin veya tekrar deneyin.
     request:
-        invalid_username: '%username% şeklinde bir kullanıcı adı ya da e-posta adresi bulunamadı.'
         username: 'Kullanıcı adı ya da e-posta adresi'
-        submit: 'Parolayı Sıfırla'
+        submit: 'Parolayı sıfırla'
     reset:
         submit: 'Parolayı değiştir'
     flash:
-        success: 'Parola başarıyla değiştirildi'
+        success: 'Parola başarıyla değiştirildi.'
     email:
         subject: 'Parola Yenileme'
-        message: "Merhaba  %username%!\n\nParolanızı yenilemek için  %confirmationUrl%\nadresini ziyaret ediniz.\n\nTeşekkürler,\nWeb Takımı.\n"
+        message: |
+            Merhaba  %username%!
+
+            Parolanızı yenilemek için  %confirmationUrl%
+            adresini ziyaret ediniz.
+
+            Teşekkürler,
+            Web Takımı.
+
 layout:
     logout: Çıkış
     login: Giriş

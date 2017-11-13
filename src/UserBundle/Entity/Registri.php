@@ -32,7 +32,7 @@ class Registri {
     private $protocolloArrivo;
 
 		/**
-		* @ORM\Column(name="data_mittente", type="date")
+		* @ORM\Column(name="data_mittente", type="date", nullable=true)
 		*/
     private $dataMittente;
 		
@@ -94,7 +94,7 @@ class Registri {
     private $idSottofascicoli;
 		
 		/**
-		* @ORM\Column(name="id_mittenti", type="integer")
+		* @ORM\Column(name="id_mittenti", type="integer", nullable=true)
 		*/
     private $idMittenti;
 		
@@ -115,13 +115,13 @@ class Registri {
         $this->codiceTitolario = 0;
         $this->idFascicoli = 0;
         $this->idAmministrazione = 0;
-        $this->idMittenti = 0;
+        $this->idMittenti = null;
         $this->idSottofascicoli = 0;
         $this->mittente = '';
         $this->numeroSottofascicolo = 0;
         $this->denominazioneSottofascicolo = '';
         $this->propostaCipe = 0;
-	    $this->dataMittente = new \DateTime("0000-00-00");
+	    $this->dataMittente = null;
         $this->dataArrivo = new \DateTime("0000-00-00");
 		$this->protocolloArrivo = '';
         $this->protocolloMittente = '';

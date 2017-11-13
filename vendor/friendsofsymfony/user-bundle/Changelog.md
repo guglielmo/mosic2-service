@@ -1,6 +1,65 @@
 Changelog
 =========
 
+### 2.0.1 (2017-05-31)
+
+* Add SwiftMailer 6 compatibility.
+* Inject firewall `user_checker` into `LoginManager`.
+* Updated English translation.
+* Updated Estonian translation.
+* Updated Persian translation.
+* Updated Turkish translation.
+* Updated several docs.
+
+### 2.0.0 (2017-03-29)
+
+* Removed default `fos_user.from_email` configuration values.
+* Removed usage of internal Twig APIs when rendering emails.
+* Add a timeout for the reset retry request.
+* Add Esperanto translations.
+* Fixed incorrect confirmation url.
+* Commented outdated entries in several translation files.
+* [BC break] Use `UserManager::getRepository()` instead of `UserManager::$repository`.
+* [BC break] Use `UserManager::getClass()` instead of `UserManager::$class`.
+
+### 2.0.0-beta2 (2017-01-31)
+
+* Use ceil in `ResettingController` for a better token lifetime approximation.
+* Removed unused translation keys.
+* Removed form deprecations.
+* Use `@`-based Twig syntax for templates.
+* Improved several language files.
+* Improved documentation.
+* Ability to disable the authentication listener.
+* Removed `DateUtil` class.
+* [BC break] Changed validation max length to match the database structure.
+
+### 2.0.0-beta1 (2016-11-29)
+
+* Dropped Symfony < 2.7 support.
+* Dropped PHP < 5.5 support.
+* Exclude tests from autoloader.
+* Allow to use POST for logout.
+* Fix UserPassword constraint validation groups.
+* Harmonized email detection in `UserManager`.
+* Added unique index for `confirmation_token` field.
+* Added Kyrgyz translation files.
+* Added user manipulator events.
+* Replaced `checkPostAuth` by `checkPreAuth` in `AuthenticationListener`.
+* [BC break] Method `ResettingController::getObfuscatedEmail` has been removed.
+* [BC break] Renamed templates to underscore case.
+* [BC break] Removed `UserManager::refreshUser`.
+* [BC break] Removed `UserManager::loadUserByUsername`.
+* [BC break] Removed `UserManager::supportsClass`.
+* [BC break] Removed `FOS\UserBundle\Model\User` properties `$locked`, `$expired`, `$expiredAt`, `$credentialsExpired`, `$credentialsExpiredAt` and associated setter and getter ([see here](https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Upgrade.md#200-alpha3-to-200-beta1)).
+* [BC break] The signature of the `Initializer` constructor has changed.
+* [BC break] The signature of the `LoginManager` constructor has changed.
+* [BC break] The signature of the `UserListener` constructor has changed.
+* [BC break] The signature of the `UserManager` constructor has changed.
+* [BC break] The translation key `resetting.request.invalid_username` has been removed.
+* [BC break] The propel dependency was dropped.
+* [BC break] The `salt` field of the `User` class is now nullable.
+
 ### 2.0.0-alpha3 (2015-09-15)
 
 * Reverted the removed of the `expired` and `credentialsExpired` properties as the BC break could lead to corrupted objects being created if server sessions are not cleared when upgrading the bundle.
@@ -29,6 +88,28 @@ Changelog
 * Removed all form handlers.
 * [BC break] Changed Datetime properties of default User entity that were nullable to default to null when no value supplied.
 * [BC break] Updated schema.xml for Propel BaseUser class to allow nullable and typehint accordingly.
+
+### 1.3.8 (xxxx-xx-xx)
+
+* Fixed invalid `isAccountNonExpired` timestamp when year is 2038
+* Fixed validation of blank passwords
+* Removed any new lines in email subjects
+* Added trailing dot flash messages
+* Added trailing dot validator messages
+* Added Galician translation
+* Use `random_bytes` to generate tokens
+
+### 1.3.7 (2016-11-22)
+
+* Fixed some yaml errors in translation files
+* Fixed bad credentials translations
+* Fixed canonicalizer with illegal chars
+* Fixed deprecated routing configuration
+* Fixed class name check in `UserProvider::refreshUser()`
+* Updated several translation files
+* Removed colons from translation files
+* Updated several documentation examples
+* Converted documentation to rst format
 
 ### 1.3.6 (2015-06-01)
 
