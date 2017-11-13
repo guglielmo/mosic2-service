@@ -95,12 +95,12 @@ if (isset($_REQUEST['step1'])) {
         renameWithNestedMkdir("../files/2017", "../files/DELIBERE/per-anno/2017");
 
 
-        //renameFile("../files/REGISTRO MOSIC");
-        //renameFile("../files/RIUNIONI_PRECIPE");
-        //renameFile("../files/SEDUTE_CIPE");
-        //renameFile("../files/DELIBERE");
+        renameFile("../files/REGISTRO MOSIC");
+        renameFile("../files/RIUNIONI_PRECIPE");
+        renameFile("../files/SEDUTE_CIPE");
+        renameFile("../files/DELIBERE");
 
-        $return = gestioneFilesRegistri($filePath , "../files/REGISTRO MOSIC");
+        $return = gestioneFilesRegistri($filePathSanitize , "../files/REGISTRO MOSIC");
         if(isset($return)) {
             if (is_array($return)) {
                 $fineStep3 = array_merge($fineStep3, $return);
@@ -110,9 +110,9 @@ if (isset($_REQUEST['step1'])) {
             }
         } //(+ sottofasicoli) và usata sul server in quanto ci devono essere fisicamente i file
 
-        $return = gestioneFilesPreCipe($filePath, "../files/RIUNIONI_PRECIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
-        $return = gestioneFilesCipe($filePath, "../files/SEDUTE_CIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
-        $return = setAllegatiDelibere($filePath, "../files/DELIBERE/per-anno"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = gestioneFilesPreCipe($filePathSanitize, "../files/RIUNIONI_PRECIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = gestioneFilesCipe($filePathSanitize, "../files/SEDUTE_CIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = setAllegatiDelibere($filePathSanitize, "../files/DELIBERE/per-anno"); if(isset($return)) { $fineStep3 = $return; goto jump;}
 
         $tempo1 = microtime(true) - $tempo1;
 
