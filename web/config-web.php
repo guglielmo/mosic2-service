@@ -17,18 +17,20 @@ set_time_limit(7200);
 
 
 
-//$filePath = "service/";
-$filePath = "";
+$filePath = "service/";
+//$filePath = "";
 
 // PATH PER AREA RISERVATA
-$targetInvioFile = "http://area-riservata.mosic2.celata.com/upload_file/";
-$targetLogin = "http://area-riservata.mosic2.celata.com/api-token-auth/";
+// $area_ris_base_url = "http://area-riservata.mosic2.celata.com";
+$area_ris_base_url = "http://area-riservata.mosic2.celata.com";
+$targetInvioFile = $area_ris_base_url . "/upload_file/";
+$targetLogin = $area_ris_base_url . "/api-token-auth/";
 
-$targetGetUrlPreCipe = "http://area-riservata.mosic2.celata.com/seduta/precipe/";
-$targetGetUrlCipe = "http://area-riservata.mosic2.celata.com/seduta/cipe/";
+$targetGetUrlPreCipe = $area_ris_base_url . "/seduta/precipe/";
+$targetGetUrlCipe = $area_ris_base_url . "/seduta/cipe/";
 
-$targetDeletePreCipe = "http://area-riservata.mosic2.celata.com/precipe/";
-$targetDeleteCipe = "http://area-riservata.mosic2.celata.com/cipe/";
+$targetDeletePreCipe = $area_ris_base_url . "/precipe/";
+$targetDeleteCipe = $area_ris_base_url . "/cipe/";
 
-$targetInvioMetadatiPreCipe = "http://area-riservata.mosic2.celata.com/precipe";
-$targetInvioMetadatiCipe = "http://area-riservata.mosic2.celata.com/cipe";
+$targetInvioMetadatiPreCipe = $area_ris_base_url . "/precipe";
+$targetInvioMetadatiCipe = $area_ris_base_url . "/cipe";
