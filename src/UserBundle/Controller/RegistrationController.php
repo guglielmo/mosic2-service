@@ -56,7 +56,7 @@ class RegistrationController extends BaseController
         $user = $userManager->createUser();
         
         $data = json_decode($request->getContent(), true); //converto il json in array
-        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["userName","firstName","lastName","password","repeatPassword","id_groups","id_uffici","id_ruoli_cipe"]);
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["userName","firstName","lastName","repeatPassword","id_groups","id_uffici","id_ruoli_cipe"]);
         if ($check != "ok") {
             $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
             $response = new Response(json_encode($response_array), 409);
@@ -331,7 +331,7 @@ class RegistrationController extends BaseController
         $em = $this->getDoctrine()->getManager();
     
         $data = json_decode($request->getContent());
-        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["userName","firstName","lastName","password","repeatPassword","id_groups","id_uffici","id_ruoli_cipe"]);
+        $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["userName","firstName","lastName","id_groups","id_uffici","id_ruoli_cipe"]);
         if ($check != "ok") {
             $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
             $response = new Response(json_encode($response_array), 409);

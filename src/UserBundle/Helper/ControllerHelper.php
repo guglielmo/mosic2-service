@@ -340,6 +340,7 @@ trait ControllerHelper
         $array_amministrazioni = array();
         $array_firmatari = array();
         $array_tags = array();
+        $array_fascicoli = array();
 
         foreach ($data as $item => $value) {
             if (array_key_exists($value['id'],$array)) {
@@ -355,11 +356,15 @@ trait ControllerHelper
                     $array[$value['id']]['id_tags'] = $array[$value['id']]['id_tags'] . "," . $value['id_tags'];
                     $array_tags[] = $value['id_tags'];
                 }
+                if (!in_array($value['id_fascicoli'],$array_fascicoli)) {
+                    $array[$value['id']]['id_fascicoli'] = $array[$value['id']]['id_fascicoli'] . "," . $value['id_fascicoli'];
+                    $array_fascicoli[] = $value['id_fascicoli'];
+                }
             } else {
                 $array[$value['id']] = $value;
                 $array_amministrazioni[] = $value['id_uffici'];
                 $array_firmatari[] = $value['id_segretariato'];
-                $array_firmatari[] = $value['id_tags'];
+                $array_tags[] = $value['id_tags'];
             }
         }
 
@@ -397,6 +402,7 @@ trait ControllerHelper
             return $array[0];
         }
     }
+
 
     /**
      * (sostituisce la funzione insertRel)
@@ -648,11 +654,14 @@ trait ControllerHelper
             }
 
             if (isset($array[$key]['id_uffici'])) {
-                $array[$key]['id_uffici'] = json_decode('[' . $array[$key]['id_uffici'] . ']', true);
+                $array[$key]['id_uffici'] = json_decode('[' . (int)$array[$key]['id_uffici'] . ']', true);
             }
             if (isset($array[$key]['id_firmatari'])) {
-                $array[$key]['id_segretariato'] = json_decode('[' . $array[$key]['id_firmatari'] . ']', true);
+                $array[$key]['id_segretariato'] = json_decode('[' . (int)$array[$key]['id_firmatari'] . ']', true);
                 unset($array[$key]['id_firmatari']);
+            }
+            if (isset($array[$key]['id_fascicoli'])) {
+                $array[$key]['id_fascicoli'] = json_decode('[' . (int)$array[$key]['id_fascicoli'] . ']', true);
             }
         }
 

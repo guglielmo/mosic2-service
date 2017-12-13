@@ -141,15 +141,18 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.numeroCoGU as numero_co_gu,
                                             d.pubblicazioneGU as pubblicazione_gu,
                                             d.noteGU as note_gu,
-                                            
+                                            d.numero as numero_delibera,
+
                                             ud.idUffici as id_uffici,
                                             fd.idFirmatari as id_segretariato,
-                                            td.idTags as id_tags
+                                            td.idTags as id_tags,
+                                            df.idFascicoli as id_fascicoli
                                             ')
             ->from('UserBundle:Delibere', 'd')
             ->leftJoin('UserBundle:RelUfficiDelibere', 'ud', 'WITH', 'd.id = ud.idDelibere')
             ->leftJoin('UserBundle:RelFirmatariDelibere', 'fd', 'WITH', 'd.id = fd.idDelibere')
             ->leftJoin('UserBundle:RelTagsDelibere', 'td', 'WITH', 'd.id = td.idDelibere')
+            ->leftJoin('UserBundle:RelDelibereFascicoli', 'df', 'WITH', 'd.id = df.idDelibere')
             ->where('1=1' . $filter)
             ->setParameters($parameters);
 
@@ -159,6 +162,41 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
     }
+
+
+    public function cercaDataDelibera($data, $numero) {
+
+        $parameters = array ();
+        $filter = "";
+        $filter .= " AND UNIX_TIMESTAMP(c.data) * 1000 = :data ";
+        $filter .= " AND co.numeroDelibera = :numero_delibera ";
+        $parameters['data'] = $data;
+        $parameters['numero_delibera'] = $numero;
+
+        $qb = $this->getEntityManager();
+
+        $query = $qb
+            ->createQueryBuilder()->select('co.idFascicoli as id_fascicoli,
+                                            co.numeroDelibera as numero_delibera,
+                                            co.id as id,
+                                            co.idCipe as id_cipe,
+                                            co.ordine as ordine,
+                                            roc.idRegistri as id_registri'
+                                          )
+            ->from('UserBundle:Cipe', 'c')
+            ->leftJoin('UserBundle:CipeOdg', 'co', 'WITH', 'c.id = co.idCipe')
+            ->leftJoin('UserBundle:RelRegistriOdgCipe', 'roc', 'WITH', 'roc.idOdgCipe = co.id')
+            ->where('1=1' . $filter)
+            ->setParameters($parameters);
+
+
+        //print_r($query->getDql());
+        //print_r($query->getQuery()->getSql());
+
+        return $query->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
+    }
+
+
 
 
 

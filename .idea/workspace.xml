@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="982b5cba-d6f6-490f-b9ad-98d0fc6141b0" name="Default" comment="" />
+    <list default="true" id="982b5cba-d6f6-490f-b9ad-98d0fc6141b0" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/config-web.php" afterPath="$PROJECT_DIR$/web/config-web.php" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,22 +25,388 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DelibereController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/DelibereController.php">
+      <file leaf-file-name="DelibereRepository.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/UserBundle/Repository/DelibereRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="76" column="7" lean-forward="false" selection-start-line="76" selection-start-column="7" selection-end-line="76" selection-end-column="81" />
+            <state relative-caret-position="90">
+              <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding>
+                <marker date="1510133756000" expanded="true" signature="5399:8575" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Costanti.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Costanti.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="6" lean-forward="false" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DelibereRepository.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/UserBundle/Repository/DelibereRepository.php">
+      <file leaf-file-name="config-web.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/config-web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-259">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="261">
+              <caret line="19" column="21" lean-forward="false" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="script-import.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/import/script-import.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1590">
+              <caret line="113" column="29" lean-forward="false" selection-start-line="113" selection-start-column="29" selection-end-line="113" selection-end-column="29" />
+              <folding>
+                <element signature="e#6142#6372#0#PHP" expanded="false" />
+                <element signature="e#6175#6362#0#PHP" expanded="false" />
+                <element signature="e#6277#6362#0#PHP" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="function.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/mosic-script/function.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="13680">
+              <caret line="912" column="0" lean-forward="false" selection-start-line="912" selection-start-column="0" selection-end-line="912" selection-end-column="0" />
+              <folding>
+                <marker date="1510241058000" expanded="true" signature="79:120" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510241058000" expanded="true" signature="839:1801" ph="INSERT INTO msc_delibere_cc... " />
+                <marker date="1510241058000" expanded="true" signature="2003:2973" ph="INSERT INTO msc_delibere_cc... " />
+                <marker date="1510241058000" expanded="true" signature="3175:4145" ph="INSERT INTO msc_delibere_cc... " />
+                <marker date="1510241058000" expanded="true" signature="4352:4393" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510241058000" expanded="true" signature="4705:4838" ph="INSERT INTO msc_rel_uffici_delibere... " />
+                <marker date="1510241058000" expanded="true" signature="5024:5158" ph="INSERT INTO msc_rel_uffici_delibere... " />
+                <marker date="1510241058000" expanded="true" signature="5344:5478" ph="INSERT INTO msc_rel_uffici_delibere... " />
+                <marker date="1510241058000" expanded="true" signature="6343:6419" ph="SELECT * FRO... msc_delibere" />
+                <marker date="1510241058000" expanded="true" signature="7451:7526" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510241058000" expanded="true" signature="7734:7851" ph="INSERT INTO `msc_rel_allegati_delibere`... " />
+                <marker date="1510241058000" expanded="true" signature="9289:9330" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510241058000" expanded="true" signature="9649:9792" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+                <marker date="1510241058000" expanded="true" signature="9982:10126" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+                <marker date="1510241058000" expanded="true" signature="10316:10460" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+                <marker date="1510241058000" expanded="true" signature="10646:10672" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510241058000" expanded="true" signature="10920:17552" ph="INSERT INTO `msc_delibere`... " />
+                <marker date="1510241058000" expanded="true" signature="17721:17744" ph="SELECT * FRO... Titolario" />
+                <marker date="1510241058000" expanded="true" signature="18014:18640" ph="INSERT INTO `msc_titolari`... " />
+                <marker date="1510241058000" expanded="true" signature="18804:18853" ph="SELECT * FRO... Registro" />
+                <marker date="1510241058000" expanded="true" signature="19214:19567" ph="INSERT INTO `msc_mittenti`... " />
+                <marker date="1510241058000" expanded="true" signature="19752:19813" ph="SELECT * FRO... Amministrazioni" />
+                <marker date="1510241058000" expanded="true" signature="20090:20589" ph="INSERT INTO `msc_amministrazioni`... " />
+                <marker date="1510241058000" expanded="true" signature="20747:20774" ph="SELECT * FRO... ArgomentiCipe" />
+                <marker date="1510241058000" expanded="true" signature="21045:21534" ph="INSERT INTO `msc_argomenti`... " />
+                <marker date="1510241058000" expanded="true" signature="21696:21720" ph="SELECT * FRO... UfficiDipe" />
+                <marker date="1510241058000" expanded="true" signature="21988:23066" ph="INSERT INTO `msc_uffici`... " />
+                <marker date="1510241058000" expanded="true" signature="23233:23265" ph="SELECT * FRO... Risultanze_PreCipe" />
+                <marker date="1510241058000" expanded="true" signature="23537:24035" ph="INSERT INTO `msc_risultanze`... " />
+                <marker date="1510241058000" expanded="true" signature="24208:24239" ph="SELECT * FRO... TipoArgomentiCipe" />
+                <marker date="1510241058000" expanded="true" signature="24560:25063" ph="INSERT INTO `msc_argomenti_tipo_cipe`... " />
+                <marker date="1510241058000" expanded="true" signature="25230:25257" ph="SELECT * FRO... TipoEsitiCipe" />
+                <marker date="1510241058000" expanded="true" signature="25534:26025" ph="INSERT INTO `msc_esiti_tipo_cipe`... " />
+                <marker date="1510241058000" expanded="true" signature="26188:26211" ph="SELECT * FRO... Firmatari" />
+                <marker date="1510241058000" expanded="true" signature="26482:27607" ph="INSERT INTO `msc_firmatari`... " />
+                <marker date="1510241058000" expanded="true" signature="27770:27791" ph="SELECT * FRO... Livelli" />
+                <marker date="1510241058000" expanded="true" signature="28063:28569" ph="INSERT INTO `msc_ruoli_cipe`... " />
+                <marker date="1510241058000" expanded="true" signature="28834:29198" ph="CREATE TABLE... IF" />
+                <marker date="1510241058000" expanded="true" signature="29234:30685" ph="INSERT INTO `msc_last_updates`... " />
+                <marker date="1510241058000" expanded="true" signature="30796:30823" ph="SELECT * FRO... TipoFirmatari" />
+                <marker date="1510241058000" expanded="true" signature="31157:31677" ph="INSERT INTO `msc_firmatari_tipo`... " />
+                <marker date="1510241058000" expanded="true" signature="31864:31889" ph="SELECT * FRO... Adempimenti" />
+                <marker date="1510241058000" expanded="true" signature="32202:32274" ph="SELECT * FRO... fos_user" />
+                <marker date="1510241058000" expanded="true" signature="32561:35184" ph="INSERT INTO `msc_adempimenti`... " />
+                <marker date="1510241058000" expanded="true" signature="35337:35359" ph="SELECT * FRO... PwUtenti" />
+                <marker date="1510241058000" expanded="true" signature="35954:36026" ph="SELECT * FRO... msc_ruoli_cipe" />
+                <marker date="1510241058000" expanded="true" signature="36435:38897" ph="INSERT INTO `fos_user`... " />
+                <marker date="1510241058000" expanded="true" signature="39036:39103" ph="SELECT * FRO... fos_group" />
+                <marker date="1510241058000" expanded="true" signature="39401:39849" ph="INSERT INTO `fos_user_group`... " />
+                <marker date="1510241058000" expanded="true" signature="40026:40074" ph="SELECT id, i... msc_fascicoli" />
+                <marker date="1510241058000" expanded="true" signature="40365:40860" ph="INSERT INTO `msc_rel_amministrazioni_fascicoli`... " />
+                <marker date="1510241058000" expanded="true" signature="41030:41077" ph="SELECT id, i... msc_registri" />
+                <marker date="1510241058000" expanded="true" signature="41391:41884" ph="INSERT INTO `msc_rel_amministrazioni_registri`... " />
+                <marker date="1510241058000" expanded="true" signature="42039:42071" ph="SELECT * FRO... Registro" />
+                <marker date="1510241058000" expanded="true" signature="42478:42599" ph="SELECT Descr... SottoFascicoli" />
+                <marker date="1510241058000" expanded="true" signature="42938:43013" ph="SELECT id FR... msc_titolari" />
+                <marker date="1510241058000" expanded="true" signature="43300:43383" ph="SELECT id FR... msc_mittenti" />
+                <marker date="1510241058000" expanded="true" signature="43661:46452" ph="INSERT INTO `msc_registri`... " />
+                <marker date="1510241058000" expanded="true" signature="46616:46639" ph="SELECT * FRO... EsitiCipe" />
+                <marker date="1510241058000" expanded="true" signature="46964:47470" ph="INSERT INTO `msc_esiti_cipe`... " />
+                <marker date="1510241058000" expanded="true" signature="47649:47673" ph="SELECT * FRO... Repertorio" />
+                <marker date="1510241058000" expanded="true" signature="47993:48071" ph="SELECT id FR... msc_esiti_cipe" />
+                <marker date="1510241058000" expanded="true" signature="48357:48432" ph="SELECT id FR... msc_titolari" />
+                <marker date="1510241058000" expanded="true" signature="48690:51096" ph="INSERT INTO `msc_fascicoli`... " />
+                <marker date="1510241058000" expanded="true" signature="51267:51411" ph="SELECT r.*, msc_registri" />
+                <marker date="1510241058000" expanded="true" signature="51586:51691" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="51856:51887" ph="SELECT * FRO... msc_mittente" />
+                <marker date="1510241058000" expanded="true" signature="52041:52152" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="52322:52442" ph="SELECT * FRO... msc_registri" />
+                <marker date="1510241058000" expanded="true" signature="52699:52775" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="52959:53081" ph="SELECT * , t... msc_fascicoli" />
+                <marker date="1510241058000" expanded="true" signature="53338:53414" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="54784:54859" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510241058000" expanded="true" signature="55037:55142" ph="INSERT INTO `msc_rel_allegati_registri`... " />
+                <marker date="1510241058000" expanded="true" signature="55299:55331" ph="SELECT * FRO... msc_sottofascicoli" />
+                <marker date="1510241058000" expanded="true" signature="55546:55680" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="56680:56757" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510241058000" expanded="true" signature="56911:56981" ph="SELECT * FRO... msc_precipe" />
+                <marker date="1510241058000" expanded="true" signature="57444:57570" ph="INSERT INTO `msc_rel_allegati_precipe`... " />
+                <marker date="1510241058000" expanded="true" signature="58703:58780" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510241058000" expanded="true" signature="58934:59001" ph="SELECT * FRO... msc_cipe" />
+                <marker date="1510241058000" expanded="true" signature="59487:59604" ph="INSERT INTO `msc_rel_allegati_cipe`... " />
+                <marker date="1510241058000" expanded="true" signature="59912:60230" ph="SELECT r.id msc_registri" />
+                <marker date="1510241058000" expanded="true" signature="60794:60870" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="61146:61200" ph="SELECT Data_... PreCipe" />
+                <marker date="1510241058000" expanded="true" signature="61353:61418" ph="INSERT INTO msc_precipe... " />
+                <marker date="1510241058000" expanded="true" signature="61656:61681" ph="SELECT * FRO... msc_precipe" />
+                <marker date="1510241058000" expanded="true" signature="61934:61999" ph="SELECT * FRO... PreCipe" />
+                <marker date="1510241058000" expanded="true" signature="62235:62320" ph="SELECT * FRO... msc_argomenti" />
+                <marker date="1510241058000" expanded="true" signature="62636:62713" ph="SELECT * FRO... msc_titolari" />
+                <marker date="1510241058000" expanded="true" signature="63025:63172" ph="SELECT * FRO... msc_fascicoli" />
+                <marker date="1510241058000" expanded="true" signature="63484:63557" ph="SELECT * FRO... msc_uffici" />
+                <marker date="1510241058000" expanded="true" signature="63859:63946" ph="SELECT * FRO... msc_risultanze" />
+                <marker date="1510241058000" expanded="true" signature="64225:64991" ph="INSERT INTO msc_precipe_ordini... " />
+                <marker date="1510241058000" expanded="true" signature="65257:65293" ph="SELECT * FRO... PreCipe" />
+                <marker date="1510241058000" expanded="true" signature="65602:65729" ph="INSERT INTO msc_rel_registri_odg... " />
+                <marker date="1510241058000" expanded="true" signature="65916:66044" ph="INSERT INTO msc_rel_registri_odg... " />
+                <marker date="1510241058000" expanded="true" signature="66231:66359" ph="INSERT INTO msc_rel_registri_odg... " />
+                <marker date="1510241058000" expanded="true" signature="66547:66681" ph="SELECT * FRO... Cipe" />
+                <marker date="1510241058000" expanded="true" signature="66924:67522" ph="INSERT INTO msc_cipe... " />
+                <marker date="1510241058000" expanded="true" signature="67807:67829" ph="SELECT * FRO... msc_cipe" />
+                <marker date="1510241058000" expanded="true" signature="68079:68138" ph="SELECT * FRO... Cipe" />
+                <marker date="1510241058000" expanded="true" signature="68374:68456" ph="SELECT * FRO... msc_argomenti" />
+                <marker date="1510241058000" expanded="true" signature="68772:68849" ph="SELECT * FRO... msc_titolari" />
+                <marker date="1510241058000" expanded="true" signature="69161:69308" ph="SELECT * FRO... msc_fascicoli" />
+                <marker date="1510241058000" expanded="true" signature="69620:69693" ph="SELECT * FRO... msc_uffici" />
+                <marker date="1510241058000" expanded="true" signature="69995:70079" ph="SELECT * FRO... msc_risultanze" />
+                <marker date="1510241058000" expanded="true" signature="70358:71430" ph="INSERT INTO msc_cipe_ordini... " />
+                <marker date="1510241058000" expanded="true" signature="71694:71712" ph="SELECT * FRO... Cipe" />
+                <marker date="1510241058000" expanded="true" signature="72026:72160" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+                <marker date="1510241058000" expanded="true" signature="72349:72484" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+                <marker date="1510241058000" expanded="true" signature="72673:72808" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+                <marker date="1510241058000" expanded="true" signature="73007:73056" ph="SELECT * FRO... TABLE33_precipe_full" />
+                <marker date="1510241058000" expanded="true" signature="73272:73304" ph="SELECT * FRO... msc_precipe_ordini" />
+                <marker date="1510241058000" expanded="true" signature="73562:73679" ph="INSERT INTO msc_rel_uffici_precipe... " />
+                <marker date="1510241058000" expanded="true" signature="73847:73876" ph="SELECT * FRO... msc_cipe_ordini" />
+                <marker date="1510241058000" expanded="true" signature="74131:74242" ph="INSERT INTO msc_rel_uffici_cipe... " />
+                <marker date="1510241058000" expanded="true" signature="74412:74470" ph="INSERT INTO ...... " />
+                <marker date="1510241058000" expanded="true" signature="74587:74680" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="74806:74895" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="75024:75110" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="75222:75312" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="75430:75520" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="75637:75724" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="78493:78536" ph="SELECT * FRO... msc_delibere" />
+                <marker date="1510241058000" expanded="true" signature="80892:81370" ph="INSERT INTO msc_delibere_giorni... " />
+                <marker date="1510241058000" expanded="true" signature="81766:81883" ph="SELECT * FRO... Adempimenti" />
+                <marker date="1510241058000" expanded="true" signature="82036:82265" ph="UPDATE `msc_... " />
+                <marker date="1510241058000" expanded="true" signature="83064:83109" ph="SELECT * FRO... msc_delibere" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="script.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/import/script.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="30" lean-forward="false" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="function.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/import/function.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7500">
+              <caret line="500" column="39" lean-forward="false" selection-start-line="500" selection-start-column="39" selection-end-line="500" selection-end-column="39" />
+              <folding>
+                <marker date="1510574815000" expanded="true" signature="79:120" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510574815000" expanded="true" signature="1190:2136" ph="INSERT INTO msc_delibere_cc... " />
+                <marker date="1510574815000" expanded="true" signature="2734:3687" ph="INSERT INTO msc_delibere_cc... " />
+                <marker date="1510574815000" expanded="true" signature="4285:5238" ph="INSERT INTO msc_delibere_cc... " />
+                <marker date="1510574815000" expanded="true" signature="5554:5595" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510574815000" expanded="true" signature="5967:6100" ph="INSERT INTO msc_rel_uffici_delibere... " />
+                <marker date="1510574815000" expanded="true" signature="6382:6516" ph="INSERT INTO msc_rel_uffici_delibere... " />
+                <marker date="1510574815000" expanded="true" signature="6798:6932" ph="INSERT INTO msc_rel_uffici_delibere... " />
+                <marker date="1510574815000" expanded="true" signature="7904:7980" ph="SELECT * FRO... msc_delibere" />
+                <marker date="1510574815000" expanded="true" signature="9260:9349" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510574815000" expanded="true" signature="9713:9830" ph="INSERT INTO `msc_rel_allegati_delibere`... " />
+                <marker date="1510574815000" expanded="true" signature="11600:11641" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510574815000" expanded="true" signature="12017:12160" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+                <marker date="1510574815000" expanded="true" signature="12446:12590" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+                <marker date="1510574815000" expanded="true" signature="12876:13020" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+                <marker date="1510574815000" expanded="true" signature="13315:13341" ph="SELECT * FRO... DatiDelibera" />
+                <marker date="1510574815000" expanded="true" signature="15453:22160" ph="INSERT INTO `msc_delibere`... " />
+                <marker date="1510574815000" expanded="true" signature="22430:22453" ph="SELECT * FRO... Titolario" />
+                <marker date="1510574815000" expanded="true" signature="22784:23410" ph="INSERT INTO `msc_titolari`... " />
+                <marker date="1510574815000" expanded="true" signature="23669:23718" ph="SELECT * FRO... Registro" />
+                <marker date="1510574815000" expanded="true" signature="24140:24513" ph="INSERT INTO `msc_mittenti`... " />
+                <marker date="1510574815000" expanded="true" signature="24813:24874" ph="SELECT * FRO... Amministrazioni" />
+                <marker date="1510574815000" expanded="true" signature="25212:25711" ph="INSERT INTO `msc_amministrazioni`... " />
+                <marker date="1510574815000" expanded="true" signature="25976:26003" ph="SELECT * FRO... ArgomentiCipe" />
+                <marker date="1510574815000" expanded="true" signature="26335:26824" ph="INSERT INTO `msc_argomenti`... " />
+                <marker date="1510574815000" expanded="true" signature="27085:27109" ph="SELECT * FRO... UfficiDipe" />
+                <marker date="1510574815000" expanded="true" signature="27438:28516" ph="INSERT INTO `msc_uffici`... " />
+                <marker date="1510574815000" expanded="true" signature="28782:28814" ph="SELECT * FRO... Risultanze_PreCipe" />
+                <marker date="1510574815000" expanded="true" signature="29147:29645" ph="INSERT INTO `msc_risultanze`... " />
+                <marker date="1510574815000" expanded="true" signature="29916:29947" ph="SELECT * FRO... TipoArgomentiCipe" />
+                <marker date="1510574815000" expanded="true" signature="30322:30825" ph="INSERT INTO `msc_argomenti_tipo_cipe`... " />
+                <marker date="1510574815000" expanded="true" signature="31090:31117" ph="SELECT * FRO... TipoEsitiCipe" />
+                <marker date="1510574815000" expanded="true" signature="31455:31946" ph="INSERT INTO `msc_esiti_tipo_cipe`... " />
+                <marker date="1510574815000" expanded="true" signature="32210:32295" ph="SELECT * FRO... Firmatari" />
+                <marker date="1510574815000" expanded="true" signature="32805:33923" ph="INSERT INTO `msc_firmatari`... " />
+                <marker date="1510574815000" expanded="true" signature="34209:34230" ph="SELECT * FRO... Livelli" />
+                <marker date="1510574815000" expanded="true" signature="34567:35073" ph="INSERT INTO `msc_ruoli_cipe`... " />
+                <marker date="1510574815000" expanded="true" signature="35473:36540" ph="INSERT INTO `msc_last_updates`... " />
+                <marker date="1510574815000" expanded="true" signature="36745:36772" ph="SELECT * FRO... TipoFirmatari" />
+                <marker date="1510574815000" expanded="true" signature="37166:37686" ph="INSERT INTO `msc_firmatari_tipo`... " />
+                <marker date="1510574815000" expanded="true" signature="37985:38010" ph="SELECT * FRO... Adempimenti" />
+                <marker date="1510574815000" expanded="true" signature="38395:38467" ph="SELECT * FRO... fos_user" />
+                <marker date="1510574815000" expanded="true" signature="39322:41931" ph="INSERT INTO `msc_adempimenti`... " />
+                <marker date="1510574815000" expanded="true" signature="42193:42215" ph="SELECT * FRO... PwUtenti" />
+                <marker date="1510574815000" expanded="true" signature="42613:48295" ph="INSERT INTO `fos_group`... " />
+                <marker date="1510574815000" expanded="true" signature="48570:49071" ph="INSERT INTO `fos_user`... " />
+                <marker date="1510574815000" expanded="true" signature="49194:49260" ph="INSERT INTO `fos_user_group`... " />
+                <marker date="1510574815000" expanded="true" signature="49829:49901" ph="SELECT * FRO... msc_ruoli_cipe" />
+                <marker date="1510574815000" expanded="true" signature="53623:53727" ph="INSERT INTO `fos_user_group`... " />
+                <marker date="1510574815000" expanded="true" signature="53924:54007" ph="INSERT INTO `fos_user_group`... " />
+                <marker date="1510574815000" expanded="true" signature="54207:54255" ph="SELECT id, i... msc_fascicoli" />
+                <marker date="1510574815000" expanded="true" signature="54607:55102" ph="INSERT INTO `msc_rel_amministrazioni_fascicoli`... " />
+                <marker date="1510574815000" expanded="true" signature="55375:55422" ph="SELECT id, i... msc_registri" />
+                <marker date="1510574815000" expanded="true" signature="55772:56265" ph="INSERT INTO `msc_rel_amministrazioni_registri`... " />
+                <marker date="1510574815000" expanded="true" signature="56528:56575" ph="SELECT * FRO... Registro" />
+                <marker date="1510574815000" expanded="true" signature="57063:57184" ph="SELECT Descr... SottoFascicoli" />
+                <marker date="1510574815000" expanded="true" signature="57617:57692" ph="SELECT id FR... msc_titolari" />
+                <marker date="1510574815000" expanded="true" signature="58141:58216" ph="SELECT id FR... msc_mittenti" />
+                <marker date="1510574815000" expanded="true" signature="58835:61530" ph="INSERT INTO `msc_registri`... " />
+                <marker date="1510574815000" expanded="true" signature="61837:61860" ph="SELECT * FRO... EsitiCipe" />
+                <marker date="1510574815000" expanded="true" signature="62246:62752" ph="INSERT INTO `msc_esiti_cipe`... " />
+                <marker date="1510574815000" expanded="true" signature="63050:63074" ph="SELECT * FRO... Repertorio" />
+                <marker date="1510574815000" expanded="true" signature="63465:63543" ph="SELECT id FR... msc_esiti_cipe" />
+                <marker date="1510574815000" expanded="true" signature="63930:64005" ph="SELECT id FR... msc_titolari" />
+                <marker date="1510574815000" expanded="true" signature="64789:67171" ph="INSERT INTO `msc_fascicoli`... " />
+                <marker date="1510574815000" expanded="true" signature="67453:67653" ph="SELECT r.*, msc_registri" />
+                <marker date="1510574815000" expanded="true" signature="67914:68020" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="68277:68308" ph="SELECT * FRO... msc_mittente" />
+                <marker date="1510574815000" expanded="true" signature="68519:68630" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="68896:69016" ph="SELECT * FRO... msc_registri" />
+                <marker date="1510574815000" expanded="true" signature="69330:69406" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="69685:69807" ph="SELECT * , t... msc_fascicoli" />
+                <marker date="1510574815000" expanded="true" signature="70121:70197" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="71850:71939" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510574815000" expanded="true" signature="72241:72346" ph="INSERT INTO `msc_rel_allegati_registri`... " />
+                <marker date="1510574815000" expanded="true" signature="73037:73069" ph="SELECT * FRO... msc_sottofascicoli" />
+                <marker date="1510574815000" expanded="true" signature="73343:73477" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="74591:74680" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510574815000" expanded="true" signature="74927:74997" ph="SELECT * FRO... msc_precipe" />
+                <marker date="1510574815000" expanded="true" signature="75553:75679" ph="INSERT INTO `msc_rel_allegati_precipe`... " />
+                <marker date="1510574815000" expanded="true" signature="76974:77063" ph="INSERT INTO `msc_allegati`... " />
+                <marker date="1510574815000" expanded="true" signature="77310:77377" ph="SELECT * FRO... msc_cipe" />
+                <marker date="1510574815000" expanded="true" signature="77956:78073" ph="INSERT INTO `msc_rel_allegati_cipe`... " />
+                <marker date="1510574815000" expanded="true" signature="78528:78846" ph="SELECT r.id msc_registri" />
+                <marker date="1510574815000" expanded="true" signature="79467:79543" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="79920:79974" ph="SELECT Data_... PreCipe" />
+                <marker date="1510574815000" expanded="true" signature="80184:80249" ph="INSERT INTO msc_precipe... " />
+                <marker date="1510574815000" expanded="true" signature="80582:80607" ph="SELECT * FRO... msc_precipe" />
+                <marker date="1510574815000" expanded="true" signature="80917:80982" ph="SELECT * FRO... PreCipe" />
+                <marker date="1510574815000" expanded="true" signature="81300:81385" ph="SELECT * FRO... msc_argomenti" />
+                <marker date="1510574815000" expanded="true" signature="81816:81893" ph="SELECT * FRO... msc_titolari" />
+                <marker date="1510574815000" expanded="true" signature="82319:82466" ph="SELECT * FRO... msc_fascicoli" />
+                <marker date="1510574815000" expanded="true" signature="82893:82966" ph="SELECT * FRO... msc_uffici" />
+                <marker date="1510574815000" expanded="true" signature="83380:83467" ph="SELECT * FRO... msc_risultanze" />
+                <marker date="1510574815000" expanded="true" signature="83945:84702" ph="INSERT INTO msc_precipe_ordini... " />
+                <marker date="1510574815000" expanded="true" signature="85112:85148" ph="SELECT * FRO... PreCipe" />
+                <marker date="1510574815000" expanded="true" signature="85581:85708" ph="INSERT INTO msc_rel_registri_odg... " />
+                <marker date="1510574815000" expanded="true" signature="86061:86189" ph="INSERT INTO msc_rel_registri_odg... " />
+                <marker date="1510574815000" expanded="true" signature="86541:86669" ph="INSERT INTO msc_rel_registri_odg... " />
+                <marker date="1510574815000" expanded="true" signature="86966:87100" ph="SELECT * FRO... Cipe" />
+                <marker date="1510574815000" expanded="true" signature="87400:87998" ph="INSERT INTO msc_cipe... " />
+                <marker date="1510574815000" expanded="true" signature="88378:88400" ph="SELECT * FRO... msc_cipe" />
+                <marker date="1510574815000" expanded="true" signature="88707:88766" ph="SELECT * FRO... Cipe" />
+                <marker date="1510574815000" expanded="true" signature="89084:89166" ph="SELECT * FRO... msc_argomenti" />
+                <marker date="1510574815000" expanded="true" signature="89597:89674" ph="SELECT * FRO... msc_titolari" />
+                <marker date="1510574815000" expanded="true" signature="90100:90247" ph="SELECT * FRO... msc_fascicoli" />
+                <marker date="1510574815000" expanded="true" signature="90674:90747" ph="SELECT * FRO... msc_uffici" />
+                <marker date="1510574815000" expanded="true" signature="91161:91245" ph="SELECT * FRO... msc_risultanze" />
+                <marker date="1510574815000" expanded="true" signature="91717:92780" ph="INSERT INTO msc_cipe_ordini... " />
+                <marker date="1510574815000" expanded="true" signature="93194:93212" ph="SELECT * FRO... Cipe" />
+                <marker date="1510574815000" expanded="true" signature="93650:93784" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+                <marker date="1510574815000" expanded="true" signature="94136:94271" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+                <marker date="1510574815000" expanded="true" signature="94623:94758" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+                <marker date="1510574815000" expanded="true" signature="95064:95113" ph="SELECT * FRO... TABLE33_precipe_full" />
+                <marker date="1510574815000" expanded="true" signature="95399:95431" ph="SELECT * FRO... msc_precipe_ordini" />
+                <marker date="1510574815000" expanded="true" signature="95746:95863" ph="INSERT INTO msc_rel_uffici_precipe... " />
+                <marker date="1510574815000" expanded="true" signature="96128:96157" ph="SELECT * FRO... msc_cipe_ordini" />
+                <marker date="1510574815000" expanded="true" signature="96469:96580" ph="INSERT INTO msc_rel_uffici_cipe... " />
+                <marker date="1510574815000" expanded="true" signature="96846:96904" ph="INSERT INTO ...... " />
+                <marker date="1510574815000" expanded="true" signature="97092:97185" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="97369:97459" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="97648:97738" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="97926:98013" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="101344:101387" ph="SELECT * FRO... msc_delibere" />
+                <marker date="1510574815000" expanded="true" signature="103804:104282" ph="INSERT INTO msc_delibere_giorni... " />
+                <marker date="1510574815000" expanded="true" signature="104780:104897" ph="SELECT * FRO... Adempimenti" />
+                <marker date="1510574815000" expanded="true" signature="105107:105336" ph="UPDATE `msc_... " />
+                <marker date="1510574815000" expanded="true" signature="106232:106277" ph="SELECT * FRO... msc_delibere" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create-table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/import/create-table.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4185">
+              <caret line="279" column="25" lean-forward="false" selection-start-line="279" selection-start-column="25" selection-end-line="279" selection-end-column="25" />
+              <folding>
+                <marker date="1510575122000" expanded="true" signature="158:169" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="256:1215" ph="CREATE TABLE... Adempimenti" />
+                <marker date="1510575122000" expanded="true" signature="1697:1708" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="1795:2122" ph="CREATE TABLE... Amministrazioni" />
+                <marker date="1510575122000" expanded="true" signature="2601:2612" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="2699:2869" ph="CREATE TABLE... ArgomentiCipe" />
+                <marker date="1510575122000" expanded="true" signature="3329:3340" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="3427:4304" ph="CREATE TABLE... Cipe" />
+                <marker date="1510575122000" expanded="true" signature="4781:4792" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="4879:10344" ph="CREATE TABLE... DatiDelibera" />
+                <marker date="1510575122000" expanded="true" signature="10814:10825" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="10912:11069" ph="CREATE TABLE... EsitiCipe" />
+                <marker date="1510575122000" expanded="true" signature="11539:11550" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="11637:11981" ph="CREATE TABLE... Firmatari" />
+                <marker date="1510575122000" expanded="true" signature="12446:12457" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="12544:12696" ph="CREATE TABLE... Livelli" />
+                <marker date="1510575122000" expanded="true" signature="13162:13173" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="13260:14112" ph="CREATE TABLE... PreCipe" />
+                <marker date="1510575122000" expanded="true" signature="14583:14594" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="14684:15187" ph="CREATE TABLE... PwUtenti" />
+                <marker date="1510575122000" expanded="true" signature="15661:15672" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="15762:16717" ph="CREATE TABLE... Registro" />
+                <marker date="1510575122000" expanded="true" signature="17196:17207" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="17297:18504" ph="CREATE TABLE... Repertorio" />
+                <marker date="1510575122000" expanded="true" signature="18998:19009" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="19099:19278" ph="CREATE TABLE... Risultanze_PreCipe" />
+                <marker date="1510575122000" expanded="true" signature="19758:19769" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="19859:20330" ph="CREATE TABLE... Sedute_Cipe" />
+                <marker date="1510575122000" expanded="true" signature="20816:20827" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="20917:21221" ph="CREATE TABLE... SottoFascicoli" />
+                <marker date="1510575122000" expanded="true" signature="21713:21724" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="21814:21996" ph="CREATE TABLE... TipoArgomentiCipe" />
+                <marker date="1510575122000" expanded="true" signature="22480:22491" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="22581:22751" ph="CREATE TABLE... TipoEsitiCipe" />
+                <marker date="1510575122000" expanded="true" signature="23235:23246" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="23336:23508" ph="CREATE TABLE... TipoFirmatari" />
+                <marker date="1510575122000" expanded="true" signature="23984:23995" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="24085:24289" ph="CREATE TABLE... Titolario" />
+                <marker date="1510575122000" expanded="true" signature="24768:24779" ph="DROP TABLE $... " />
+                <marker date="1510575122000" expanded="true" signature="24869:25198" ph="CREATE TABLE... UfficiDipe" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -47,7 +416,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <folding>
+                <marker date="1508946569000" expanded="true" signature="241:328" ph=" RelUfficiDelibere ..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -55,7 +426,7 @@
       <file leaf-file-name="Delibere.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Delibere.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3060">
+            <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -64,8 +435,26 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Delibere</find>
+      <find>$situazione</find>
+      <find>situazione</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/UserBundle/Repository/DelibereRepository.php" />
+        <option value="$PROJECT_DIR$/src/UserBundle/Entity/Costanti.php" />
+        <option value="$PROJECT_DIR$/web/import/create-table.php" />
+        <option value="$PROJECT_DIR$/web/import/script-import.php" />
+        <option value="$PROJECT_DIR$/web/config-web.php" />
+      </list>
+    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -76,8 +465,8 @@
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="2560" />
-    <option name="height" value="1413" />
+    <option name="width" value="1280" />
+    <option name="height" value="773" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -117,7 +506,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="web" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -131,77 +520,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="web" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="UserBundle" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mosic2-service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mosic2-service" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UserBundle" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Repository" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mosic2-service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mosic2-service" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UserBundle" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Entity" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mosic2-service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mosic2-service" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UserBundle" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Controller" />
+              <option name="myItemId" value="import" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -212,6 +535,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="SearchEverywhereHistoryKey" value="locked&#9;null&#9;null&#10;costanti&#9;FILE&#9;file:///Users/gu/Workspace/mosic2-service/src/UserBundle/Entity/Costanti.php" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -225,8 +549,91 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="BashConfigurationType" factoryName="Bash">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="CodeceptionConfigurationType" factoryName="Codeception">
+      <PhpTestRunnerSettings />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpSpecConfigurationType" factoryName="PHPSpec">
+      <PhpTestRunnerSettings />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+  </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -238,17 +645,19 @@
       <workItem from="1508418319090" duration="497000" />
       <workItem from="1508428727598" duration="664000" />
       <workItem from="1508938840779" duration="1061000" />
+      <workItem from="1510566876258" duration="4285000" />
+      <workItem from="1511169439335" duration="127000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2222000" />
+    <option name="totallyTimeSpent" value="6634000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2560" height="1413" extended-state="6" />
+    <frame x="0" y="23" width="1280" height="773" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24861" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3352181" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962668" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -278,11 +687,433 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/DelibereController.php">
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Repository/DelibereRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1510133756000" expanded="true" signature="5399:8575" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Costanti.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="6" lean-forward="true" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/config-web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="21" lean-forward="false" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/script-import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1590">
+          <caret line="113" column="29" lean-forward="true" selection-start-line="113" selection-start-column="29" selection-end-line="113" selection-end-column="29" />
+          <folding>
+            <element signature="e#6142#6372#0#PHP" expanded="false" />
+            <element signature="e#6175#6362#0#PHP" expanded="false" />
+            <element signature="e#6277#6362#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/mosic-script/function.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13680">
+          <caret line="912" column="0" lean-forward="true" selection-start-line="912" selection-start-column="0" selection-end-line="912" selection-end-column="0" />
+          <folding>
+            <marker date="1510241058000" expanded="true" signature="79:120" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="839:1801" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510241058000" expanded="true" signature="2003:2973" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510241058000" expanded="true" signature="3175:4145" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510241058000" expanded="true" signature="4352:4393" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="4705:4838" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="5024:5158" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="5344:5478" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="6343:6419" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510241058000" expanded="true" signature="7451:7526" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="7734:7851" ph="INSERT INTO `msc_rel_allegati_delibere`... " />
+            <marker date="1510241058000" expanded="true" signature="9289:9330" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="9649:9792" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="9982:10126" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="10316:10460" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="10646:10672" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="10920:17552" ph="INSERT INTO `msc_delibere`... " />
+            <marker date="1510241058000" expanded="true" signature="17721:17744" ph="SELECT * FRO... Titolario" />
+            <marker date="1510241058000" expanded="true" signature="18014:18640" ph="INSERT INTO `msc_titolari`... " />
+            <marker date="1510241058000" expanded="true" signature="18804:18853" ph="SELECT * FRO... Registro" />
+            <marker date="1510241058000" expanded="true" signature="19214:19567" ph="INSERT INTO `msc_mittenti`... " />
+            <marker date="1510241058000" expanded="true" signature="19752:19813" ph="SELECT * FRO... Amministrazioni" />
+            <marker date="1510241058000" expanded="true" signature="20090:20589" ph="INSERT INTO `msc_amministrazioni`... " />
+            <marker date="1510241058000" expanded="true" signature="20747:20774" ph="SELECT * FRO... ArgomentiCipe" />
+            <marker date="1510241058000" expanded="true" signature="21045:21534" ph="INSERT INTO `msc_argomenti`... " />
+            <marker date="1510241058000" expanded="true" signature="21696:21720" ph="SELECT * FRO... UfficiDipe" />
+            <marker date="1510241058000" expanded="true" signature="21988:23066" ph="INSERT INTO `msc_uffici`... " />
+            <marker date="1510241058000" expanded="true" signature="23233:23265" ph="SELECT * FRO... Risultanze_PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="23537:24035" ph="INSERT INTO `msc_risultanze`... " />
+            <marker date="1510241058000" expanded="true" signature="24208:24239" ph="SELECT * FRO... TipoArgomentiCipe" />
+            <marker date="1510241058000" expanded="true" signature="24560:25063" ph="INSERT INTO `msc_argomenti_tipo_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="25230:25257" ph="SELECT * FRO... TipoEsitiCipe" />
+            <marker date="1510241058000" expanded="true" signature="25534:26025" ph="INSERT INTO `msc_esiti_tipo_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="26188:26211" ph="SELECT * FRO... Firmatari" />
+            <marker date="1510241058000" expanded="true" signature="26482:27607" ph="INSERT INTO `msc_firmatari`... " />
+            <marker date="1510241058000" expanded="true" signature="27770:27791" ph="SELECT * FRO... Livelli" />
+            <marker date="1510241058000" expanded="true" signature="28063:28569" ph="INSERT INTO `msc_ruoli_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="28834:29198" ph="CREATE TABLE... IF" />
+            <marker date="1510241058000" expanded="true" signature="29234:30685" ph="INSERT INTO `msc_last_updates`... " />
+            <marker date="1510241058000" expanded="true" signature="30796:30823" ph="SELECT * FRO... TipoFirmatari" />
+            <marker date="1510241058000" expanded="true" signature="31157:31677" ph="INSERT INTO `msc_firmatari_tipo`... " />
+            <marker date="1510241058000" expanded="true" signature="31864:31889" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510241058000" expanded="true" signature="32202:32274" ph="SELECT * FRO... fos_user" />
+            <marker date="1510241058000" expanded="true" signature="32561:35184" ph="INSERT INTO `msc_adempimenti`... " />
+            <marker date="1510241058000" expanded="true" signature="35337:35359" ph="SELECT * FRO... PwUtenti" />
+            <marker date="1510241058000" expanded="true" signature="35954:36026" ph="SELECT * FRO... msc_ruoli_cipe" />
+            <marker date="1510241058000" expanded="true" signature="36435:38897" ph="INSERT INTO `fos_user`... " />
+            <marker date="1510241058000" expanded="true" signature="39036:39103" ph="SELECT * FRO... fos_group" />
+            <marker date="1510241058000" expanded="true" signature="39401:39849" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510241058000" expanded="true" signature="40026:40074" ph="SELECT id, i... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="40365:40860" ph="INSERT INTO `msc_rel_amministrazioni_fascicoli`... " />
+            <marker date="1510241058000" expanded="true" signature="41030:41077" ph="SELECT id, i... msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="41391:41884" ph="INSERT INTO `msc_rel_amministrazioni_registri`... " />
+            <marker date="1510241058000" expanded="true" signature="42039:42071" ph="SELECT * FRO... Registro" />
+            <marker date="1510241058000" expanded="true" signature="42478:42599" ph="SELECT Descr... SottoFascicoli" />
+            <marker date="1510241058000" expanded="true" signature="42938:43013" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="43300:43383" ph="SELECT id FR... msc_mittenti" />
+            <marker date="1510241058000" expanded="true" signature="43661:46452" ph="INSERT INTO `msc_registri`... " />
+            <marker date="1510241058000" expanded="true" signature="46616:46639" ph="SELECT * FRO... EsitiCipe" />
+            <marker date="1510241058000" expanded="true" signature="46964:47470" ph="INSERT INTO `msc_esiti_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="47649:47673" ph="SELECT * FRO... Repertorio" />
+            <marker date="1510241058000" expanded="true" signature="47993:48071" ph="SELECT id FR... msc_esiti_cipe" />
+            <marker date="1510241058000" expanded="true" signature="48357:48432" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="48690:51096" ph="INSERT INTO `msc_fascicoli`... " />
+            <marker date="1510241058000" expanded="true" signature="51267:51411" ph="SELECT r.*, msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="51586:51691" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="51856:51887" ph="SELECT * FRO... msc_mittente" />
+            <marker date="1510241058000" expanded="true" signature="52041:52152" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="52322:52442" ph="SELECT * FRO... msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="52699:52775" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="52959:53081" ph="SELECT * , t... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="53338:53414" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="54784:54859" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="55037:55142" ph="INSERT INTO `msc_rel_allegati_registri`... " />
+            <marker date="1510241058000" expanded="true" signature="55299:55331" ph="SELECT * FRO... msc_sottofascicoli" />
+            <marker date="1510241058000" expanded="true" signature="55546:55680" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="56680:56757" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="56911:56981" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510241058000" expanded="true" signature="57444:57570" ph="INSERT INTO `msc_rel_allegati_precipe`... " />
+            <marker date="1510241058000" expanded="true" signature="58703:58780" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="58934:59001" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510241058000" expanded="true" signature="59487:59604" ph="INSERT INTO `msc_rel_allegati_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="59912:60230" ph="SELECT r.id msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="60794:60870" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="61146:61200" ph="SELECT Data_... PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="61353:61418" ph="INSERT INTO msc_precipe... " />
+            <marker date="1510241058000" expanded="true" signature="61656:61681" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510241058000" expanded="true" signature="61934:61999" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="62235:62320" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510241058000" expanded="true" signature="62636:62713" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="63025:63172" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="63484:63557" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510241058000" expanded="true" signature="63859:63946" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510241058000" expanded="true" signature="64225:64991" ph="INSERT INTO msc_precipe_ordini... " />
+            <marker date="1510241058000" expanded="true" signature="65257:65293" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="65602:65729" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510241058000" expanded="true" signature="65916:66044" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510241058000" expanded="true" signature="66231:66359" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510241058000" expanded="true" signature="66547:66681" ph="SELECT * FRO... Cipe" />
+            <marker date="1510241058000" expanded="true" signature="66924:67522" ph="INSERT INTO msc_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="67807:67829" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510241058000" expanded="true" signature="68079:68138" ph="SELECT * FRO... Cipe" />
+            <marker date="1510241058000" expanded="true" signature="68374:68456" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510241058000" expanded="true" signature="68772:68849" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="69161:69308" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="69620:69693" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510241058000" expanded="true" signature="69995:70079" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510241058000" expanded="true" signature="70358:71430" ph="INSERT INTO msc_cipe_ordini... " />
+            <marker date="1510241058000" expanded="true" signature="71694:71712" ph="SELECT * FRO... Cipe" />
+            <marker date="1510241058000" expanded="true" signature="72026:72160" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="72349:72484" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="72673:72808" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="73007:73056" ph="SELECT * FRO... TABLE33_precipe_full" />
+            <marker date="1510241058000" expanded="true" signature="73272:73304" ph="SELECT * FRO... msc_precipe_ordini" />
+            <marker date="1510241058000" expanded="true" signature="73562:73679" ph="INSERT INTO msc_rel_uffici_precipe... " />
+            <marker date="1510241058000" expanded="true" signature="73847:73876" ph="SELECT * FRO... msc_cipe_ordini" />
+            <marker date="1510241058000" expanded="true" signature="74131:74242" ph="INSERT INTO msc_rel_uffici_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="74412:74470" ph="INSERT INTO ...... " />
+            <marker date="1510241058000" expanded="true" signature="74587:74680" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="74806:74895" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75024:75110" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75222:75312" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75430:75520" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75637:75724" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="78493:78536" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510241058000" expanded="true" signature="80892:81370" ph="INSERT INTO msc_delibere_giorni... " />
+            <marker date="1510241058000" expanded="true" signature="81766:81883" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510241058000" expanded="true" signature="82036:82265" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="83064:83109" ph="SELECT * FRO... msc_delibere" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/script.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="30" lean-forward="true" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/function.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7500">
+          <caret line="500" column="39" lean-forward="false" selection-start-line="500" selection-start-column="39" selection-end-line="500" selection-end-column="39" />
+          <folding>
+            <marker date="1510574815000" expanded="true" signature="79:120" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="1190:2136" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510574815000" expanded="true" signature="2734:3687" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510574815000" expanded="true" signature="4285:5238" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510574815000" expanded="true" signature="5554:5595" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="5967:6100" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="6382:6516" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="6798:6932" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="7904:7980" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510574815000" expanded="true" signature="9260:9349" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="9713:9830" ph="INSERT INTO `msc_rel_allegati_delibere`... " />
+            <marker date="1510574815000" expanded="true" signature="11600:11641" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="12017:12160" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="12446:12590" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="12876:13020" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="13315:13341" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="15453:22160" ph="INSERT INTO `msc_delibere`... " />
+            <marker date="1510574815000" expanded="true" signature="22430:22453" ph="SELECT * FRO... Titolario" />
+            <marker date="1510574815000" expanded="true" signature="22784:23410" ph="INSERT INTO `msc_titolari`... " />
+            <marker date="1510574815000" expanded="true" signature="23669:23718" ph="SELECT * FRO... Registro" />
+            <marker date="1510574815000" expanded="true" signature="24140:24513" ph="INSERT INTO `msc_mittenti`... " />
+            <marker date="1510574815000" expanded="true" signature="24813:24874" ph="SELECT * FRO... Amministrazioni" />
+            <marker date="1510574815000" expanded="true" signature="25212:25711" ph="INSERT INTO `msc_amministrazioni`... " />
+            <marker date="1510574815000" expanded="true" signature="25976:26003" ph="SELECT * FRO... ArgomentiCipe" />
+            <marker date="1510574815000" expanded="true" signature="26335:26824" ph="INSERT INTO `msc_argomenti`... " />
+            <marker date="1510574815000" expanded="true" signature="27085:27109" ph="SELECT * FRO... UfficiDipe" />
+            <marker date="1510574815000" expanded="true" signature="27438:28516" ph="INSERT INTO `msc_uffici`... " />
+            <marker date="1510574815000" expanded="true" signature="28782:28814" ph="SELECT * FRO... Risultanze_PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="29147:29645" ph="INSERT INTO `msc_risultanze`... " />
+            <marker date="1510574815000" expanded="true" signature="29916:29947" ph="SELECT * FRO... TipoArgomentiCipe" />
+            <marker date="1510574815000" expanded="true" signature="30322:30825" ph="INSERT INTO `msc_argomenti_tipo_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="31090:31117" ph="SELECT * FRO... TipoEsitiCipe" />
+            <marker date="1510574815000" expanded="true" signature="31455:31946" ph="INSERT INTO `msc_esiti_tipo_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="32210:32295" ph="SELECT * FRO... Firmatari" />
+            <marker date="1510574815000" expanded="true" signature="32805:33923" ph="INSERT INTO `msc_firmatari`... " />
+            <marker date="1510574815000" expanded="true" signature="34209:34230" ph="SELECT * FRO... Livelli" />
+            <marker date="1510574815000" expanded="true" signature="34567:35073" ph="INSERT INTO `msc_ruoli_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="35473:36540" ph="INSERT INTO `msc_last_updates`... " />
+            <marker date="1510574815000" expanded="true" signature="36745:36772" ph="SELECT * FRO... TipoFirmatari" />
+            <marker date="1510574815000" expanded="true" signature="37166:37686" ph="INSERT INTO `msc_firmatari_tipo`... " />
+            <marker date="1510574815000" expanded="true" signature="37985:38010" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510574815000" expanded="true" signature="38395:38467" ph="SELECT * FRO... fos_user" />
+            <marker date="1510574815000" expanded="true" signature="39322:41931" ph="INSERT INTO `msc_adempimenti`... " />
+            <marker date="1510574815000" expanded="true" signature="42193:42215" ph="SELECT * FRO... PwUtenti" />
+            <marker date="1510574815000" expanded="true" signature="42613:48295" ph="INSERT INTO `fos_group`... " />
+            <marker date="1510574815000" expanded="true" signature="48570:49071" ph="INSERT INTO `fos_user`... " />
+            <marker date="1510574815000" expanded="true" signature="49194:49260" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510574815000" expanded="true" signature="49829:49901" ph="SELECT * FRO... msc_ruoli_cipe" />
+            <marker date="1510574815000" expanded="true" signature="53623:53727" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510574815000" expanded="true" signature="53924:54007" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510574815000" expanded="true" signature="54207:54255" ph="SELECT id, i... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="54607:55102" ph="INSERT INTO `msc_rel_amministrazioni_fascicoli`... " />
+            <marker date="1510574815000" expanded="true" signature="55375:55422" ph="SELECT id, i... msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="55772:56265" ph="INSERT INTO `msc_rel_amministrazioni_registri`... " />
+            <marker date="1510574815000" expanded="true" signature="56528:56575" ph="SELECT * FRO... Registro" />
+            <marker date="1510574815000" expanded="true" signature="57063:57184" ph="SELECT Descr... SottoFascicoli" />
+            <marker date="1510574815000" expanded="true" signature="57617:57692" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="58141:58216" ph="SELECT id FR... msc_mittenti" />
+            <marker date="1510574815000" expanded="true" signature="58835:61530" ph="INSERT INTO `msc_registri`... " />
+            <marker date="1510574815000" expanded="true" signature="61837:61860" ph="SELECT * FRO... EsitiCipe" />
+            <marker date="1510574815000" expanded="true" signature="62246:62752" ph="INSERT INTO `msc_esiti_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="63050:63074" ph="SELECT * FRO... Repertorio" />
+            <marker date="1510574815000" expanded="true" signature="63465:63543" ph="SELECT id FR... msc_esiti_cipe" />
+            <marker date="1510574815000" expanded="true" signature="63930:64005" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="64789:67171" ph="INSERT INTO `msc_fascicoli`... " />
+            <marker date="1510574815000" expanded="true" signature="67453:67653" ph="SELECT r.*, msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="67914:68020" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="68277:68308" ph="SELECT * FRO... msc_mittente" />
+            <marker date="1510574815000" expanded="true" signature="68519:68630" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="68896:69016" ph="SELECT * FRO... msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="69330:69406" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="69685:69807" ph="SELECT * , t... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="70121:70197" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="71850:71939" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="72241:72346" ph="INSERT INTO `msc_rel_allegati_registri`... " />
+            <marker date="1510574815000" expanded="true" signature="73037:73069" ph="SELECT * FRO... msc_sottofascicoli" />
+            <marker date="1510574815000" expanded="true" signature="73343:73477" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="74591:74680" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="74927:74997" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510574815000" expanded="true" signature="75553:75679" ph="INSERT INTO `msc_rel_allegati_precipe`... " />
+            <marker date="1510574815000" expanded="true" signature="76974:77063" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="77310:77377" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510574815000" expanded="true" signature="77956:78073" ph="INSERT INTO `msc_rel_allegati_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="78528:78846" ph="SELECT r.id msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="79467:79543" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="79920:79974" ph="SELECT Data_... PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="80184:80249" ph="INSERT INTO msc_precipe... " />
+            <marker date="1510574815000" expanded="true" signature="80582:80607" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510574815000" expanded="true" signature="80917:80982" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="81300:81385" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510574815000" expanded="true" signature="81816:81893" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="82319:82466" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="82893:82966" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510574815000" expanded="true" signature="83380:83467" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510574815000" expanded="true" signature="83945:84702" ph="INSERT INTO msc_precipe_ordini... " />
+            <marker date="1510574815000" expanded="true" signature="85112:85148" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="85581:85708" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510574815000" expanded="true" signature="86061:86189" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510574815000" expanded="true" signature="86541:86669" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510574815000" expanded="true" signature="86966:87100" ph="SELECT * FRO... Cipe" />
+            <marker date="1510574815000" expanded="true" signature="87400:87998" ph="INSERT INTO msc_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="88378:88400" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510574815000" expanded="true" signature="88707:88766" ph="SELECT * FRO... Cipe" />
+            <marker date="1510574815000" expanded="true" signature="89084:89166" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510574815000" expanded="true" signature="89597:89674" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="90100:90247" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="90674:90747" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510574815000" expanded="true" signature="91161:91245" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510574815000" expanded="true" signature="91717:92780" ph="INSERT INTO msc_cipe_ordini... " />
+            <marker date="1510574815000" expanded="true" signature="93194:93212" ph="SELECT * FRO... Cipe" />
+            <marker date="1510574815000" expanded="true" signature="93650:93784" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="94136:94271" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="94623:94758" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="95064:95113" ph="SELECT * FRO... TABLE33_precipe_full" />
+            <marker date="1510574815000" expanded="true" signature="95399:95431" ph="SELECT * FRO... msc_precipe_ordini" />
+            <marker date="1510574815000" expanded="true" signature="95746:95863" ph="INSERT INTO msc_rel_uffici_precipe... " />
+            <marker date="1510574815000" expanded="true" signature="96128:96157" ph="SELECT * FRO... msc_cipe_ordini" />
+            <marker date="1510574815000" expanded="true" signature="96469:96580" ph="INSERT INTO msc_rel_uffici_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="96846:96904" ph="INSERT INTO ...... " />
+            <marker date="1510574815000" expanded="true" signature="97092:97185" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="97369:97459" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="97648:97738" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="97926:98013" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="101344:101387" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510574815000" expanded="true" signature="103804:104282" ph="INSERT INTO msc_delibere_giorni... " />
+            <marker date="1510574815000" expanded="true" signature="104780:104897" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510574815000" expanded="true" signature="105107:105336" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="106232:106277" ph="SELECT * FRO... msc_delibere" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/create-table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4185">
+          <caret line="279" column="25" lean-forward="true" selection-start-line="279" selection-start-column="25" selection-end-line="279" selection-end-column="25" />
+          <folding>
+            <marker date="1510575122000" expanded="true" signature="158:169" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="256:1215" ph="CREATE TABLE... Adempimenti" />
+            <marker date="1510575122000" expanded="true" signature="1697:1708" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="1795:2122" ph="CREATE TABLE... Amministrazioni" />
+            <marker date="1510575122000" expanded="true" signature="2601:2612" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="2699:2869" ph="CREATE TABLE... ArgomentiCipe" />
+            <marker date="1510575122000" expanded="true" signature="3329:3340" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="3427:4304" ph="CREATE TABLE... Cipe" />
+            <marker date="1510575122000" expanded="true" signature="4781:4792" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="4879:10344" ph="CREATE TABLE... DatiDelibera" />
+            <marker date="1510575122000" expanded="true" signature="10814:10825" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="10912:11069" ph="CREATE TABLE... EsitiCipe" />
+            <marker date="1510575122000" expanded="true" signature="11539:11550" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="11637:11981" ph="CREATE TABLE... Firmatari" />
+            <marker date="1510575122000" expanded="true" signature="12446:12457" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="12544:12696" ph="CREATE TABLE... Livelli" />
+            <marker date="1510575122000" expanded="true" signature="13162:13173" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="13260:14112" ph="CREATE TABLE... PreCipe" />
+            <marker date="1510575122000" expanded="true" signature="14583:14594" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="14684:15187" ph="CREATE TABLE... PwUtenti" />
+            <marker date="1510575122000" expanded="true" signature="15661:15672" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="15762:16717" ph="CREATE TABLE... Registro" />
+            <marker date="1510575122000" expanded="true" signature="17196:17207" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="17297:18504" ph="CREATE TABLE... Repertorio" />
+            <marker date="1510575122000" expanded="true" signature="18998:19009" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="19099:19278" ph="CREATE TABLE... Risultanze_PreCipe" />
+            <marker date="1510575122000" expanded="true" signature="19758:19769" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="19859:20330" ph="CREATE TABLE... Sedute_Cipe" />
+            <marker date="1510575122000" expanded="true" signature="20816:20827" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="20917:21221" ph="CREATE TABLE... SottoFascicoli" />
+            <marker date="1510575122000" expanded="true" signature="21713:21724" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="21814:21996" ph="CREATE TABLE... TipoArgomentiCipe" />
+            <marker date="1510575122000" expanded="true" signature="22480:22491" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="22581:22751" ph="CREATE TABLE... TipoEsitiCipe" />
+            <marker date="1510575122000" expanded="true" signature="23235:23246" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="23336:23508" ph="CREATE TABLE... TipoFirmatari" />
+            <marker date="1510575122000" expanded="true" signature="23984:23995" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="24085:24289" ph="CREATE TABLE... Titolario" />
+            <marker date="1510575122000" expanded="true" signature="24768:24779" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="24869:25198" ph="CREATE TABLE... UfficiDipe" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/RelUfficiDelibere.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1508946569000" expanded="true" signature="241:328" ph=" RelUfficiDelibere ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Delibere.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/DelibereController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="76" column="7" lean-forward="false" selection-start-line="76" selection-start-column="7" selection-end-line="76" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/RelUfficiDelibere.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1508946569000" expanded="true" signature="241:328" ph=" RelUfficiDelibere ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Delibere.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Repository/DelibereRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1510133756000" expanded="true" signature="5399:8575" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/DelibereController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -309,15 +1140,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/DelibereController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="76" column="7" lean-forward="false" selection-start-line="76" selection-start-column="7" selection-end-line="76" selection-end-column="81" />
-          <folding />
+        <state relative-caret-position="885">
+          <caret line="77" column="7" lean-forward="false" selection-start-line="77" selection-start-column="7" selection-end-line="77" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Delibere.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3060">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -327,14 +1157,392 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1508946569000" expanded="true" signature="241:328" ph=" RelUfficiDelibere ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/parameters.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UserBundle/Repository/DelibereRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-259">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="90">
+          <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding>
+            <marker date="1510133756000" expanded="true" signature="5399:8575" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Costanti.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="6" lean-forward="false" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Form/ButtonBuilder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="27" column="14" lean-forward="false" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/script.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="30" lean-forward="false" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/create-table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4185">
+          <caret line="279" column="25" lean-forward="false" selection-start-line="279" selection-start-column="25" selection-end-line="279" selection-end-column="25" />
+          <folding>
+            <marker date="1510575122000" expanded="true" signature="158:169" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="256:1215" ph="CREATE TABLE... Adempimenti" />
+            <marker date="1510575122000" expanded="true" signature="1697:1708" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="1795:2122" ph="CREATE TABLE... Amministrazioni" />
+            <marker date="1510575122000" expanded="true" signature="2601:2612" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="2699:2869" ph="CREATE TABLE... ArgomentiCipe" />
+            <marker date="1510575122000" expanded="true" signature="3329:3340" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="3427:4304" ph="CREATE TABLE... Cipe" />
+            <marker date="1510575122000" expanded="true" signature="4781:4792" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="4879:10344" ph="CREATE TABLE... DatiDelibera" />
+            <marker date="1510575122000" expanded="true" signature="10814:10825" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="10912:11069" ph="CREATE TABLE... EsitiCipe" />
+            <marker date="1510575122000" expanded="true" signature="11539:11550" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="11637:11981" ph="CREATE TABLE... Firmatari" />
+            <marker date="1510575122000" expanded="true" signature="12446:12457" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="12544:12696" ph="CREATE TABLE... Livelli" />
+            <marker date="1510575122000" expanded="true" signature="13162:13173" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="13260:14112" ph="CREATE TABLE... PreCipe" />
+            <marker date="1510575122000" expanded="true" signature="14583:14594" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="14684:15187" ph="CREATE TABLE... PwUtenti" />
+            <marker date="1510575122000" expanded="true" signature="15661:15672" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="15762:16717" ph="CREATE TABLE... Registro" />
+            <marker date="1510575122000" expanded="true" signature="17196:17207" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="17297:18504" ph="CREATE TABLE... Repertorio" />
+            <marker date="1510575122000" expanded="true" signature="18998:19009" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="19099:19278" ph="CREATE TABLE... Risultanze_PreCipe" />
+            <marker date="1510575122000" expanded="true" signature="19758:19769" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="19859:20330" ph="CREATE TABLE... Sedute_Cipe" />
+            <marker date="1510575122000" expanded="true" signature="20816:20827" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="20917:21221" ph="CREATE TABLE... SottoFascicoli" />
+            <marker date="1510575122000" expanded="true" signature="21713:21724" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="21814:21996" ph="CREATE TABLE... TipoArgomentiCipe" />
+            <marker date="1510575122000" expanded="true" signature="22480:22491" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="22581:22751" ph="CREATE TABLE... TipoEsitiCipe" />
+            <marker date="1510575122000" expanded="true" signature="23235:23246" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="23336:23508" ph="CREATE TABLE... TipoFirmatari" />
+            <marker date="1510575122000" expanded="true" signature="23984:23995" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="24085:24289" ph="CREATE TABLE... Titolario" />
+            <marker date="1510575122000" expanded="true" signature="24768:24779" ph="DROP TABLE $... " />
+            <marker date="1510575122000" expanded="true" signature="24869:25198" ph="CREATE TABLE... UfficiDipe" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/mosic-script/function.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13680">
+          <caret line="912" column="0" lean-forward="false" selection-start-line="912" selection-start-column="0" selection-end-line="912" selection-end-column="0" />
+          <folding>
+            <marker date="1510241058000" expanded="true" signature="79:120" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="839:1801" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510241058000" expanded="true" signature="2003:2973" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510241058000" expanded="true" signature="3175:4145" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510241058000" expanded="true" signature="4352:4393" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="4705:4838" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="5024:5158" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="5344:5478" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="6343:6419" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510241058000" expanded="true" signature="7451:7526" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="7734:7851" ph="INSERT INTO `msc_rel_allegati_delibere`... " />
+            <marker date="1510241058000" expanded="true" signature="9289:9330" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="9649:9792" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="9982:10126" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="10316:10460" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510241058000" expanded="true" signature="10646:10672" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510241058000" expanded="true" signature="10920:17552" ph="INSERT INTO `msc_delibere`... " />
+            <marker date="1510241058000" expanded="true" signature="17721:17744" ph="SELECT * FRO... Titolario" />
+            <marker date="1510241058000" expanded="true" signature="18014:18640" ph="INSERT INTO `msc_titolari`... " />
+            <marker date="1510241058000" expanded="true" signature="18804:18853" ph="SELECT * FRO... Registro" />
+            <marker date="1510241058000" expanded="true" signature="19214:19567" ph="INSERT INTO `msc_mittenti`... " />
+            <marker date="1510241058000" expanded="true" signature="19752:19813" ph="SELECT * FRO... Amministrazioni" />
+            <marker date="1510241058000" expanded="true" signature="20090:20589" ph="INSERT INTO `msc_amministrazioni`... " />
+            <marker date="1510241058000" expanded="true" signature="20747:20774" ph="SELECT * FRO... ArgomentiCipe" />
+            <marker date="1510241058000" expanded="true" signature="21045:21534" ph="INSERT INTO `msc_argomenti`... " />
+            <marker date="1510241058000" expanded="true" signature="21696:21720" ph="SELECT * FRO... UfficiDipe" />
+            <marker date="1510241058000" expanded="true" signature="21988:23066" ph="INSERT INTO `msc_uffici`... " />
+            <marker date="1510241058000" expanded="true" signature="23233:23265" ph="SELECT * FRO... Risultanze_PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="23537:24035" ph="INSERT INTO `msc_risultanze`... " />
+            <marker date="1510241058000" expanded="true" signature="24208:24239" ph="SELECT * FRO... TipoArgomentiCipe" />
+            <marker date="1510241058000" expanded="true" signature="24560:25063" ph="INSERT INTO `msc_argomenti_tipo_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="25230:25257" ph="SELECT * FRO... TipoEsitiCipe" />
+            <marker date="1510241058000" expanded="true" signature="25534:26025" ph="INSERT INTO `msc_esiti_tipo_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="26188:26211" ph="SELECT * FRO... Firmatari" />
+            <marker date="1510241058000" expanded="true" signature="26482:27607" ph="INSERT INTO `msc_firmatari`... " />
+            <marker date="1510241058000" expanded="true" signature="27770:27791" ph="SELECT * FRO... Livelli" />
+            <marker date="1510241058000" expanded="true" signature="28063:28569" ph="INSERT INTO `msc_ruoli_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="28834:29198" ph="CREATE TABLE... IF" />
+            <marker date="1510241058000" expanded="true" signature="29234:30685" ph="INSERT INTO `msc_last_updates`... " />
+            <marker date="1510241058000" expanded="true" signature="30796:30823" ph="SELECT * FRO... TipoFirmatari" />
+            <marker date="1510241058000" expanded="true" signature="31157:31677" ph="INSERT INTO `msc_firmatari_tipo`... " />
+            <marker date="1510241058000" expanded="true" signature="31864:31889" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510241058000" expanded="true" signature="32202:32274" ph="SELECT * FRO... fos_user" />
+            <marker date="1510241058000" expanded="true" signature="32561:35184" ph="INSERT INTO `msc_adempimenti`... " />
+            <marker date="1510241058000" expanded="true" signature="35337:35359" ph="SELECT * FRO... PwUtenti" />
+            <marker date="1510241058000" expanded="true" signature="35954:36026" ph="SELECT * FRO... msc_ruoli_cipe" />
+            <marker date="1510241058000" expanded="true" signature="36435:38897" ph="INSERT INTO `fos_user`... " />
+            <marker date="1510241058000" expanded="true" signature="39036:39103" ph="SELECT * FRO... fos_group" />
+            <marker date="1510241058000" expanded="true" signature="39401:39849" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510241058000" expanded="true" signature="40026:40074" ph="SELECT id, i... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="40365:40860" ph="INSERT INTO `msc_rel_amministrazioni_fascicoli`... " />
+            <marker date="1510241058000" expanded="true" signature="41030:41077" ph="SELECT id, i... msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="41391:41884" ph="INSERT INTO `msc_rel_amministrazioni_registri`... " />
+            <marker date="1510241058000" expanded="true" signature="42039:42071" ph="SELECT * FRO... Registro" />
+            <marker date="1510241058000" expanded="true" signature="42478:42599" ph="SELECT Descr... SottoFascicoli" />
+            <marker date="1510241058000" expanded="true" signature="42938:43013" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="43300:43383" ph="SELECT id FR... msc_mittenti" />
+            <marker date="1510241058000" expanded="true" signature="43661:46452" ph="INSERT INTO `msc_registri`... " />
+            <marker date="1510241058000" expanded="true" signature="46616:46639" ph="SELECT * FRO... EsitiCipe" />
+            <marker date="1510241058000" expanded="true" signature="46964:47470" ph="INSERT INTO `msc_esiti_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="47649:47673" ph="SELECT * FRO... Repertorio" />
+            <marker date="1510241058000" expanded="true" signature="47993:48071" ph="SELECT id FR... msc_esiti_cipe" />
+            <marker date="1510241058000" expanded="true" signature="48357:48432" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="48690:51096" ph="INSERT INTO `msc_fascicoli`... " />
+            <marker date="1510241058000" expanded="true" signature="51267:51411" ph="SELECT r.*, msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="51586:51691" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="51856:51887" ph="SELECT * FRO... msc_mittente" />
+            <marker date="1510241058000" expanded="true" signature="52041:52152" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="52322:52442" ph="SELECT * FRO... msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="52699:52775" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="52959:53081" ph="SELECT * , t... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="53338:53414" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="54784:54859" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="55037:55142" ph="INSERT INTO `msc_rel_allegati_registri`... " />
+            <marker date="1510241058000" expanded="true" signature="55299:55331" ph="SELECT * FRO... msc_sottofascicoli" />
+            <marker date="1510241058000" expanded="true" signature="55546:55680" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="56680:56757" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="56911:56981" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510241058000" expanded="true" signature="57444:57570" ph="INSERT INTO `msc_rel_allegati_precipe`... " />
+            <marker date="1510241058000" expanded="true" signature="58703:58780" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510241058000" expanded="true" signature="58934:59001" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510241058000" expanded="true" signature="59487:59604" ph="INSERT INTO `msc_rel_allegati_cipe`... " />
+            <marker date="1510241058000" expanded="true" signature="59912:60230" ph="SELECT r.id msc_registri" />
+            <marker date="1510241058000" expanded="true" signature="60794:60870" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="61146:61200" ph="SELECT Data_... PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="61353:61418" ph="INSERT INTO msc_precipe... " />
+            <marker date="1510241058000" expanded="true" signature="61656:61681" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510241058000" expanded="true" signature="61934:61999" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="62235:62320" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510241058000" expanded="true" signature="62636:62713" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="63025:63172" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="63484:63557" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510241058000" expanded="true" signature="63859:63946" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510241058000" expanded="true" signature="64225:64991" ph="INSERT INTO msc_precipe_ordini... " />
+            <marker date="1510241058000" expanded="true" signature="65257:65293" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510241058000" expanded="true" signature="65602:65729" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510241058000" expanded="true" signature="65916:66044" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510241058000" expanded="true" signature="66231:66359" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510241058000" expanded="true" signature="66547:66681" ph="SELECT * FRO... Cipe" />
+            <marker date="1510241058000" expanded="true" signature="66924:67522" ph="INSERT INTO msc_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="67807:67829" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510241058000" expanded="true" signature="68079:68138" ph="SELECT * FRO... Cipe" />
+            <marker date="1510241058000" expanded="true" signature="68374:68456" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510241058000" expanded="true" signature="68772:68849" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510241058000" expanded="true" signature="69161:69308" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510241058000" expanded="true" signature="69620:69693" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510241058000" expanded="true" signature="69995:70079" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510241058000" expanded="true" signature="70358:71430" ph="INSERT INTO msc_cipe_ordini... " />
+            <marker date="1510241058000" expanded="true" signature="71694:71712" ph="SELECT * FRO... Cipe" />
+            <marker date="1510241058000" expanded="true" signature="72026:72160" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="72349:72484" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="72673:72808" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="73007:73056" ph="SELECT * FRO... TABLE33_precipe_full" />
+            <marker date="1510241058000" expanded="true" signature="73272:73304" ph="SELECT * FRO... msc_precipe_ordini" />
+            <marker date="1510241058000" expanded="true" signature="73562:73679" ph="INSERT INTO msc_rel_uffici_precipe... " />
+            <marker date="1510241058000" expanded="true" signature="73847:73876" ph="SELECT * FRO... msc_cipe_ordini" />
+            <marker date="1510241058000" expanded="true" signature="74131:74242" ph="INSERT INTO msc_rel_uffici_cipe... " />
+            <marker date="1510241058000" expanded="true" signature="74412:74470" ph="INSERT INTO ...... " />
+            <marker date="1510241058000" expanded="true" signature="74587:74680" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="74806:74895" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75024:75110" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75222:75312" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75430:75520" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="75637:75724" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="78493:78536" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510241058000" expanded="true" signature="80892:81370" ph="INSERT INTO msc_delibere_giorni... " />
+            <marker date="1510241058000" expanded="true" signature="81766:81883" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510241058000" expanded="true" signature="82036:82265" ph="UPDATE `msc_... " />
+            <marker date="1510241058000" expanded="true" signature="83064:83109" ph="SELECT * FRO... msc_delibere" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/function.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7500">
+          <caret line="500" column="39" lean-forward="false" selection-start-line="500" selection-start-column="39" selection-end-line="500" selection-end-column="39" />
+          <folding>
+            <marker date="1510574815000" expanded="true" signature="79:120" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="1190:2136" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510574815000" expanded="true" signature="2734:3687" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510574815000" expanded="true" signature="4285:5238" ph="INSERT INTO msc_delibere_cc... " />
+            <marker date="1510574815000" expanded="true" signature="5554:5595" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="5967:6100" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="6382:6516" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="6798:6932" ph="INSERT INTO msc_rel_uffici_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="7904:7980" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510574815000" expanded="true" signature="9260:9349" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="9713:9830" ph="INSERT INTO `msc_rel_allegati_delibere`... " />
+            <marker date="1510574815000" expanded="true" signature="11600:11641" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="12017:12160" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="12446:12590" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="12876:13020" ph="INSERT INTO msc_rel_firmatari_delibere... " />
+            <marker date="1510574815000" expanded="true" signature="13315:13341" ph="SELECT * FRO... DatiDelibera" />
+            <marker date="1510574815000" expanded="true" signature="15453:22160" ph="INSERT INTO `msc_delibere`... " />
+            <marker date="1510574815000" expanded="true" signature="22430:22453" ph="SELECT * FRO... Titolario" />
+            <marker date="1510574815000" expanded="true" signature="22784:23410" ph="INSERT INTO `msc_titolari`... " />
+            <marker date="1510574815000" expanded="true" signature="23669:23718" ph="SELECT * FRO... Registro" />
+            <marker date="1510574815000" expanded="true" signature="24140:24513" ph="INSERT INTO `msc_mittenti`... " />
+            <marker date="1510574815000" expanded="true" signature="24813:24874" ph="SELECT * FRO... Amministrazioni" />
+            <marker date="1510574815000" expanded="true" signature="25212:25711" ph="INSERT INTO `msc_amministrazioni`... " />
+            <marker date="1510574815000" expanded="true" signature="25976:26003" ph="SELECT * FRO... ArgomentiCipe" />
+            <marker date="1510574815000" expanded="true" signature="26335:26824" ph="INSERT INTO `msc_argomenti`... " />
+            <marker date="1510574815000" expanded="true" signature="27085:27109" ph="SELECT * FRO... UfficiDipe" />
+            <marker date="1510574815000" expanded="true" signature="27438:28516" ph="INSERT INTO `msc_uffici`... " />
+            <marker date="1510574815000" expanded="true" signature="28782:28814" ph="SELECT * FRO... Risultanze_PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="29147:29645" ph="INSERT INTO `msc_risultanze`... " />
+            <marker date="1510574815000" expanded="true" signature="29916:29947" ph="SELECT * FRO... TipoArgomentiCipe" />
+            <marker date="1510574815000" expanded="true" signature="30322:30825" ph="INSERT INTO `msc_argomenti_tipo_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="31090:31117" ph="SELECT * FRO... TipoEsitiCipe" />
+            <marker date="1510574815000" expanded="true" signature="31455:31946" ph="INSERT INTO `msc_esiti_tipo_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="32210:32295" ph="SELECT * FRO... Firmatari" />
+            <marker date="1510574815000" expanded="true" signature="32805:33923" ph="INSERT INTO `msc_firmatari`... " />
+            <marker date="1510574815000" expanded="true" signature="34209:34230" ph="SELECT * FRO... Livelli" />
+            <marker date="1510574815000" expanded="true" signature="34567:35073" ph="INSERT INTO `msc_ruoli_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="35473:36540" ph="INSERT INTO `msc_last_updates`... " />
+            <marker date="1510574815000" expanded="true" signature="36745:36772" ph="SELECT * FRO... TipoFirmatari" />
+            <marker date="1510574815000" expanded="true" signature="37166:37686" ph="INSERT INTO `msc_firmatari_tipo`... " />
+            <marker date="1510574815000" expanded="true" signature="37985:38010" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510574815000" expanded="true" signature="38395:38467" ph="SELECT * FRO... fos_user" />
+            <marker date="1510574815000" expanded="true" signature="39322:41931" ph="INSERT INTO `msc_adempimenti`... " />
+            <marker date="1510574815000" expanded="true" signature="42193:42215" ph="SELECT * FRO... PwUtenti" />
+            <marker date="1510574815000" expanded="true" signature="42613:48295" ph="INSERT INTO `fos_group`... " />
+            <marker date="1510574815000" expanded="true" signature="48570:49071" ph="INSERT INTO `fos_user`... " />
+            <marker date="1510574815000" expanded="true" signature="49194:49260" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510574815000" expanded="true" signature="49829:49901" ph="SELECT * FRO... msc_ruoli_cipe" />
+            <marker date="1510574815000" expanded="true" signature="53623:53727" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510574815000" expanded="true" signature="53924:54007" ph="INSERT INTO `fos_user_group`... " />
+            <marker date="1510574815000" expanded="true" signature="54207:54255" ph="SELECT id, i... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="54607:55102" ph="INSERT INTO `msc_rel_amministrazioni_fascicoli`... " />
+            <marker date="1510574815000" expanded="true" signature="55375:55422" ph="SELECT id, i... msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="55772:56265" ph="INSERT INTO `msc_rel_amministrazioni_registri`... " />
+            <marker date="1510574815000" expanded="true" signature="56528:56575" ph="SELECT * FRO... Registro" />
+            <marker date="1510574815000" expanded="true" signature="57063:57184" ph="SELECT Descr... SottoFascicoli" />
+            <marker date="1510574815000" expanded="true" signature="57617:57692" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="58141:58216" ph="SELECT id FR... msc_mittenti" />
+            <marker date="1510574815000" expanded="true" signature="58835:61530" ph="INSERT INTO `msc_registri`... " />
+            <marker date="1510574815000" expanded="true" signature="61837:61860" ph="SELECT * FRO... EsitiCipe" />
+            <marker date="1510574815000" expanded="true" signature="62246:62752" ph="INSERT INTO `msc_esiti_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="63050:63074" ph="SELECT * FRO... Repertorio" />
+            <marker date="1510574815000" expanded="true" signature="63465:63543" ph="SELECT id FR... msc_esiti_cipe" />
+            <marker date="1510574815000" expanded="true" signature="63930:64005" ph="SELECT id FR... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="64789:67171" ph="INSERT INTO `msc_fascicoli`... " />
+            <marker date="1510574815000" expanded="true" signature="67453:67653" ph="SELECT r.*, msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="67914:68020" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="68277:68308" ph="SELECT * FRO... msc_mittente" />
+            <marker date="1510574815000" expanded="true" signature="68519:68630" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="68896:69016" ph="SELECT * FRO... msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="69330:69406" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="69685:69807" ph="SELECT * , t... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="70121:70197" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="71850:71939" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="72241:72346" ph="INSERT INTO `msc_rel_allegati_registri`... " />
+            <marker date="1510574815000" expanded="true" signature="73037:73069" ph="SELECT * FRO... msc_sottofascicoli" />
+            <marker date="1510574815000" expanded="true" signature="73343:73477" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="74591:74680" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="74927:74997" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510574815000" expanded="true" signature="75553:75679" ph="INSERT INTO `msc_rel_allegati_precipe`... " />
+            <marker date="1510574815000" expanded="true" signature="76974:77063" ph="INSERT INTO `msc_allegati`... " />
+            <marker date="1510574815000" expanded="true" signature="77310:77377" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510574815000" expanded="true" signature="77956:78073" ph="INSERT INTO `msc_rel_allegati_cipe`... " />
+            <marker date="1510574815000" expanded="true" signature="78528:78846" ph="SELECT r.id msc_registri" />
+            <marker date="1510574815000" expanded="true" signature="79467:79543" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="79920:79974" ph="SELECT Data_... PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="80184:80249" ph="INSERT INTO msc_precipe... " />
+            <marker date="1510574815000" expanded="true" signature="80582:80607" ph="SELECT * FRO... msc_precipe" />
+            <marker date="1510574815000" expanded="true" signature="80917:80982" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="81300:81385" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510574815000" expanded="true" signature="81816:81893" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="82319:82466" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="82893:82966" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510574815000" expanded="true" signature="83380:83467" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510574815000" expanded="true" signature="83945:84702" ph="INSERT INTO msc_precipe_ordini... " />
+            <marker date="1510574815000" expanded="true" signature="85112:85148" ph="SELECT * FRO... PreCipe" />
+            <marker date="1510574815000" expanded="true" signature="85581:85708" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510574815000" expanded="true" signature="86061:86189" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510574815000" expanded="true" signature="86541:86669" ph="INSERT INTO msc_rel_registri_odg... " />
+            <marker date="1510574815000" expanded="true" signature="86966:87100" ph="SELECT * FRO... Cipe" />
+            <marker date="1510574815000" expanded="true" signature="87400:87998" ph="INSERT INTO msc_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="88378:88400" ph="SELECT * FRO... msc_cipe" />
+            <marker date="1510574815000" expanded="true" signature="88707:88766" ph="SELECT * FRO... Cipe" />
+            <marker date="1510574815000" expanded="true" signature="89084:89166" ph="SELECT * FRO... msc_argomenti" />
+            <marker date="1510574815000" expanded="true" signature="89597:89674" ph="SELECT * FRO... msc_titolari" />
+            <marker date="1510574815000" expanded="true" signature="90100:90247" ph="SELECT * FRO... msc_fascicoli" />
+            <marker date="1510574815000" expanded="true" signature="90674:90747" ph="SELECT * FRO... msc_uffici" />
+            <marker date="1510574815000" expanded="true" signature="91161:91245" ph="SELECT * FRO... msc_risultanze" />
+            <marker date="1510574815000" expanded="true" signature="91717:92780" ph="INSERT INTO msc_cipe_ordini... " />
+            <marker date="1510574815000" expanded="true" signature="93194:93212" ph="SELECT * FRO... Cipe" />
+            <marker date="1510574815000" expanded="true" signature="93650:93784" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="94136:94271" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="94623:94758" ph="INSERT INTO msc_rel_registri_odg_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="95064:95113" ph="SELECT * FRO... TABLE33_precipe_full" />
+            <marker date="1510574815000" expanded="true" signature="95399:95431" ph="SELECT * FRO... msc_precipe_ordini" />
+            <marker date="1510574815000" expanded="true" signature="95746:95863" ph="INSERT INTO msc_rel_uffici_precipe... " />
+            <marker date="1510574815000" expanded="true" signature="96128:96157" ph="SELECT * FRO... msc_cipe_ordini" />
+            <marker date="1510574815000" expanded="true" signature="96469:96580" ph="INSERT INTO msc_rel_uffici_cipe... " />
+            <marker date="1510574815000" expanded="true" signature="96846:96904" ph="INSERT INTO ...... " />
+            <marker date="1510574815000" expanded="true" signature="97092:97185" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="97369:97459" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="97648:97738" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="97926:98013" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="101344:101387" ph="SELECT * FRO... msc_delibere" />
+            <marker date="1510574815000" expanded="true" signature="103804:104282" ph="INSERT INTO msc_delibere_giorni... " />
+            <marker date="1510574815000" expanded="true" signature="104780:104897" ph="SELECT * FRO... Adempimenti" />
+            <marker date="1510574815000" expanded="true" signature="105107:105336" ph="UPDATE `msc_... " />
+            <marker date="1510574815000" expanded="true" signature="106232:106277" ph="SELECT * FRO... msc_delibere" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/import/script-import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1590">
+          <caret line="113" column="29" lean-forward="false" selection-start-line="113" selection-start-column="29" selection-end-line="113" selection-end-column="29" />
+          <folding>
+            <element signature="e#6142#6372#0#PHP" expanded="false" />
+            <element signature="e#6175#6362#0#PHP" expanded="false" />
+            <element signature="e#6277#6362#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/config-web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="19" column="21" lean-forward="false" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
           <folding />
         </state>
       </provider>

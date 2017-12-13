@@ -17,7 +17,7 @@ set_time_limit(7200);
 
 
 
-$filePathSanitize = "service/";
+$filePathSanitize = "";
 $filePath = "";
 
 // PATH PER AREA RISERVATA

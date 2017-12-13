@@ -22,105 +22,164 @@ class Adempimenti
     private $id;
 
     /**
-     * @var int
-     * @ORM\Column(name="codice", type="integer", nullable=true)
+     * @var string
+     * @ORM\Column(name="istruttore", type="text", nullable=true)
      */
-    private $codice;
+    private $istruttore;
 
-     /**
-     * @var int
-     * @ORM\Column(name="progressivo", type="integer", nullable=true)
-     */
-    private $progressivo;
-
-     /**
-     * @var int
-     * @ORM\Column(name="codice_scheda", type="integer", nullable=true)
-     */
-    private $codiceScheda;
-	
-	 /**
+    /**
      * @var int
      * @ORM\Column(name="id_delibere", type="integer", nullable=true)
      */
     private $idDelibere;
 
-   	/**
+    /**
+     * @var int
+     * @ORM\Column(name="numero_delibera", type="integer", nullable=true)
+     */
+    private $numeroDelibera;
+
+    /**
+     * @var int
+     * @ORM\Column(name="anno", type="integer", nullable=true)
+     */
+    private $anno;
+
+    /**
+     * @var \Date
+     * @ORM\Column(name="seduta", type="date", nullable=true)
+     */
+    private $seduta;
+
+    /**
+     * @var string
+     * @ORM\Column(name="materia", type="text", nullable=true)
+     */
+    private $materia;
+
+    /**
+     * @var string
+     * @ORM\Column(name="argomento", type="text", nullable=true)
+     */
+    private $argomento;
+
+    /**
+     * @var string
+     * @ORM\Column(name="fondo_norma", type="text", nullable=true)
+     */
+    private $fondoNorma;
+
+    /**
+     * @var int
+     * @ORM\Column(name="ambito", type="integer", nullable=true)
+     */
+    private $ambito;
+
+    /**
+     * @var string
+     * @ORM\Column(name="localizzazione", type="text", nullable=true)
+     */
+    private $localizzazione;
+
+    /**
+     * @var string
+     * @ORM\Column(name="cup", type="text", nullable=true)
+     */
+    private $cup;
+
+    /**
+     * @var string
+     * @ORM\Column(name="riferimento", type="text", nullable=true)
+     */
+    private $riferimento;
+
+    /**
      * @var string
      * @ORM\Column(name="descrizione", type="text", nullable=true)
      */
     private $descrizione;
-	
-	/**
+
+    /**
      * @var int
-     * @ORM\Column(name="codice_descrizione", type="integer", nullable=true)
+     * @ORM\Column(name="tipologia", type="integer", nullable=true)
      */
-    private $codiceDescrizione;
-	
-	/**
+    private $tipologia;
+
+    /**
      * @var int
-     * @ORM\Column(name="codice_fonte", type="integer", nullable=true)
+     * @ORM\Column(name="azione", type="integer", nullable=true)
      */
-    private $codiceFonte;
-	
-	/**
-     * @var int
-     * @ORM\Column(name="codice_esito", type="integer", nullable=true)
+    private $azione;
+
+    /**
+     * @var string
+     * @ORM\Column(name="mancato_assolvimento", type="text", nullable=true)
      */
-    private $codiceEsito;
-	
-	/**
+    private $mancatoAssolvimento;
+
+    /**
+     * @var string
+     * @ORM\Column(name="norme_delibere", type="text", nullable=true)
+     */
+    private $normeDelibere;
+
+    /**
      * @var \Date
      * @ORM\Column(name="data_scadenza", type="date", nullable=true)
      */
     private $dataScadenza;
-	
-	/**
-     * @var int
-     * @ORM\Column(name="giorni_scadenza", type="integer", nullable=true)
+
+    /**
+     * @var string
+     * @ORM\Column(name="destinatario", type="text", nullable=true)
      */
-    private $giorniScadenza;
-	
-	/**
-     * @var int
-     * @ORM\Column(name="mesi_scadenza", type="integer", nullable=true)
+    private $destinatario;
+
+    /**
+     * @var string
+     * @ORM\Column(name="struttura", type="text", nullable=true)
      */
-    private $mesiScadenza;
-	
-	/**
-     * @var int
-     * @ORM\Column(name="anni_scadenza", type="integer", nullable=true)
+    private $struttura;
+
+    /**
+     * @var string
+     * @ORM\Column(name="adempiuto", type="text", nullable=true)
      */
-    private $anniScadenza;
-	
-	/**
+    private $adempiuto;
+
+    /**
      * @var int
-     * @ORM\Column(name="vincolo", type="integer", nullable=true)
+     * @ORM\Column(name="periodicita", type="integer", nullable=true)
      */
-    private $vincolo;
-	
-	/**
+    private $periodicita;
+
+    /**
+     * @var int
+     * @ORM\Column(name="pluriennalita", type="integer", nullable=true)
+     */
+    private $pluriennalita;
+
+    /**
      * @var string
      * @ORM\Column(name="note", type="text", nullable=true)
      */
     private $note;
-	
-	/**
+
+    /**
      * @var int
-     * @ORM\Column(name="utente", type="integer", nullable=true)
+     * @ORM\Column(name="superato", type="integer")
      */
-    private $utente;
-	
-	/**
-     * @var \DateTime
-     * @ORM\Column(name="data_modifica", type="datetime")
-     */
-    private $dataModifica;
+    private $superato;
+
 
 
     public function __construct() {
-        $this->dataModifica = new \DateTime();
+        $this->seduta = new \DateTime();
+        $this->dataScadenza = new \DateTime();
+        $this->superato = 0;
     }
+
+
 
 
     /**
@@ -134,75 +193,27 @@ class Adempimenti
     }
 
     /**
-     * Set codice
+     * Set istruttore
      *
-     * @param integer $codice
+     * @param string $istruttore
      *
      * @return Adempimenti
      */
-    public function setCodice($codice)
+    public function setIstruttore($istruttore)
     {
-        $this->codice = $codice;
+        $this->istruttore = $istruttore;
 
         return $this;
     }
 
     /**
-     * Get codice
+     * Get istruttore
      *
-     * @return integer
+     * @return string
      */
-    public function getCodice()
+    public function getIstruttore()
     {
-        return $this->codice;
-    }
-
-    /**
-     * Set progressivo
-     *
-     * @param integer $progressivo
-     *
-     * @return Adempimenti
-     */
-    public function setProgressivo($progressivo)
-    {
-        $this->progressivo = $progressivo;
-
-        return $this;
-    }
-
-    /**
-     * Get progressivo
-     *
-     * @return integer
-     */
-    public function getProgressivo()
-    {
-        return $this->progressivo;
-    }
-
-    /**
-     * Set codiceScheda
-     *
-     * @param integer $codiceScheda
-     *
-     * @return Adempimenti
-     */
-    public function setCodiceScheda($codiceScheda)
-    {
-        $this->codiceScheda = $codiceScheda;
-
-        return $this;
-    }
-
-    /**
-     * Get codiceScheda
-     *
-     * @return integer
-     */
-    public function getCodiceScheda()
-    {
-        return $this->codiceScheda;
+        return $this->istruttore;
     }
 
     /**
@@ -230,6 +241,246 @@ class Adempimenti
     }
 
     /**
+     * Set numeroDelibera
+     *
+     * @param integer $numeroDelibera
+     *
+     * @return Adempimenti
+     */
+    public function setNumeroDelibera($numeroDelibera)
+    {
+        $this->numeroDelibera = $numeroDelibera;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroDelibera
+     *
+     * @return integer
+     */
+    public function getNumeroDelibera()
+    {
+        return $this->numeroDelibera;
+    }
+
+    /**
+     * Set anno
+     *
+     * @param integer $anno
+     *
+     * @return Adempimenti
+     */
+    public function setAnno($anno)
+    {
+        $this->anno = $anno;
+
+        return $this;
+    }
+
+    /**
+     * Get anno
+     *
+     * @return integer
+     */
+    public function getAnno()
+    {
+        return $this->anno;
+    }
+
+    /**
+     * Set seduta
+     *
+     * @param \DateTime $seduta
+     *
+     * @return Adempimenti
+     */
+    public function setSeduta($seduta)
+    {
+        $this->seduta = $seduta;
+
+        return $this;
+    }
+
+    /**
+     * Get seduta
+     *
+     * @return \DateTime
+     */
+    public function getSeduta()
+    {
+        return $this->seduta;
+    }
+
+    /**
+     * Set materia
+     *
+     * @param string $materia
+     *
+     * @return Adempimenti
+     */
+    public function setMateria($materia)
+    {
+        $this->materia = $materia;
+
+        return $this;
+    }
+
+    /**
+     * Get materia
+     *
+     * @return string
+     */
+    public function getMateria()
+    {
+        return $this->materia;
+    }
+
+    /**
+     * Set argomento
+     *
+     * @param string $argomento
+     *
+     * @return Adempimenti
+     */
+    public function setArgomento($argomento)
+    {
+        $this->argomento = $argomento;
+
+        return $this;
+    }
+
+    /**
+     * Get argomento
+     *
+     * @return string
+     */
+    public function getArgomento()
+    {
+        return $this->argomento;
+    }
+
+    /**
+     * Set fondoNorma
+     *
+     * @param string $fondoNorma
+     *
+     * @return Adempimenti
+     */
+    public function setFondoNorma($fondoNorma)
+    {
+        $this->fondoNorma = $fondoNorma;
+
+        return $this;
+    }
+
+    /**
+     * Get fondoNorma
+     *
+     * @return string
+     */
+    public function getFondoNorma()
+    {
+        return $this->fondoNorma;
+    }
+
+    /**
+     * Set ambito
+     *
+     * @param integer $ambito
+     *
+     * @return Adempimenti
+     */
+    public function setAmbito($ambito)
+    {
+        $this->ambito = $ambito;
+
+        return $this;
+    }
+
+    /**
+     * Get ambito
+     *
+     * @return integer
+     */
+    public function getAmbito()
+    {
+        return $this->ambito;
+    }
+
+    /**
+     * Set localizzazione
+     *
+     * @param string $localizzazione
+     *
+     * @return Adempimenti
+     */
+    public function setLocalizzazione($localizzazione)
+    {
+        $this->localizzazione = $localizzazione;
+
+        return $this;
+    }
+
+    /**
+     * Get localizzazione
+     *
+     * @return string
+     */
+    public function getLocalizzazione()
+    {
+        return $this->localizzazione;
+    }
+
+    /**
+     * Set cup
+     *
+     * @param string $cup
+     *
+     * @return Adempimenti
+     */
+    public function setCup($cup)
+    {
+        $this->cup = $cup;
+
+        return $this;
+    }
+
+    /**
+     * Get cup
+     *
+     * @return string
+     */
+    public function getCup()
+    {
+        return $this->cup;
+    }
+
+    /**
+     * Set riferimento
+     *
+     * @param string $riferimento
+     *
+     * @return Adempimenti
+     */
+    public function setRiferimento($riferimento)
+    {
+        $this->riferimento = $riferimento;
+
+        return $this;
+    }
+
+    /**
+     * Get riferimento
+     *
+     * @return string
+     */
+    public function getRiferimento()
+    {
+        return $this->riferimento;
+    }
+
+    /**
      * Set descrizione
      *
      * @param string $descrizione
@@ -254,75 +505,99 @@ class Adempimenti
     }
 
     /**
-     * Set codiceDescrizione
+     * Set tipologia
      *
-     * @param integer $codiceDescrizione
+     * @param integer $tipologia
      *
      * @return Adempimenti
      */
-    public function setCodiceDescrizione($codiceDescrizione)
+    public function setTipologia($tipologia)
     {
-        $this->codiceDescrizione = $codiceDescrizione;
+        $this->tipologia = $tipologia;
 
         return $this;
     }
 
     /**
-     * Get codiceDescrizione
+     * Get tipologia
      *
      * @return integer
      */
-    public function getCodiceDescrizione()
+    public function getTipologia()
     {
-        return $this->codiceDescrizione;
+        return $this->tipologia;
     }
 
     /**
-     * Set codiceFonte
+     * Set azione
      *
-     * @param integer $codiceFonte
+     * @param integer $azione
      *
      * @return Adempimenti
      */
-    public function setCodiceFonte($codiceFonte)
+    public function setAzione($azione)
     {
-        $this->codiceFonte = $codiceFonte;
+        $this->azione = $azione;
 
         return $this;
     }
 
     /**
-     * Get codiceFonte
+     * Get azione
      *
      * @return integer
      */
-    public function getCodiceFonte()
+    public function getAzione()
     {
-        return $this->codiceFonte;
+        return $this->azione;
     }
 
     /**
-     * Set codiceEsito
+     * Set mancatoAssolvimento
      *
-     * @param integer $codiceEsito
+     * @param string $mancatoAssolvimento
      *
      * @return Adempimenti
      */
-    public function setCodiceEsito($codiceEsito)
+    public function setMancatoAssolvimento($mancatoAssolvimento)
     {
-        $this->codiceEsito = $codiceEsito;
+        $this->mancatoAssolvimento = $mancatoAssolvimento;
 
         return $this;
     }
 
     /**
-     * Get codiceEsito
+     * Get mancatoAssolvimento
      *
-     * @return integer
+     * @return string
      */
-    public function getCodiceEsito()
+    public function getMancatoAssolvimento()
     {
-        return $this->codiceEsito;
+        return $this->mancatoAssolvimento;
+    }
+
+    /**
+     * Set normeDelibere
+     *
+     * @param string $normeDelibere
+     *
+     * @return Adempimenti
+     */
+    public function setNormeDelibere($normeDelibere)
+    {
+        $this->normeDelibere = $normeDelibere;
+
+        return $this;
+    }
+
+    /**
+     * Get normeDelibere
+     *
+     * @return string
+     */
+    public function getNormeDelibere()
+    {
+        return $this->normeDelibere;
     }
 
     /**
@@ -350,99 +625,123 @@ class Adempimenti
     }
 
     /**
-     * Set giorniScadenza
+     * Set destinatario
      *
-     * @param integer $giorniScadenza
+     * @param string $destinatario
      *
      * @return Adempimenti
      */
-    public function setGiorniScadenza($giorniScadenza)
+    public function setDestinatario($destinatario)
     {
-        $this->giorniScadenza = $giorniScadenza;
+        $this->destinatario = $destinatario;
 
         return $this;
     }
 
     /**
-     * Get giorniScadenza
+     * Get destinatario
      *
-     * @return integer
+     * @return string
      */
-    public function getGiorniScadenza()
+    public function getDestinatario()
     {
-        return $this->giorniScadenza;
+        return $this->destinatario;
     }
 
     /**
-     * Set mesiScadenza
+     * Set struttura
      *
-     * @param integer $mesiScadenza
+     * @param string $struttura
      *
      * @return Adempimenti
      */
-    public function setMesiScadenza($mesiScadenza)
+    public function setStruttura($struttura)
     {
-        $this->mesiScadenza = $mesiScadenza;
+        $this->struttura = $struttura;
 
         return $this;
     }
 
     /**
-     * Get mesiScadenza
+     * Get struttura
      *
-     * @return integer
+     * @return string
      */
-    public function getMesiScadenza()
+    public function getStruttura()
     {
-        return $this->mesiScadenza;
+        return $this->struttura;
     }
 
     /**
-     * Set anniScadenza
+     * Set adempiuto
      *
-     * @param integer $anniScadenza
+     * @param string $adempiuto
      *
      * @return Adempimenti
      */
-    public function setAnniScadenza($anniScadenza)
+    public function setAdempiuto($adempiuto)
     {
-        $this->anniScadenza = $anniScadenza;
+        $this->adempiuto = $adempiuto;
 
         return $this;
     }
 
     /**
-     * Get anniScadenza
+     * Get adempiuto
      *
-     * @return integer
+     * @return string
      */
-    public function getAnniScadenza()
+    public function getAdempiuto()
     {
-        return $this->anniScadenza;
+        return $this->adempiuto;
     }
 
     /**
-     * Set vincolo
+     * Set periodicita
      *
-     * @param integer $vincolo
+     * @param integer $periodicita
      *
      * @return Adempimenti
      */
-    public function setVincolo($vincolo)
+    public function setPeriodicita($periodicita)
     {
-        $this->vincolo = $vincolo;
+        $this->periodicita = $periodicita;
 
         return $this;
     }
 
     /**
-     * Get vincolo
+     * Get periodicita
      *
      * @return integer
      */
-    public function getVincolo()
+    public function getPeriodicita()
     {
-        return $this->vincolo;
+        return $this->periodicita;
+    }
+
+    /**
+     * Set pluriennalita
+     *
+     * @param integer $pluriennalita
+     *
+     * @return Adempimenti
+     */
+    public function setPluriennalita($pluriennalita)
+    {
+        $this->pluriennalita = $pluriennalita;
+
+        return $this;
+    }
+
+    /**
+     * Get pluriennalita
+     *
+     * @return integer
+     */
+    public function getPluriennalita()
+    {
+        return $this->pluriennalita;
     }
 
     /**
@@ -470,50 +769,26 @@ class Adempimenti
     }
 
     /**
-     * Set utente
+     * Set superato
      *
-     * @param integer $utente
+     * @param integer $superato
      *
      * @return Adempimenti
      */
-    public function setUtente($utente)
+    public function setSuperato($superato)
     {
-        $this->utente = $utente;
+        $this->superato = $superato;
 
         return $this;
     }
 
     /**
-     * Get utente
+     * Get superato
      *
      * @return integer
      */
-    public function getUtente()
+    public function getSuperato()
     {
-        return $this->utente;
-    }
-
-    /**
-     * Set dataModifica
-     *
-     * @param \DateTime $dataModifica
-     *
-     * @return Adempimenti
-     */
-    public function setDataModifica($dataModifica)
-    {
-        $this->dataModifica = $dataModifica;
-
-        return $this;
-    }
-
-    /**
-     * Get dataModifica
-     *
-     * @return \DateTime
-     */
-    public function getDataModifica()
-    {
-        return $this->dataModifica;
+        return $this->superato;
     }
 }

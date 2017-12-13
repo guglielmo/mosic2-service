@@ -180,6 +180,9 @@ class CipeController extends Controller
 
             //$registri_cipe = json_decode($this->serialize($registri_cipe));
             $arrayTemp = json_decode($this->serialize($v));
+
+
+
             switch (count($registri_cipe)) {
                 case 1:
                     $arrayTemp->id_registri = [$registri_cipe];
@@ -377,12 +380,11 @@ class CipeController extends Controller
 
 
             $cipeodg->setIdCipe($id);
-            //$cipeodg->setProgressivo($value->progressivo);
             $cipeodg->setIdTitolari($value->id_titolari);
             $cipeodg->setIdFascicoli($value->id_fascicoli);
-            //$cipeodg->setIdArgomenti($value->id_argomenti);
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
+            $cipeodg->setNumeroDelibera($value->numero_delibera);
             $cipeodg->setRisultanza($value->risultanza);
             if (isset($value->annotazioni)) { $cipeodg->setAnnotazioni($value->annotazioni);}
 
@@ -502,6 +504,7 @@ class CipeController extends Controller
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
             $cipeodg->setRisultanza($value->risultanza);
+            $cipeodg->setNumeroDelibera($value->numero_delibera);
             if (isset($value->annotazioni)) { $cipeodg->setAnnotazioni($value->annotazioni);}
             //$precipeodg->setStato($value->stato);
 

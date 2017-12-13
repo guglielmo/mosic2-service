@@ -19,6 +19,7 @@ use UserBundle\Entity\Allegati;
 use UserBundle\Entity\RelAllegatiDelibere;
 use UserBundle\Entity\RelAllegatiDelibereCCR;
 use UserBundle\Entity\RelFirmatariDelibere;
+use UserBundle\Entity\RelDelibereFascicoli;
 use UserBundle\Entity\RelTagsDelibere;
 use UserBundle\Entity\RelUfficiDelibere;
 
@@ -284,15 +285,24 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         $repositoryCC = $this->getDoctrine()->getRepository('UserBundle:DelibereCC');
         $delibereCC = $repositoryCC->findBy(array("idDelibere" => $id));
 
+        //converte i risultati in json
+        $serialize = $this->serialize($delibere);
+        //$serialize = json_encode($delibere, JSON_NUMERIC_CHECK);
+
+
         $delibereCC = $this->formatDateJsonArrayCustom(json_decode($this->serialize($delibereCC)),array("data_rilievo","data_risposta") );
-        
+
         foreach ($delibereCC as $i => $v) {
             $allegatiCC = $repository->getAllegatiCCRByIdCCR($v->id);
             $v->allegati = $allegatiCC;
+
+
+            //$response = new Response(json_encode($allegatiCC), Response::HTTP_OK);
+            //return $this->setBaseHeaders($response);
+
+
         }
 
-        //converte i risultati in json
-        $serialize = $this->serialize($delibere);
 
         $serialize = $this->mergeRelDelibereItem($serialize);
 
@@ -345,9 +355,36 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
             if ($value->giorni_rilievo == "") {$value->giorni_rilievo = null;} else {$value->giorni_rilievo = (int) $value->giorni_rilievo;}
         }
 
+
+        $repositoryOdgCipeDelibere = $this->getDoctrine()->getRepository('UserBundle:Delibere');
+        $odgDelibere = $repositoryOdgCipeDelibere->cercaDataDelibera($serialize[0]['data'], $serialize[0]['numero_delibera']);
+        $odgDelibere = json_decode($this->serialize($odgDelibere));
+
+
+        $ArrayodgDelibere = array();
+        $ArrayRegistri = array();
+        foreach ($odgDelibere as $i => $v) {
+            $ArrayRegistri[] = (int) $v->id_registri;
+            $ArrayodgDelibere[$v->id] = array(
+                "id_cipe" => (int) $v->id_cipe,
+                "id_cipe_odg" => (int) $v->id,
+                "ordine" => $v->ordine,
+                "id_fascicoli" => (int) $v->id_fascicoli,
+                "id_registri" => $ArrayRegistri
+            );
+        }
+
+
+        //$response = new Response(json_encode(array_values($ArrayodgDelibere)), Response::HTTP_OK);
+        //return $this->setBaseHeaders($response);
+
+
+
         $serialize[0]['rilievi_CC'] = $delibereCC;
 
         $serialize[0]['id_segretariato'] = explode(",",$serialize[0]['id_segretariato']);
+
+        $serialize[0]['cipe_delibere'] = array_values($ArrayodgDelibere);
 
 
         $response_array = array(
@@ -508,6 +545,9 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         $repository_relTagsDelibere = $em->getRepository('UserBundle:RelTagsDelibere');
         $relTagsDelibere_delete = $repository_relTagsDelibere->findByIdDelibere($data->id);
 
+        $repository_relDelibereFascicoli = $em->getRepository('UserBundle:RelDelibereFascicoli');
+        $relDelibereFascicoli_delete = $repository_relDelibereFascicoli->findByIdDelibere($data->id);
+
 
         //$array_id_firmatari = explode(",", $data->id_segretariato); //$data->id_segretariato è già un array
         //$array_id_uffici = explode(",", $data->id_uffici);
@@ -570,6 +610,20 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         $em->persist($delibere); //create
         $em->flush(); //esegue l'update
 
+
+//        // FASCICOLI
+//        foreach ($relDelibereFascicoli_delete as $relDelibereFascicoli_delete) {
+//            $em->remove($relDelibereFascicoli_delete);
+//        }
+//        foreach ($data->id_fascicoli as $item) {
+//            $relDelibereFascicoli = new RelDelibereFascicoli();
+//            $relDelibereFascicoli->setIdDelibere($data->id);
+//            $relDelibereFascicoli->setIdFascicoli((int)$item);
+//
+//            $em->persist($relDelibereFascicoli); //create
+//        }
+        
+        
         // UFFICI
         foreach ($relUfficiDelibere_delete as $relUfficiDelibere_delete) {
             $em->remove($relUfficiDelibere_delete);
@@ -596,23 +650,109 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         }
 
         // RILIEVI CC (rilievi_CC)
-        foreach ($DelibereCC_delete as $DelibereCC_delete) {
-            $em->remove($DelibereCC_delete);
-        }
+//        foreach ($DelibereCC_delete as $DelibereCC_delete) {
+//            $em->remove($DelibereCC_delete);
+//        }
         foreach ($data->rilievi_CC as $item) {
-            $relDelibereCC = new DelibereCC();
-            $relDelibereCC->setIdDelibere($id);
 
-            if ($item->tipo_documento != null){ $relDelibereCC->setTipoDocumento($item->tipo_documento);} else {$relDelibereCC->setTipoDocumento(0); }
-            if ($item->data_rilievo != null){ $relDelibereCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));} else {$relDelibereCC->setDataRilievo(null); }
-            if (isset($item->numero_rilievo)) { $relDelibereCC->setNumeroRilievo($item->numero_rilievo); } else { $relDelibereCC->setNumeroRilievo(''); }
-            if ($item->data_risposta != null){ $relDelibereCC->setDataRisposta(new \DateTime($this->zulu_to_rome($item->data_risposta)));} else {$relDelibereCC->setDataRisposta(new \DateTime("0000-00-00")); }
-            if ($item->data_rilievo != null){ $relDelibereCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));} else {$relDelibereCC->setDataRilievo(new \DateTime("0000-00-00")); }
-            if (isset($item->numero_risposta)) { $relDelibereCC->setNumeroRisposta($item->numero_risposta); } else { $relDelibereCC->setNumeroRisposta(''); }
-            if (isset($item->giorni_rilievo) && $item->giorni_rilievo != null) { $relDelibereCC->setGiorniRilievo($item->giorni_rilievo); } else { $relDelibereCC->setGiorniRilievo(0); }
-            if (isset($item->note_rilievo)) { $relDelibereCC->setNoteRilievo($item->note_rilievo); } else { $relDelibereCC->setNoteRilievo(""); }
 
-            $em->persist($relDelibereCC); //create
+            if($item->id == null) {
+                $relDelibereCC = new DelibereCC();
+                $relDelibereCC->setIdDelibere($id);
+
+                if ($item->tipo_documento != null) {
+                    $relDelibereCC->setTipoDocumento($item->tipo_documento);
+                } else {
+                    $relDelibereCC->setTipoDocumento(0);
+                }
+                if ($item->data_rilievo != null) {
+                    $relDelibereCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));
+                } else {
+                    $relDelibereCC->setDataRilievo(null);
+                }
+                if (isset($item->numero_rilievo)) {
+                    $relDelibereCC->setNumeroRilievo($item->numero_rilievo);
+                } else {
+                    $relDelibereCC->setNumeroRilievo('');
+                }
+                if ($item->data_risposta != null) {
+                    $relDelibereCC->setDataRisposta(new \DateTime($this->zulu_to_rome($item->data_risposta)));
+                } else {
+                    $relDelibereCC->setDataRisposta(new \DateTime("0000-00-00"));
+                }
+                if ($item->data_rilievo != null) {
+                    $relDelibereCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));
+                } else {
+                    $relDelibereCC->setDataRilievo(new \DateTime("0000-00-00"));
+                }
+                if (isset($item->numero_risposta)) {
+                    $relDelibereCC->setNumeroRisposta($item->numero_risposta);
+                } else {
+                    $relDelibereCC->setNumeroRisposta('');
+                }
+                if (isset($item->giorni_rilievo) && $item->giorni_rilievo != null) {
+                    $relDelibereCC->setGiorniRilievo($item->giorni_rilievo);
+                } else {
+                    $relDelibereCC->setGiorniRilievo(0);
+                }
+                if (isset($item->note_rilievo)) {
+                    $relDelibereCC->setNoteRilievo($item->note_rilievo);
+                } else {
+                    $relDelibereCC->setNoteRilievo("");
+                }
+
+                $em->persist($relDelibereCC); //create
+            } else {
+                $repository_DelibereRilieviCC = $em->getRepository('UserBundle:DelibereCC');
+                $DelibereRilieviCC = $repository_DelibereRilieviCC->findOneBy(array("id" => $item->id));
+
+
+                if ($item->tipo_documento != null) {
+                    $DelibereRilieviCC->setTipoDocumento($item->tipo_documento);
+                } else {
+                    $DelibereRilieviCC->setTipoDocumento(0);
+                }
+
+                if ($item->data_rilievo != null) {
+                    $DelibereRilieviCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));
+                } else {
+                    $DelibereRilieviCC->setDataRilievo(null);
+                }
+                if (isset($item->numero_rilievo)) {
+                    $DelibereRilieviCC->setNumeroRilievo($item->numero_rilievo);
+                } else {
+                    $DelibereRilieviCC->setNumeroRilievo('');
+                }
+                if ($item->data_risposta != null) {
+                    $DelibereRilieviCC->setDataRisposta(new \DateTime($this->zulu_to_rome($item->data_risposta)));
+                } else {
+                    $DelibereRilieviCC->setDataRisposta(new \DateTime("0000-00-00"));
+                }
+                if ($item->data_rilievo != null) {
+                    $DelibereRilieviCC->setDataRilievo(new \DateTime($this->zulu_to_rome($item->data_rilievo)));
+                } else {
+                    $DelibereRilieviCC->setDataRilievo(new \DateTime("0000-00-00"));
+                }
+                if (isset($item->numero_risposta)) {
+                    $DelibereRilieviCC->setNumeroRisposta($item->numero_risposta);
+                } else {
+                    $DelibereRilieviCC->setNumeroRisposta('');
+                }
+                if (isset($item->giorni_rilievo) && $item->giorni_rilievo != null) {
+                    $DelibereRilieviCC->setGiorniRilievo($item->giorni_rilievo);
+                } else {
+                    $DelibereRilieviCC->setGiorniRilievo(0);
+                }
+                if (isset($item->note_rilievo)) {
+                    $DelibereRilieviCC->setNoteRilievo($item->note_rilievo);
+                } else {
+                    $DelibereRilieviCC->setNoteRilievo("");
+                }
+
+
+                $em->persist($DelibereRilieviCC); //create
+            }
+
         }
 
         // TAGS
@@ -757,6 +897,17 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         $em->flush(); //esegue query
 
         $id_delibere_creato = $delibere->getId();
+
+
+        //        // FASCICOLI
+
+//        foreach ($data->id_fascicoli as $item) {
+//            $relDelibereFascicoli = new RelDelibereFascicoli();
+//            $relDelibereFascicoli->setIdDelibere($data->id);
+//            $relDelibereFascicoli->setIdFascicoli((int)$item);
+//
+//            $em->persist($relDelibereFascicoli); //create
+//        }
 
         // UFFICI
         foreach ($data->id_uffici as $item) {
@@ -985,13 +1136,21 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
             }
 
 
+        } elseif ($tipo == "MEF" || $tipo == "CC") {
+            $path_file = Costanti::URL_ALLEGATI_DELIBERE . "/" . $tipo . "/E" . substr($dataDelibere, 2, 3) . sprintf("%04d", $numeroDelibere) . "/";
+            $file = $request->files->get('file');
+            $nome_file = $file->getClientOriginalName();
+            $nome_file = $this->sostituisciAccenti($nome_file);
         } else {
-            $path_file = Costanti::URL_ALLEGATI_DELIBERE . $tipo . "/" . $dataDelibere . "-" . $numeroDelibere . "/";
+            $path_file = Costanti::URL_ALLEGATI_DELIBERE . "/" . $tipo . "/" . $dataDelibere . "-" . $numeroDelibere . "/";
             $file = $request->files->get('file');
             $nome_file = $file->getClientOriginalName();
             $nome_file = $this->sostituisciAccenti($nome_file);
         }
 
+
+
+        //
         //memorizzo il file nel database
         $allegato = new Allegati();
         $allegato->setData(new \DateTime());
@@ -1057,6 +1216,128 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         $response = new Response(json_encode($array), Response::HTTP_OK);
         return $this->setBaseHeaders($response, "upload");
     }
+
+
+
+    /**
+     * @SWG\Post(
+     *     path="/delibere/{id}/{tipo}/{idodg}/upload",
+     *     summary="Upload files di un rilievo della corte dei conti della delibera",
+     *     tags={"Delibere"},
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="id della Delibera",
+     *         required=true,
+     *         type="integer",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Parameter(
+     *         name="tipo",
+     *         in="path",
+     *         description="tipo di allegato [CC]",
+     *         required=true,
+     *         type="string",
+     *         @SWG\Items(type="string"),
+     *     ),
+     *     @SWG\Response(
+     *       response="200", description="Operazione avvenuta con successo",
+     *     ),
+     *     @SWG\Response(response=401, description="Autorizzazione negata"),
+     *     @SWG\Response(response=409, description="Il file e' troppo grande. (max 25 MB)"),
+     *     @SWG\Response(response=409, description="Tipo di file non permesso (solo PDF)")
+     * )
+     */
+
+    /**
+     * @Route("/delibere/{id}/{tipo}/{idrilievo}/upload", name="uploadDelibereRilieviCC")
+     * @Method("POST")
+     */
+
+    public function uploadDelibereRilieviCCAction(Request $request, $id, $tipo, $idrilievo)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository('UserBundle:Delibere');
+        $delibere = $repository->findOneBy(array("id" => $id));
+
+        $dataDelibere = $delibere->getData()->format('Y');
+        $numeroDelibere = $delibere->getNumero();
+
+        $path_file = Costanti::URL_ALLEGATI_DELIBERE . "/" . $tipo . "/E" . substr($dataDelibere, 2, 3) . sprintf("%04d", $numeroDelibere) . "/" . $idrilievo . "/" ;
+        $file = $request->files->get('file');
+        $nome_file = $file->getClientOriginalName();
+        $nome_file = $this->sostituisciAccenti($nome_file);
+
+        //memorizzo il file nel database
+        $allegato = new Allegati();
+        $allegato->setData(new \DateTime());
+        $allegato->setFile($path_file . $nome_file);
+
+        $em->persist($allegato);
+        $em->flush(); //esegue query
+
+        $id_allegato_creato = $allegato->getId();
+
+        $allegatoRel = new RelAllegatiDelibereCCR();
+        $allegatoRel->setIdAllegati($id_allegato_creato);
+        $allegatoRel->setIdDelibereCCR($idrilievo);
+
+
+
+        $array = array(
+            'id' => $id_allegato_creato,
+            'id_delibere' => $id,
+            'data' => filemtime($file) * 1000,
+            'dimensione' => $file->getClientSize(),
+            'nome' => $nome_file,
+            'relURI' => $path_file . $nome_file,
+            'tipo' => $this->getExtension($file->getMimeType()),
+            'mime_tipe' => $file->getMimeType(),
+        );
+
+        //se il file è maggiore di 25 MB
+        if ($file->getClientSize() > 26214400) {
+            $response_array = array("error" => ["code" => 409, "message" => "Il file e' troppo grande. (max 25 MB)"]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+        //controllo su i tipi di file ammessi
+        if (!in_array($file->getMimeType(), array(
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            '"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            '"image/tiff'))) {
+            $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        }
+
+
+        try {
+
+            $em->persist($allegatoRel);
+            $em->flush(); //esegue query
+
+            //copio fisicamente il file
+            $file->move($_SERVER['DOCUMENT_ROOT'] . "/" . Costanti::PATH_IN_SERVER . $path_file, $nome_file);
+
+        } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
+            echo "Exception Found - " . $ex->getMessage() . "<br/>";
+        }
+
+
+        $response = new Response(json_encode($array), Response::HTTP_OK);
+        return $this->setBaseHeaders($response, "upload");
+    }
+
 
 
 
@@ -1306,6 +1587,17 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
      * @Method("OPTIONS")
      */
     public function delibereUploadItemOptions(Request $request, $id, $tipo)
+    {
+
+        $response = new Response(Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
+
+    /**
+     * @Route("/delibere/{id}/{tipo}/{idrilievo}/upload", name="DelibereRilieviCCUpload_item_options")
+     * @Method("OPTIONS")
+     */
+    public function delibereRilieviCCUploadItemOptions(Request $request, $id, $tipo, $idrilievo)
     {
 
         $response = new Response(Response::HTTP_OK);

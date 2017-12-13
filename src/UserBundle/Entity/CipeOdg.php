@@ -116,9 +116,9 @@ class CipeOdg
     /**
      * @var \int
      *
-     * @ORM\Column(name="id_delibera", type="integer")
+     * @ORM\Column(name="numero_delibera", type="integer")
      */
-    private $idDelibera;
+    private $numeroDelibera;
 
     /**
      * @var text
@@ -139,7 +139,7 @@ class CipeOdg
     {
         $this->idUffici = 0;
         $this->idArgomenti = 0;
-        $this->idDelibera = 0;
+        $this->numeroDelibera = 0;
         $this->progressivo = 0;
         $this->risultanza = 0;
         $this->stato = 0;
@@ -154,6 +154,8 @@ class CipeOdg
         $this->denominazione = 0;
         $this->annotazioni = "";
     }
+
+
 
     /**
      * Get id
@@ -478,27 +480,27 @@ class CipeOdg
     }
 
     /**
-     * Set idDelibera
+     * Set numeroDelibera
      *
-     * @param integer $idDelibera
+     * @param integer $numeroDelibera
      *
      * @return CipeOdg
      */
-    public function setIdDelibera($idDelibera)
+    public function setNumeroDelibera($numeroDelibera)
     {
-        $this->idDelibera = $idDelibera;
+        $this->numeroDelibera = $numeroDelibera;
 
         return $this;
     }
 
     /**
-     * Get idDelibera
+     * Get numeroDelibera
      *
      * @return integer
      */
-    public function getIdDelibera()
+    public function getNumeroDelibera()
     {
-        return $this->idDelibera;
+        return $this->numeroDelibera;
     }
 
     /**
