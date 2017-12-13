@@ -13,8 +13,8 @@ use UserBundle\Entity\AdempimentiAmbiti;
 use UserBundle\Entity\AdempimentiTipologie;
 use UserBundle\Entity\AdempimentiAzioni;
 use UserBundle\Entity\AdempimentiAmministrazione;
+use UserBundle\Entity\AdempimentiScadenze;
 use UserBundle\Entity\RelAmministrazioniAdempimenti;
-use UserBundle\Entity\RelScadenzeAdempimenti;
 use UserBundle\Entity\LastUpdates;
 
 use FOS\UserBundle\FOSUserEvents;
@@ -83,15 +83,14 @@ class AdempimentiController extends Controller
             $item->id_soggetti = $arrayAmministrazioni;
 
             //SCADENZE
-            $repositoryScadenze = $this->getDoctrine()->getRepository('UserBundle:RelScadenzeAdempimenti');
+            $repositoryScadenze = $this->getDoctrine()->getRepository('UserBundle:AdempimentiScadenze');
             $adempimentiScadenze = $repositoryScadenze->findBy(array("idAdempimenti" => $item->id));
 
             $adempimentiScadenze = json_decode($this->serialize($adempimentiScadenze));
-            $arrayScadenze = array();
-            foreach ($adempimentiScadenze as $k) {
-                $arrayScadenze[] = $k->id_scadenze;
+            foreach ($adempimentiScadenze as $i) {
+                $i->data = strtotime($this->zulu_to_rome($i->data)) * 1000;
             }
-            $item->id_scadenze = $arrayScadenze;
+            $item->scadenze = $adempimentiScadenze;
 
 
             //calcolo scadenze superate
@@ -109,8 +108,8 @@ class AdempimentiController extends Controller
                     $numeroDateScadute = $numeroDateScadute + 1;
                 }
             }
-
-            $item->ottemperanza = count($arrayScadenze);
+            
+            $item->ottemperanza = count($adempimentiScadenze);
             $item->scadenze_superate = $numeroDateScadute;
             $item->tot_scadenze = $totScadenze;
         }
@@ -176,12 +175,11 @@ class AdempimentiController extends Controller
         }
 
         //SCADENZE
-        $repositoryScadenze = $this->getDoctrine()->getRepository('UserBundle:RelScadenzeAdempimenti');
+        $repositoryScadenze = $this->getDoctrine()->getRepository('UserBundle:AdempimentiScadenze');
         $adempimentiScadenze = $repositoryScadenze->findBy(array("idAdempimenti" => $id));
         $adempimentiScadenze = json_decode($this->serialize($adempimentiScadenze));
-        $arrayScadenze = array();
-        foreach ($adempimentiScadenze as $item) {
-            $arrayScadenze[] = $item->id_scadenze;
+        foreach ($adempimentiScadenze as $i) {
+            $i->data = strtotime($this->zulu_to_rome($i->data)) * 1000;
         }
 
         //converte i risultati in json
@@ -190,7 +188,7 @@ class AdempimentiController extends Controller
         $serialize = $this->formatDateJsonArrayCustom([$serialize], array('seduta', 'data_scadenza'));
 
         $serialize[0]->id_soggetti = $arrayAmministrazioni;
-        $serialize[0]->id_scadenze = $arrayScadenze;
+        $serialize[0]->scadenze = $adempimentiScadenze;
 
         $response_array = array(
             "response" => Response::HTTP_OK,
@@ -278,12 +276,10 @@ class AdempimentiController extends Controller
         $repository = $em->getRepository('UserBundle:Adempimenti');
         $adempimento = $repository->findOneBy(array("id" => $data->id));
 
-
-
         $adempimento->setIstruttore($data->istruttore);
         $adempimento->setNumeroDelibera($data->numero_delibera);
         $adempimento->setAnno($data->anno);
-        //$adempimento->setSeduta(new \DateTime($this->zulu_to_rome($data->seduta)));
+        $adempimento->setSeduta(new \DateTime(date('Y-m-d', $data->seduta / 1000)));
         $adempimento->setMateria($data->materia);
         $adempimento->setArgomento($data->argomento);
         $adempimento->setFondoNorma($data->fondo_norma);
@@ -305,6 +301,7 @@ class AdempimentiController extends Controller
         $adempimento->setNote($data->note);
         if (isset($data->superato)) { $adempimento->setSuperato($data->superato); } else {$adempimento->setSuperato(0);}
 
+
         // AMMINISTRAZIONI ADEMPIMENTI
         $repository_relAmmAdempimenti = $em->getRepository('UserBundle:RelAmministrazioniAdempimenti');
         $relAmmAdempimenti_delete = $repository_relAmmAdempimenti->findBy(array("idAdempimenti" => $data->id));
@@ -320,24 +317,44 @@ class AdempimentiController extends Controller
         }
 
         //SCADENZE ADEMPIMENTI
-        $repository_relScadenzeAdempimenti = $em->getRepository('UserBundle:RelScadenzeAdempimenti');
-        $relScadenzeAdempimenti_delete = $repository_relScadenzeAdempimenti->findBy(array("idAdempimenti" => $data->id));
-        foreach ($relScadenzeAdempimenti_delete as $relScadenzeAdempimenti_delete) {
-            $em->remove($relScadenzeAdempimenti_delete);
-        }
-        foreach ($data->id_soggetti as $item) {
-            $relScadenzeAdempimenti = new RelScadenzeAdempimenti();
-            $relScadenzeAdempimenti->setIdAdempimenti($data->id);
-            $relScadenzeAdempimenti->setIdScadenze((int)$item);
+//        $repository_AdempimentiScadenze = $em->getRepository('UserBundle:AdempimentiScadenze');
+//        $AdempimentiScadenze_delete = $repository_AdempimentiScadenze->findBy(array("idAdempimenti" => $data->id));
+//        foreach ($AdempimentiScadenze_delete as $AdempimentiScadenze_delete) {
+//            $em->remove($AdempimentiScadenze_delete);
+//        }
+        foreach ($data->scadenze as $item) {
 
-            $em->persist($relScadenzeAdempimenti); //create
+            if (isset($item->id)) { // update
+                $repository_AdempimentiScadenze = $em->getRepository('UserBundle:AdempimentiScadenze');
+                $AdempimentiScadenze = $repository_AdempimentiScadenze->findOneBy(array("id" => $item->id));
+
+                $AdempimentiScadenze->setData(new \DateTime($this->zulu_to_rome($item->data)));
+                $AdempimentiScadenze->setStato((int)$item->stato);
+                $AdempimentiScadenze->setNote($item->note);
+            } else {// create
+                $AdempimentiScadenze = new AdempimentiScadenze();
+
+                $AdempimentiScadenze->setData(new \DateTime($this->zulu_to_rome($item->data)));
+                $AdempimentiScadenze->setStato((int)$item->stato);
+                $AdempimentiScadenze->setNote($item->note);
+                $AdempimentiScadenze->setIdAdempimenti($id);
+            }
+
+            $em->persist($AdempimentiScadenze); //create
+
+            if (isset($item->modified)) { // se ho modificato
+                $repositoryLastUpdates2 = $em->getRepository('UserBundle:LastUpdates');
+                $lastUpdates2 = $repositoryLastUpdates2->findOneByTabella("adempimenti_scadenze");
+                $lastUpdates2->setLastUpdate(new \DateTime()); //datetime corrente
+            }
         }
-        
+
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
         $lastUpdates = $repositoryLastUpdates->findOneByTabella("adempimenti");
         $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+
 
         $em->persist($adempimento);
         $em->flush(); //esegue l'update
@@ -422,13 +439,15 @@ class AdempimentiController extends Controller
         }
 
         // SCADENZE ADEMPIMENTI
-        foreach ($data->id_scadenze as $item) {
-            $relScadenzeAdempimenti = new RelScadenzeAdempimenti();
-            $relScadenzeAdempimenti->setIdAdempimenti($id_creato);
-            $relScadenzeAdempimenti->setIdScadenze((int)$item);
+//        foreach ($data->scadenze as $item) {
+//            $AdempimentiScadenze = new AdempimentiScadenze();
+//            $AdempimentiScadenze->setData(new \DateTime(date('Y-m-d', $item->data / 1000)));
+//            $AdempimentiScadenze->setStato((int)$item->stato);
+//            $AdempimentiScadenze->setNote($item->note);
+//
+//            $em->persist($AdempimentiScadenze); //create
+//        }
 
-            $em->persist($relScadenzeAdempimenti); //create
-        }
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -1085,6 +1104,7 @@ class AdempimentiController extends Controller
         $scadenze = $repository->findAll();
 
         $scadenze = json_decode($this->serialize($scadenze));
+
         //formatto le date
         foreach ($scadenze as $item) {
             $item->data = strtotime($this->zulu_to_rome($item->data)) * 1000;
@@ -1150,6 +1170,7 @@ class AdempimentiController extends Controller
         $adempimento->setData(new \DateTime($this->zulu_to_rome($data->data)));
         $adempimento->setStato($data->stato);
         $adempimento->setNote($data->note);
+        $adempimento->setIdAdempimenti($data->id_adempimenti);
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');

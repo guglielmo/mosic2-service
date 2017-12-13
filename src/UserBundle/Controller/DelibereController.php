@@ -1425,6 +1425,53 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
     }
 
 
+    /**
+     * @Route("/delibere/{id}/{tipo}/{idrilievo}/upload/{idfile}", name="uploadDelibereRilievi2")
+     * @Method("DELETE")
+     */
+    public function delibereCCAllegatiItemDeleteAction(Request $request, $id, $tipo, $idrilievo, $idfile )
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository('UserBundle:RelAllegatiDelibereCCR');
+        $relazione_allegato = $repository->findOneBy(array('idAllegati' => $idfile, 'idDelibereCCR' => $idrilievo));
+        //$relazione_allegato = $repository->findOneById($idallegato);
+
+        $repository_file = $em->getRepository('UserBundle:Allegati');
+        $file = $repository_file->findOneById($idfile);
+
+        //$idRelAllegatiRegistri = $relazione_allegato[0]->getId();
+
+
+        if (!$relazione_allegato) {
+            $response_array = array("error" => ["code" => 409, "message" => "Questo file non e' allegato a questa delibera."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        } else {
+
+            //aggiorna la date della modifica nella tabella msc_last_updates
+            $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
+            $lastUpdates = $repositoryLastUpdates->findOneByTabella("delibere");
+            $lastUpdates->setLastUpdate(new \DateTime()); //datetime corrente
+
+            $response = new Response($this->serialize($relazione_allegato), Response::HTTP_OK);
+
+            try {
+
+                $em->remove($relazione_allegato); //delete
+                $em->flush(); //esegue l'update
+
+                //elimino fisicamente il file
+                unlink($file->getFile()); //il path
+            } catch (\Doctrine\ORM\EntityNotFoundException $ex) {
+                echo "Exception Found - " . $ex->getMessage() . "<br/>";
+            }
+
+
+            return $this->setBaseHeaders($response);
+        }
+    }
+
 
 
     /**
@@ -1631,6 +1678,17 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
      * @Method("OPTIONS")
      */
     public function delibereCCRDeleteUploadItemOptions(Request $request, $id, $idallegato)
+    {
+
+        $response = new Response(Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
+
+    /**
+     * @Route("/delibere/{id}/{tipo}/{idrilievo}/upload/{idfile}", name="uploadDelibereRilievi2_item_option")
+     * @Method("OPTIONS")
+     */
+    public function delibereCCR2DeleteUploadItemOptions(Request $request, $id, $idfile, $idrilievo)
     {
 
         $response = new Response(Response::HTTP_OK);
