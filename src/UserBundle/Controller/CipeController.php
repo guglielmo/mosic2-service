@@ -338,7 +338,7 @@ class CipeController extends Controller
 	 *									@SWG\Property(property="tipo", type="string"),
 	 *									@SWG\Property(property="relURI", type="string"),
 	 *									@SWG\Property(property="dimensione", type="string")
-	 *								)	 
+	 *								)
 	 *						)
 	 *					),
 	 *					@SWG\Property(property="allegati_TLX", type="string"),
@@ -377,6 +377,9 @@ class CipeController extends Controller
         $repository_rel_uffici_odg = $em->getRepository('UserBundle:RelUfficiCipe');
 
 
+
+
+
         //salvo ogni odg del cipe
         foreach ($data->cipe_odg as $item => $value) {
 
@@ -384,6 +387,10 @@ class CipeController extends Controller
                 $cipeodg = $repository_odg->findOneById((int)$value->id);
             } else {
                 $cipeodg = new CipeOdg();
+
+                //$response = new Response(json_encode($data), Response::HTTP_OK);
+                //return $this->setBaseHeaders($response);
+
             }
 
 
@@ -392,7 +399,7 @@ class CipeController extends Controller
             $cipeodg->setIdFascicoli($value->id_fascicoli);
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
-            $cipeodg->setNumeroDelibera($value->numero_delibera);
+            if (isset($value->numero_delibera)) { $cipeodg->setNumeroDelibera($value->numero_delibera);}
             $cipeodg->setRisultanza($value->risultanza);
             if (isset($value->annotazioni)) { $cipeodg->setAnnotazioni($value->annotazioni);}
 
@@ -402,6 +409,8 @@ class CipeController extends Controller
                 $em->persist($cipeodg);
                 $em->flush(); //esegue l'update
                 $value->id = $cipeodg->getId();
+
+
             }
 
 
@@ -535,7 +544,7 @@ class CipeController extends Controller
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
             $cipeodg->setRisultanza($value->risultanza);
-            $cipeodg->setNumeroDelibera($value->numero_delibera);
+            if (isset($value->numero_delibera)) { $cipeodg->setNumeroDelibera($value->numero_delibera);}
             if (isset($value->annotazioni)) { $cipeodg->setAnnotazioni($value->annotazioni);}
             //$precipeodg->setStato($value->stato);
 
@@ -646,7 +655,7 @@ class CipeController extends Controller
 
 
 
-	
+
 	/**
      * @SWG\Post(
      *     path="/api/cipe/{id}/{tipo}/upload",
@@ -810,7 +819,7 @@ class CipeController extends Controller
      */
 
     /**
-     * @Route("/cipe/{id}/{tipo}/upload/{idallegato}", name="uploadDeletePrecipe")
+     * @Route("/cipe/{id}/{tipo}/upload/{idallegato}", name="uploadDeleteCipe")
      * @Method("DELETE")
      */
     public function cipeAllegatiItemDeleteAction(Request $request, $id, $tipo, $idallegato)
@@ -1323,7 +1332,7 @@ class CipeController extends Controller
         return $this->setBaseHeaders($response);
     }
 
-    
+
     /**
      * @Route("/areariservata/cipe/{id}", name="CipeAreaRiservata")
      * @Method("OPTIONS")
