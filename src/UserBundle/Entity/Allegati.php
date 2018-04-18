@@ -31,6 +31,10 @@ class Allegati
     private $file;
 
 
+    /**
+     * @ORM\Column(name="escluso", type="integer")
+     * */
+    private $escluso;
 
 
 
@@ -91,4 +95,22 @@ class Allegati
     {
         return $this->file;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEscluso()
+    {
+        return $this->escluso;
+    }
+
+    /**
+     * @param mixed $escluso
+     */
+    public function setEscluso($escluso)
+    {
+        $this->escluso = $escluso;
+    }
+
+
 }

@@ -12,7 +12,7 @@ if (isset($_REQUEST['step1'])) {
     if (isset($_REQUEST['step2'])) {
         $tempo1 = microtime(true);
 
-       $return = createTipoArgomentiCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
+        $return = createTipoArgomentiCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = createTipoEsitiCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = createFirmatari(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = createTipoFirmatari(); if(isset($return)) { $fineStep2 = $return; goto jump;}
@@ -43,11 +43,6 @@ if (isset($_REQUEST['step1'])) {
         $return = setRegistriPrecipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = setUfficiPreCipeOdg(); if(isset($return)) { $fineStep2 = $return; goto jump;}
 
-        //################################ CIPE
-        $return = raggruppaCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
-        $return = setOrdiniCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
-        $return = setRegistriCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
-        $return = setUfficiCipeOdg(); if(isset($return)) { $fineStep2 = $return; goto jump;}
 
         //################################ DELIBERE
         $return = setDelibere(); if(isset($return)) { $fineStep2 = $return; goto jump;}
@@ -56,12 +51,18 @@ if (isset($_REQUEST['step1'])) {
         $return = setFunzionariDelibere(); if(isset($return)) { $fineStep2 = $return; goto jump;}
         $return = setDateDelibereGiorni(); if(isset($return)) { $fineStep2 = $return; goto jump;}
 
+        //################################ CIPE
+        $return = raggruppaCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
+        $return = setOrdiniCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
+        $return = setRegistriCipe(); if(isset($return)) { $fineStep2 = $return; goto jump;}
+        $return = setUfficiCipeOdg(); if(isset($return)) { $fineStep2 = $return; goto jump;}
+
 
         //################################ UTENTI
         $return = createUtenti(); if(isset($return)) { $fineStep2 = $return; goto jump;}
 
-        //################################ ADEMPIMENTI
-        $return = createAdempimenti(); if(isset($return)) { $fineStep2 = $return; goto jump;} // da aggiornare l'utente!
+        ////################################ ADEMPIMENTI --> step 4
+        //$return = createAdempimenti(); if(isset($return)) { $fineStep2 = $return; goto jump;} // da aggiornare l'utente!
 
         $tempo1 = microtime(true) - $tempo1;
         $fineStep2 = "Fine step 2 <br><br> (tempo impiegato): ". $tempo1 . " secondi";
@@ -93,6 +94,10 @@ if (isset($_REQUEST['step1'])) {
         renameWithNestedMkdir("../files/2015", "../files/DELIBERE/per-anno/2015");
         renameWithNestedMkdir("../files/2016", "../files/DELIBERE/per-anno/2016");
         renameWithNestedMkdir("../files/2017", "../files/DELIBERE/per-anno/2017");
+        renameWithNestedMkdir("../files/2018", "../files/DELIBERE/per-anno/2018");
+
+        renameWithNestedMkdir("../files/MEF", "../files/DELIBERE/MEF");
+        renameWithNestedMkdir("../files/RILIEVI", "../files/DELIBERE/CC");
 
 
         renameFile("../files/REGISTRO MOSIC");
@@ -100,7 +105,8 @@ if (isset($_REQUEST['step1'])) {
         renameFile("../files/SEDUTE_CIPE");
         renameFile("../files/DELIBERE");
 
-        $return = gestioneFilesRegistri($filePathSanitize , "../files/REGISTRO MOSIC");
+
+        $return = gestioneFilesRegistri($filePath , "../files/REGISTRO MOSIC");
         if(isset($return)) {
             if (is_array($return)) {
                 $fineStep3 = array_merge($fineStep3, $return);
@@ -110,9 +116,11 @@ if (isset($_REQUEST['step1'])) {
             }
         } //(+ sottofasicoli) và usata sul server in quanto ci devono essere fisicamente i file
 
-        $return = gestioneFilesPreCipe($filePathSanitize, "../files/RIUNIONI_PRECIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
-        $return = gestioneFilesCipe($filePathSanitize, "../files/SEDUTE_CIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
-        $return = setAllegatiDelibere($filePathSanitize, "../files/DELIBERE/per-anno"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = gestioneFilesPreCipe($filePath, "../files/RIUNIONI_PRECIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = gestioneFilesCipe($filePath, "../files/SEDUTE_CIPE"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = setAllegatiDelibere($filePath, "../files/DELIBERE/per-anno"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = setAllegatiDelibereMEF_RILIEVI($filePath, "../files/DELIBERE/MEF"); if(isset($return)) { $fineStep3 = $return; goto jump;}
+        $return = setAllegatiDelibereMEF_RILIEVI($filePath, "../files/DELIBERE/CC"); if(isset($return)) { $fineStep3 = $return; goto jump;}
 
         $tempo1 = microtime(true) - $tempo1;
 
@@ -120,9 +128,22 @@ if (isset($_REQUEST['step1'])) {
     }
 
     if (isset($_REQUEST['step4'])) {
+
+        $return = createAdempimentiAmbiti(); if(isset($return)) { $fineStep4 = $return; goto jump;}
+        $return = createAdempimentiAzioni(); if(isset($return)) { $fineStep4 = $return; goto jump;}
+        $return = createAdempimentiTipologie(); if(isset($return)) { $fineStep4 = $return; goto jump;}
+        $return = createAdempimentiAmministrazioni(); if(isset($return)) { $fineStep4 = $return; goto jump;}
+        $return = createAdempimenti(); if(isset($return)) { $fineStep4 = $return; goto jump;}
+
+        $fineStep4 ="Adempimenti inseriti con successo.";
+    }
+
+
+
+    if (isset($_REQUEST['step5'])) {
         require_once "delete-table.php";
         //header("Location: " . $_SERVER['PHP_SELF']);
-        $fineStep4 ="Tabelle eliminate con successo.";
+        $fineStep5 ="Tabelle eliminate con successo.";
     }
 
     jump:
@@ -156,19 +177,23 @@ if (isset($_REQUEST['step1'])) {
                     <button type="submit" name="step1" class="btn btn-primary btn-block"><strong>STEP 1</strong> - Crea e carica i CSV originali (sovrascrive i vecchi se presenti)</button>
                     <button type="submit" name="step2" class="btn btn-primary btn-block"><strong>STEP 2</strong> - Esegui script collega tabelle</button>
                     <button type="submit" name="step3" class="btn btn-primary btn-block"><strong>STEP 3</strong> - Sanitize File e gestione allegati</button>
-                    <button type="submit" name="step4" class="btn btn-primary btn-block"><strong>STEP 4</strong> - Elimina tabelle orginali</button>
+                    <button type="submit" name="step4" class="btn btn-primary btn-block"><strong>STEP 4</strong> - Adempimenti</button>
+                    <button type="submit" name="step5" class="btn btn-primary btn-block"><strong>STEP 5</strong> - Elimina tabelle orginali</button>
             </form>
         </div>
         
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Tabelle presenti (originali) da eliminare al termine di tutte le procedure (Step 4)</h3>
+                    <h3 class="panel-title">Tabelle presenti (originali) da eliminare al termine di tutte le procedure (Step 5)</h3>
                 </div>
                 <div class="panel-body">
                 	
-                    <?php if ($rowsAdempimenti > 0 && !isset($fineStep4)) { ?>
+                    <?php if ($rowsAdempimenti > 0 && !isset($fineStep5)) { ?>
                             Tabella Adempimenti --> <?= $rowsAdempimenti[0] ?> righe <br/>
+                            Tabella AdempimentiAmbiti --> <?= $rowsAdempimentiAmbiti[0] ?> righe <br/>
+                            Tabella AdempimentiTipologie --> <?= $rowsAdempimentiTipologie[0] ?> righe <br/>
+                            Tabella AdempimentiAzioni --> <?= $rowsAdempimentiAzioni[0] ?> righe <br/>
                             Tabella Amministrazioni --> <?= $rowsAmministrazioni[0] ?> righe  <br/>
                             Tabella ArgomentiCipe --> <?= $rowsArgomentiCipe[0] ?> righe  <br/>
                             Tabella Cipe --> <?= $rowsCipe[0] ?> righe  <br/>
@@ -217,6 +242,10 @@ if (isset($_REQUEST['step1'])) {
 
                     <?php if (isset($fineStep4)) { ?>
                         <?= $fineStep4 ?>
+                    <?php } ?>
+
+                    <?php if (isset($fineStep5)) { ?>
+                        <?= $fineStep5 ?>
                     <?php } ?>
 
 

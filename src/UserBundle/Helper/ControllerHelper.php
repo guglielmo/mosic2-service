@@ -568,9 +568,13 @@ trait ControllerHelper
     public function setFaseProceduraleDelibere($data) {
 
             if ($data->data_gu != "") {
-                $situazione = 9; // 9 - Pubblicato Gazzetta Ufficiale
+                $situazione = 10; // 9 - Pubblicato Gazzetta Ufficiale
             } elseif ($data->data_invio_gu != "" && $data->data_gu == "") {
-                $situazione = 8; // 8 - Alla Gazzetta Ufficiale
+                $situazione = 9; // 8 - Alla Gazzetta Ufficiale
+
+            } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc != "") {
+                $situazione = 8; // 8 - Registrato dalla Corte dei Conti
+
             } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc == "") {
                 $situazione = 7; // 7 - Alla Corte dei Conti
             } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno != "" && $data->data_presidente_invio != "" && $data->data_presidente_ritorno == "") {

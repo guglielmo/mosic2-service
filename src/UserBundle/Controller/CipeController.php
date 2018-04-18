@@ -209,7 +209,15 @@ class CipeController extends Controller
                 $repositoryRegistri = $this->getDoctrine()->getRepository('UserBundle:Registri');
                 $allegatiR = $repositoryRegistri->getAllegatiByIdRegistro($v);
                 $arrayTemp->allegati[$v] = $allegatiR;
+
+                $arrayTempallegatiR = json_decode($this->serialize($allegatiR));
+
                 $arrayTemp->allegati_esclusi = [];
+                foreach ($arrayTempallegatiR as $k => $z) {
+                    if ($z->escluso == 1) {
+                        $arrayTemp->allegati_esclusi[] = $z->id;
+                    }
+                }
                 $arrayTemp->allegati_esclusi_approvati = [];
             }
 
@@ -428,8 +436,31 @@ class CipeController extends Controller
             }
 
 
+            // ALLEGATI ESCLUSI
+            foreach ($value->allegati as $k) {
+                foreach ($k as $a => $b) {
+                    $repository = $em->getRepository('UserBundle:Allegati');
+                    $repository_allegatiEsclusi = $repository->findOneBy(array("id" => $b->id));
 
-            $em->persist($cipeodg);
+                    $repository_allegatiEsclusi->setEscluso(0);
+
+                    $em->persist($repository_allegatiEsclusi);
+                    $em->flush(); //esegue l'update
+                }
+            }
+            foreach ($value->allegati_esclusi as $k) {
+                $repository = $em->getRepository('UserBundle:Allegati');
+                $repository_allegatiEsclusi = $repository->findOneBy(array("id" => $k));
+
+                $repository_allegatiEsclusi->setEscluso(1);
+
+                $em->persist($repository_allegatiEsclusi);
+                $em->flush(); //esegue l'update
+            }
+
+
+
+                $em->persist($cipeodg);
             $em->flush(); //esegue l'update
 
             //$response = new Response(json_encode($value->id_registri), Response::HTTP_OK);
@@ -871,6 +902,9 @@ class CipeController extends Controller
 
 
                 $arrayTemp->id_punto_odg = $arrayTemp->id; unset($arrayTemp->id);
+                $arrayTemp->denominazione = str_replace('“','', $arrayTemp->denominazione);
+                $arrayTemp->denominazione = str_replace('”','', $arrayTemp->denominazione);
+
 
                 switch (count($registri_precipe)) {
                     case 1:
@@ -883,33 +917,39 @@ class CipeController extends Controller
                         $arrayTemp->id_registri = $registri_precipe;
                 }
 
-                $array_allegati = [];
+                $array_allegati = array();
                 //ricavo gli allegati per ogni registro nella lista $arrayTemp->id_registri
+                $countAllegati = 0;
                 foreach ($arrayTemp->id_registri as $i => $v) {
                     $repositoryRegistri = $this->getDoctrine()->getRepository('UserBundle:Registri');
                     $allegatiR = $repositoryRegistri->getAllegatiByIdRegistro($v);
-                    foreach ($allegatiR as $i => $v) {
-                        if (in_array($allegatiR[$i]['relURI'], $array_no_doppioni)) {
-                            // unset($v);
-                            // continue;
+                    foreach ($allegatiR as $ii => $vv) {
+
+                        $vv['id_allegato'] = $vv['id']; unset($vv['id']);
+                        $vv['data'] = date("Y-m-d", $vv['data'] / 1000);
+                        if ($vv['dimensione'] == false) {
+                            $vv['dimensione'] = 0;
                         }
-                        $array_no_doppioni[] = $allegatiR[$i]['relURI'];
-                        $allegatiR[$i]['id_allegato'] = $allegatiR[$i]['id']; unset($allegatiR[$i]['id']);
-                        $allegatiR[$i]['data'] = date("Y-m-d", $allegatiR[$i]['data'] / 1000);
-                        if ($allegatiR[$i]['dimensione'] == false) {
-                            $allegatiR[$i]['dimensione'] = 0;
+                        if ($vv['escluso'] == 1) {
+                            unset($vv);continue;
                         }
 
+                        $array_allegati[$countAllegati] = $vv;
+                        $countAllegati++;
                     }
 
-                    $array_allegati = $allegatiR;
                 }
-                $arrayTemp->allegati = $array_allegati;
 
+                $arrayTemp->allegati = $array_allegati;
                 $arrayOrdini[] = $arrayTemp;
             }
         }
 
+
+//        $data = $request->query->all();       //to get all GET params.
+//
+//        $response = new Response(json_encode($request), Response::HTTP_OK);
+//return $this->setBaseHeaders($response);
 
         $precipeTemp = json_decode($this->serialize($precipe));
         $precipeTemp->ufficiale = $precipeTemp->ufficiale_riunione; unset($precipeTemp->ufficiale_riunione);
@@ -950,6 +990,47 @@ class CipeController extends Controller
         //$response = new Response(json_encode($precipeTemp), Response::HTTP_OK);
         //return $this->setBaseHeaders($response);
 
+        //unset($precipeTemp->punti_odg[1]);
+        //unset($precipeTemp->punti_odg[2]);
+        //unset($precipeTemp->punti_odg[3]);
+        //unset($precipeTemp->punti_odg[4]);
+        //unset($precipeTemp->punti_odg[5]);
+        //unset($precipeTemp->punti_odg[6]);
+
+        //unset($precipeTemp->punti_odg[7]);
+        //unset($precipeTemp->punti_odg[8]);
+        //unset($precipeTemp->punti_odg[9]);
+        //unset($precipeTemp->punti_odg[10]);
+        //unset($precipeTemp->punti_odg[11]);
+        //unset($precipeTemp->punti_odg[12]);
+        //unset($precipeTemp->punti_odg[13]);
+        //unset($precipeTemp->punti_odg[14]);
+        //unset($precipeTemp->punti_odg[15]);
+        //unset($precipeTemp->punti_odg[16]);
+        //unset($precipeTemp->punti_odg[17]);
+        //unset($precipeTemp->punti_odg[18]);
+
+        //unset($precipeTemp->punti_odg[18]->allegati[1]);
+//        unset($precipeTemp->punti_odg[18]->allegati[2]);
+//        unset($precipeTemp->punti_odg[18]->allegati[3]);
+//        unset($precipeTemp->punti_odg[18]->allegati[4]);
+//        unset($precipeTemp->punti_odg[18]->allegati[5]);
+//        unset($precipeTemp->punti_odg[18]->allegati[6]);
+//        unset($precipeTemp->punti_odg[18]->allegati[7]);
+//        unset($precipeTemp->punti_odg[18]->allegati[8]);
+//        unset($precipeTemp->punti_odg[18]->allegati[9]);
+//        unset($precipeTemp->punti_odg[18]->allegati[10]);
+//
+//        unset($precipeTemp->punti_odg[19]);
+//        unset($precipeTemp->punti_odg[20]);
+//        unset($precipeTemp->punti_odg[21]);
+//        unset($precipeTemp->punti_odg[22]);
+//        unset($precipeTemp->punti_odg[23]);
+//        unset($precipeTemp->punti_odg[24]);
+//        unset($precipeTemp->punti_odg[25]);
+//        unset($precipeTemp->punti_odg[26]);
+//        unset($precipeTemp->punti_odg[27]);
+//        unset($precipeTemp->punti_odg[28]);
 
 
         $command = Costanti::PATH_PHP . " -f mosic-script/cipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
@@ -988,17 +1069,39 @@ class CipeController extends Controller
         //#########
         //######### chiamo l'api per il LOGIN
         //#########
-        $browser = $this->container->get('buzz');
 
+        $ch = curl_init();
         $fields = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
-        $response = $browser->submit("http://area-riservata.mosic2.celata.com/api-token-auth/", $fields, "POST");
-        $content = json_decode($response->getContent());
-        //$response = json_decode($response->getContent());
-        $token = $content->token;
+
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/api-token-auth/");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec ($ch);
+        $info = curl_getinfo($ch);
+        curl_close ($ch);
+        $token =json_decode($server_output)->token;
+
+
+
+
+//        $browser = $this->container->get('buzz');
+//
+//        $fields = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
+//        $response = $browser->submit("http://area-riservata.mosic2.celata.com/api-token-auth/", $fields, "POST");
+//
+//
+//
+//        $content = json_decode($response->getContent());
+//        //$response = json_decode($response->getContent());
+//        $token = $content->token;
+
+
 
 
         //Aggiorno lo stato del cipe
-        if ($response->getStatusCode() == 200) {
+        if ($info['http_code'] == 200) {
             $response_array = array("success" => ["code" => 200, "message" => "Procedura presa in carico"]);
             $cipe->setPublicReservedStatus(json_encode($response_array));
 
@@ -1029,18 +1132,41 @@ class CipeController extends Controller
         //#########
         //######### chiamo l'api per prendere l'url dell'area riservata
         //#########
-        $browser = $this->container->get('buzz');
 
-        $headers = array(
-            'Accept' => '*/*',
-            'Content-Type' => 'application/json',
-            'Cache-Control' => 'no-cache',
-            'Authorization' => 'JWT ' . $token
-            // Add any other header needed by the API
-        );
-        $response = $browser->get("http://area-riservata.mosic2.celata.com/seduta/cipe/". $id, $headers);
-        $content = json_decode($response->getContent());
-        $id_cipe = $content->id;
+        $ch = curl_init();
+        $headers = [
+            'Accept: */*',
+            'Cache-Control: no-cache',
+            'Authorization: JWT ' . $token
+        ];
+
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/seduta/cipe/". $id);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);
+        $info = curl_getinfo($ch);
+
+        curl_close ($ch);
+
+        $id_cipe =json_decode($server_output)->id;
+
+
+
+//        $browser = $this->container->get('buzz');
+//
+//        $headers = array(
+//            'Accept' => '*/*',
+//            'Content-Type' => 'application/json',
+//            'Cache-Control' => 'no-cache',
+//            'Authorization' => 'JWT ' . $token
+//            // Add any other header needed by the API
+//        );
+//        $response = $browser->get("http://area-riservata.mosic2.celata.com/seduta/cipe/". $id, $headers);
+//        $content = json_decode($response->getContent());
+//        $id_cipe = $content->id;
 
 
 
@@ -1048,19 +1174,42 @@ class CipeController extends Controller
         //#########
         //######### chiamo l'api della delete
         //#########
-        $browser = $this->container->get('buzz');
 
-        $headers = array(
-            'Accept' => '*/*',
-            'Cache-Control' => 'no-cache',
-            'Authorization' => 'JWT ' . $token
-            // Add any other header needed by the API
-        );
+        $ch = curl_init();
+        $headers = [
+            'Accept: */*',
+            'Cache-Control: no-cache',
+            'Content-Type: application/json',
+            'Authorization: JWT ' . $token
+        ];
 
-        $response = $browser->delete("http://area-riservata.mosic2.celata.com/cipe/". $id_cipe, $headers);
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/cipe/". $id_cipe);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec ($ch);
+        $info = curl_getinfo($ch);
+
+        curl_close ($ch);
+
+
+
+
+
+//        $browser = $this->container->get('buzz');
+//
+//        $headers = array(
+//            'Accept' => '*/*',
+//            'Cache-Control' => 'no-cache',
+//            'Authorization' => 'JWT ' . $token
+//            // Add any other header needed by the API
+//        );
+//
+//        $response = $browser->delete("http://area-riservata.mosic2.celata.com/cipe/". $id_cipe, $headers);
 
         //Aggiorno lo stato del cipe
-        if ($response->getStatusCode() == 204) {
+        if ($info['http_code'] == 204) {
             $response_array = array(
                 "response" => 204,
                 "data" => array("message" => "Documenti e o.d.g. rimossi dall'area riservata")

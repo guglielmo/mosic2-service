@@ -4,30 +4,72 @@ $pathFiles = "fileCSV/";
 
 //############################################################## TABLE ADEMPIMENTI
 
+//$table1 = "Adempimenti";
+//$queryDelete1 ="DROP TABLE " . $table1;
+//mysqli_query($db, $queryDelete1) or  mysqli_error($db);
+//
+//$queryCreate1 = "CREATE TABLE `Adempimenti` (
+//  `Codice_Adempimento` int(11) DEFAULT NULL,
+//  `Progressivo_Adempimento` int(11) DEFAULT NULL,
+//  `Codice_Scheda` int(11) DEFAULT NULL,
+//  `Codice_Delibera` int(11) DEFAULT NULL,
+//  `Data_Delibera` datetime DEFAULT NULL,
+//  `Numero_Delibera` int(11) DEFAULT NULL,
+//  `Descrizione_Adempimento` longtext DEFAULT NULL,
+//  `Codice_DescrizioneAdempimento` int(11) DEFAULT NULL,
+//  `Codice_FonteAdempimento` int(11) DEFAULT NULL,
+//  `Codice_EsitoAdempimento` int(11) DEFAULT NULL,
+//  `Data_Scadenza_Adempimento` datetime DEFAULT NULL,
+//  `Giorni_Scadenza_Adempimento` int(11) DEFAULT NULL,
+//  `Mesi_Scadenza_Adempimento` int(11) DEFAULT NULL,
+//  `Anni_Scadenza_Adempimento` int(11) DEFAULT NULL,
+//  `Vincolo_Adempimento` int(11) DEFAULT NULL,
+//  `Note_Adempimento` longtext,
+//  `Utente_Modifica` varchar(255) DEFAULT NULL,
+//  `Data_UtenteModifica` datetime DEFAULT NULL,
+//  `Ora_UtenteModifica` datetime DEFAULT NULL
+//) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+//mysqli_query($db, $queryCreate1) or die( mysqli_error($db));
+//
+//$queryLoad1 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table1 .'.csv"
+//        INTO TABLE '.$table1.'
+//        FIELDS TERMINATED by \',\'
+//        ENCLOSED BY \'"\'
+//        LINES TERMINATED BY \'\n\'
+//        IGNORE 1 LINES';
+//mysqli_query($db, $queryLoad1) or die( mysqli_error($db));
+
 $table1 = "Adempimenti";
 $queryDelete1 ="DROP TABLE " . $table1;
 mysqli_query($db, $queryDelete1) or  mysqli_error($db);
 
 $queryCreate1 = "CREATE TABLE `Adempimenti` (
-  `Codice_Adempimento` int(11) DEFAULT NULL,
-  `Progressivo_Adempimento` int(11) DEFAULT NULL,
-  `Codice_Scheda` int(11) DEFAULT NULL,
-  `Codice_Delibera` int(11) DEFAULT NULL,
-  `Data_Delibera` datetime DEFAULT NULL,
+  `Istruttore` varchar(255) DEFAULT NULL,
+  `Progressivo` int(11) DEFAULT NULL,
   `Numero_Delibera` int(11) DEFAULT NULL,
-  `Descrizione_Adempimento` longtext DEFAULT NULL,
-  `Codice_DescrizioneAdempimento` int(11) DEFAULT NULL,
-  `Codice_FonteAdempimento` int(11) DEFAULT NULL,
-  `Codice_EsitoAdempimento` int(11) DEFAULT NULL,
-  `Data_Scadenza_Adempimento` datetime DEFAULT NULL,
-  `Giorni_Scadenza_Adempimento` int(11) DEFAULT NULL,
-  `Mesi_Scadenza_Adempimento` int(11) DEFAULT NULL,
-  `Anni_Scadenza_Adempimento` int(11) DEFAULT NULL,
-  `Vincolo_Adempimento` int(11) DEFAULT NULL,
-  `Note_Adempimento` longtext,
-  `Utente_Modifica` varchar(255) DEFAULT NULL,
-  `Data_UtenteModifica` datetime DEFAULT NULL,
-  `Ora_UtenteModifica` datetime DEFAULT NULL
+  `Anno` int(11) DEFAULT NULL,
+  `Seduta` date DEFAULT NULL,
+  `Materia` varchar(255) DEFAULT NULL,
+  `Argomento` longtext DEFAULT NULL,
+  `Fondo_norma` varchar(255) DEFAULT NULL,
+  `Ambito` varchar(255) DEFAULT NULL,
+  `Localizzazione` varchar(255) DEFAULT NULL,
+  `CUP` varchar(255) DEFAULT NULL,
+  `Riferimento` varchar(255) DEFAULT NULL,
+  `Descrizione` varchar(255) DEFAULT NULL,
+  `Tipologia` varchar(255) DEFAULT NULL,
+  `Azione` varchar(255) DEFAULT NULL,
+  `Mancato_assolvimento` varchar(255) DEFAULT NULL,
+  `Amministrazione` varchar(255) DEFAULT NULL,
+  `Norme_delibere` varchar(255) DEFAULT NULL,
+  `Scadenza` date DEFAULT NULL,
+  `Destinatario` varchar(255) DEFAULT NULL,
+  `Struttura` varchar(255) DEFAULT NULL,
+  `Adempiuto` varchar(255) DEFAULT NULL,
+  `Periodicita` int(11) DEFAULT NULL,
+  `Pluriennalita` int(11) DEFAULT NULL,
+  `NOTE` longtext DEFAULT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 mysqli_query($db, $queryCreate1) or die( mysqli_error($db));
 
@@ -662,6 +704,73 @@ $queryLoad20 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table20 .'.csv"
         LINES TERMINATED BY \'\n\'
         IGNORE 1 LINES';
 mysqli_query($db, $queryLoad20) or die( mysqli_error($db));
+
+
+
+
+//############################################################## TABLE ADEMPIMENTI AMBITI
+
+$table21 = "AdempimentiAmbiti";
+$queryDelete21 ="DROP TABLE " . $table21;
+mysqli_query($db, $queryDelete21) or  mysqli_error($db);
+
+$queryCreate21 = "CREATE TABLE `AdempimentiAmbiti` (
+  `id` int(11) DEFAULT NULL,
+  `denominazione` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+mysqli_query($db, $queryCreate21) or die( mysqli_error($db));
+
+$queryLoad21 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table21 .'.csv"
+        INTO TABLE '.$table21.'
+        FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
+        LINES TERMINATED BY \'\n\'
+        IGNORE 1 LINES';
+mysqli_query($db, $queryLoad21) or die( mysqli_error($db));
+
+//############################################################## TABLE ADEMPIMENTI AMBITI
+
+$table22 = "AdempimentiTipologie";
+$queryDelete22 ="DROP TABLE " . $table22;
+mysqli_query($db, $queryDelete22) or  mysqli_error($db);
+
+$queryCreate22 = "CREATE TABLE `AdempimentiTipologie` (
+  `id` int(11) DEFAULT NULL,
+  `denominazione` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+mysqli_query($db, $queryCreate22) or die( mysqli_error($db));
+
+$queryLoad22 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table22 .'.csv"
+        INTO TABLE '.$table22.'
+        FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
+        LINES TERMINATED BY \'\n\'
+        IGNORE 1 LINES';
+mysqli_query($db, $queryLoad22) or die( mysqli_error($db));
+
+
+//############################################################## TABLE ADEMPIMENTI AZIONI
+
+$table23 = "AdempimentiAzioni";
+$queryDelete23 ="DROP TABLE " . $table23;
+mysqli_query($db, $queryDelete23) or  mysqli_error($db);
+
+$queryCreate23 = "CREATE TABLE `AdempimentiAzioni` (
+  `id` int(11) DEFAULT NULL,
+  `denominazione` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+mysqli_query($db, $queryCreate23) or die( mysqli_error($db));
+
+$queryLoad23 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table23 .'.csv"
+        INTO TABLE '.$table23.'
+        FIELDS TERMINATED by \',\'
+        ENCLOSED BY \'"\'
+        LINES TERMINATED BY \'\n\'
+        IGNORE 1 LINES';
+mysqli_query($db, $queryLoad23) or die( mysqli_error($db));
 
 
 ?>

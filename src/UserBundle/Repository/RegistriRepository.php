@@ -191,6 +191,7 @@ class RegistriRepository extends \Doctrine\ORM\EntityRepository
             ->createQueryBuilder()->select('a.id as id,
                                             a.data as data,
                                             a.file as file,
+                                            a.escluso as escluso,
                                             rar.idAllegati as id_allegati,
                                             rar.idRegistri as id_registri
                                             ')
@@ -213,7 +214,8 @@ class RegistriRepository extends \Doctrine\ORM\EntityRepository
                 'nome' => $path_parts['basename'],
                 'tipo' => $path_parts['extension'],
                 'relURI' => $item['file'],
-                'dimensione' => filesize($item['file'])
+                'dimensione' => filesize($item['file']),
+                'escluso' => $item['escluso']
             );
         }
 

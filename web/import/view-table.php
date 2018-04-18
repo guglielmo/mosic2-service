@@ -6,6 +6,17 @@ $query1 ="SELECT COUNT(*) as c FROM Adempimenti";
 $res1 = mysqli_query($db, $query1) or  mysqli_error($db);
 $rowsAdempimenti = mysqli_fetch_array($res1);
 
+$query1 ="SELECT COUNT(*) as c FROM AdempimentiAmbiti";
+$res1 = mysqli_query($db, $query1) or  mysqli_error($db);
+$rowsAdempimentiAmbiti = mysqli_fetch_array($res1);
+
+$query1 ="SELECT COUNT(*) as c FROM AdempimentiTipologie";
+$res1 = mysqli_query($db, $query1) or  mysqli_error($db);
+$rowsAdempimentiTipologie = mysqli_fetch_array($res1);
+
+$query1 ="SELECT COUNT(*) as c FROM AdempimentiAzioni";
+$res1 = mysqli_query($db, $query1) or  mysqli_error($db);
+$rowsAdempimentiAzioni = mysqli_fetch_array($res1);
 
 //########################## AMMINISTRAZIONI 
 

@@ -227,37 +227,70 @@ function setAllegatiDelibere($filePath, $path)
 
     return;
 
-
-
-
-//    $query = "SELECT *
-//              FROM TABLE_delibere_full";
-//    $res = mysqli_query($db, $query);
-//
-//    if (mysqli_num_rows($res) >= 1) {
-//        while ($row = mysqli_fetch_array($res)) {
-//
-//            if ($row['Allegato_1'] != "") {
-//                $query2 = 'INSERT INTO msc_rel_allegati_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_allegati = "' . $row['Allegato_1'] . '" ';
-//                echo $query2 . "<br>";
-//                $res2 = mysqli_query($db, $query2);
-//            }
-//
-//            if ($row['Allegato_2'] != "") {
-//                $query2 = 'INSERT INTO msc_rel_allegati_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_allegati = "' . $row['Allegato_2'] . '" ';
-//                echo $query2 . "<br>";
-//                $res2 = mysqli_query($db, $query2);
-//            }
-//
-//            if ($row['Allegato_3'] != "") {
-//                $query2 = 'INSERT INTO msc_rel_allegati_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_allegati = "' . $row['Allegato_3'] . '" ';
-//                echo $query2 . "<br>";
-//                $res2 = mysqli_query($db, $query2);
-//            }
-//
-//        }
-//    }
 }
+
+
+
+function setAllegatiDelibereMEF_RILIEVI($filePath, $path)
+{
+    global $db;
+
+
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path)) as $filename) {
+        if (!is_dir($filename)) {
+            $filename = str_replace("../", "", $filename);
+            $explod_path = explode("/", $filename);
+//          echo"<pre>";
+//          print_r($explod_path);
+//          echo"</pre>";
+            $cartellaDelibera = $explod_path[3];
+            $annoDelibera = "20" . substr($explod_path[3], 1, 2);
+            $numeroDelibera = (int)substr($explod_path[3], 3, 7);
+
+            if ($explod_path[4] != "versioni") {
+                //echo $filename . " ------>>>> " . $explod_path[4] . " ----- anno: " . $annoDelibera . " ----- numero: " . $numeroDelibera . "<br>";
+
+                //ricavo la delibera da ANNO e NUMERO
+                $query = "SELECT * FROM msc_delibere WHERE YEAR(data) = '$annoDelibera' AND numero = '$numeroDelibera'";
+                $res = mysqli_query($db, $query);
+                if (!$res) {
+                    return mysqli_error($db) . 'msc_delibere';
+                }
+                $idDelibera = "non trovato";
+                if (mysqli_num_rows($res) >= 1) {
+                    while ($row = mysqli_fetch_array($res)) {
+                        $idDelibera = $row['id']; // id della delibera
+                    }
+                }
+
+                if ($idDelibera != "non trovato" && $explod_path[4] != ".ds_store" && $explod_path[4] != ".DS_STORE") {
+                    $query = "INSERT INTO `msc_allegati`(`data`, `file`) VALUES (NOW(),'" . $filePath . $filename . "')";
+                    //echo $query . "<br>";
+                    $res2 = mysqli_query($db, $query);
+                    if (!$res2) {
+                        return mysqli_error($db) . " (msc_allegati)";
+                    }
+
+                    $last_id = mysqli_insert_id($db); //ultimo id inserito
+
+                    $query2 = "INSERT INTO `msc_rel_allegati_delibere`(`id_delibere`, `id_allegati`, `tipo`) VALUES ($idDelibera, $last_id, '$explod_path[2]')";
+                    //echo $query2 . "<br>";
+                    $res2 = mysqli_query($db, $query2);
+                    if (!$res2) {
+                        return mysqli_error($db) . " (msc_rel_allegati_delibere)";
+                    }
+                } else {
+                    //echo "ERRORE (non trovato): " . $filename . " ---> " . $explod_path[4] . "<br>";
+                }
+            }
+
+        }
+    }
+
+    return;
+}
+
+
 
 function setFunzionariDelibere()
 {
@@ -330,9 +363,11 @@ function setDelibere()
 
 
             if ($row['Data_GU'] != "0000-00-00 00:00:00") {
-                $situazione = 9; // 9 - Pubblicato Gazzetta Ufficiale
+                $situazione = 10; // 9 - Pubblicato Gazzetta Ufficiale
             } elseif ($row['Data_InvioGU'] != "0000-00-00 00:00:00" && $row['Data_GU'] == "0000-00-00 00:00:00") {
-                $situazione = 8; // 8 - Alla Gazzetta Ufficiale
+                $situazione = 9; // 8 - Alla Gazzetta Ufficiale
+            } elseif ($row['Data_InvioCC'] != "0000-00-00 00:00:00" && $row['Data_RegistrazioneCC'] != "0000-00-00 00:00:00") {
+                $situazione = 8; // 8 - Registrato dalla corte dei conti
             } elseif ($row['Data_InvioCC'] != "0000-00-00 00:00:00" && $row['Data_RegistrazioneCC'] == "0000-00-00 00:00:00") {
                 $situazione = 7; // 7 - Alla Corte dei Conti
             } elseif ($row['Data_Consegna'] != "0000-00-00 00:00:00" && $row['Data_SegretarioInvio'] != "0000-00-00 00:00:00" && $row['Data_SegretarioRitorno'] != "0000-00-00 00:00:00" && $row['Data_PresidenteInvio'] != "0000-00-00 00:00:00" && $row['Data_PresidenteRitorno'] == "0000-00-00 00:00:00") {
@@ -924,8 +959,13 @@ function createLastUpdates() {
                 (20, 'users', NOW()),
                 (21, 'delibere', NOW()),
                 (22, 'adempimenti', NOW()),
-                (23, 'monitor', NOW()),
-                (24, 'monitor_group', NOW());";
+                (23, 'adempimenti_soggetti', NOW()),
+                (24, 'adempimenti_ambiti', NOW()),
+                (25, 'adempimenti_azioni', NOW()),
+                (26, 'adempimenti_tipologie', NOW()),
+                (27, 'adempimenti_scadenze', NOW()),
+                (28, 'monitor', NOW()),
+                (29, 'monitor_group', NOW());";
     $resLastUpdates = mysqli_query($db, $queryLastUpdates);
     if (!$resLastUpdates) { return mysqli_error($db); }
 
@@ -968,9 +1008,93 @@ function createTipoFirmatari() {
     return;
 }
 
+//function createAdempimenti() {
+//    global $db;
+//
+//    $query = "SELECT * FROM Adempimenti";
+//    $res = mysqli_query($db, $query);
+//    if (!$res) {
+//        return mysqli_error($db);
+//    }
+//    //svuoto la tabella
+//    $query = 'TRUNCATE msc_adempimenti';
+//    mysqli_query($db, $query);
+//
+//    //popolo la tabella
+//    if (mysqli_num_rows($res) >= 1) {
+//        while ($row = mysqli_fetch_array($res)) {
+//
+//            //ricavo l'id dell'utente
+//            $query2 = 'SELECT * FROM fos_user WHERE username = "'. $row['Utente_Modifica'] . '"';
+//            $res2 = mysqli_query($db, $query2);
+//            if (!$res2) {
+//                return mysqli_error($db);
+//            }
+//
+//            $idUtente = 0;
+//            if (mysqli_num_rows($res2) >= 1) {
+//                while ($row2 = mysqli_fetch_array($res2)) {
+//                    $idUtente = $row2['id'];
+//                }
+//            }
+//
+//            $Descrizione_Adempimento = str_replace('"','',$row['Descrizione_Adempimento']);
+//            $Descrizione_Adempimento = str_replace('“','',$Descrizione_Adempimento);
+//            $Descrizione_Adempimento = str_replace('”','',$Descrizione_Adempimento);
+//            $Note_Adempimento = str_replace('"','',$row['Note_Adempimento']);
+//            $Note_Adempimento = str_replace('“','',$Note_Adempimento);
+//            $Note_Adempimento = str_replace('”','',$Note_Adempimento);
+//
+//            $query = 'INSERT INTO `msc_adempimenti`(
+//                                                 `codice`,
+//                                                 `progressivo`,
+//                                                 `codice_scheda`,
+//                                                 `id_delibere`,
+//                                                 `descrizione`,
+//                                                 `codice_descrizione`,
+//                                                 `codice_fonte`,
+//                                                 `codice_esito`,
+//                                                 `data_scadenza`,
+//                                                 `giorni_scadenza`,
+//                                                 `mesi_scadenza`,
+//                                                 `anni_scadenza`,
+//                                                 `vincolo`,
+//                                                 `note`,
+//                                                 `utente`,
+//                                                 `data_modifica`
+//                                                )
+//                                                VALUES (
+//                                                "' . $row['Codice_Adempimento'] . '",
+//                                                "' . $row['Progressivo_Adempimento'] . '",
+//                                                "' . $row['Codice_Scheda'] . '",
+//                                                "' . $row['Codice_Delibera'] . '",
+//                                                "' . $Descrizione_Adempimento . '",
+//                                                "' . $row['Codice_DescrizioneAdempimento'] . '",
+//                                                "' . $row['Codice_FonteAdempimento'] . '",
+//                                                "' . $row['Codice_EsitoAdempimento'] . '",
+//                                                "' . $row['Data_Scadenza_Adempimento'] . '",
+//                                                "' . $row['Giorni_Scadenza_Adempimento'] . '",
+//                                                "' . $row['Mesi_Scadenza_Adempimento'] . '",
+//                                                "' . $row['Anni_Scadenza_Adempimento'] . '",
+//                                                "' . $row['Vincolo_Adempimento'] . '",
+//                                                "' . $Note_Adempimento . '",
+//                                                "' . $idUtente . '",
+//                                                "' . $row['Data_UtenteModifica'] . '"
+//                                                )';
+//            //echo $query . "<br>";
+//            $res3 = mysqli_query($db, $query);
+//            if (!$res3) {
+//                return mysqli_error($db);
+//            }
+//        }
+//    }
+//
+//    return;
+//}
+
 function createAdempimenti() {
     global $db;
-    
+
     $query = "SELECT * FROM Adempimenti";
     $res = mysqli_query($db, $query);
     if (!$res) {
@@ -979,72 +1103,307 @@ function createAdempimenti() {
     //svuoto la tabella
     $query = 'TRUNCATE msc_adempimenti';
     mysqli_query($db, $query);
-    
+    $query = 'TRUNCATE msc_rel_amministrazioni_adempimenti';
+    mysqli_query($db, $query);
+
     //popolo la tabella
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
-            
-            //ricavo l'id dell'utente
-            $query2 = 'SELECT * FROM fos_user WHERE username = "'. $row['Utente_Modifica'] . '"';
+
+            //ricavo l'id dell'ambito
+            $query2 = 'SELECT * FROM AdempimentiAmbiti WHERE denominazione = "'. $row['Ambito'] . '"';
             $res2 = mysqli_query($db, $query2);
-            if (!$res2) {
-                return mysqli_error($db);
+            if (!$res2) { return mysqli_error($db) . " (AdempimentiAmbiti)"; }
+            while ($row2 = mysqli_fetch_array($res2)) {
+                $id_ambito = $row2['id'];
+            }
+            //ricavo l'id della tipologia
+            $query2 = 'SELECT * FROM AdempimentiTipologie WHERE denominazione = "'. $row['Tipologia'] . '"';
+            $res2 = mysqli_query($db, $query2);
+            if (!$res2) { return mysqli_error($db) . " (AdempimentiTipologie)"; }
+            while ($row2 = mysqli_fetch_array($res2)) {
+                $id_tipologia = $row2['id'];
+            }
+            //ricavo l'id dell' azione
+            if ($row['Azione'] == "Cominicazione") { $row['Azione'] = "Comunicazione"; }
+            $query2 = 'SELECT * FROM AdempimentiAzioni WHERE denominazione = "'. $row['Azione'] . '"';
+            $res2 = mysqli_query($db, $query2);
+            if (!$res2) { return mysqli_error($db) . " (AdempimentiTipologie)"; }
+            while ($row2 = mysqli_fetch_array($res2)) {
+                $id_azione = $row2['id'];
             }
 
-            $idUtente = 0;
-            if (mysqli_num_rows($res2) >= 1) {
-                while ($row2 = mysqli_fetch_array($res2)) {
-                    $idUtente = $row2['id'];    
+
+            //ricavo l'id dell' ufficio (struttura)
+            $struttura = $row['Struttura'];
+            if( strpos( $struttura, "Ufficio II" ) !== false && $row['Struttura'] != "Ufficio III") {
+                $struttura = "Ufficio II";
+            }
+            if( strpos( $struttura, "Ufficio V" ) !== false ) {
+                $struttura = "Ufficio V";
+            }
+            $query2 = 'SELECT * FROM msc_uffici WHERE denominazione = "'. $struttura . '"';
+            $res2 = mysqli_query($db, $query2);
+            if (!$res2) { return mysqli_error($db) . " (msc_uffici)"; }
+            while ($row2 = mysqli_fetch_array($res2)) {
+                $id_struttura = $row2['id'];
+            }
+
+
+
+
+            //ricavo l'id della delibera (da numero_delibera e suduta)
+            $query_delibere = 'SELECT * FROM msc_delibere WHERE data = "' . $row['Seduta'] . '" AND numero = "'.$row['Numero_Delibera'].'"';
+            $res_delibere = mysqli_query($db, $query_delibere);
+            if (!$res_delibere) {
+                return mysqli_error($db) . " (msc_delibere)";
+            }
+            //echo $query_delibere . "<br>";
+
+            while ($row_delibere = mysqli_fetch_array($res_delibere)) {
+                $delibera = $row_delibere['id'];
+            }
+
+            //ricavo l'id delle amministrazioni adempimenti
+            $query2 = 'SELECT Progressivo, Amministrazione FROM Adempimenti WHERE Progressivo = "'. $row['Progressivo'] . '"';
+            $res2 = mysqli_query($db, $query2);
+            if (!$res2) { return mysqli_error($db) . " (Adempimenti - relazione)"; }
+            while ($row2 = mysqli_fetch_array($res2)) {
+                $row['Amministrazione'] = str_replace("  ","",$row['Amministrazione']);
+                $arrayTemp = explode("|", $row['Amministrazione']);
+                foreach ($arrayTemp as $item) {
+
+                    $query3 = 'SELECT id FROM msc_adempimenti_amministrazioni WHERE denominazione = "'. $item . '"';
+                    $res3 = mysqli_query($db, $query3);
+                    if (!$res3) { return mysqli_error($db) . " (msc_adempimenti_amministrazioni)"; }
+                    while ($row3 = mysqli_fetch_array($res3)) {
+                        $id_amministrazione = $row3['id'];
+                    }
+
+                    $query = 'INSERT INTO `msc_rel_amministrazioni_adempimenti`(
+                                                 `id_adempimenti`,
+                                                 `id_amministrazioni`
+                                                )
+                                                VALUES (
+                                                "' . $row['Progressivo'] . '",
+                                                "' . $id_amministrazione . '"
+                                                )';
+                    $res3 = mysqli_query($db, $query);
+                    if (!$res3) {
+                        return mysqli_error($db) . " (msc_rel_amministrazioni_adempimenti)";
+                    }
                 }
             }
 
-            $Descrizione_Adempimento = str_replace('"','',$row['Descrizione_Adempimento']);
-            $Descrizione_Adempimento = str_replace('“','',$Descrizione_Adempimento);
-            $Descrizione_Adempimento = str_replace('”','',$Descrizione_Adempimento);
-            $Note_Adempimento = str_replace('"','',$row['Note_Adempimento']);
-            $Note_Adempimento = str_replace('“','',$Note_Adempimento);
-            $Note_Adempimento = str_replace('”','',$Note_Adempimento);
-
             $query = 'INSERT INTO `msc_adempimenti`(
-                                                 `codice`,
-                                                 `progressivo`,
-                                                 `codice_scheda`,
+                                                 `id`,
+                                                 `istruttore`,
                                                  `id_delibere`,
+                                                 `numero_delibera`,
+                                                 `anno`,
+                                                 `seduta`,
+                                                 `materia`,
+                                                 `argomento`,
+                                                 `fondo_norma`,
+                                                 `ambito`,
+                                                 `localizzazione`,
+                                                 `cup`,
+                                                 `riferimento`,
                                                  `descrizione`,
-                                                 `codice_descrizione`,
-                                                 `codice_fonte`,
-                                                 `codice_esito`,
+                                                 `tipologia`,
+                                                 `azione`,
+                                                 `mancato_assolvimento`,
+                                                 `norme_delibere`,
                                                  `data_scadenza`,
-                                                 `giorni_scadenza`,
-                                                 `mesi_scadenza`,
-                                                 `anni_scadenza`,
-                                                 `vincolo`,
-                                                 `note`,
-                                                 `utente`,
-                                                 `data_modifica`
+                                                 `destinatario`,
+                                                 `struttura`,
+                                                 `adempiuto`,
+                                                 `periodicita`,
+                                                 `pluriennalita`,
+                                                 `note`
                                                 )
                                                 VALUES (
-                                                "' . $row['Codice_Adempimento'] . '",
-                                                "' . $row['Progressivo_Adempimento'] . '",
-                                                "' . $row['Codice_Scheda'] . '",
-                                                "' . $row['Codice_Delibera'] . '",
-                                                "' . $Descrizione_Adempimento . '",
-                                                "' . $row['Codice_DescrizioneAdempimento'] . '",
-                                                "' . $row['Codice_FonteAdempimento'] . '",
-                                                "' . $row['Codice_EsitoAdempimento'] . '",
-                                                "' . $row['Data_Scadenza_Adempimento'] . '",
-                                                "' . $row['Giorni_Scadenza_Adempimento'] . '",
-                                                "' . $row['Mesi_Scadenza_Adempimento'] . '",
-                                                "' . $row['Anni_Scadenza_Adempimento'] . '",
-                                                "' . $row['Vincolo_Adempimento'] . '",
-                                                "' . $Note_Adempimento . '",
-                                                "' . $idUtente . '",
-                                                "' . $row['Data_UtenteModifica'] . '"
+                                                "' . $row['Progressivo'] . '",
+                                                "' . $row['Istruttore'] . '",
+                                                "' . $delibera . '",
+                                                "' . $row['Numero_Delibera'] . '",
+                                                "' . $row['Anno'] . '",
+                                                "' . $row['Seduta'] . '",
+                                                "' . $row['Materia'] . '",
+                                                "' . $row['Argomento'] . '",
+                                                "' . $row['Fondo_norma'] . '",
+                                                "' . $id_ambito . '",
+                                                "' . $row['Localizzazione'] . '",
+                                                "' . $row['CUP'] . '",
+                                                "' . $row['Riferimento'] . '",
+                                                "' . $row['Descrizione'] . '",
+                                                "' . $id_tipologia . '",
+                                                "' . $id_azione . '",
+                                                "' . $row['Mancato_assolvimento'] . '",
+                                                "' . $row['Norme_delibere'] . '",
+                                                "' . $row['Scadenza'] . '",
+                                                "' . $row['Destinatario'] . '",
+                                                "' . $id_struttura . '",
+                                                "' . $row['Adempiuto'] . '",
+                                                "' . $row['Periodicita'] . '",
+                                                "' . $row['Pluriennalita'] . '",
+                                                "' . $row['NOTE'] . '"
                                                 )';
             //echo $query . "<br>";
             $res3 = mysqli_query($db, $query);
             if (!$res3) {
-                return mysqli_error($db);
+                return mysqli_error($db) . " (msc_adempimenti)";
+            }
+        }
+    }
+
+    return;
+}
+
+
+function createAdempimentiAmbiti() {
+    global $db;
+
+    $query = "SELECT * FROM AdempimentiAmbiti";
+    $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
+    //svuoto la tabella
+    $query = 'TRUNCATE msc_adempimenti_ambiti';
+    mysqli_query($db, $query);
+
+    //popolo la tabella
+    if (mysqli_num_rows($res) >= 1) {
+        while ($row = mysqli_fetch_array($res)) {
+            $query = 'INSERT INTO `msc_adempimenti_ambiti`(
+                                                 `id`,
+                                                 `denominazione`,
+                                                 `note`
+                                                )
+                                                VALUES (
+                                                "' . $row['id'] . '",
+                                                "' . $row['denominazione'] . '",
+                                                "' . $row['note'] . '"
+                                                )';
+            $res3 = mysqli_query($db, $query);
+            if (!$res3) {
+                return mysqli_error($db) . " (msc_adempimenti_ambiti)";
+            }
+        }
+    }
+
+    return;
+}
+
+function createAdempimentiAzioni() {
+    global $db;
+
+    $query = "SELECT * FROM AdempimentiAzioni";
+    $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
+    //svuoto la tabella
+    $query = 'TRUNCATE msc_adempimenti_azioni';
+    mysqli_query($db, $query);
+
+    //popolo la tabella
+    if (mysqli_num_rows($res) >= 1) {
+        while ($row = mysqli_fetch_array($res)) {
+            $query = 'INSERT INTO `msc_adempimenti_azioni`(
+                                                 `id`,
+                                                 `denominazione`,
+                                                 `note`
+                                                )
+                                                VALUES (
+                                                "' . $row['id'] . '",
+                                                "' . $row['denominazione'] . '",
+                                                "' . $row['note'] . '"
+                                                )';
+            $res3 = mysqli_query($db, $query);
+            if (!$res3) {
+                return mysqli_error($db) . " (msc_adempimenti_azioni)";
+            }
+        }
+    }
+
+    return;
+}
+
+function createAdempimentiTipologie() {
+    global $db;
+
+    $query = "SELECT * FROM AdempimentiTipologie";
+    $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
+    //svuoto la tabella
+    $query = 'TRUNCATE msc_adempimenti_tipologie';
+    mysqli_query($db, $query);
+
+    //popolo la tabella
+    if (mysqli_num_rows($res) >= 1) {
+        while ($row = mysqli_fetch_array($res)) {
+            $query = 'INSERT INTO `msc_adempimenti_tipologie`(
+                                                 `id`,
+                                                 `denominazione`,
+                                                 `note`
+                                                )
+                                                VALUES (
+                                                "' . $row['id'] . '",
+                                                "' . $row['denominazione'] . '",
+                                                "' . $row['note'] . '"
+                                                )';
+            $res3 = mysqli_query($db, $query);
+            if (!$res3) {
+                return mysqli_error($db) . " (msc_adempimenti_tipologie)";
+            }
+        }
+    }
+
+    return;
+}
+
+function createAdempimentiAmministrazioni() {
+    global $db;
+
+    $query = "SELECT Amministrazione FROM Adempimenti GROUP BY Amministrazione";
+    $res = mysqli_query($db, $query);
+    if (!$res) {
+        return mysqli_error($db);
+    }
+    //svuoto la tabella
+    $query = 'TRUNCATE msc_adempimenti_amministrazioni';
+    mysqli_query($db, $query);
+
+    $arrayAmministrazioni = array();
+
+    //popolo la tabella
+    if (mysqli_num_rows($res) >= 1) {
+        while ($row = mysqli_fetch_array($res)) {
+            $row['Amministrazione'] = str_replace("  ","",$row['Amministrazione']);
+            $arrayTemp = explode("|", $row['Amministrazione']);
+            foreach ($arrayTemp as $item) {
+                if (!in_array($item, $arrayAmministrazioni)) {
+                    $arrayAmministrazioni[] = $item;
+                }
+            }
+        }
+
+        foreach ($arrayAmministrazioni as $item) {
+            $query = 'INSERT INTO `msc_adempimenti_amministrazioni`(
+                                                 `denominazione`,
+                                                 `note`
+                                                )
+                                                VALUES (
+                                                "' . $item . '",
+                                                ""
+                                                )';
+            $res3 = mysqli_query($db, $query);
+            if (!$res3) {
+                return mysqli_error($db) . " (msc_adempimenti_amministrazioni)";
             }
         }
     }
@@ -1075,20 +1434,23 @@ function createUtenti() {
     mysqli_query($db, $query);
 
 
+////(3, '3', 'Lettura di tutti i contenuti + scrittura adempimenti', 'a:27:{i:0;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:1;s:18:\"ROLE_READ_MITTENTI\";i:2;s:18:\"ROLE_READ_TITOLARI\";i:3;s:19:\"ROLE_READ_FASCICOLI\";i:4;s:18:\"ROLE_READ_REGISTRI\";i:5;s:16:\"ROLE_READ_GROUPS\";i:6;s:16:\"ROLE_READ_UFFICI\";i:7;s:20:\"ROLE_READ_RUOLI_CIPE\";i:8;s:14:\"ROLE_READ_TAGS\";i:9;s:17:\"ROLE_READ_PRECIPE\";i:10;s:23:\"ROLE_READ_MONITOR_GROUP\";i:11;s:17:\"ROLE_READ_MONITOR\";i:12;s:21:\"ROLE_READ_ADEMPIMENTI\";i:13;s:18:\"ROLE_READ_DELIBERE\";i:14;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:15;s:23:\"ROLE_READ_CIPEESITITIPO\";i:16;s:19:\"ROLE_READ_CIPEESITI\";i:17;s:23:\"ROLE_READ_FIRMATARITIPO\";i:18;s:14:\"ROLE_READ_CIPE\";i:19;s:19:\"ROLE_READ_FIRMATARI\";i:20;s:20:\"ROLE_READ_PRECIPEODG\";i:21;s:17:\"ROLE_READ_CIPEODG\";i:22;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:23;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:24;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:25;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:26;s:15:\"ROLE_READ_USERS\";}');";
 
 
     $queryGroup = "INSERT INTO `fos_group` (`id`, `codice`, `name`, `roles`) VALUES
-(1, '1', 'Amministratore del sistema', 'a:120:{i:0;s:23:\"ROLE_CREATE_ADEMPIMENTI\";i:1;s:23:\"ROLE_DELETE_ADEMPIMENTI\";i:2;s:21:\"ROLE_EDIT_ADEMPIMENTI\";i:3;s:21:\"ROLE_READ_ADEMPIMENTI\";i:4;s:27:\"ROLE_CREATE_AMMINISTRAZIONI\";i:5;s:25:\"ROLE_EDIT_AMMINISTRAZIONI\";i:6;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:7;s:21:\"ROLE_CREATE_ARGOMENTI\";i:8;s:21:\"ROLE_DELETE_ARGOMENTI\";i:9;s:19:\"ROLE_EDIT_ARGOMENTI\";i:10;s:19:\"ROLE_READ_ARGOMENTI\";i:11;s:16:\"ROLE_CREATE_CIPE\";i:12;s:16:\"ROLE_DELETE_CIPE\";i:13;s:14:\"ROLE_EDIT_CIPE\";i:14;s:14:\"ROLE_READ_CIPE\";i:15;s:19:\"ROLE_CREATE_CIPEODG\";i:16;s:19:\"ROLE_DELETE_CIPEODG\";i:17;s:17:\"ROLE_READ_CIPEODG\";i:18;s:20:\"ROLE_CREATE_DELIBERE\";i:19;s:18:\"ROLE_EDIT_DELIBERE\";i:20;s:18:\"ROLE_READ_DELIBERE\";i:21;s:21:\"ROLE_CREATE_FASCICOLI\";i:22;s:21:\"ROLE_DELETE_FASCICOLI\";i:23;s:19:\"ROLE_EDIT_FASCICOLI\";i:24;s:19:\"ROLE_READ_FASCICOLI\";i:25;s:21:\"ROLE_CREATE_FIRMATARI\";i:26;s:21:\"ROLE_DELETE_FIRMATARI\";i:27;s:19:\"ROLE_EDIT_FIRMATARI\";i:28;s:19:\"ROLE_READ_FIRMATARI\";i:29;s:20:\"ROLE_CREATE_MITTENTI\";i:30;s:18:\"ROLE_EDIT_MITTENTI\";i:31;s:18:\"ROLE_READ_MITTENTI\";i:32;s:20:\"ROLE_DELETE_MITTENTI\";i:33;s:19:\"ROLE_CREATE_PRECIPE\";i:34;s:17:\"ROLE_EDIT_PRECIPE\";i:35;s:17:\"ROLE_READ_PRECIPE\";i:36;s:19:\"ROLE_DELETE_PRECIPE\";i:37;s:22:\"ROLE_CREATE_PRECIPEODG\";i:38;s:20:\"ROLE_READ_PRECIPEODG\";i:39;s:22:\"ROLE_DELETE_PRECIPEODG\";i:40;s:21:\"ROLE_CREATE_RUOLICIPE\";i:41;s:21:\"ROLE_DELETE_RUOLICIPE\";i:42;s:19:\"ROLE_EDIT_RUOLICIPE\";i:43;s:19:\"ROLE_READ_RUOLICIPE\";i:44;s:16:\"ROLE_CREATE_TAGS\";i:45;s:16:\"ROLE_DELETE_TAGS\";i:46;s:14:\"ROLE_EDIT_TAGS\";i:47;s:14:\"ROLE_READ_TAGS\";i:48;s:20:\"ROLE_CREATE_TITOLARI\";i:49;s:20:\"ROLE_DELETE_TITOLARI\";i:50;s:18:\"ROLE_EDIT_TITOLARI\";i:51;s:18:\"ROLE_READ_TITOLARI\";i:52;s:18:\"ROLE_CREATE_UFFICI\";i:53;s:18:\"ROLE_DELETE_UFFICI\";i:54;s:16:\"ROLE_EDIT_UFFICI\";i:55;s:16:\"ROLE_READ_UFFICI\";i:56;s:18:\"ROLE_CREATE_UTENTI\";i:57;s:18:\"ROLE_DELETE_UTENTI\";i:58;s:16:\"ROLE_EDIT_UTENTI\";i:59;s:16:\"ROLE_READ_UTENTI\";i:60;s:21:\"ROLE_CREATE_CIPEESITI\";i:61;s:21:\"ROLE_DELETE_CIPEESITI\";i:62;s:19:\"ROLE_EDIT_CIPEESITI\";i:63;s:19:\"ROLE_READ_CIPEESITI\";i:64;s:25:\"ROLE_CREATE_CIPEESITITIPO\";i:65;s:25:\"ROLE_DELETE_CIPEESITITIPO\";i:66;s:23:\"ROLE_EDIT_CIPEESITITIPO\";i:67;s:23:\"ROLE_READ_CIPEESITITIPO\";i:68;s:29:\"ROLE_CREATE_CIPEARGOMENTITIPO\";i:69;s:29:\"ROLE_DELETE_CIPEARGOMENTITIPO\";i:70;s:27:\"ROLE_EDIT_CIPEARGOMENTITIPO\";i:71;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:72;s:16:\"ROLE_READ_GROUPS\";i:73;s:18:\"ROLE_CREATE_GROUPS\";i:74;s:16:\"ROLE_EDIT_GROUPS\";i:75;s:18:\"ROLE_DELETE_GROUPS\";i:76;s:15:\"ROLE_READ_USERS\";i:77;s:17:\"ROLE_CREATE_USERS\";i:78;s:15:\"ROLE_EDIT_USERS\";i:79;s:17:\"ROLE_DELETE_USERS\";i:80;s:23:\"ROLE_READ_FIRMATARITIPO\";i:81;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:82;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:83;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:84;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:85;s:20:\"ROLE_READ_RUOLI_CIPE\";i:86;s:22:\"ROLE_CREATE_RUOLI_CIPE\";i:87;s:20:\"ROLE_EDIT_RUOLI_CIPE\";i:88;s:22:\"ROLE_DELETE_RUOLI_CIPE\";i:89;s:33:\"ROLE_DELETE_AREARISERVATA_PRECIPE\";i:90;s:31:\"ROLE_EDIT_AREARISERVATA_PRECIPE\";i:91;s:33:\"ROLE_CREATE_AREARISERVATA_PRECIPE\";i:92;s:39:\"ROLE_CREATE_AREARISERVATA_PRECIPE_CHECK\";i:93;s:37:\"ROLE_EDIT_AREARISERVATA_PRECIPE_CHECK\";i:94;s:39:\"ROLE_DELETE_AREARISERVATA_PRECIPE_CHECK\";i:95;s:30:\"ROLE_DELETE_AREARISERVATA_CIPE\";i:96;s:36:\"ROLE_DELETE_AREARISERVATA_CIPE_CHECK\";i:97;s:25:\"ROLE_DELETE_FIRMATARITIPO\";i:98;s:23:\"ROLE_EDIT_FIRMATARITIPO\";i:99;s:34:\"ROLE_EDIT_AREARISERVATA_CIPE_CHECK\";i:100;s:28:\"ROLE_EDIT_AREARISERVATA_CIPE\";i:101;s:30:\"ROLE_CREATE_AREARISERVATA_CIPE\";i:102;s:36:\"ROLE_CREATE_AREARISERVATA_CIPE_CHECK\";i:103;s:25:\"ROLE_CREATE_FIRMATARITIPO\";i:104;s:17:\"ROLE_READ_MONITOR\";i:105;s:19:\"ROLE_CREATE_MONITOR\";i:106;s:17:\"ROLE_EDIT_MONITOR\";i:107;s:19:\"ROLE_DELETE_MONITOR\";i:108;s:23:\"ROLE_READ_MONITOR_GROUP\";i:109;s:25:\"ROLE_CREATE_MONITOR_GROUP\";i:110;s:23:\"ROLE_EDIT_MONITOR_GROUP\";i:111;s:25:\"ROLE_DELETE_MONITOR_GROUP\";i:112;s:27:\"ROLE_DELETE_AMMINISTRAZIONI\";i:113;s:20:\"ROLE_DELETE_DELIBERE\";i:114;s:18:\"ROLE_READ_REGISTRI\";i:115;s:20:\"ROLE_DELETE_REGISTRI\";i:116;s:20:\"ROLE_CREATE_REGISTRI\";i:117;s:18:\"ROLE_EDIT_REGISTRI\";i:118;s:17:\"ROLE_EDIT_CIPEODG\";i:119;s:20:\"ROLE_EDIT_PRECIPEODG\";}'),
+(1, '1', 'Amministratore del sistema', 'a:136:{i:0;s:23:\"ROLE_CREATE_ADEMPIMENTI\";i:1;s:23:\"ROLE_DELETE_ADEMPIMENTI\";i:2;s:21:\"ROLE_EDIT_ADEMPIMENTI\";i:3;s:21:\"ROLE_READ_ADEMPIMENTI\";i:4;s:27:\"ROLE_CREATE_AMMINISTRAZIONI\";i:5;s:25:\"ROLE_EDIT_AMMINISTRAZIONI\";i:6;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:7;s:21:\"ROLE_CREATE_ARGOMENTI\";i:8;s:21:\"ROLE_DELETE_ARGOMENTI\";i:9;s:19:\"ROLE_EDIT_ARGOMENTI\";i:10;s:19:\"ROLE_READ_ARGOMENTI\";i:11;s:16:\"ROLE_CREATE_CIPE\";i:12;s:16:\"ROLE_DELETE_CIPE\";i:13;s:14:\"ROLE_EDIT_CIPE\";i:14;s:14:\"ROLE_READ_CIPE\";i:15;s:19:\"ROLE_CREATE_CIPEODG\";i:16;s:19:\"ROLE_DELETE_CIPEODG\";i:17;s:17:\"ROLE_READ_CIPEODG\";i:18;s:20:\"ROLE_CREATE_DELIBERE\";i:19;s:18:\"ROLE_EDIT_DELIBERE\";i:20;s:18:\"ROLE_READ_DELIBERE\";i:21;s:21:\"ROLE_CREATE_FASCICOLI\";i:22;s:21:\"ROLE_DELETE_FASCICOLI\";i:23;s:19:\"ROLE_EDIT_FASCICOLI\";i:24;s:19:\"ROLE_READ_FASCICOLI\";i:25;s:21:\"ROLE_CREATE_FIRMATARI\";i:26;s:21:\"ROLE_DELETE_FIRMATARI\";i:27;s:19:\"ROLE_EDIT_FIRMATARI\";i:28;s:19:\"ROLE_READ_FIRMATARI\";i:29;s:20:\"ROLE_CREATE_MITTENTI\";i:30;s:18:\"ROLE_EDIT_MITTENTI\";i:31;s:18:\"ROLE_READ_MITTENTI\";i:32;s:20:\"ROLE_DELETE_MITTENTI\";i:33;s:19:\"ROLE_CREATE_PRECIPE\";i:34;s:17:\"ROLE_EDIT_PRECIPE\";i:35;s:17:\"ROLE_READ_PRECIPE\";i:36;s:19:\"ROLE_DELETE_PRECIPE\";i:37;s:22:\"ROLE_CREATE_PRECIPEODG\";i:38;s:20:\"ROLE_READ_PRECIPEODG\";i:39;s:22:\"ROLE_DELETE_PRECIPEODG\";i:40;s:21:\"ROLE_CREATE_RUOLICIPE\";i:41;s:21:\"ROLE_DELETE_RUOLICIPE\";i:42;s:19:\"ROLE_EDIT_RUOLICIPE\";i:43;s:19:\"ROLE_READ_RUOLICIPE\";i:44;s:16:\"ROLE_CREATE_TAGS\";i:45;s:16:\"ROLE_DELETE_TAGS\";i:46;s:14:\"ROLE_EDIT_TAGS\";i:47;s:14:\"ROLE_READ_TAGS\";i:48;s:20:\"ROLE_CREATE_TITOLARI\";i:49;s:20:\"ROLE_DELETE_TITOLARI\";i:50;s:18:\"ROLE_EDIT_TITOLARI\";i:51;s:18:\"ROLE_READ_TITOLARI\";i:52;s:18:\"ROLE_CREATE_UFFICI\";i:53;s:18:\"ROLE_DELETE_UFFICI\";i:54;s:16:\"ROLE_EDIT_UFFICI\";i:55;s:16:\"ROLE_READ_UFFICI\";i:56;s:18:\"ROLE_CREATE_UTENTI\";i:57;s:18:\"ROLE_DELETE_UTENTI\";i:58;s:16:\"ROLE_EDIT_UTENTI\";i:59;s:16:\"ROLE_READ_UTENTI\";i:60;s:21:\"ROLE_CREATE_CIPEESITI\";i:61;s:21:\"ROLE_DELETE_CIPEESITI\";i:62;s:19:\"ROLE_EDIT_CIPEESITI\";i:63;s:19:\"ROLE_READ_CIPEESITI\";i:64;s:25:\"ROLE_CREATE_CIPEESITITIPO\";i:65;s:25:\"ROLE_DELETE_CIPEESITITIPO\";i:66;s:23:\"ROLE_EDIT_CIPEESITITIPO\";i:67;s:23:\"ROLE_READ_CIPEESITITIPO\";i:68;s:29:\"ROLE_CREATE_CIPEARGOMENTITIPO\";i:69;s:29:\"ROLE_DELETE_CIPEARGOMENTITIPO\";i:70;s:27:\"ROLE_EDIT_CIPEARGOMENTITIPO\";i:71;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:72;s:16:\"ROLE_READ_GROUPS\";i:73;s:18:\"ROLE_CREATE_GROUPS\";i:74;s:16:\"ROLE_EDIT_GROUPS\";i:75;s:18:\"ROLE_DELETE_GROUPS\";i:76;s:15:\"ROLE_READ_USERS\";i:77;s:17:\"ROLE_CREATE_USERS\";i:78;s:15:\"ROLE_EDIT_USERS\";i:79;s:17:\"ROLE_DELETE_USERS\";i:80;s:23:\"ROLE_READ_FIRMATARITIPO\";i:81;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:82;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:83;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:84;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:85;s:20:\"ROLE_READ_RUOLI_CIPE\";i:86;s:22:\"ROLE_CREATE_RUOLI_CIPE\";i:87;s:20:\"ROLE_EDIT_RUOLI_CIPE\";i:88;s:22:\"ROLE_DELETE_RUOLI_CIPE\";i:89;s:33:\"ROLE_DELETE_AREARISERVATA_PRECIPE\";i:90;s:31:\"ROLE_EDIT_AREARISERVATA_PRECIPE\";i:91;s:33:\"ROLE_CREATE_AREARISERVATA_PRECIPE\";i:92;s:39:\"ROLE_CREATE_AREARISERVATA_PRECIPE_CHECK\";i:93;s:37:\"ROLE_EDIT_AREARISERVATA_PRECIPE_CHECK\";i:94;s:39:\"ROLE_DELETE_AREARISERVATA_PRECIPE_CHECK\";i:95;s:30:\"ROLE_DELETE_AREARISERVATA_CIPE\";i:96;s:36:\"ROLE_DELETE_AREARISERVATA_CIPE_CHECK\";i:97;s:25:\"ROLE_DELETE_FIRMATARITIPO\";i:98;s:23:\"ROLE_EDIT_FIRMATARITIPO\";i:99;s:34:\"ROLE_EDIT_AREARISERVATA_CIPE_CHECK\";i:100;s:28:\"ROLE_EDIT_AREARISERVATA_CIPE\";i:101;s:30:\"ROLE_CREATE_AREARISERVATA_CIPE\";i:102;s:36:\"ROLE_CREATE_AREARISERVATA_CIPE_CHECK\";i:103;s:25:\"ROLE_CREATE_FIRMATARITIPO\";i:104;s:17:\"ROLE_READ_MONITOR\";i:105;s:19:\"ROLE_CREATE_MONITOR\";i:106;s:17:\"ROLE_EDIT_MONITOR\";i:107;s:19:\"ROLE_DELETE_MONITOR\";i:108;s:23:\"ROLE_READ_MONITOR_GROUP\";i:109;s:25:\"ROLE_CREATE_MONITOR_GROUP\";i:110;s:23:\"ROLE_EDIT_MONITOR_GROUP\";i:111;s:25:\"ROLE_DELETE_MONITOR_GROUP\";i:112;s:27:\"ROLE_DELETE_AMMINISTRAZIONI\";i:113;s:20:\"ROLE_DELETE_DELIBERE\";i:114;s:18:\"ROLE_READ_REGISTRI\";i:115;s:20:\"ROLE_DELETE_REGISTRI\";i:116;s:20:\"ROLE_CREATE_REGISTRI\";i:117;s:18:\"ROLE_EDIT_REGISTRI\";i:118;s:17:\"ROLE_EDIT_CIPEODG\";i:119;s:20:\"ROLE_EDIT_PRECIPEODG\";i:120;s:28:\"ROLE_READ_ADEMPIMENTI_AMBITI\";i:121;s:30:\"ROLE_CREATE_ADEMPIMENTI_AMBITI\";i:122;s:28:\"ROLE_EDIT_ADEMPIMENTI_AMBITI\";i:123;s:30:\"ROLE_DELETE_ADEMPIMENTI_AMBITI\";i:124;s:28:\"ROLE_READ_ADEMPIMENTI_AZIONI\";i:125;s:30:\"ROLE_CREATE_ADEMPIMENTI_AZIONI\";i:126;s:28:\"ROLE_EDIT_ADEMPIMENTI_AZIONI\";i:127;s:30:\"ROLE_DELETE_ADEMPIMENTI_AZIONI\";i:128;s:30:\"ROLE_READ_ADEMPIMENTI_SOGGETTI\";i:129;s:31:\"ROLE_READ_ADEMPIMENTI_TIPOLOGIE\";i:130;s:32:\"ROLE_CREATE_ADEMPIMENTI_SOGGETTI\";i:131;s:33:\"ROLE_CREATE_ADEMPIMENTI_TIPOLOGIE\";i:132;s:31:\"ROLE_EDIT_ADEMPIMENTI_TIPOLOGIE\";i:133;s:30:\"ROLE_EDIT_ADEMPIMENTI_SOGGETTI\";i:134;s:32:\"ROLE_DELETE_ADEMPIMENTI_SOGGETTI\";i:135;s:33:\"ROLE_DELETE_ADEMPIMENTI_TIPOLOGIE\";}'),
 (2, '2', 'Solo lettura delibere', 'a:3:{i:0;s:18:\"ROLE_READ_DELIBERE\";i:1;s:19:\"ROLE_READ_FIRMATARI\";i:2;s:14:\"ROLE_READ_TAGS\";}'),
-(3, '3', 'Lettura di tutti i contenuti', 'a:27:{i:0;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:1;s:18:\"ROLE_READ_MITTENTI\";i:2;s:18:\"ROLE_READ_TITOLARI\";i:3;s:19:\"ROLE_READ_FASCICOLI\";i:4;s:18:\"ROLE_READ_REGISTRI\";i:5;s:16:\"ROLE_READ_GROUPS\";i:6;s:16:\"ROLE_READ_UFFICI\";i:7;s:20:\"ROLE_READ_RUOLI_CIPE\";i:8;s:14:\"ROLE_READ_TAGS\";i:9;s:17:\"ROLE_READ_PRECIPE\";i:10;s:23:\"ROLE_READ_MONITOR_GROUP\";i:11;s:17:\"ROLE_READ_MONITOR\";i:12;s:21:\"ROLE_READ_ADEMPIMENTI\";i:13;s:18:\"ROLE_READ_DELIBERE\";i:14;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:15;s:23:\"ROLE_READ_CIPEESITITIPO\";i:16;s:19:\"ROLE_READ_CIPEESITI\";i:17;s:23:\"ROLE_READ_FIRMATARITIPO\";i:18;s:14:\"ROLE_READ_CIPE\";i:19;s:19:\"ROLE_READ_FIRMATARI\";i:20;s:20:\"ROLE_READ_PRECIPEODG\";i:21;s:17:\"ROLE_READ_CIPEODG\";i:22;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:23;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:24;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:25;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:26;s:15:\"ROLE_READ_USERS\";}');";
+(3, '3', 'Lettura di tutti i contenuti + scrittura adempimenti', 'a:50:{i:0;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:1;s:18:\"ROLE_READ_MITTENTI\";i:2;s:18:\"ROLE_READ_TITOLARI\";i:3;s:19:\"ROLE_READ_FASCICOLI\";i:4;s:18:\"ROLE_READ_REGISTRI\";i:5;s:16:\"ROLE_READ_GROUPS\";i:6;s:16:\"ROLE_READ_UFFICI\";i:7;s:20:\"ROLE_READ_RUOLI_CIPE\";i:8;s:14:\"ROLE_READ_TAGS\";i:9;s:17:\"ROLE_READ_PRECIPE\";i:10;s:23:\"ROLE_READ_MONITOR_GROUP\";i:11;s:17:\"ROLE_READ_MONITOR\";i:12;s:21:\"ROLE_READ_ADEMPIMENTI\";i:13;s:18:\"ROLE_READ_DELIBERE\";i:14;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:15;s:23:\"ROLE_READ_CIPEESITITIPO\";i:16;s:19:\"ROLE_READ_CIPEESITI\";i:17;s:23:\"ROLE_READ_FIRMATARITIPO\";i:18;s:14:\"ROLE_READ_CIPE\";i:19;s:19:\"ROLE_READ_FIRMATARI\";i:20;s:20:\"ROLE_READ_PRECIPEODG\";i:21;s:17:\"ROLE_READ_CIPEODG\";i:22;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:23;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:24;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:25;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:26;s:15:\"ROLE_READ_USERS\";i:27;s:30:\"ROLE_READ_ADEMPIMENTI_SCADENZE\";i:28;s:31:\"ROLE_READ_ADEMPIMENTI_TIPOLOGIE\";i:29;s:30:\"ROLE_READ_ADEMPIMENTI_SOGGETTI\";i:30;s:28:\"ROLE_READ_ADEMPIMENTI_AZIONI\";i:31;s:28:\"ROLE_READ_ADEMPIMENTI_AMBITI\";i:32;s:23:\"ROLE_CREATE_ADEMPIMENTI\";i:33;s:21:\"ROLE_EDIT_ADEMPIMENTI\";i:34;s:23:\"ROLE_DELETE_ADEMPIMENTI\";i:35;s:32:\"ROLE_CREATE_ADEMPIMENTI_SCADENZE\";i:36;s:30:\"ROLE_EDIT_ADEMPIMENTI_SCADENZE\";i:37;s:32:\"ROLE_DELETE_ADEMPIMENTI_SCADENZE\";i:38;s:33:\"ROLE_DELETE_ADEMPIMENTI_TIPOLOGIE\";i:39;s:32:\"ROLE_DELETE_ADEMPIMENTI_SOGGETTI\";i:40;s:30:\"ROLE_DELETE_ADEMPIMENTI_AZIONI\";i:41;s:30:\"ROLE_DELETE_ADEMPIMENTI_AMBITI\";i:42;s:31:\"ROLE_EDIT_ADEMPIMENTI_TIPOLOGIE\";i:43;s:30:\"ROLE_EDIT_ADEMPIMENTI_SOGGETTI\";i:44;s:28:\"ROLE_EDIT_ADEMPIMENTI_AZIONI\";i:45;s:28:\"ROLE_EDIT_ADEMPIMENTI_AMBITI\";i:46;s:33:\"ROLE_CREATE_ADEMPIMENTI_TIPOLOGIE\";i:47;s:32:\"ROLE_CREATE_ADEMPIMENTI_SOGGETTI\";i:48;s:30:\"ROLE_CREATE_ADEMPIMENTI_AZIONI\";i:49;s:30:\"ROLE_CREATE_ADEMPIMENTI_AMBITI\";}');";
+
+
     $resGroup = mysqli_query($db, $queryGroup);
     if (!$resGroup) { return mysqli_error($db); }
 
     $saltADMIN = uniqid(mt_rand());
     $passwordADMIN = password_hash('Tick-Tack-Tock!1000$"', PASSWORD_DEFAULT);
     $login = "mosic-admin@governo.it";
-    $queryUser = "INSERT INTO `fos_user` (`id`, `username`, `email`, `enabled`, `salt`, `password`, `confirmation_token`, `password_requested_at`, `roles`, `username_canonical`, `email_canonical`, `firstName`, `lastName`, `created`, `id_uffici`, `cessato_servizio`, `ip`, `stazione`, `id_ruoli_cipe`) VALUES
-(1,  '".$login."', '".$login."', 1, '".$saltADMIN."',  '".$passwordADMIN."', NULL, '2018-12-31 00:00:00', 'a:0:{}', '".$login."', '".$login."', 'Mosic', 'Admin', '2017-01-01 00:00:00', 1, '0', '1111', 'qqqq', 2);";
+    $queryUser = "INSERT INTO `fos_user` (`id`, `username`, `email`, `enabled`, `salt`, `password`, `roles`, `username_canonical`, `email_canonical`, `firstName`, `lastName`, `created`, `id_uffici`, `cessato_servizio`, `ip`, `stazione`, `id_ruoli_cipe`) VALUES
+(1,  '".$login."', '".$login."', 1, '".$saltADMIN."',  '".$passwordADMIN."', 'a:0:{}', '".$login."', '".$login."', 'Mosic', 'Admin', '2017-01-01 00:00:00', 1, '0', '0.0.0.0', 'nd', 2);";
     $resUser = mysqli_query($db, $queryUser);
     if (!$resUser) { return mysqli_error($db); }
 
@@ -2198,6 +2560,21 @@ function setOrdiniCipe()
                         $risultanze = $row_risultanze['id'];
                     }
 
+//                    $delibere = "";
+//                    $query_delibere = 'SELECT * FROM msc_delibere WHERE data = "' . $row2['Data_Cipe'] . '" AND numero = "'.$row2['Numero_Delibera'].'"';
+//                    $res_delibere = mysqli_query($db, $query_delibere);
+//                    if (!$res_delibere) {
+//                        return mysqli_error($db) . " (msc_delibere)";
+//                    }
+//                    //echo $query_delibere . "<br>";
+//
+//                    while ($row_delibere = mysqli_fetch_array($res_delibere)) {
+//                        $delibere = $row_delibere['id'];
+//                    }
+
+
+
+
                     $OggettoCipe = str_replace('"','',$row2['Oggetto_Cipe']);
                     $query3 = 'INSERT INTO msc_cipe_ordini SET 
                         id = "' . $row2['Codice_Cipe'] . '", 
@@ -2214,6 +2591,7 @@ function setOrdiniCipe()
                         risultanza = "' . $risultanze . '", 
                         id_esito = "' . $row2['Codice_EsitoCipe'] . '", 
                         tipo_esito = "' . $row2['Codice_TipoEsitoCipe'] . '", 
+                        numero_delibera = "' . $row2['Numero_Delibera']  . '", 
                         annotazioni = "' . $row2['Annotazioni_Cipe'] . '"                        
                       ';
 

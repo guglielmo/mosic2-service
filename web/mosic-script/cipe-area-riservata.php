@@ -189,7 +189,7 @@ $info = curl_getinfo($ch);
 curl_close ($ch);
 
 
-//file_put_contents("debug-area-riservata-cipe.txt", $argv[2]);
+file_put_contents("debug-area-riservata-cipe2.txt", $argv[2]);
 //echo "aaa"; exit;
 
 // further processing ....
@@ -269,11 +269,11 @@ foreach ($cipeTemp->punti_odg as $i => $v) {
 
         //Aggiorno lo stato del cipe
         if ($result_info['http_code'] != 204) {
-            $current_file .= $argv[1] . " -------> " . $k->relURI . " --code--> " . $result_info['http_code'] . "\n";
+            $current_file .= $argv[1] . " -------> dimensione: " . (($k->dimensione / 1000) / 1000) . "Mb --- " . $k->relURI . " --code--> " . $result_info['http_code'] . "\n";
             //file_put_contents("file-errori-upload-cipe.txt", $current_file);
             $array_file_errati[] = $k->relURI;
         } else {
-            $current_file .= $argv[1] . " -------> " . $k->relURI . " --code--> " . $result_info['http_code'] . "\n";
+            $current_file .= $argv[1] . " -------> dimensione: " . (($k->dimensione / 1000) / 1000) . "Mb --- " . $k->relURI . " --code--> " . $result_info['http_code'] . "\n";
             //file_put_contents("file-errori-upload-cipe.txt", $current_file);
 
             $numero_file_caricati++;
@@ -284,7 +284,7 @@ foreach ($cipeTemp->punti_odg as $i => $v) {
 }
 
 $current_file .=  "\n\n";
-//file_put_contents("file-errori-upload-cipe.txt", $current_file);
+file_put_contents("file-errori-upload-cipe.txt", $current_file);
 
 
 //se ho inviato tutti i file correttamente

@@ -63,7 +63,7 @@ class DelibereController extends Controller
     /**
      * @Route("/delibere", name="delibere")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_DELIBERE')")
+     * //@Security("is_granted('ROLE_READ_DELIBERE')")
      */
     public function delibereAction(Request $request) {
 
@@ -149,24 +149,24 @@ $mscForSerialize = microtime(true);
             $serialize[$item]["giorni_iter"] = $giorni;
             $serialize[$item]["oss_cc"] = $arrayDelibereCC;
             $serialize[$item]["registrazione_cc"] = array(
-                "data" => $serialize[$item]["data_registrazione_cc"],
+                "data" => ($serialize[$item]["data_registrazione_cc"] == 0)? null : $serialize[$item]["data_registrazione_cc"],
                 "foglio" => $serialize[$item]["foglio_cc"],
                 "numero" => $serialize[$item]["registro_cc"]
             );
             $serialize[$item]["firme"] = array(
-                "uff_a" => $serialize[$item]["data_consegna"],
-                "cd_i" => $serialize[$item]["data_direttore_invio"],
-                "cd_r" => $serialize[$item]["data_direttore_ritorno"],
-                "mef_i" => $serialize[$item]["data_mef_invio"],
-                "mef_r" => $serialize[$item]["data_mef_ritorno"],
-                "seg_i" => $serialize[$item]["data_segretario_invio"],
-                "seg_r" => $serialize[$item]["data_segretario_ritorno"],
-                "pre_i" => $serialize[$item]["data_presidente_invio"],
-                "pre_r" => $serialize[$item]["data_presidente_ritorno"],
-                "cc_i" => $serialize[$item]["data_invio_cc"],
-                "cc_r" => $serialize[$item]["data_registrazione_cc"],
-                "gu_i" => $serialize[$item]["data_invio_gu"],
-                "gu_r" => $serialize[$item]["data_gu"]
+                "uff_a" => ($serialize[$item]["data_consegna"] == 0)? null : $serialize[$item]["data_consegna"],
+                "cd_i" => ($serialize[$item]["data_direttore_invio"] == 0)? null : $serialize[$item]["data_direttore_invio"],
+                "cd_r" => ($serialize[$item]["data_direttore_ritorno"] == 0)? null : $serialize[$item]["data_direttore_ritorno"],
+                "mef_i" => ($serialize[$item]["data_mef_invio"] == 0)? null : $serialize[$item]["data_mef_invio"],
+                "mef_r" => ($serialize[$item]["data_mef_ritorno"] == 0)? null : $serialize[$item]["data_mef_ritorno"],
+                "seg_i" => ($serialize[$item]["data_segretario_invio"] == 0)? null : $serialize[$item]["data_segretario_invio"],
+                "seg_r" => ($serialize[$item]["data_segretario_ritorno"] == 0)? null : $serialize[$item]["data_segretario_ritorno"],
+                "pre_i" => ($serialize[$item]["data_presidente_invio"] == 0)? null : $serialize[$item]["data_presidente_invio"],
+                "pre_r" => ($serialize[$item]["data_presidente_ritorno"] == 0)? null : $serialize[$item]["data_presidente_ritorno"],
+                "cc_i" => ($serialize[$item]["data_invio_cc"] == 0)? null : $serialize[$item]["data_invio_cc"],
+                "cc_r" => ($serialize[$item]["data_registrazione_cc"] == 0)? null : $serialize[$item]["data_registrazione_cc"],
+                "gu_i" => ($serialize[$item]["data_invio_gu"] == 0)? null : $serialize[$item]["data_invio_gu"],
+                "gu_r" => ($serialize[$item]["data_gu"] == 0)? null : $serialize[$item]["data_gu"]
             );
             unset($serialize[$item]['data_consegna']);
             unset($serialize[$item]['data_direttore_invio']);
@@ -204,7 +204,7 @@ $mscForSerialize = microtime(true);
 
             $serialize[$item]["pub_gu"] = array(
                 "nr" => $serialize[$item]["numero_gu"],
-                "data" => $serialize[$item]["data_gu"],
+                "data" => ($serialize[$item]["data_gu"] == 0)? null : $serialize[$item]["data_gu"],
             );
             unset($serialize[$item]['numero_gu']);
             unset($serialize[$item]['data_gu']);
