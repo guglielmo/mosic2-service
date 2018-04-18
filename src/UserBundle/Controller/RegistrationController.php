@@ -154,7 +154,7 @@ class RegistrationController extends BaseController
     /**
      * @Route("/users", name="users")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_UTENTI')")
+     * @Security("is_granted('ROLE_READ_USERS')")
      */
     public function usersListAction(Request $request) {
         $repository = $this->getDoctrine()->getRepository('UserBundle:User');
@@ -234,7 +234,7 @@ class RegistrationController extends BaseController
     /**
      * @Route("/users/{id}", name="users_item")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_UTENTI')")
+     * @Security("is_granted('ROLE_READ_USERS')")
      */
     public function usersItemAction(Request $request, $id) {
             
@@ -325,7 +325,7 @@ class RegistrationController extends BaseController
     /**
      * @Route("/users/{id}", name="users_item_save")
      * @Method("PUT")
-     * @Security("is_granted('ROLE_EDIT_UTENTI')")
+     * @Security("is_granted('ROLE_EDIT_USERS')")
      */
     public function usersItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -439,7 +439,7 @@ class RegistrationController extends BaseController
     /**
      * @Route("/users/{id}", name="users_item_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_DELETE_UTENTI')")
+     * @Security("is_granted('ROLE_DELETE_USERS')")
      */
     public function usersItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

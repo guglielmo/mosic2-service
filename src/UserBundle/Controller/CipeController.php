@@ -1073,7 +1073,7 @@ class CipeController extends Controller
         $ch = curl_init();
         $fields = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
 
-        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/api-token-auth/");
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.programmazioneeconomica.gov.it/api-token-auth/");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1140,7 +1140,7 @@ class CipeController extends Controller
             'Authorization: JWT ' . $token
         ];
 
-        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/seduta/cipe/". $id);
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.programmazioneeconomica.gov.it/seduta/cipe/". $id);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, "");
@@ -1183,7 +1183,7 @@ class CipeController extends Controller
             'Authorization: JWT ' . $token
         ];
 
-        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/cipe/". $id_cipe);
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.programmazioneeconomica.gov.it/cipe/". $id_cipe);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

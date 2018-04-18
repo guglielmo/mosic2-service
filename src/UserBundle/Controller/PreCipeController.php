@@ -840,7 +840,7 @@ class PreCipeController extends Controller
         $ch = curl_init();
         $fields = array("username"=>"mosic", "password" => "cowpony-butter-vizor");
 
-        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/api-token-auth/");
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.programmazioneeconomica.gov.it/api-token-auth/");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -912,7 +912,7 @@ class PreCipeController extends Controller
             'Authorization: JWT ' . $token
         ];
 
-        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/seduta/precipe/". $id);
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.programmazioneeconomica.gov.it/seduta/precipe/". $id);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, "");
@@ -949,7 +949,7 @@ class PreCipeController extends Controller
             'Authorization: JWT ' . $token
         ];
 
-        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.mosic2.celata.com/precipe/". $id_precipe);
+        curl_setopt($ch, CURLOPT_URL,"http://area-riservata.programmazioneeconomica.gov.it/precipe/". $id_precipe);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
