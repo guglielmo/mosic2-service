@@ -154,6 +154,16 @@ class LoginController extends Controller
             throw new BadCredentialsException();
         }
 
+
+        if ($user->getCessatoServizio() == 1) {
+            $response_array = array("error" =>  ["code" => 403, "message" => "Cessato servizio."]);
+            $response = new Response(json_encode($response_array), 403);
+            return $this->setBaseHeaders($response);
+            throw new BadCredentialsException();
+        }
+
+
+
         //genera il token
         $token = $this->getToken($user);
         

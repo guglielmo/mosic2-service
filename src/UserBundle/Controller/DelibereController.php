@@ -157,7 +157,7 @@ $mscForSerialize = microtime(true);
                 "uff_a" => ($serialize[$item]["data_consegna"] == 0)? null : $serialize[$item]["data_consegna"],
                 "cd_i" => ($serialize[$item]["data_direttore_invio"] == 0)? null : $serialize[$item]["data_direttore_invio"],
                 "cd_r" => ($serialize[$item]["data_direttore_ritorno"] == 0)? null : $serialize[$item]["data_direttore_ritorno"],
-                "mef_i" => ($serialize[$item]["data_mef_invio"] == 0)? null : $serialize[$item]["data_mef_invio"],
+                "mef_i" => ($serialize[$item]["data_mef_pec"] == 0)? null : $serialize[$item]["data_mef_pec"],
                 "mef_r" => ($serialize[$item]["data_mef_ritorno"] == 0)? null : $serialize[$item]["data_mef_ritorno"],
                 "seg_i" => ($serialize[$item]["data_segretario_invio"] == 0)? null : $serialize[$item]["data_segretario_invio"],
                 "seg_r" => ($serialize[$item]["data_segretario_ritorno"] == 0)? null : $serialize[$item]["data_segretario_ritorno"],
@@ -171,7 +171,7 @@ $mscForSerialize = microtime(true);
             unset($serialize[$item]['data_consegna']);
             unset($serialize[$item]['data_direttore_invio']);
             unset($serialize[$item]['data_direttore_ritorno']);
-            unset($serialize[$item]['data_mef_invio']);
+            unset($serialize[$item]['data_mef_pec']);
             unset($serialize[$item]['data_mef_ritorno']);
             unset($serialize[$item]['data_segretario_invio']);
             unset($serialize[$item]['data_segretario_ritorno']);
@@ -794,7 +794,7 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         }
         $delibereGiorni->setAcquisizioneSegretario($delibere->getDataConsegna());
         $delibereGiorni->setGiorniCapoDipartimento($this->differenceDate($data->data, $data->data_direttore_ritorno));
-        $delibereGiorni->setGiorniMef($this->differenceDate($data->data_mef_invio,$data->data_mef_ritorno));
+        $delibereGiorni->setGiorniMef($this->differenceDate($data->data_mef_pec,$data->data_mef_ritorno));
         $delibereGiorni->setGiorniSegretario($this->differenceDate($data->data_segretario_invio,$data->data_segretario_ritorno));
         $delibereGiorni->setGiorniPresidente($this->differenceDate($data->data_segretario_invio,$data->data_presidente_ritorno));
         $delibereGiorni->setGiorniCC($this->differenceDate($data->data_invio_cc,$data->data_registrazione_cc));
@@ -1081,11 +1081,18 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
             $path_file = Costanti::URL_ALLEGATI_DELIBERE . "/per-anno/" . $dataDelibere . "/";
             $file = $request->files->get('file');
             $nome_file = $file->getClientOriginalName();
-            $nome_file = "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) . "-" . $tipo . "-" . $this->sostituisciAccenti($nome_file);
+
+            if (strpos($nome_file, "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT)) !== false) {
+                $nome_file = $this->sostituisciAccenti($nome_file);
+            } else {
+                $nome_file = "E" . substr($dataDelibere, 2, 4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) . "-" . $tipo . "-" . $this->sostituisciAccenti($nome_file);
+            }
 
 
             if(file_exists($path_file . $nome_file)){
                 // Directory
+
+
                 $directory = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/";
                 // Returns array of files
                 $files = scandir($directory);
@@ -1099,8 +1106,10 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
                 $allegato->setData(new \DateTime());
                 $allegato->setFile($path_file_version);
 
+
                 $em->persist($allegato);
                 $em->flush(); //esegue query
+
 
                 $id_allegato_creato = $allegato->getId();
 

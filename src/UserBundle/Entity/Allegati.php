@@ -37,6 +37,11 @@ class Allegati
     private $escluso;
 
 
+    public function __construct() {
+        $this->escluso = 0;
+    }
+
+
 
     /**
      * Get id

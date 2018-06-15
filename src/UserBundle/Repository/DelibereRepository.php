@@ -42,6 +42,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             UNIX_TIMESTAMP(d.dataDirettoreInvio) * 1000 as data_direttore_invio,
                                             UNIX_TIMESTAMP(d.dataDirettoreRitorno) * 1000 as data_direttore_ritorno,
                                             UNIX_TIMESTAMP(d.dataMefInvio) * 1000 as data_mef_invio,
+                                            UNIX_TIMESTAMP(d.dataMefPec) * 1000 as data_mef_pec,
                                             UNIX_TIMESTAMP(d.dataMefRitorno) * 1000 as data_mef_ritorno,
                                             
                                             d.noteDirettore as note_direttore,

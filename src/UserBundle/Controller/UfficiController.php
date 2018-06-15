@@ -315,12 +315,35 @@ class UfficiController extends Controller
         $titolari = $repositoryTitolari->findOneByIdUffici($ufficio->getId());
 
 
+        $repositoryRelUfficiCipe = $em->getRepository('UserBundle:RelUfficiCipe');
+        $ufficiCipe = $repositoryRelUfficiCipe->findOneByIdUffici($ufficio->getId());
+
+        $repositoryRelUfficiDelibere = $em->getRepository('UserBundle:RelUfficiDelibere');
+        $ufficiDelibere = $repositoryRelUfficiDelibere->findOneByIdUffici($ufficio->getId());
+
+        $repositoryRelUfficiPreCipe = $em->getRepository('UserBundle:RelUfficiPreCipe');
+        $ufficiPreCipe = $repositoryRelUfficiPreCipe->findOneByIdUffici($ufficio->getId());
+
+
+
         if ($utenti) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha utenti associati, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha Utenti associati, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } elseif ($titolari) {
-            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha titolari associati, impossibile eliminarlo."]);
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha Titolari associati, impossibile eliminarlo."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        } elseif ($ufficiCipe) {
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha Cipe associati, impossibile eliminarlo."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        } elseif ($ufficiDelibere) {
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha Delibere associate, impossibile eliminarlo."]);
+            $response = new Response(json_encode($response_array), 409);
+            return $this->setBaseHeaders($response);
+        } elseif ($ufficiPreCipe) {
+            $response_array = array("error" =>  ["code" => 409, "message" => "L'ufficio ha PreCipe associati, impossibile eliminarlo."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
         } else {

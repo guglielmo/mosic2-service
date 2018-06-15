@@ -745,6 +745,79 @@ class RegistriController extends Controller
     }
 
 
+
+
+    /**
+     * @Route("/registri/{id}/zip", name="allegatiZipRegistri")
+     * @Method("GET")
+     */
+    public function allegatiZipAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository('UserBundle:RelAllegatiRegistri');
+        $relAllegatiRegistri = $repository->findByIdRegistri($id);
+
+        $zip = new \ZipArchive();
+        $zip_name = date("Ymd-His")."-AllegatiRegistro". $id .".zip"; // Zip name
+        if ($zip->open($zip_name, \ZipArchive::CREATE)!==TRUE) {
+            exit("cannot open <$zip_name>\n");
+        }
+
+
+
+        if (count($relAllegatiRegistri) > 0) {
+            foreach ($relAllegatiRegistri as $relAllegatiRegistri) {
+
+                $repository2 = $em->getRepository('UserBundle:Allegati');
+                $AllegatiRegistri = $repository2->findOneById($relAllegatiRegistri->getIdAllegati());
+
+                $pathFile = $AllegatiRegistri->getFile();
+
+                if (file_exists($pathFile)) {
+                    $zip->addFile($pathFile, $pathFile);
+                } else {
+                    echo "file does not exist";
+                }
+            }
+        } else {
+
+            //$response = new Response("nessun file allegato", Response::HTTP_OK);
+            //return $this->setBaseHeaders($response);
+
+
+            $response = new Response(
+                '<html><body>nessun file allegato</body></html>',
+                Response::HTTP_OK
+            );
+
+            $response->headers->set('Content-Type', 'text/html');
+
+            return $response;
+        }
+
+        $zip->close();
+
+        header('Content-type: application/zip');
+        header('Content-Disposition: attachment; filename="'.basename($zip_name).'"');
+        header("Content-length: " . filesize($zip_name));
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        ob_clean();
+        flush();
+
+        readfile($zip_name);
+
+        unlink($zip_name);
+
+        $response = new Response(json_encode("FINE"), Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
+
+
+
+
     /**
      * @Route("/registri", name="registri_options")
      * @Method("OPTIONS")

@@ -395,11 +395,31 @@ class AdempimentiController extends Controller
             return $this->setBaseHeaders($response);
         }
 
+
+        //ricavo l'anno della delibera scelta
+        $repositoryDelibera = $em->getRepository('UserBundle:Delibere');
+        $delibera = $repositoryDelibera->findOneBy(array("id" => $data->id_delibere));
+
+        $anno = $delibera->getData();
+        $anno = $anno->format('Y');
+        $numeroDelibera =  $delibera->getNumero();
+
+
+        //cerco negli adempimenti con anno corrente (della delibera), e ricavo il progressivo da aggiungere
+        $repositoryAdempimento = $em->getRepository('UserBundle:Adempimenti');
+        $ObjAdempimento = $repositoryAdempimento->findBy(array('anno'=> $anno), array('progressivo' => 'DESC'));
+
+        $progressivo = 1;
+        if (count($ObjAdempimento) > 0) {
+            $progressivo = $ObjAdempimento[0]->getProgressivo() + 1;
+        }
+
+
         $adempimento = new Adempimenti();
 
         $adempimento->setIstruttore($data->istruttore);
-        $adempimento->setNumeroDelibera($data->numero_delibera);
-        $adempimento->setAnno($data->anno);
+        $adempimento->setNumeroDelibera($numeroDelibera);
+        $adempimento->setAnno($anno);
         $adempimento->setSeduta(new \DateTime($this->zulu_to_rome($data->seduta)));
         $adempimento->setMateria($data->materia);
         $adempimento->setArgomento($data->argomento);
@@ -421,6 +441,7 @@ class AdempimentiController extends Controller
         $adempimento->setPluriennalita($data->pluriennalita);
         $adempimento->setNote($data->note);
         $adempimento->setIdDelibere($data->id_delibere);
+        $adempimento->setProgressivo($progressivo);
 
         if (isset($data->superato)) { $adempimento->setSuperato($data->superato); } else {$adempimento->setSuperato(0);}
 

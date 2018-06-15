@@ -567,31 +567,60 @@ trait ControllerHelper
      */
     public function setFaseProceduraleDelibere($data) {
 
-            if ($data->data_gu != "") {
-                $situazione = 10; // 9 - Pubblicato Gazzetta Ufficiale
-            } elseif ($data->data_invio_gu != "" && $data->data_gu == "") {
-                $situazione = 9; // 8 - Alla Gazzetta Ufficiale
+//            if ($data->data_gu != "") {
+//                $situazione = 10; // 9 - Pubblicato Gazzetta Ufficiale
+//            } elseif ($data->data_invio_gu != "" && $data->data_gu == "") {
+//                $situazione = 9; // 8 - Alla Gazzetta Ufficiale
+//            } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc != "") {
+//                $situazione = 8; // 8 - Registrato dalla Corte dei Conti
+//            } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc == "") {
+//                $situazione = 7; // 7 - Alla Corte dei Conti
+//            } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno != "" && $data->data_presidente_invio != "" && $data->data_presidente_ritorno == "") {
+//                $situazione = 6; // 6 - In firma Presidente Cipe
+//            } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno == "") {
+//                $situazione = 5; // 5 - In firma Segretario Cipe
+//            } elseif ($data->data_mef_ritorno != "") {
+//                $situazione = 4; // 4 - Ritorno MEF
+//            } elseif ($data->data_mef_invio != "") {
+//                $situazione = 3; // 3 - Invio MEF
+//            } elseif ($data->data_consegna != "" && $data->data_segretario_invio == "" && $data->data_presidente_invio == "") {
+//                $situazione = 2; // 2 - In lavorazione
+//            } elseif ($data->data_consegna == "") {
+//                $situazione = 1; // 1 - Da acquisire
+//            } else {
+//                $situazione = 0;
+//            }
 
-            } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc != "") {
-                $situazione = 8; // 8 - Registrato dalla Corte dei Conti
 
-            } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc == "") {
-                $situazione = 7; // 7 - Alla Corte dei Conti
-            } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno != "" && $data->data_presidente_invio != "" && $data->data_presidente_ritorno == "") {
-                $situazione = 6; // 6 - In firma Presidente Cipe
-            } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno == "") {
-                $situazione = 5; // 5 - In firma Segretario Cipe
-            } elseif ($data->data_mef_ritorno != "") {
-                $situazione = 4; // 4 - Ritorno MEF
-            } elseif ($data->data_mef_invio != "") {
-                $situazione = 3; // 3 - Invio MEF
-            } elseif ($data->data_consegna != "" && $data->data_segretario_invio == "" && $data->data_presidente_invio == "") {
-                $situazione = 2; // 2 - In lavorazione
-            } elseif ($data->data_consegna == "") {
-                $situazione = 1; // 1 - Da acquisire
-            } else {
-                $situazione = 0;
-            }
+        if ($data->data_gu != "") {
+            $situazione = 13; // 9 - Pubblicato Gazzetta Ufficiale
+        } elseif ($data->data_invio_gu != "" && $data->data_gu == "") {
+            $situazione = 12; // 8 - Alla Gazzetta Ufficiale
+        } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc != "") {
+            $situazione = 11; // 8 - Registrato dalla Corte dei Conti
+        } elseif ($data->data_invio_cc != "" && $data->data_registrazione_cc == "") {
+            $situazione = 10; // 7 - Alla Corte dei Conti
+        } elseif ($data->data_consegna != "" && $data->data_presidente_invio != "" && $data->data_presidente_ritorno != "") {
+            $situazione = 9; // 6 - Firmata dal Presidente Cipe
+        } elseif ($data->data_consegna != "" && $data->data_presidente_invio != "" && $data->data_presidente_ritorno == "") {
+            $situazione = 8; // 6 - In firma Presidente Cipe
+        } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno != "") {
+            $situazione = 7; // 5 - Firmata Segretario Cipe
+        } elseif ($data->data_consegna != "" && $data->data_segretario_invio != "" && $data->data_segretario_ritorno == "") {
+            $situazione = 6; // 5 - In firma Segretario Cipe
+        } elseif ($data->data_mef_ritorno != "") {
+            $situazione = 5; // 4 - Ritorno MEF
+        } elseif ($data->data_mef_pec != "") {
+            $situazione = 4; // 3 - Invio MEF
+        } elseif ($data->data_consegna != "" && $data->data_direttore_invio != "" && $data->data_direttore_ritorno != "") {
+            $situazione = 3; // 6 - Firmata dal Capo Dipartimento
+        } elseif ($data->data_consegna != "" && $data->data_direttore_invio != "" && $data->data_direttore_ritorno == "") {
+            $situazione = 2; // 6 - In firma Capo Dipartimento
+        } elseif ($data->data_consegna == "") {
+            $situazione = 1; // 1 - Da acquisire
+        } else {
+            $situazione = 0;
+        }
 
         return $situazione;
     }

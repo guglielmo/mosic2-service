@@ -4,11 +4,11 @@
 
     require_once "function.php";
 
-if (isset($_REQUEST['step1'])) {
+    if (isset($_REQUEST['step1'])) {
         require_once "create-table.php";
         header("Location: " . $_SERVER['PHP_SELF']);
     }
-    
+
     if (isset($_REQUEST['step2'])) {
         $tempo1 = microtime(true);
 
@@ -67,7 +67,7 @@ if (isset($_REQUEST['step1'])) {
         $tempo1 = microtime(true) - $tempo1;
         $fineStep2 = "Fine step 2 <br><br> (tempo impiegato): ". $tempo1 . " secondi";
     }
-    
+
     if (isset($_REQUEST['step3'])) {
         $fineStep3 = array();
 
@@ -94,7 +94,6 @@ if (isset($_REQUEST['step1'])) {
         renameWithNestedMkdir("../files/2015", "../files/DELIBERE/per-anno/2015");
         renameWithNestedMkdir("../files/2016", "../files/DELIBERE/per-anno/2016");
         renameWithNestedMkdir("../files/2017", "../files/DELIBERE/per-anno/2017");
-        renameWithNestedMkdir("../files/2018", "../files/DELIBERE/per-anno/2018");
 
         renameWithNestedMkdir("../files/MEF", "../files/DELIBERE/MEF");
         renameWithNestedMkdir("../files/RILIEVI", "../files/DELIBERE/CC");
@@ -129,6 +128,58 @@ if (isset($_REQUEST['step1'])) {
 
     if (isset($_REQUEST['step4'])) {
 
+
+//        $table1 = "Adempimenti";
+//        $queryDelete1 ="DROP TABLE " . $table1;
+//        mysqli_query($db, $queryDelete1) or  mysqli_error($db);
+//        $queryCreate1 = "CREATE TABLE `Adempimenti` (
+//              `id` int(11) DEFAULT NULL,
+//              `Istruttore` varchar(255) DEFAULT NULL,
+//              `Progressivo` int(11) DEFAULT NULL,
+//              `Numero_Delibera` int(11) DEFAULT NULL,
+//              `Anno` int(11) DEFAULT NULL,
+//              `Seduta` date DEFAULT NULL,
+//              `Materia` varchar(255) DEFAULT NULL,
+//              `Argomento` longtext DEFAULT NULL,
+//              `Fondo_norma` varchar(255) DEFAULT NULL,
+//              `Ambito` varchar(255) DEFAULT NULL,
+//              `Localizzazione` varchar(255) DEFAULT NULL,
+//              `CUP` varchar(255) DEFAULT NULL,
+//              `Riferimento` varchar(255) DEFAULT NULL,
+//              `Descrizione` longtext DEFAULT NULL,
+//              `Tipologia` varchar(255) DEFAULT NULL,
+//              `Azione` varchar(255) DEFAULT NULL,
+//              `Mancato_assolvimento` varchar(255) DEFAULT NULL,
+//              `Amministrazione` varchar(255) DEFAULT NULL,
+//              `Norme_delibere` varchar(255) DEFAULT NULL,
+//              `Scadenza` date DEFAULT NULL,
+//              `Destinatario` varchar(255) DEFAULT NULL,
+//              `Struttura` varchar(255) DEFAULT NULL,
+//              `Adempiuto` varchar(255) DEFAULT NULL,
+//              `Periodicita` int(11) DEFAULT NULL,
+//              `Pluriennalita` int(11) DEFAULT NULL,
+//              `NOTE` longtext DEFAULT NULL
+//
+//        ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+//        mysqli_query($db, $queryCreate1) or die( mysqli_error($db));
+//
+//        $pathFiles = "fileCSV/";
+//        $queryLoad1 = 'LOAD DATA LOCAL INFILE "'.$pathFiles . $table1 .'.csv"
+//        INTO TABLE '.$table1.'
+//        FIELDS TERMINATED by \',\'
+//        ENCLOSED BY \'"\'
+//        LINES TERMINATED BY \'\n\'
+//        IGNORE 1 LINES';
+//        mysqli_query($db, $queryLoad1) or die( mysqli_error($db));
+
+
+//        //nuova funzione che lavora sulle tabelle msc direttamente (leggendo da Adempimenti)
+//        $return = createAdempimenti2(); if(isset($return)) { $fineStep4 = $return; goto jump;}
+
+
+
+
+
         $return = createAdempimentiAmbiti(); if(isset($return)) { $fineStep4 = $return; goto jump;}
         $return = createAdempimentiAzioni(); if(isset($return)) { $fineStep4 = $return; goto jump;}
         $return = createAdempimentiTipologie(); if(isset($return)) { $fineStep4 = $return; goto jump;}
@@ -139,12 +190,22 @@ if (isset($_REQUEST['step1'])) {
     }
 
 
-
     if (isset($_REQUEST['step5'])) {
+
+
+        $return = setDelibereUpdateStato(); if(isset($return)) { $fineStep5 = $return; goto jump;}
+
+        $fineStep5 ="FIne step 5.";
+    }
+
+
+    if (isset($_REQUEST['step6'])) {
         require_once "delete-table.php";
         //header("Location: " . $_SERVER['PHP_SELF']);
-        $fineStep5 ="Tabelle eliminate con successo.";
+        $fineStep6 ="Tabelle eliminate con successo.";
     }
+
+
 
     jump:
 
@@ -178,14 +239,15 @@ if (isset($_REQUEST['step1'])) {
                     <button type="submit" name="step2" class="btn btn-primary btn-block"><strong>STEP 2</strong> - Esegui script collega tabelle</button>
                     <button type="submit" name="step3" class="btn btn-primary btn-block"><strong>STEP 3</strong> - Sanitize File e gestione allegati</button>
                     <button type="submit" name="step4" class="btn btn-primary btn-block"><strong>STEP 4</strong> - Adempimenti</button>
-                    <button type="submit" name="step5" class="btn btn-primary btn-block"><strong>STEP 5</strong> - Elimina tabelle orginali</button>
+                <button type="submit" name="step5" class="btn btn-primary btn-block"><strong>STEP 5</strong> - Update stato delibere</button>
+                <button type="submit" name="step6" class="btn btn-primary btn-block"><strong>STEP 6</strong> - Elimina tabelle orginali</button>
             </form>
         </div>
         
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Tabelle presenti (originali) da eliminare al termine di tutte le procedure (Step 5)</h3>
+                    <h3 class="panel-title">Tabelle presenti (originali) da eliminare al termine di tutte le procedure (Step 6)</h3>
                 </div>
                 <div class="panel-body">
                 	
@@ -246,6 +308,10 @@ if (isset($_REQUEST['step1'])) {
 
                     <?php if (isset($fineStep5)) { ?>
                         <?= $fineStep5 ?>
+                    <?php } ?>
+
+                    <?php if (isset($fineStep6)) { ?>
+                        <?= $fineStep6 ?>
                     <?php } ?>
 
 

@@ -172,11 +172,18 @@ class Adempimenti
     private $superato;
 
 
+    /**
+     * @var int
+     * @ORM\Column(name="progressivo", type="integer")
+     */
+    private $progressivo;
+
 
     public function __construct() {
         $this->seduta = new \DateTime();
         $this->dataScadenza = new \DateTime();
         $this->superato = 0;
+        $this->progressivo = 0;
     }
 
 
@@ -791,4 +798,23 @@ class Adempimenti
     {
         return $this->superato;
     }
+
+    /**
+     * @return int
+     */
+    public function getProgressivo()
+    {
+        return $this->progressivo;
+    }
+
+    /**
+     * @param int $progressivo
+     */
+    public function setProgressivo($progressivo)
+    {
+        $this->progressivo = $progressivo;
+    }
+
+
+
 }
