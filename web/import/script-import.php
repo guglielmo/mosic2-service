@@ -94,7 +94,7 @@
         renameWithNestedMkdir("../files/2015", "../files/DELIBERE/per-anno/2015");
         renameWithNestedMkdir("../files/2016", "../files/DELIBERE/per-anno/2016");
         renameWithNestedMkdir("../files/2017", "../files/DELIBERE/per-anno/2017");
-        renameWithNestedMkdir("../files/2017", "../files/DELIBERE/per-anno/2018");
+        renameWithNestedMkdir("../files/2018", "../files/DELIBERE/per-anno/2018");
 
         renameWithNestedMkdir("../files/MEF", "../files/DELIBERE/MEF");
         renameWithNestedMkdir("../files/RILIEVI", "../files/DELIBERE/CC");
