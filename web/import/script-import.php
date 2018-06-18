@@ -4,6 +4,7 @@
 
     require_once "function.php";
 
+
     if (isset($_REQUEST['step1'])) {
         require_once "create-table.php";
         header("Location: " . $_SERVER['PHP_SELF']);
@@ -196,14 +197,14 @@
 
         $return = setDelibereUpdateStato(); if(isset($return)) { $fineStep5 = $return; goto jump;}
 
-        $fineStep5 ="FIne step 5.";
+        $fineStep5 ="Delibere aggiornate con successo.";
     }
 
 
     if (isset($_REQUEST['step6'])) {
         require_once "delete-table.php";
         //header("Location: " . $_SERVER['PHP_SELF']);
-        $fineStep6 ="Tabelle eliminate con successo.";
+        $fineStep6 ="Tabelle originali eliminate con successo.<br><strong>PROCEDURA CONCLUSA</strong>";
     }
 
 
@@ -252,7 +253,7 @@
                 </div>
                 <div class="panel-body">
                 	
-                    <?php if ($rowsAdempimenti > 0 && !isset($fineStep5)) { ?>
+                    <?php if ($rowsAdempimenti > 0 && !isset($fineStep6)) { ?>
                             Tabella Adempimenti --> <?= $rowsAdempimenti[0] ?> righe <br/>
                             Tabella AdempimentiAmbiti --> <?= $rowsAdempimentiAmbiti[0] ?> righe <br/>
                             Tabella AdempimentiTipologie --> <?= $rowsAdempimentiTipologie[0] ?> righe <br/>
@@ -297,6 +298,7 @@
                             foreach ($fineStep3 as $item) {
                                 echo $item;
                             }
+                            echo "<br><br>" . $fineStep3;
                         } else {
                             echo $fineStep3;
                         }

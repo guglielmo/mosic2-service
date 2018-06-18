@@ -63,7 +63,7 @@ class DelibereController extends Controller
     /**
      * @Route("/delibere", name="delibere")
      * @Method("GET")
-     * //@Security("is_granted('ROLE_READ_DELIBERE')")
+     * @Security("is_granted('ROLE_READ_DELIBERE')")
      */
     public function delibereAction(Request $request) {
 

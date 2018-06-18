@@ -43,6 +43,7 @@ class GroupController extends Controller
     /**
      * @Route("/groups", name="groups")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_GROUPS')")
      */
     public function groupsAction(Request $request) {
         //prendo i parametri get
@@ -97,6 +98,7 @@ class GroupController extends Controller
     /**
      * @Route("/groups/{id}", name="groups_item")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_GROUPS')")
      */
     public function groupsItemAction(Request $request, $id) {
 
@@ -160,6 +162,7 @@ class GroupController extends Controller
     /**
      * @Route("/groups/{id}", name="groups_item_save")
      * @Method("PUT")
+     * @Security("is_granted('ROLE_EDIT_GROUPS')")
      */
     public function groupsItemSaveAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -210,6 +213,7 @@ class GroupController extends Controller
     /**
      * @Route("/groups", name="groups_item_create")
      * @Method("POST")
+     * @Security("is_granted('ROLE_CREATE_GROUPS')")
      */
     public function groupsItemCreateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -271,6 +275,7 @@ class GroupController extends Controller
     /**
      * @Route("/groups/{id}", name="groups_item_delete")
      * @Method("DELETE")
+     * @Security("is_granted('ROLE_DELETE_GROUPS')")
      */
     public function groupsItemDeleteAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();

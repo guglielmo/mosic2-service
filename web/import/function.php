@@ -817,6 +817,10 @@ function createUffici() {
     //popolo la tabella
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
+            $disattivo = 0;
+            if ($row['Codice_Ufficio'] != 1 && $row['Codice_Ufficio'] != 2 && $row['Codice_Ufficio'] != 3 && $row['Codice_Ufficio'] != 4 && $row['Codice_Ufficio'] != 5) {
+                $disattivo = 1;
+            }
             $query = 'INSERT INTO `msc_uffici`(
                                                  `codice`,
                                                  `codice_direzione`,
@@ -830,10 +834,10 @@ function createUffici() {
                                                 "' . $row['Codice_Direzione'] . '",
                                                 "' . $row['Descrizione_Ufficio'] . '",
                                                 "' . $row['Ordine_Ufficio'] . '",
-                                                "' . $row['Disattivo_Ufficio'] . '",
+                                                "' . $disattivo . '",
                                                 "' . $row['Solo_Delibere'] . '"
                                                 )';
-            //echo $query . "<br>";
+            echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
             if (!$res2) {
                 return mysqli_error($db);
@@ -1736,9 +1740,11 @@ function createUtenti() {
 
 
     $queryGroup = "INSERT INTO `fos_group` (`id`, `codice`, `name`, `roles`) VALUES
-(1, '1', 'Amministratore del sistema', 'a:136:{i:0;s:23:\"ROLE_CREATE_ADEMPIMENTI\";i:1;s:23:\"ROLE_DELETE_ADEMPIMENTI\";i:2;s:21:\"ROLE_EDIT_ADEMPIMENTI\";i:3;s:21:\"ROLE_READ_ADEMPIMENTI\";i:4;s:27:\"ROLE_CREATE_AMMINISTRAZIONI\";i:5;s:25:\"ROLE_EDIT_AMMINISTRAZIONI\";i:6;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:7;s:21:\"ROLE_CREATE_ARGOMENTI\";i:8;s:21:\"ROLE_DELETE_ARGOMENTI\";i:9;s:19:\"ROLE_EDIT_ARGOMENTI\";i:10;s:19:\"ROLE_READ_ARGOMENTI\";i:11;s:16:\"ROLE_CREATE_CIPE\";i:12;s:16:\"ROLE_DELETE_CIPE\";i:13;s:14:\"ROLE_EDIT_CIPE\";i:14;s:14:\"ROLE_READ_CIPE\";i:15;s:19:\"ROLE_CREATE_CIPEODG\";i:16;s:19:\"ROLE_DELETE_CIPEODG\";i:17;s:17:\"ROLE_READ_CIPEODG\";i:18;s:20:\"ROLE_CREATE_DELIBERE\";i:19;s:18:\"ROLE_EDIT_DELIBERE\";i:20;s:18:\"ROLE_READ_DELIBERE\";i:21;s:21:\"ROLE_CREATE_FASCICOLI\";i:22;s:21:\"ROLE_DELETE_FASCICOLI\";i:23;s:19:\"ROLE_EDIT_FASCICOLI\";i:24;s:19:\"ROLE_READ_FASCICOLI\";i:25;s:21:\"ROLE_CREATE_FIRMATARI\";i:26;s:21:\"ROLE_DELETE_FIRMATARI\";i:27;s:19:\"ROLE_EDIT_FIRMATARI\";i:28;s:19:\"ROLE_READ_FIRMATARI\";i:29;s:20:\"ROLE_CREATE_MITTENTI\";i:30;s:18:\"ROLE_EDIT_MITTENTI\";i:31;s:18:\"ROLE_READ_MITTENTI\";i:32;s:20:\"ROLE_DELETE_MITTENTI\";i:33;s:19:\"ROLE_CREATE_PRECIPE\";i:34;s:17:\"ROLE_EDIT_PRECIPE\";i:35;s:17:\"ROLE_READ_PRECIPE\";i:36;s:19:\"ROLE_DELETE_PRECIPE\";i:37;s:22:\"ROLE_CREATE_PRECIPEODG\";i:38;s:20:\"ROLE_READ_PRECIPEODG\";i:39;s:22:\"ROLE_DELETE_PRECIPEODG\";i:40;s:21:\"ROLE_CREATE_RUOLICIPE\";i:41;s:21:\"ROLE_DELETE_RUOLICIPE\";i:42;s:19:\"ROLE_EDIT_RUOLICIPE\";i:43;s:19:\"ROLE_READ_RUOLICIPE\";i:44;s:16:\"ROLE_CREATE_TAGS\";i:45;s:16:\"ROLE_DELETE_TAGS\";i:46;s:14:\"ROLE_EDIT_TAGS\";i:47;s:14:\"ROLE_READ_TAGS\";i:48;s:20:\"ROLE_CREATE_TITOLARI\";i:49;s:20:\"ROLE_DELETE_TITOLARI\";i:50;s:18:\"ROLE_EDIT_TITOLARI\";i:51;s:18:\"ROLE_READ_TITOLARI\";i:52;s:18:\"ROLE_CREATE_UFFICI\";i:53;s:18:\"ROLE_DELETE_UFFICI\";i:54;s:16:\"ROLE_EDIT_UFFICI\";i:55;s:16:\"ROLE_READ_UFFICI\";i:56;s:18:\"ROLE_CREATE_UTENTI\";i:57;s:18:\"ROLE_DELETE_UTENTI\";i:58;s:16:\"ROLE_EDIT_UTENTI\";i:59;s:16:\"ROLE_READ_UTENTI\";i:60;s:21:\"ROLE_CREATE_CIPEESITI\";i:61;s:21:\"ROLE_DELETE_CIPEESITI\";i:62;s:19:\"ROLE_EDIT_CIPEESITI\";i:63;s:19:\"ROLE_READ_CIPEESITI\";i:64;s:25:\"ROLE_CREATE_CIPEESITITIPO\";i:65;s:25:\"ROLE_DELETE_CIPEESITITIPO\";i:66;s:23:\"ROLE_EDIT_CIPEESITITIPO\";i:67;s:23:\"ROLE_READ_CIPEESITITIPO\";i:68;s:29:\"ROLE_CREATE_CIPEARGOMENTITIPO\";i:69;s:29:\"ROLE_DELETE_CIPEARGOMENTITIPO\";i:70;s:27:\"ROLE_EDIT_CIPEARGOMENTITIPO\";i:71;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:72;s:16:\"ROLE_READ_GROUPS\";i:73;s:18:\"ROLE_CREATE_GROUPS\";i:74;s:16:\"ROLE_EDIT_GROUPS\";i:75;s:18:\"ROLE_DELETE_GROUPS\";i:76;s:15:\"ROLE_READ_USERS\";i:77;s:17:\"ROLE_CREATE_USERS\";i:78;s:15:\"ROLE_EDIT_USERS\";i:79;s:17:\"ROLE_DELETE_USERS\";i:80;s:23:\"ROLE_READ_FIRMATARITIPO\";i:81;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:82;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:83;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:84;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:85;s:20:\"ROLE_READ_RUOLI_CIPE\";i:86;s:22:\"ROLE_CREATE_RUOLI_CIPE\";i:87;s:20:\"ROLE_EDIT_RUOLI_CIPE\";i:88;s:22:\"ROLE_DELETE_RUOLI_CIPE\";i:89;s:33:\"ROLE_DELETE_AREARISERVATA_PRECIPE\";i:90;s:31:\"ROLE_EDIT_AREARISERVATA_PRECIPE\";i:91;s:33:\"ROLE_CREATE_AREARISERVATA_PRECIPE\";i:92;s:39:\"ROLE_CREATE_AREARISERVATA_PRECIPE_CHECK\";i:93;s:37:\"ROLE_EDIT_AREARISERVATA_PRECIPE_CHECK\";i:94;s:39:\"ROLE_DELETE_AREARISERVATA_PRECIPE_CHECK\";i:95;s:30:\"ROLE_DELETE_AREARISERVATA_CIPE\";i:96;s:36:\"ROLE_DELETE_AREARISERVATA_CIPE_CHECK\";i:97;s:25:\"ROLE_DELETE_FIRMATARITIPO\";i:98;s:23:\"ROLE_EDIT_FIRMATARITIPO\";i:99;s:34:\"ROLE_EDIT_AREARISERVATA_CIPE_CHECK\";i:100;s:28:\"ROLE_EDIT_AREARISERVATA_CIPE\";i:101;s:30:\"ROLE_CREATE_AREARISERVATA_CIPE\";i:102;s:36:\"ROLE_CREATE_AREARISERVATA_CIPE_CHECK\";i:103;s:25:\"ROLE_CREATE_FIRMATARITIPO\";i:104;s:17:\"ROLE_READ_MONITOR\";i:105;s:19:\"ROLE_CREATE_MONITOR\";i:106;s:17:\"ROLE_EDIT_MONITOR\";i:107;s:19:\"ROLE_DELETE_MONITOR\";i:108;s:23:\"ROLE_READ_MONITOR_GROUP\";i:109;s:25:\"ROLE_CREATE_MONITOR_GROUP\";i:110;s:23:\"ROLE_EDIT_MONITOR_GROUP\";i:111;s:25:\"ROLE_DELETE_MONITOR_GROUP\";i:112;s:27:\"ROLE_DELETE_AMMINISTRAZIONI\";i:113;s:20:\"ROLE_DELETE_DELIBERE\";i:114;s:18:\"ROLE_READ_REGISTRI\";i:115;s:20:\"ROLE_DELETE_REGISTRI\";i:116;s:20:\"ROLE_CREATE_REGISTRI\";i:117;s:18:\"ROLE_EDIT_REGISTRI\";i:118;s:17:\"ROLE_EDIT_CIPEODG\";i:119;s:20:\"ROLE_EDIT_PRECIPEODG\";i:120;s:28:\"ROLE_READ_ADEMPIMENTI_AMBITI\";i:121;s:30:\"ROLE_CREATE_ADEMPIMENTI_AMBITI\";i:122;s:28:\"ROLE_EDIT_ADEMPIMENTI_AMBITI\";i:123;s:30:\"ROLE_DELETE_ADEMPIMENTI_AMBITI\";i:124;s:28:\"ROLE_READ_ADEMPIMENTI_AZIONI\";i:125;s:30:\"ROLE_CREATE_ADEMPIMENTI_AZIONI\";i:126;s:28:\"ROLE_EDIT_ADEMPIMENTI_AZIONI\";i:127;s:30:\"ROLE_DELETE_ADEMPIMENTI_AZIONI\";i:128;s:30:\"ROLE_READ_ADEMPIMENTI_SOGGETTI\";i:129;s:31:\"ROLE_READ_ADEMPIMENTI_TIPOLOGIE\";i:130;s:32:\"ROLE_CREATE_ADEMPIMENTI_SOGGETTI\";i:131;s:33:\"ROLE_CREATE_ADEMPIMENTI_TIPOLOGIE\";i:132;s:31:\"ROLE_EDIT_ADEMPIMENTI_TIPOLOGIE\";i:133;s:30:\"ROLE_EDIT_ADEMPIMENTI_SOGGETTI\";i:134;s:32:\"ROLE_DELETE_ADEMPIMENTI_SOGGETTI\";i:135;s:33:\"ROLE_DELETE_ADEMPIMENTI_TIPOLOGIE\";}'),
-(2, '2', 'Solo lettura delibere', 'a:3:{i:0;s:18:\"ROLE_READ_DELIBERE\";i:1;s:19:\"ROLE_READ_FIRMATARI\";i:2;s:14:\"ROLE_READ_TAGS\";}'),
-(3, '3', 'Lettura di tutti i contenuti', 'a:27:{i:0;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:1;s:18:\"ROLE_READ_MITTENTI\";i:2;s:18:\"ROLE_READ_TITOLARI\";i:3;s:19:\"ROLE_READ_FASCICOLI\";i:4;s:18:\"ROLE_READ_REGISTRI\";i:5;s:16:\"ROLE_READ_GROUPS\";i:6;s:16:\"ROLE_READ_UFFICI\";i:7;s:20:\"ROLE_READ_RUOLI_CIPE\";i:8;s:14:\"ROLE_READ_TAGS\";i:9;s:17:\"ROLE_READ_PRECIPE\";i:10;s:23:\"ROLE_READ_MONITOR_GROUP\";i:11;s:17:\"ROLE_READ_MONITOR\";i:12;s:21:\"ROLE_READ_ADEMPIMENTI\";i:13;s:18:\"ROLE_READ_DELIBERE\";i:14;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:15;s:23:\"ROLE_READ_CIPEESITITIPO\";i:16;s:19:\"ROLE_READ_CIPEESITI\";i:17;s:23:\"ROLE_READ_FIRMATARITIPO\";i:18;s:14:\"ROLE_READ_CIPE\";i:19;s:19:\"ROLE_READ_FIRMATARI\";i:20;s:20:\"ROLE_READ_PRECIPEODG\";i:21;s:17:\"ROLE_READ_CIPEODG\";i:22;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:23;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:24;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:25;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:26;s:15:\"ROLE_READ_USERS\";}');";
+(1, '1', 'Amministratore del sistema', 'a:140:{i:0;s:23:\"ROLE_CREATE_ADEMPIMENTI\";i:1;s:23:\"ROLE_DELETE_ADEMPIMENTI\";i:2;s:21:\"ROLE_EDIT_ADEMPIMENTI\";i:3;s:21:\"ROLE_READ_ADEMPIMENTI\";i:4;s:27:\"ROLE_CREATE_AMMINISTRAZIONI\";i:5;s:25:\"ROLE_EDIT_AMMINISTRAZIONI\";i:6;s:21:\"ROLE_CREATE_ARGOMENTI\";i:7;s:21:\"ROLE_DELETE_ARGOMENTI\";i:8;s:19:\"ROLE_EDIT_ARGOMENTI\";i:9;s:19:\"ROLE_READ_ARGOMENTI\";i:10;s:16:\"ROLE_CREATE_CIPE\";i:11;s:16:\"ROLE_DELETE_CIPE\";i:12;s:14:\"ROLE_EDIT_CIPE\";i:13;s:19:\"ROLE_CREATE_CIPEODG\";i:14;s:19:\"ROLE_DELETE_CIPEODG\";i:15;s:20:\"ROLE_CREATE_DELIBERE\";i:16;s:18:\"ROLE_EDIT_DELIBERE\";i:17;s:18:\"ROLE_READ_DELIBERE\";i:18;s:21:\"ROLE_CREATE_FASCICOLI\";i:19;s:21:\"ROLE_DELETE_FASCICOLI\";i:20;s:19:\"ROLE_EDIT_FASCICOLI\";i:21;s:21:\"ROLE_CREATE_FIRMATARI\";i:22;s:21:\"ROLE_DELETE_FIRMATARI\";i:23;s:19:\"ROLE_EDIT_FIRMATARI\";i:24;s:20:\"ROLE_CREATE_MITTENTI\";i:25;s:18:\"ROLE_EDIT_MITTENTI\";i:26;s:20:\"ROLE_DELETE_MITTENTI\";i:27;s:19:\"ROLE_CREATE_PRECIPE\";i:28;s:17:\"ROLE_EDIT_PRECIPE\";i:29;s:19:\"ROLE_DELETE_PRECIPE\";i:30;s:22:\"ROLE_CREATE_PRECIPEODG\";i:31;s:22:\"ROLE_DELETE_PRECIPEODG\";i:32;s:21:\"ROLE_CREATE_RUOLICIPE\";i:33;s:21:\"ROLE_DELETE_RUOLICIPE\";i:34;s:19:\"ROLE_EDIT_RUOLICIPE\";i:35;s:19:\"ROLE_READ_RUOLICIPE\";i:36;s:16:\"ROLE_CREATE_TAGS\";i:37;s:16:\"ROLE_DELETE_TAGS\";i:38;s:14:\"ROLE_EDIT_TAGS\";i:39;s:20:\"ROLE_CREATE_TITOLARI\";i:40;s:20:\"ROLE_DELETE_TITOLARI\";i:41;s:18:\"ROLE_EDIT_TITOLARI\";i:42;s:18:\"ROLE_CREATE_UFFICI\";i:43;s:18:\"ROLE_DELETE_UFFICI\";i:44;s:16:\"ROLE_EDIT_UFFICI\";i:45;s:18:\"ROLE_CREATE_UTENTI\";i:46;s:18:\"ROLE_DELETE_UTENTI\";i:47;s:16:\"ROLE_EDIT_UTENTI\";i:48;s:16:\"ROLE_READ_UTENTI\";i:49;s:21:\"ROLE_CREATE_CIPEESITI\";i:50;s:21:\"ROLE_DELETE_CIPEESITI\";i:51;s:19:\"ROLE_EDIT_CIPEESITI\";i:52;s:25:\"ROLE_CREATE_CIPEESITITIPO\";i:53;s:25:\"ROLE_DELETE_CIPEESITITIPO\";i:54;s:23:\"ROLE_EDIT_CIPEESITITIPO\";i:55;s:23:\"ROLE_READ_CIPEESITITIPO\";i:56;s:29:\"ROLE_CREATE_CIPEARGOMENTITIPO\";i:57;s:29:\"ROLE_DELETE_CIPEARGOMENTITIPO\";i:58;s:27:\"ROLE_EDIT_CIPEARGOMENTITIPO\";i:59;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:60;s:15:\"ROLE_READ_USERS\";i:61;s:17:\"ROLE_CREATE_USERS\";i:62;s:15:\"ROLE_EDIT_USERS\";i:63;s:17:\"ROLE_DELETE_USERS\";i:64;s:33:\"ROLE_DELETE_AREARISERVATA_PRECIPE\";i:65;s:31:\"ROLE_EDIT_AREARISERVATA_PRECIPE\";i:66;s:33:\"ROLE_CREATE_AREARISERVATA_PRECIPE\";i:67;s:39:\"ROLE_CREATE_AREARISERVATA_PRECIPE_CHECK\";i:68;s:37:\"ROLE_EDIT_AREARISERVATA_PRECIPE_CHECK\";i:69;s:39:\"ROLE_DELETE_AREARISERVATA_PRECIPE_CHECK\";i:70;s:30:\"ROLE_DELETE_AREARISERVATA_CIPE\";i:71;s:36:\"ROLE_DELETE_AREARISERVATA_CIPE_CHECK\";i:72;s:25:\"ROLE_DELETE_FIRMATARITIPO\";i:73;s:23:\"ROLE_EDIT_FIRMATARITIPO\";i:74;s:34:\"ROLE_EDIT_AREARISERVATA_CIPE_CHECK\";i:75;s:28:\"ROLE_EDIT_AREARISERVATA_CIPE\";i:76;s:30:\"ROLE_CREATE_AREARISERVATA_CIPE\";i:77;s:36:\"ROLE_CREATE_AREARISERVATA_CIPE_CHECK\";i:78;s:25:\"ROLE_CREATE_FIRMATARITIPO\";i:79;s:17:\"ROLE_READ_MONITOR\";i:80;s:19:\"ROLE_CREATE_MONITOR\";i:81;s:17:\"ROLE_EDIT_MONITOR\";i:82;s:19:\"ROLE_DELETE_MONITOR\";i:83;s:23:\"ROLE_READ_MONITOR_GROUP\";i:84;s:25:\"ROLE_CREATE_MONITOR_GROUP\";i:85;s:23:\"ROLE_EDIT_MONITOR_GROUP\";i:86;s:25:\"ROLE_DELETE_MONITOR_GROUP\";i:87;s:27:\"ROLE_DELETE_AMMINISTRAZIONI\";i:88;s:20:\"ROLE_DELETE_DELIBERE\";i:89;s:20:\"ROLE_DELETE_REGISTRI\";i:90;s:20:\"ROLE_CREATE_REGISTRI\";i:91;s:18:\"ROLE_EDIT_REGISTRI\";i:92;s:17:\"ROLE_EDIT_CIPEODG\";i:93;s:20:\"ROLE_EDIT_PRECIPEODG\";i:94;s:28:\"ROLE_READ_ADEMPIMENTI_AMBITI\";i:95;s:30:\"ROLE_CREATE_ADEMPIMENTI_AMBITI\";i:96;s:28:\"ROLE_EDIT_ADEMPIMENTI_AMBITI\";i:97;s:30:\"ROLE_DELETE_ADEMPIMENTI_AMBITI\";i:98;s:28:\"ROLE_READ_ADEMPIMENTI_AZIONI\";i:99;s:30:\"ROLE_CREATE_ADEMPIMENTI_AZIONI\";i:100;s:28:\"ROLE_EDIT_ADEMPIMENTI_AZIONI\";i:101;s:30:\"ROLE_DELETE_ADEMPIMENTI_AZIONI\";i:102;s:30:\"ROLE_READ_ADEMPIMENTI_SOGGETTI\";i:103;s:31:\"ROLE_READ_ADEMPIMENTI_TIPOLOGIE\";i:104;s:32:\"ROLE_CREATE_ADEMPIMENTI_SOGGETTI\";i:105;s:33:\"ROLE_CREATE_ADEMPIMENTI_TIPOLOGIE\";i:106;s:31:\"ROLE_EDIT_ADEMPIMENTI_TIPOLOGIE\";i:107;s:30:\"ROLE_EDIT_ADEMPIMENTI_SOGGETTI\";i:108;s:32:\"ROLE_DELETE_ADEMPIMENTI_SOGGETTI\";i:109;s:33:\"ROLE_DELETE_ADEMPIMENTI_TIPOLOGIE\";i:110;s:32:\"ROLE_DELETE_ADEMPIMENTI_SCADENZE\";i:111;s:30:\"ROLE_EDIT_ADEMPIMENTI_SCADENZE\";i:112;s:32:\"ROLE_CREATE_ADEMPIMENTI_SCADENZE\";i:113;s:30:\"ROLE_READ_ADEMPIMENTI_SCADENZE\";i:114;s:18:\"ROLE_DELETE_GROUPS\";i:115;s:16:\"ROLE_EDIT_GROUPS\";i:116;s:18:\"ROLE_CREATE_GROUPS\";i:117;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:118;s:18:\"ROLE_READ_MITTENTI\";i:119;s:18:\"ROLE_READ_TITOLARI\";i:120;s:19:\"ROLE_READ_FASCICOLI\";i:121;s:18:\"ROLE_READ_REGISTRI\";i:122;s:16:\"ROLE_READ_GROUPS\";i:123;s:16:\"ROLE_READ_UFFICI\";i:124;s:14:\"ROLE_READ_TAGS\";i:125;s:17:\"ROLE_READ_PRECIPE\";i:126;s:20:\"ROLE_READ_PRECIPEODG\";i:127;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:128;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:129;s:19:\"ROLE_READ_FIRMATARI\";i:130;s:14:\"ROLE_READ_CIPE\";i:131;s:17:\"ROLE_READ_CIPEODG\";i:132;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:133;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:134;s:23:\"ROLE_READ_FIRMATARITIPO\";i:135;s:19:\"ROLE_READ_CIPEESITI\";i:136;s:20:\"ROLE_EDIT_RUOLI_CIPE\";i:137;s:22:\"ROLE_DELETE_RUOLI_CIPE\";i:138;s:20:\"ROLE_READ_RUOLI_CIPE\";i:139;s:22:\"ROLE_CREATE_RUOLI_CIPE\";}'),
+(2, '2', 'Solo lettura delibere', 'a:4:{i:0;s:18:\"ROLE_READ_DELIBERE\";i:1;s:19:\"ROLE_READ_FIRMATARI\";i:2;s:14:\"ROLE_READ_TAGS\";i:3;s:16:\"ROLE_READ_GROUPS\";}'),
+(3, '3', 'Lettura di tutti i contenuti', 'a:32:{i:0;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:1;s:18:\"ROLE_READ_MITTENTI\";i:2;s:18:\"ROLE_READ_TITOLARI\";i:3;s:19:\"ROLE_READ_FASCICOLI\";i:4;s:18:\"ROLE_READ_REGISTRI\";i:5;s:16:\"ROLE_READ_GROUPS\";i:6;s:16:\"ROLE_READ_UFFICI\";i:7;s:14:\"ROLE_READ_TAGS\";i:8;s:17:\"ROLE_READ_PRECIPE\";i:9;s:23:\"ROLE_READ_MONITOR_GROUP\";i:10;s:17:\"ROLE_READ_MONITOR\";i:11;s:21:\"ROLE_READ_ADEMPIMENTI\";i:12;s:18:\"ROLE_READ_DELIBERE\";i:13;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:14;s:23:\"ROLE_READ_CIPEESITITIPO\";i:15;s:19:\"ROLE_READ_CIPEESITI\";i:16;s:23:\"ROLE_READ_FIRMATARITIPO\";i:17;s:14:\"ROLE_READ_CIPE\";i:18;s:19:\"ROLE_READ_FIRMATARI\";i:19;s:20:\"ROLE_READ_PRECIPEODG\";i:20;s:17:\"ROLE_READ_CIPEODG\";i:21;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:22;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:23;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:24;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:25;s:15:\"ROLE_READ_USERS\";i:26;s:28:\"ROLE_READ_ADEMPIMENTI_AMBITI\";i:27;s:28:\"ROLE_READ_ADEMPIMENTI_AZIONI\";i:28;s:30:\"ROLE_READ_ADEMPIMENTI_SOGGETTI\";i:29;s:31:\"ROLE_READ_ADEMPIMENTI_TIPOLOGIE\";i:30;s:30:\"ROLE_READ_ADEMPIMENTI_SCADENZE\";i:31;s:20:\"ROLE_READ_RUOLI_CIPE\";}'),
+(4, '4', 'Lettura di tutti i contenuti + scrittura adempimenti', 'a:50:{i:0;s:25:\"ROLE_READ_AMMINISTRAZIONI\";i:1;s:18:\"ROLE_READ_MITTENTI\";i:2;s:18:\"ROLE_READ_TITOLARI\";i:3;s:19:\"ROLE_READ_FASCICOLI\";i:4;s:18:\"ROLE_READ_REGISTRI\";i:5;s:16:\"ROLE_READ_GROUPS\";i:6;s:16:\"ROLE_READ_UFFICI\";i:7;s:20:\"ROLE_READ_RUOLI_CIPE\";i:8;s:14:\"ROLE_READ_TAGS\";i:9;s:20:\"ROLE_READ_PRECIPEODG\";i:10;s:17:\"ROLE_READ_PRECIPE\";i:11;s:31:\"ROLE_READ_AREARISERVATA_PRECIPE\";i:12;s:37:\"ROLE_READ_AREARISERVATA_PRECIPE_CHECK\";i:13;s:19:\"ROLE_READ_FIRMATARI\";i:14;s:14:\"ROLE_READ_CIPE\";i:15;s:17:\"ROLE_READ_CIPEODG\";i:16;s:28:\"ROLE_READ_AREARISERVATA_CIPE\";i:17;s:34:\"ROLE_READ_AREARISERVATA_CIPE_CHECK\";i:18;s:23:\"ROLE_READ_FIRMATARITIPO\";i:19;s:19:\"ROLE_READ_CIPEESITI\";i:20;s:23:\"ROLE_READ_CIPEESITITIPO\";i:21;s:27:\"ROLE_READ_CIPEARGOMENTITIPO\";i:22;s:15:\"ROLE_READ_USERS\";i:23;s:18:\"ROLE_READ_DELIBERE\";i:24;s:21:\"ROLE_READ_ADEMPIMENTI\";i:25;s:28:\"ROLE_READ_ADEMPIMENTI_AMBITI\";i:26;s:28:\"ROLE_READ_ADEMPIMENTI_AZIONI\";i:27;s:30:\"ROLE_READ_ADEMPIMENTI_SOGGETTI\";i:28;s:31:\"ROLE_READ_ADEMPIMENTI_TIPOLOGIE\";i:29;s:30:\"ROLE_READ_ADEMPIMENTI_SCADENZE\";i:30;s:17:\"ROLE_READ_MONITOR\";i:31;s:23:\"ROLE_READ_MONITOR_GROUP\";i:32;s:23:\"ROLE_CREATE_ADEMPIMENTI\";i:33;s:21:\"ROLE_EDIT_ADEMPIMENTI\";i:34;s:23:\"ROLE_DELETE_ADEMPIMENTI\";i:35;s:30:\"ROLE_DELETE_ADEMPIMENTI_AMBITI\";i:36;s:28:\"ROLE_EDIT_ADEMPIMENTI_AMBITI\";i:37;s:30:\"ROLE_CREATE_ADEMPIMENTI_AMBITI\";i:38;s:30:\"ROLE_CREATE_ADEMPIMENTI_AZIONI\";i:39;s:32:\"ROLE_CREATE_ADEMPIMENTI_SOGGETTI\";i:40;s:33:\"ROLE_CREATE_ADEMPIMENTI_TIPOLOGIE\";i:41;s:32:\"ROLE_CREATE_ADEMPIMENTI_SCADENZE\";i:42;s:30:\"ROLE_EDIT_ADEMPIMENTI_SCADENZE\";i:43;s:30:\"ROLE_EDIT_ADEMPIMENTI_SOGGETTI\";i:44;s:31:\"ROLE_EDIT_ADEMPIMENTI_TIPOLOGIE\";i:45;s:28:\"ROLE_EDIT_ADEMPIMENTI_AZIONI\";i:46;s:30:\"ROLE_DELETE_ADEMPIMENTI_AZIONI\";i:47;s:32:\"ROLE_DELETE_ADEMPIMENTI_SOGGETTI\";i:48;s:33:\"ROLE_DELETE_ADEMPIMENTI_TIPOLOGIE\";i:49;s:32:\"ROLE_DELETE_ADEMPIMENTI_SCADENZE\";}')
+";
     $resGroup = mysqli_query($db, $queryGroup);
     if (!$resGroup) { return mysqli_error($db); }
 
@@ -1843,17 +1849,57 @@ function createUtenti() {
 //                }
 //            }
 
-          if ($row['Userid'] != "SBANFI") {
-              $query3 = 'INSERT INTO `fos_user_group`(`user_id`,`group_id`) VALUES ("' . $row['chiave'] . '","' . $idGruppo . '")';
-              $res3 = mysqli_query($db, $query3);
-              if (!$res3) {
-                  return mysqli_error($db);
-              }
-          } else {
-              $querySBANFI_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
-              $resSBANFI_insert = mysqli_query($db, $querySBANFI_insert);
+//          if ($row['Userid'] != "SBANFI") {
+//              $query3 = 'INSERT INTO `fos_user_group`(`user_id`,`group_id`) VALUES ("' . $row['chiave'] . '","' . $idGruppo . '")';
+//              $res3 = mysqli_query($db, $query3);
+//              if (!$res3) {
+//                  return mysqli_error($db);
+//              }
+//          } else {
+//              $querySBANFI_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+//              $resSBANFI_insert = mysqli_query($db, $querySBANFI_insert);
+//
+//          }
 
-          }
+
+            if ($row['Userid'] == "SBANFI") {
+                $querySBANFI_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resSBANFI_insert = mysqli_query($db, $querySBANFI_insert);
+            } elseif($row['Userid'] == "LSODA") {
+                $queryLSODA_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resLSODA_insert = mysqli_query($db, $queryLSODA_insert);
+            } elseif($row['Userid'] == "GARANCIA") {
+                $queryGARANCIA_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resGARANCIA_insert = mysqli_query($db, $queryGARANCIA_insert);
+            } elseif($row['Userid'] == "MACCONCIA") {
+                $queryMACCONCIA_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resMACCONCIA_insert = mysqli_query($db, $queryMACCONCIA_insert);
+            } elseif($row['Userid'] == "SDIPALMA") {
+                $querySDIPALMA_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resSDIPALMA_insert = mysqli_query($db, $querySDIPALMA_insert);
+            } elseif($row['Userid'] == "BMARANDOLA") {
+                $queryBMARANDOLA_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resBMARANDOLA_insert = mysqli_query($db, $queryBMARANDOLA_insert);
+            } elseif($row['Userid'] == "SQUARANTA") {
+                $querySQUARANTA_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resSQUARANTA_insert = mysqli_query($db, $querySQUARANTA_insert);
+            } elseif($row['Userid'] == "LGARIAZZO") {
+                $queryLGARIAZZO_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 1);";
+                $resLGARIAZZO_insert = mysqli_query($db, $queryLGARIAZZO_insert);
+            } elseif($row['Userid'] == "GCESARONI") { //adempimenti, gruppo 4
+                $queryGCESARONI_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 4);";
+                $resGCESARONI_insert = mysqli_query($db, $queryGCESARONI_insert);
+            } elseif($row['Userid'] == "FDESTEFANIS") { //adempimenti, gruppo 4
+                $queryFDESTEFANIS_insert = "INSERT INTO `fos_user_group` (`user_id`, `group_id`) VALUES (".$row['chiave'].", 4);";
+                $resFDESTEFANIS_insert = mysqli_query($db, $queryFDESTEFANIS_insert);
+            } else {
+                $query3 = 'INSERT INTO `fos_user_group`(`user_id`,`group_id`) VALUES ("' . $row['chiave'] . '","' . $idGruppo . '")';
+                $res3 = mysqli_query($db, $query3);
+                if (!$res3) {
+                    return mysqli_error($db);
+                }
+
+            }
         }
     }
 

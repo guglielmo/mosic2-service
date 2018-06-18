@@ -451,7 +451,7 @@ class AdempimentiController extends Controller
         $id_creato = $adempimento->getId();
 
         // AMMINISTRAZIONI ADEMPIMENTI
-        foreach ($data->id_amministrazioni as $item) {
+        foreach ($data->id_soggetti as $item) {
             $relAmmAdempimenti = new RelAmministrazioniAdempimenti();
             $relAmmAdempimenti->setIdAdempimenti($id_creato);
             $relAmmAdempimenti->setIdAmministrazioni((int)$item);
