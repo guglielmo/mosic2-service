@@ -110,6 +110,23 @@ function setUfficiDelibere()
     if (mysqli_num_rows($res) >= 1) {
         while ($row = mysqli_fetch_array($res)) {
 
+            if ($row['Codice_Ufficio'] == 35) { $row['Codice_Ufficio'] = 1; }
+            if ($row['Codice_Ufficio2'] == 35) { $row['Codice_Ufficio2'] = 1; }
+            if ($row['Codice_Ufficio3'] == 35) { $row['Codice_Ufficio3'] = 1; }
+
+            if ($row['Codice_Ufficio'] == 32) { $row['Codice_Ufficio'] = 2; }
+            if ($row['Codice_Ufficio2'] == 32) { $row['Codice_Ufficio2'] = 2; }
+            if ($row['Codice_Ufficio3'] == 32) { $row['Codice_Ufficio3'] = 2; }
+
+            if ($row['Codice_Ufficio'] == 34) { $row['Codice_Ufficio'] = 8; }
+            if ($row['Codice_Ufficio2'] == 34) { $row['Codice_Ufficio2'] = 8; }
+            if ($row['Codice_Ufficio3'] == 34) { $row['Codice_Ufficio3'] = 8; }
+
+            if ($row['Codice_Ufficio'] == 44) { $row['Codice_Ufficio'] = 9; }
+            if ($row['Codice_Ufficio2'] == 44) { $row['Codice_Ufficio2'] = 9; }
+            if ($row['Codice_Ufficio3'] == 44) { $row['Codice_Ufficio3'] = 9; }
+
+
             if ($row['Codice_Ufficio'] != "") {
                 $query2 = 'INSERT INTO msc_rel_uffici_delibere SET id_delibere = "' . $row['Codice_Delibera'] . '", id_uffici = "' . $row['Codice_Ufficio'] . '" ';
                 //echo $query2 . "<br>";
@@ -837,7 +854,7 @@ function createUffici() {
                                                 "' . $disattivo . '",
                                                 "' . $row['Solo_Delibere'] . '"
                                                 )';
-            echo $query . "<br>";
+            //echo $query . "<br>";
             $res2 = mysqli_query($db, $query);
             if (!$res2) {
                 return mysqli_error($db);
