@@ -25,9 +25,10 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
         $qb = $this->getEntityManager();
 
+        //3600 equivale ad un'ora
         $query = $qb
             ->createQueryBuilder()->select('d.id as id,
-                                            UNIX_TIMESTAMP(d.data) * 1000 as data,
+                                            UNIX_TIMESTAMP(CONCAT(DATE(d.data),\' 12:00:00\')) * 1000 as data,
                                             d.idStato as id_stato,
                                             d.numero as numero,
                                             d.argomento as argomento,
@@ -52,6 +53,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.noteCC as note_cc,
                                             d.noteP as note_p,
                                             d.noteGU as note_gu,
+                                            d.codiceCup as codice_cup,
 
                                             UNIX_TIMESTAMP(d.dataConsegna) * 1000 as data_consegna,
                                             UNIX_TIMESTAMP(d.dataSegretarioInvio) * 1000 as data_segretario_invio,
@@ -143,6 +145,7 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.pubblicazioneGU as pubblicazione_gu,
                                             d.noteGU as note_gu,
                                             d.numero as numero_delibera,
+                                            d.codiceCup as codice_cup,
 
                                             ud.idUffici as id_uffici,
                                             fd.idFirmatari as id_segretariato,
@@ -252,9 +255,10 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
     public function getDelibereByYear($year = false) {
         $parameters = array ();
-        $filter = "";
+        //MODIFICA MOSIC 3.0 del xx/06/2020
+        $filter = " AND (d.idStato = 0 OR d.idStato is NULL)";
         if ($year != false && $year != "all") {
-            $filter .= " AND d.data > :from AND d.data <= :to ";
+            $filter .= " AND d.data > :from AND d.data <= :to";
             $parameters['from'] = $year."-01-01";
             $parameters['to'] = $year."-12-31";
         }
@@ -296,7 +300,8 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
 
     public function getDelibereByData($data = false) {
         $parameters = array ();
-        $filter = "";
+        //MODIFICA MOSIC 3.0 del xx/06/2020
+        $filter = " AND (d.idStato = 0 OR d.idStato is NULL)";
         if ($data != false && $data != "all") {
             $filter .= " AND d.data = :data ";
             $parameters['data'] = $data;

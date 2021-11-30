@@ -342,6 +342,7 @@ class Delibere
 
 
 
+
     /** ########################################################## GAZZETTA UFFICIALE ###########################
      *  #########################################################################################################
      * @var \Date
@@ -404,7 +405,12 @@ class Delibere
      * @ORM\Column(name="situazione", type="integer", nullable=true)
      */
     private $situazione;
-    
+
+    /**
+     * @var string
+     * @ORM\Column(name="codice_cup", type="string", length=255, nullable=true)
+     */
+    private $codiceCup;
 
 
     /**
@@ -2072,4 +2078,22 @@ class Delibere
     {
         return $this->situazione;
     }
+
+    /**
+     * @return string
+     */
+    public function getCodiceCup()
+    {
+        return $this->codiceCup;
+    }
+
+    /**
+     * @param string $codiceCup
+     */
+    public function setCodiceCup($codiceCup)
+    {
+        $this->codiceCup = $codiceCup;
+    }
+
+    
 }

@@ -136,12 +136,18 @@ $mscForSerialize = microtime(true);
             $repositoryDelibereCC = $em->getRepository('UserBundle:DelibereCC');
             $delibereCC = $repositoryDelibereCC->findBy(["idDelibere" => $serialize[$item]["id"]]);
             $arrayDelibereCC = array();
+
             foreach ($delibereCC as $k) {
+                $dataMaxRisposta = null;
+                if (strtotime($k->getDataRisposta()->format('Y-m-d')) * 1000 > 0) {
+                    $dataMaxRisposta = strtotime($k->getDataRisposta()->format('Y-m-d')) * 1000;
+                }
+
                 $arrayDelibereCC[] = array(
                     "id" => $k->getId(),
                     "tipo_documento" => $k->getTipoDocumento(),
                     "data_max_risposta" => strtotime($k->getDataRilievo()->modify('+'.$k->getGiorniRilievo().' days')->format('Y-m-d')) * 1000,
-                    "data_risposta" => strtotime($k->getDataRisposta()->format('Y-m-d')) * 1000
+                    "data_risposta" => $dataMaxRisposta
                 );
 
             }
@@ -317,11 +323,12 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         $allegati = $repository->getAllegatiByIdDelibere($id);
         $allegati = json_decode($this->serialize($allegati));
 
-        $allegatiMEF = "";
-        $allegatiCC = "";
-        $allegatiGU = "";
-        $allegatiDEL = "";
-        $allegatiALL = "";
+        //MODIFICA MOSIC 3.0 del 08/05/2020
+        $allegatiMEF = [];
+        $allegatiCC = [];
+        $allegatiGU = [];
+        $allegatiDEL = [];
+        $allegatiALL = [];
 
         foreach ($allegati as $i => $v) {
             switch ($v->tipologia) {
@@ -555,6 +562,7 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
 
 
         $delibere->setNumero($data->numero);
+        if ($data->codice_cup != null){ $delibere->setCodiceCup($data->codice_cup);} else {$delibere->setCodiceCup(""); }
         if ($data->data != null){ $delibere->setData(new \DateTime($this->zulu_to_rome($data->data))); } else {$delibere->setData(null); }
         $delibere->setIdStato($data->id_stato);
         $delibere->setArgomento($data->argomento);
@@ -843,6 +851,7 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         $delibere = new Delibere();
 
         $delibere->setNumero($data->numero);
+        if ($data->codice_cup != null){ $delibere->setCodiceCup($data->codice_cup);} else {$delibere->setCodiceCup(""); }
         if ($data->data != null){ $delibere->setData(new \DateTime($this->zulu_to_rome($data->data))); }
         $delibere->setIdStato($data->id_stato);
         $delibere->setArgomento($data->argomento);
@@ -1088,18 +1097,38 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
                 $nome_file = "E" . substr($dataDelibere, 2, 4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) . "-" . $tipo . "-" . $this->sostituisciAccenti($nome_file);
             }
 
-
-            if(file_exists($path_file . $nome_file)){
+            //22 Gennaio 2019
+            if(file_exists($path_file . $nome_file)) {
                 // Directory
 
-
-                $directory = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/";
+                $directory = $path_file . "E" . substr($dataDelibere, 2, 4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) . "/versioni/";
                 // Returns array of files
                 $files = scandir($directory);
-                // Count number of files and store them to variable..
-                $num_files = count($files)-2; // Not counting the '.' and '..'.
 
-                $path_file_version = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/". $num_files ."-". $nome_file;
+                $countFile = 1;
+                foreach ($files as $fileScan) {
+                    $fileTemp = explode("-", $fileScan);
+                    $fileString = "";
+                    for ($i = 1; $i <= count($fileTemp); $i++) {
+                        $fileString = $fileString . $fileTemp[$i] . "-";
+                    }
+
+                    $fileString = substr($fileString,0, -2);
+
+                    // print_r("|" . $fileString . "|");
+                    if ($fileString == $nome_file) {
+                        $countFile++;
+                    }
+                }
+
+
+
+
+                // Count number of files and store them to variable..
+                $num_files = count($files) -2; // Not counting the '.' and '..'.
+                //$num_files = $num_files + 1; // Not counting the '.' and '..'.
+
+                $path_file_version = $path_file . "E". substr($dataDelibere, 2,4) . str_pad($numeroDelibere, 4, '0', STR_PAD_LEFT) ."/versioni/". $countFile ."-". $nome_file;
 
                 //memorizzo il file nel database
                 $allegato = new Allegati();
@@ -1128,10 +1157,15 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
 
 
 
-                //$response = new Response($allegato_esistente->getId(), Response::HTTP_OK);
+
+                //$response = new Response(json_encode($path_file_version), Response::HTTP_OK);
                 //return $this->setBaseHeaders($response, "upload");
 
-                if (copy($path_file . $nome_file, $path_file_version)) {
+                //path_file = "files\/DELIBERE\/per-anno\/2018\/E180001-DEL-test-pdf.pdf"
+                //path_file_version = files\/DELIBERE\/per-anno\/2018\/E180001\/versioni\/-1-E180001-DEL-test-pdf.pdf
+
+                //22 Gennaio 2019
+                if ($this->copyAndCreateFolderIfNotExist($path_file . $nome_file, $path_file_version)) {
                     //unlink($path_file . $nome_file);
                 }
                 $em->remove($allegato_esistente); //delete

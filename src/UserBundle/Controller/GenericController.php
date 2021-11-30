@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
-
 class GenericController extends Controller
 {
     use \UserBundle\Helper\ControllerHelper;
@@ -20,7 +19,8 @@ class GenericController extends Controller
      * @Method("GET")
      * @Security("is_granted('ROLE_READ_FIRMATARITIPO')")
      */
-    public function firmataritipoAction(Request $request) {
+    public function firmataritipoAction(Request $request)
+    {
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:FirmatariTipo');
         $firmataritipo = $repository->findAll();
@@ -38,13 +38,13 @@ class GenericController extends Controller
     }
 
 
-
     /**
      * @Route("/cipeesiti", name="cipeesiti")
      * @Method("GET")
      * @Security("is_granted('ROLE_READ_CIPEESITI')")
      */
-    public function cipeesitiAction(Request $request) {
+    public function cipeesitiAction(Request $request)
+    {
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:CipeEsiti');
         $cipeesiti = $repository->findAll();
@@ -67,7 +67,8 @@ class GenericController extends Controller
      * @Method("GET")
      * @Security("is_granted('ROLE_READ_CIPEESITITIPO')")
      */
-    public function cipeesititipoAction(Request $request) {
+    public function cipeesititipoAction(Request $request)
+    {
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:CipeEsitiTipo');
         $cipeesititipo = $repository->findAll();
@@ -85,13 +86,13 @@ class GenericController extends Controller
     }
 
 
-
     /**
      * @Route("/cipeargomentitipo", name="cipeargomentitipo")
      * @Method("GET")
      * @Security("is_granted('ROLE_READ_CIPEARGOMENTITIPO')")
      */
-    public function cipeargomentitipoAction(Request $request) {
+    public function cipeargomentitipoAction(Request $request)
+    {
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:CipeArgomentiTipo');
         $cipeargomentitipo = $repository->findAll();
@@ -109,25 +110,23 @@ class GenericController extends Controller
     }
 
 
-
     /**
      * @Route("/monitor/group", name="monitorAll")
      * @Method("GET")
      */
-    public function monitorAllAction(Request $request) {
+    public function monitorAllAction(Request $request)
+    {
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:Delibere');
         $delibere = $repository->getDelibereByYear("all");
 
         $serialize = json_decode($this->serialize($delibere));
-        $serialize = $this->formatDateJsonArrayCustom($serialize,array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
+        $serialize = $this->formatDateJsonArrayCustom($serialize, array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
             "data_mef_invio", "data_mef_pec", "data_mef_ritorno", "data_segretario_invio", "data_segretario_ritorno", "data_presidente_invio", "data_presidente_ritorno",
             "data_invio_cc", "data_registrazione_cc", "data_invio_gu", "data_gu"));
 
         $arrayDelibere = array();
         $arrayDelibereGroup = array();
-
-
 
 
         foreach ($serialize as $item) {
@@ -226,7 +225,9 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data][$item->id]['cd_invio_giorni_tot'] = ($item->data_direttore_invio - $item->data) / 86400000;
             }
             if ($item->data_direttore_ritorno != "") {
-                if ($item->data_direttore_invio == null) { $item->data_direttore_invio = $item->data_direttore_ritorno; }
+                if ($item->data_direttore_invio == null) {
+                    $item->data_direttore_invio = $item->data_direttore_ritorno;
+                }
                 $arrayDelibere[$item->data][$item->id]['cd_ritorno_giorni'] = ($item->data_direttore_ritorno - $item->data_direttore_invio) / 86400000;
                 $arrayDelibere[$item->data][$item->id]['cd_ritorno_giorni_tot'] = ($item->data_direttore_ritorno - $item->data) / 86400000;
             }
@@ -279,16 +280,19 @@ class GenericController extends Controller
             }
 
             if ($item->data_invio_gu != "") {
-                if ($item->data_registrazione_cc == null) { $item->data_registrazione_cc = $item->data_invio_gu; }
+                if ($item->data_registrazione_cc == null) {
+                    $item->data_registrazione_cc = $item->data_invio_gu;
+                }
                 $arrayDelibere[$item->data][$item->id]['gu_invio_giorni'] = ($item->data_invio_gu - $item->data_registrazione_cc) / 86400000;
                 $arrayDelibere[$item->data][$item->id]['gu_invio_giorni_tot'] = ($item->data_invio_gu - $item->data) / 86400000;
             }
             if ($item->data_gu != "") {
-                if ($item->data_invio_gu == null) { $item->data_invio_gu = $item->data_gu; }
+                if ($item->data_invio_gu == null) {
+                    $item->data_invio_gu = $item->data_gu;
+                }
                 $arrayDelibere[$item->data][$item->id]['gu_ritorno_giorni'] = ($item->data_gu - $item->data_invio_gu) / 86400000;
                 $arrayDelibere[$item->data][$item->id]['gu_ritorno_giorni_tot'] = ($item->data_gu - $item->data) / 86400000;
             }
-
 
 
             //situazione
@@ -300,7 +304,7 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data][$item->id]['CD_inviare'] = 1;
                 continue;
             }
-            if (($item->data_direttore_ritorno =="")
+            if (($item->data_direttore_ritorno == "")
                 && (($item->data_direttore_invio != ""))
             ) {
                 $arrayDelibere[$item->data][$item->id]['CD_firma'] = 1;
@@ -365,7 +369,6 @@ class GenericController extends Controller
                 continue;
             }
         }
-
 
 
         //#### RAGGRUPPO PER DATA
@@ -500,11 +503,10 @@ class GenericController extends Controller
                     $arrayDelibereGroup[$i]['analisi']['cc_media'] = $arrayDelibereGroup[$i]['analisi']['cc_media'] + $arrayDelibere[$i][$k]['cc'];
                 }
 
-                if ($arrayDelibere[$i][$k]['gu'] != null ) {
+                if ($arrayDelibere[$i][$k]['gu'] != null) {
                     $arrayDelibereGroup[$i]['analisi']['gu'] = $arrayDelibereGroup[$i]['analisi']['gu'] + 1;
                     $arrayDelibereGroup[$i]['analisi']['gu_media'] = $arrayDelibereGroup[$i]['analisi']['gu_media'] + $arrayDelibere[$i][$k]['gu'];
                 }
-
 
 
                 $arrayDelibereGroup[$i]['statistica']['count'] = $arrayDelibereGroup[$i]['statistica']['count'] + 1;
@@ -671,9 +673,9 @@ class GenericController extends Controller
         // riformatto l'array
         $arrayDelibereGroupFormattato = array();
         foreach ($arrayDelibereGroup as $kk => $vv) {
-            $idAnno = date("Y",$kk / 1000);
+            $idAnno = date("Y", $kk / 1000);
 
-            $arrayDelibereGroupFormattato[$idAnno][] = array (
+            $arrayDelibereGroupFormattato[$idAnno][] = array(
                 "id" => $kk,
                 "situazione" => $arrayDelibereGroup[$kk]['situazione'],
                 "statistica" => $arrayDelibereGroup[$kk]['statistica'],
@@ -689,7 +691,6 @@ class GenericController extends Controller
         }
 
 
-
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($delibere),
@@ -699,28 +700,25 @@ class GenericController extends Controller
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
-
-
 
 
     /**
      * @Route("/monitor/group/{anno}", name="monitorAnno")
      * @Method("GET")
      */
-    public function monitorAnnoAction(Request $request, $anno) {
+    public function monitorAnnoAction(Request $request, $anno)
+    {
 
         $repository = $this->getDoctrine()->getRepository('UserBundle:Delibere');
         $delibere = $repository->getDelibereByYear($anno);
 
         $serialize = json_decode($this->serialize($delibere));
-        $serialize = $this->formatDateJsonArrayCustom($serialize,array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
+        $serialize = $this->formatDateJsonArrayCustom($serialize, array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
             "data_mef_invio", "data_mef_pec", "data_mef_ritorno", "data_segretario_invio", "data_segretario_ritorno", "data_presidente_invio", "data_presidente_ritorno",
             "data_invio_cc", "data_registrazione_cc", "data_invio_gu", "data_gu"));
 
         $arrayDelibere = array();
         $arrayDelibereGroup = array();
-
-
 
 
         foreach ($serialize as $item) {
@@ -819,7 +817,9 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data][$item->id]['cd_invio_giorni_tot'] = ($item->data_direttore_invio - $item->data) / 86400000;
             }
             if ($item->data_direttore_ritorno != "") {
-                if ($item->data_direttore_invio == null) { $item->data_direttore_invio = $item->data_direttore_ritorno; }
+                if ($item->data_direttore_invio == null) {
+                    $item->data_direttore_invio = $item->data_direttore_ritorno;
+                }
                 $arrayDelibere[$item->data][$item->id]['cd_ritorno_giorni'] = ($item->data_direttore_ritorno - $item->data_direttore_invio) / 86400000;
                 $arrayDelibere[$item->data][$item->id]['cd_ritorno_giorni_tot'] = ($item->data_direttore_ritorno - $item->data) / 86400000;
             }
@@ -872,16 +872,19 @@ class GenericController extends Controller
             }
 
             if ($item->data_invio_gu != "") {
-                if ($item->data_registrazione_cc == null) { $item->data_registrazione_cc = $item->data_invio_gu; }
+                if ($item->data_registrazione_cc == null) {
+                    $item->data_registrazione_cc = $item->data_invio_gu;
+                }
                 $arrayDelibere[$item->data][$item->id]['gu_invio_giorni'] = ($item->data_invio_gu - $item->data_registrazione_cc) / 86400000;
                 $arrayDelibere[$item->data][$item->id]['gu_invio_giorni_tot'] = ($item->data_invio_gu - $item->data) / 86400000;
             }
             if ($item->data_gu != "") {
-                if ($item->data_invio_gu == null) { $item->data_invio_gu = $item->data_gu; }
+                if ($item->data_invio_gu == null) {
+                    $item->data_invio_gu = $item->data_gu;
+                }
                 $arrayDelibere[$item->data][$item->id]['gu_ritorno_giorni'] = ($item->data_gu - $item->data_invio_gu) / 86400000;
                 $arrayDelibere[$item->data][$item->id]['gu_ritorno_giorni_tot'] = ($item->data_gu - $item->data) / 86400000;
             }
-
 
 
             //situazione
@@ -893,7 +896,7 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data][$item->id]['CD_inviare'] = 1;
                 continue;
             }
-            if (($item->data_direttore_ritorno =="")
+            if (($item->data_direttore_ritorno == "")
                 && (($item->data_direttore_invio != ""))
             ) {
                 $arrayDelibere[$item->data][$item->id]['CD_firma'] = 1;
@@ -958,7 +961,6 @@ class GenericController extends Controller
                 continue;
             }
         }
-
 
 
         //#### RAGGRUPPO PER DATA
@@ -1093,11 +1095,10 @@ class GenericController extends Controller
                     $arrayDelibereGroup[$i]['analisi']['cc_media'] = $arrayDelibereGroup[$i]['analisi']['cc_media'] + $arrayDelibere[$i][$k]['cc'];
                 }
 
-                if ($arrayDelibere[$i][$k]['gu'] != null ) {
+                if ($arrayDelibere[$i][$k]['gu'] != null) {
                     $arrayDelibereGroup[$i]['analisi']['gu'] = $arrayDelibereGroup[$i]['analisi']['gu'] + 1;
                     $arrayDelibereGroup[$i]['analisi']['gu_media'] = $arrayDelibereGroup[$i]['analisi']['gu_media'] + $arrayDelibere[$i][$k]['gu'];
                 }
-
 
 
                 $arrayDelibereGroup[$i]['statistica']['count'] = $arrayDelibereGroup[$i]['statistica']['count'] + 1;
@@ -1105,7 +1106,7 @@ class GenericController extends Controller
                 $arrayDelibereGroup[$i]['statistica']['arrivo'] = $arrayDelibereGroup[$i]['statistica']['arrivo'] + $arrayDelibere[$i][$k]['arrivo'];
 
                 $arrayDelibereGroup[$i]['statistica']['cd_invio_giorni'] = $arrayDelibereGroup[$i]['statistica']['cd_invio_giorni'] + $arrayDelibere[$i][$k]['cd_invio_giorni'];
-                
+
                 $arrayDelibereGroup[$i]['statistica']['cd_invio_giorni_tot'] = $arrayDelibereGroup[$i]['statistica']['cd_invio_giorni_tot'] + $arrayDelibere[$i][$k]['cd_invio_giorni_tot'];
 
                 $arrayDelibereGroup[$i]['statistica']['cd_ritorno_giorni'] = $arrayDelibereGroup[$i]['statistica']['cd_ritorno_giorni'] + $arrayDelibere[$i][$k]['cd_ritorno_giorni'];
@@ -1264,9 +1265,9 @@ class GenericController extends Controller
         // riformatto l'array
         $arrayDelibereGroupFormattato = array();
         foreach ($arrayDelibereGroup as $kk => $vv) {
-            $idAnno = date("Y",$kk / 1000);
+            $idAnno = date("Y", $kk / 1000);
 
-            $arrayDelibereGroupFormattato[$idAnno][] = array (
+            $arrayDelibereGroupFormattato[$idAnno][] = array(
                 "id" => $kk,
                 "situazione" => $arrayDelibereGroup[$kk]['situazione'],
                 "statistica" => $arrayDelibereGroup[$kk]['statistica'],
@@ -1293,22 +1294,17 @@ class GenericController extends Controller
     }
 
 
-    
-    
-    
-    
-    
-    
     /**
      * @Route("/monitor/{data}", name="monitorData")
      * @Method("GET")
      */
-    public function monitorDataAction(Request $request, $data) {
+    public function monitorDataAction(Request $request, $data)
+    {
         $repository = $this->getDoctrine()->getRepository('UserBundle:Delibere');
         $delibere = $repository->getDelibereByData($data);
 
         $serialize = json_decode($this->serialize($delibere));
-        $serialize = $this->formatDateJsonArrayCustom($serialize,array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
+        $serialize = $this->formatDateJsonArrayCustom($serialize, array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
             "data_mef_invio", "data_mef_pec", "data_mef_ritorno", "data_segretario_invio", "data_segretario_ritorno", "data_presidente_invio", "data_presidente_ritorno",
             "data_invio_cc", "data_registrazione_cc", "data_invio_gu", "data_gu"));
 
@@ -1402,7 +1398,7 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data]['analisi'][$item->id]['gu'] = ($item->data_gu - $item->data_invio_gu) / 86400000;
             }
 
-            
+
             //statistica
             $arrayDelibere[$item->data]['statistica'][$item->id]['nr'] = $item->numero;
             if ($item->data_consegna != "") {
@@ -1413,7 +1409,9 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data]['statistica'][$item->id]['cd_invio_giorni_tot'] = $this->negativeToZero(round(($item->data_direttore_invio - $item->data) / 86400000));
             }
             if ($item->data_direttore_ritorno != "") {
-                if ($item->data_direttore_invio == null) { $item->data_direttore_invio = $item->data_direttore_ritorno; }
+                if ($item->data_direttore_invio == null) {
+                    $item->data_direttore_invio = $item->data_direttore_ritorno;
+                }
                 $arrayDelibere[$item->data]['statistica'][$item->id]['cd_ritorno_giorni'] = $this->negativeToZero(round(($item->data_direttore_ritorno - $item->data_direttore_invio) / 86400000));
                 $arrayDelibere[$item->data]['statistica'][$item->id]['cd_ritorno_giorni_tot'] = $this->negativeToZero(round(($item->data_direttore_ritorno - $item->data) / 86400000));
             }
@@ -1466,16 +1464,19 @@ class GenericController extends Controller
             }
 
             if ($item->data_invio_gu != "") {
-                if ($item->data_registrazione_cc == null) { $item->data_registrazione_cc = $item->data_invio_gu; }
+                if ($item->data_registrazione_cc == null) {
+                    $item->data_registrazione_cc = $item->data_invio_gu;
+                }
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_invio_giorni'] = $this->negativeToZero(round(($item->data_invio_gu - $item->data_registrazione_cc) / 86400000));
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_invio_giorni_tot'] = $this->negativeToZero(round(($item->data_invio_gu - $item->data) / 86400000));
             }
             if ($item->data_gu != "") {
-                if ($item->data_invio_gu == null) { $item->data_invio_gu = $item->data_gu; }
+                if ($item->data_invio_gu == null) {
+                    $item->data_invio_gu = $item->data_gu;
+                }
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_ritorno_giorni'] = $this->negativeToZero(round(($item->data_gu - $item->data_invio_gu) / 86400000));
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_ritorno_giorni_tot'] = $this->negativeToZero(round(($item->data_gu - $item->data) / 86400000));
             }
-
 
 
             //situazione
@@ -1487,7 +1488,7 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data]['situazione'][$item->id]['CD_inviare'] = 1;
                 continue;
             }
-            if (($item->data_direttore_ritorno =="")
+            if (($item->data_direttore_ritorno == "")
                 && (($item->data_direttore_invio != ""))
             ) {
                 $arrayDelibere[$item->data]['situazione'][$item->id]['CD_firma'] = 1;
@@ -1558,8 +1559,8 @@ class GenericController extends Controller
 
 
         // riformatto l'array
-        foreach ($arrayDelibere[strtotime($data) * 1000]['analisi'] as $item => $value ) {
-            $arrayDelibereFormattato[] = array (
+        foreach ($arrayDelibere[strtotime($data) * 1000]['analisi'] as $item => $value) {
+            $arrayDelibereFormattato[] = array(
                 "id" => $item,
                 "analisi" => $value,
                 "statistica" => $arrayDelibere[strtotime($data) * 1000]['statistica'][$item]
@@ -1578,17 +1579,17 @@ class GenericController extends Controller
     }
 
 
-
     /**
      * @Route("/monitor", name="monitorDataAll")
      * @Method("GET")
      */
-    public function monitorDataAllAction(Request $request) {
+    public function monitorDataAllAction(Request $request)
+    {
         $repository = $this->getDoctrine()->getRepository('UserBundle:Delibere');
         $delibere = $repository->getDelibereByData("all");
 
         $serialize = json_decode($this->serialize($delibere));
-        $serialize = $this->formatDateJsonArrayCustom($serialize,array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
+        $serialize = $this->formatDateJsonArrayCustom($serialize, array("data", "data_consegna", "data_direttore_invio", "data_direttore_ritorno",
             "data_mef_invio", "data_mef_pec", "data_mef_ritorno", "data_segretario_invio", "data_segretario_ritorno", "data_presidente_invio", "data_presidente_ritorno",
             "data_invio_cc", "data_registrazione_cc", "data_invio_gu", "data_gu"));
 
@@ -1655,31 +1656,31 @@ class GenericController extends Controller
             $arrayDelibere[$item->data]['analisi'][$item->id]['data'] = $item->data;
             $arrayDelibere[$item->data]['analisi'][$item->id]['nr'] = $item->numero;
             if ($item->data_consegna != "") {
-                $arrayDelibere[$item->data]['analisi'][$item->id]['consegna'] = ($item->data_consegna - $item->data) / 86400000;
+                $arrayDelibere[$item->data]['analisi'][$item->id]['consegna'] = round(($item->data_consegna - $item->data) / 86400000, 0);
             }
             if ($item->data_direttore_ritorno != "") {
-                $arrayDelibere[$item->data]['analisi'][$item->id]['cd'] = ($item->data_direttore_ritorno - $item->data_direttore_invio) / 86400000;
+                $arrayDelibere[$item->data]['analisi'][$item->id]['cd'] = round(($item->data_direttore_ritorno - $item->data_direttore_invio) / 86400000, 0);
             }
             if ($item->data_mef_pec == null || $item->data_mef_pec == "" || $item->data_mef_pec == "0000-00-00") {
                 if ($item->data_mef_ritorno != "") {
-                    $arrayDelibere[$item->data]['analisi'][$item->id]['mef'] = ($item->data_mef_ritorno - $item->data_mef_invio) / 86400000;
+                    $arrayDelibere[$item->data]['analisi'][$item->id]['mef'] = round(($item->data_mef_ritorno - $item->data_mef_invio) / 86400000, 0);
                 }
             } else {
                 if ($item->data_mef_ritorno != "") {
-                    $arrayDelibere[$item->data]['analisi'][$item->id]['mef'] = ($item->data_mef_ritorno - $item->data_mef_pec) / 86400000;
+                    $arrayDelibere[$item->data]['analisi'][$item->id]['mef'] = round(($item->data_mef_ritorno - $item->data_mef_pec) / 86400000, 0);
                 }
             }
             if ($item->data_segretario_ritorno != "") {
-                $arrayDelibere[$item->data]['analisi'][$item->id]['seg'] = ($item->data_segretario_ritorno - $item->data_segretario_invio) / 86400000;
+                $arrayDelibere[$item->data]['analisi'][$item->id]['seg'] = round(($item->data_segretario_ritorno - $item->data_segretario_invio) / 86400000, 0);
             }
             if ($item->data_presidente_ritorno != "") {
-                $arrayDelibere[$item->data]['analisi'][$item->id]['pre'] = ($item->data_presidente_ritorno - $item->data_presidente_invio) / 86400000;
+                $arrayDelibere[$item->data]['analisi'][$item->id]['pre'] = round(($item->data_presidente_ritorno - $item->data_presidente_invio) / 86400000, 0);
             }
             if ($item->data_registrazione_cc != "") {
-                $arrayDelibere[$item->data]['analisi'][$item->id]['cc'] = ($item->data_registrazione_cc - $item->data_invio_cc) / 86400000;
+                $arrayDelibere[$item->data]['analisi'][$item->id]['cc'] = round(($item->data_registrazione_cc - $item->data_invio_cc) / 86400000, 0);
             }
             if ($item->data_gu != "") {
-                $arrayDelibere[$item->data]['analisi'][$item->id]['gu'] = ($item->data_gu - $item->data_invio_gu) / 86400000;
+                $arrayDelibere[$item->data]['analisi'][$item->id]['gu'] = round(($item->data_gu - $item->data_invio_gu) / 86400000, 0);
             }
 
 
@@ -1693,7 +1694,9 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data]['statistica'][$item->id]['cd_invio_giorni_tot'] = $this->negativeToZero(round(($item->data_direttore_invio - $item->data) / 86400000));
             }
             if ($item->data_direttore_ritorno != "") {
-                if ($item->data_direttore_invio == null) { $item->data_direttore_invio = $item->data_direttore_ritorno; }
+                if ($item->data_direttore_invio == null) {
+                    $item->data_direttore_invio = $item->data_direttore_ritorno;
+                }
                 $arrayDelibere[$item->data]['statistica'][$item->id]['cd_ritorno_giorni'] = $this->negativeToZero(round(($item->data_direttore_ritorno - $item->data_direttore_invio) / 86400000));
                 $arrayDelibere[$item->data]['statistica'][$item->id]['cd_ritorno_giorni_tot'] = $this->negativeToZero(round(($item->data_direttore_ritorno - $item->data) / 86400000));
             }
@@ -1746,16 +1749,19 @@ class GenericController extends Controller
             }
 
             if ($item->data_invio_gu != "") {
-                if ($item->data_registrazione_cc == null) { $item->data_registrazione_cc = $item->data_invio_gu; }
+                if ($item->data_registrazione_cc == null) {
+                    $item->data_registrazione_cc = $item->data_invio_gu;
+                }
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_invio_giorni'] = $this->negativeToZero(round(($item->data_invio_gu - $item->data_registrazione_cc) / 86400000));
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_invio_giorni_tot'] = $this->negativeToZero(round(($item->data_invio_gu - $item->data) / 86400000));
             }
             if ($item->data_gu != "") {
-                if ($item->data_invio_gu == null) { $item->data_invio_gu = $item->data_gu; }
+                if ($item->data_invio_gu == null) {
+                    $item->data_invio_gu = $item->data_gu;
+                }
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_ritorno_giorni'] = $this->negativeToZero(round(($item->data_gu - $item->data_invio_gu) / 86400000));
                 $arrayDelibere[$item->data]['statistica'][$item->id]['gu_ritorno_giorni_tot'] = $this->negativeToZero(round(($item->data_gu - $item->data) / 86400000));
             }
-
 
 
             //situazione
@@ -1767,7 +1773,7 @@ class GenericController extends Controller
                 $arrayDelibere[$item->data]['situazione'][$item->id]['CD_inviare'] = 1;
                 continue;
             }
-            if (($item->data_direttore_ritorno =="")
+            if (($item->data_direttore_ritorno == "")
                 && (($item->data_direttore_invio != ""))
             ) {
                 $arrayDelibere[$item->data]['situazione'][$item->id]['CD_firma'] = 1;
@@ -1840,7 +1846,7 @@ class GenericController extends Controller
         // riformatto l'array
         $arrayDelibereFormattato = array();
 
-        foreach ($arrayDelibere as $item => $value ) {
+        foreach ($arrayDelibere as $item => $value) {
             $dataCipe = 0;
             foreach ($value['analisi'] as $aa => $bb) {
                 $dataCipe = ($bb['data']);
@@ -1853,7 +1859,7 @@ class GenericController extends Controller
             }
 
 
-            $arrayDelibereFormattato[$dataCipe][] = array (
+            $arrayDelibereFormattato[$dataCipe][] = array(
                 "id" => $item,
                 "analisi" => array_values($value['analisi']),
                 "statistica" => array_values($value['statistica'])
@@ -1864,9 +1870,6 @@ class GenericController extends Controller
         foreach ($arrayDelibereFormattato as $xx => $zz) {
             $arrayDelibereFormattato2[] = $arrayDelibereFormattato[$xx][0];
         }
-
-
-
 
 
         $response_array = array(
@@ -1880,9 +1883,94 @@ class GenericController extends Controller
     }
 
 
+    /**
+     * @Route("/scriptCupDelibere", name="scriptCupDelibere")
+     * @Method("GET")
+     */
+    public function scriptCupDelibere(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager(); // ...or getEntityManager() prior to Symfony 2.1
+        $connection = $em->getConnection();
+
+        //$statement = $connection->prepare('SELECT * FROM filecup as c WHERE path <> :id');
+        $statement = $connection->prepare('SELECT * FROM filecup as c
+                                            LEFT JOIN msc_allegati as a ON a.file LIKE CONCAT("%", c.file ,"%")
+                                            LEFT JOIN msc_rel_allegati_delibere as ad ON a.id = ad.id_allegati
+                                            WHERE a.id is not :id');
+        $statement->bindValue('id', NULL);
+        $statement->execute();
+        $results = $statement->fetchAll();
+
+        foreach ($results as $item => $value) {
+            $repository = $this->getDoctrine()->getRepository('UserBundle:Delibere');
+            $delibera = $repository->findOneBy(array("id" => $value['id_delibere']));
+
+            if ($delibera != null) {
+                $delibera->setCodiceCup($value['cup']);
+
+                $em->persist($delibera);
+                $em->flush();
+
+                print_r($value['file'] . " ------> " . $value['id_delibere']);
+                print_r("<br>");
+            }
+        }
+
+        $response = new Response(json_encode("Fine"), Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
 
 
+    /**
+     * @Route("/scriptExportDelibere", name="scriptExportDelibere")
+     * @Method("GET")
+     */
+    public function scriptExportDelibere(Request $request) {
+        $em = $this->getDoctrine()->getManager();
 
+        $repository = $em->getRepository('UserBundle:Delibere');
+        $getDelibere = $repository->findBy([], ["data" => "DESC", "numero" => "ASC"]);
+
+        $array = [];
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/csv');
+        header("Content-Disposition: attachment; filename=export-delibere.csv");
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+
+        foreach ($getDelibere as $item => $value) {
+            $dataGu = "";
+            $dataDelibera = $value->getData()->format('Y-m-d');
+            if ($value->getDataGu() != null && $value->getDataGu()->format('Y-m-d') != "-0001-11-30") {
+                $dataGu = $value->getDataGu()->format('Y-m-d');
+            }
+
+            $array[] = array(
+                "anno" => $value->getData()->format('Y'),
+                "data" => $dataDelibera,
+                "numero" => $value->getNumero(),
+                "data_gu" => $dataGu,
+                "cup" => $value->getCodiceCup(),
+            );
+
+        }
+//        echo"<pre>";
+//        print_r($array);
+//        echo"</pre>";
+
+        $fp = fopen( 'php://output', 'w' );
+        fputcsv($fp, ["Anno", "Data", "Numero", "Data GU", "Codice CUP"]);
+
+        foreach ($array as $fields) {
+            fputcsv($fp, $fields);
+        }
+
+        fclose($fp);
+        exit;
+
+        $response = new Response("", Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
+    }
 
 
 
@@ -1893,8 +1981,10 @@ class GenericController extends Controller
      * @Route("/firmataritipo", name="firmataritipoOptions")
      * @Method("OPTIONS")
      */
-    public function firmataritipoOptions(Request $request) {
-			
+    public
+    function firmataritipoOptions(Request $request)
+    {
+
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
@@ -1903,7 +1993,9 @@ class GenericController extends Controller
      * @Route("/cipeesiti", name="cipeesitiOptions")
      * @Method("OPTIONS")
      */
-    public function cipeesitiOptions(Request $request) {
+    public
+    function cipeesitiOptions(Request $request)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -1913,7 +2005,9 @@ class GenericController extends Controller
      * @Route("/cipeesititipo", name="cipeesititipoOptions")
      * @Method("OPTIONS")
      */
-    public function cipeesititipoOptions(Request $request) {
+    public
+    function cipeesititipoOptions(Request $request)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -1923,18 +2017,22 @@ class GenericController extends Controller
      * @Route("/cipeargomentitipo", name="cipeargomentitipoOptions")
      * @Method("OPTIONS")
      */
-    public function cipeargomentitipoOptions(Request $request) {
+    public
+    function cipeargomentitipoOptions(Request $request)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
 
 
-	/**
+    /**
      * @Route("/monitor", name="monitorDataAllOptions")
      * @Method("OPTIONS")
      */
-    public function monitorDataAllOptions(Request $request) {
+    public
+    function monitorDataAllOptions(Request $request)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -1944,7 +2042,9 @@ class GenericController extends Controller
      * @Route("/monitor/{data}", name="monitorDataOptions")
      * @Method("OPTIONS")
      */
-    public function monitorDataOptions(Request $request, $data) {
+    public
+    function monitorDataOptions(Request $request, $data)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -1955,7 +2055,9 @@ class GenericController extends Controller
      * @Route("/monitor/group", name="monitorAllOptions")
      * @Method("OPTIONS")
      */
-    public function monitorAllOptions(Request $request) {
+    public
+    function monitorAllOptions(Request $request)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
@@ -1965,12 +2067,13 @@ class GenericController extends Controller
      * @Route("/monitor/group/{anno}", name="monitorAnnoOptions")
      * @Method("OPTIONS")
      */
-    public function monitorAnnoOptions(Request $request, $anno) {
+    public
+    function monitorAnnoOptions(Request $request, $anno)
+    {
 
         $response = new Response(Response::HTTP_OK);
         return $this->setBaseHeaders($response);
     }
-
 
 
 }

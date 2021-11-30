@@ -117,15 +117,16 @@ class LoginController extends Controller
 
         $userEmail = $data['email'];
         $password = $data['password'];
-        
-        
+
         //cerchiamo l'utente con username = $userName
         $user = $this->getDoctrine()
             ->getRepository('UserBundle:User')
             ->findOneBy(['email' => $userEmail]);
 
+        $countUser = 0;
         if (!$user) {
-            $response_array = array("error" =>  ["code" => 403, "message" => "Il nome utente inserito non è corretto."]);
+            $countUser = 1;
+            $response_array = array("error" =>  ["code" => 403, "message" => "Il nomeee utente inserito non è corretto."]);
             $response = new Response(json_encode($response_array), 403);
             return $this->setBaseHeaders($response);
             //throw $this->createNotFoundException();
@@ -181,7 +182,7 @@ class LoginController extends Controller
         }
 
         $response_array = array(
-            "total_results" => count($user),
+            "total_results" => $countUser,
             "data" =>  ['id' => $user->getId(),
             'username' => $user->getUsername(),
             'firstName' => $user->getFirstName(),

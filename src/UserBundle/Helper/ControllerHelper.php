@@ -18,11 +18,15 @@ trait ControllerHelper
     {
 
         if ($upload == "upload") {
-            $response->headers->set('Access-Control-Allow-Origin', 'http://mosic.hantarex.org');
+            $response->headers->set('Access-Control-Allow-Origin', 'https://mosic.hantarex.org');
             $response->headers->set('Access-Control-Allow-Credentials', 'true');
+            
+            //MODIFICA MOSIC 3.0 del 11/05/2020 (attenzione a http o https)
+            //$response->headers->set('Access-Control-Allow-Origin', '*');
         } else {
             $response->headers->set('Access-Control-Allow-Origin', '*');
         }
+
 
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, HEAD');
@@ -291,6 +295,7 @@ trait ControllerHelper
  * @return string JSON string
  */
     public function mergeRelDelibereAll($data) {
+        ini_set('memory_limit', '-1'); //22 Gennaio 2019
 
         $data = json_decode($data, true); //trasformo in array
         $array = array();
@@ -705,6 +710,22 @@ trait ControllerHelper
 
     function negativeToZero($var){
         return ($var < 0 ? 0 : $var);
+    }
+
+    //22 Gennaio 2019
+    function copyAndCreateFolderIfNotExist($s1,$s2) {
+        $path = pathinfo($s2);
+        if (!file_exists($path['dirname'])) {
+            mkdir($path['dirname'], 0777, true);
+        }
+        if (!copy($s1,$s2)) {
+            echo "copy failed \n";
+        }
+
+        $dt = filemtime($s1);
+        if ($dt === FALSE) return FALSE;
+        return touch($s2, $dt);
+
     }
 
 }

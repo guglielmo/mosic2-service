@@ -113,6 +113,11 @@ class MittenteController extends Controller
 
         $mittente_new = new Mittente();
         $mittente_new->setDenominazione($data->denominazione);
+        //MODIFICA MOSIC 3.0 del 17/06/2020
+        $mittente_new->setDisattivo(0);
+        if (isset($data->disattivo) && $data->disattivo == 1) {
+            $mittente_new->setDisattivo($data->disattivo);
+        }
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -246,6 +251,11 @@ class MittenteController extends Controller
         $mittente = $repository->findOneById($data->id);
 
         $mittente->setDenominazione($data->denominazione);
+        //MODIFICA MOSIC 3.0 del 17/06/2020
+        $mittente->setDisattivo(0);
+        if (isset($data->disattivo) && $data->disattivo == 1) {
+            $mittente->setDisattivo($data->disattivo);
+        }
 
 
         //aggiorna la date della modifica nella tabella msc_last_updates

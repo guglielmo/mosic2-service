@@ -73,10 +73,11 @@ class CipeController extends Controller
         $arrayPrecipe = array();
 
         foreach ($cipe as $item => $value) {
-            $allegatiTLX = "";
-            $allegatiAPG = "";
-            $allegatiOSS = "";
-            $allegatiEST = "";
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            $allegatiTLX = [];
+            $allegatiAPG = [];
+            $allegatiOSS = [];
+            $allegatiEST = [];
 
             $allegati = $repository->getAllegatiByIdCipe($value->getId());
             $allegati = json_decode($this->serialize($allegati));
@@ -228,10 +229,12 @@ class CipeController extends Controller
         $allegati = $repository->getAllegatiByIdCipe($id);
         $allegati = json_decode($this->serialize($allegati));
 
-        $allegatiTLX = "";
-        $allegatiAPG = "";
-        $allegatiOSS = "";
-        $allegatiEST = "";
+
+        //MODIFICA MOSIC 3.0 del 08/05/2020
+        $allegatiTLX = [];
+        $allegatiAPG = [];
+        $allegatiOSS = [];
+        $allegatiEST = [];
         foreach ($allegati as $i => $v) {
             //$response = new Response(json_encode($v), Response::HTTP_OK);
             //return $this->setBaseHeaders($response);
@@ -370,6 +373,19 @@ class CipeController extends Controller
         $cipe = $repository->findOneById($data->id);
 
         $cipe->setData(new \DateTime($this->zulu_to_rome($data->data)));
+
+        //MODIFICA MOSIC 3.0 del 11/05/2020
+        $cipe->setIdSegretario(0);
+        if ($data->id_segretario != "" && $data->id_segretario != 0) {
+            $cipe->setIdSegretario($data->id_segretario);
+        }
+        $cipe->setIdPresidente(0);
+        if ($data->id_presidente != "" && $data->id_presidente != 0) {
+            $cipe->setIdPresidente($data->id_presidente);
+        }
+
+
+
         //$cipe->setData(new \DateTime('2016-07-18'));
 
         $repository_odg = $em->getRepository('UserBundle:CipeOdg');
@@ -387,16 +403,20 @@ class CipeController extends Controller
                 $cipeodg = $repository_odg->findOneById((int)$value->id);
             } else {
                 $cipeodg = new CipeOdg();
-
                 //$response = new Response(json_encode($data), Response::HTTP_OK);
                 //return $this->setBaseHeaders($response);
-
             }
-
-
             $cipeodg->setIdCipe($id);
-            $cipeodg->setIdTitolari($value->id_titolari);
-            $cipeodg->setIdFascicoli($value->id_fascicoli);
+
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            $cipeodg->setIdTitolari(0);
+            if ($value->id_titolari != "" && $value->id_titolari != 0) {
+                $cipeodg->setIdTitolari($value->id_titolari);
+            }
+            $cipeodg->setIdFascicoli(0);
+            if ($value->id_fascicoli != "" && $value->id_fascicoli != 0) {
+                $cipeodg->setIdFascicoli($value->id_fascicoli);
+            }
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
             if (isset($value->numero_delibera)) { $cipeodg->setNumeroDelibera($value->numero_delibera);}
@@ -409,9 +429,10 @@ class CipeController extends Controller
                 $em->persist($cipeodg);
                 $em->flush(); //esegue l'update
                 $value->id = $cipeodg->getId();
-
-
             }
+
+
+
 
 
             $relRegistriOdg_delete = $repository_rel_registri_odg->findByIdOdgCipe((int)$value->id);
@@ -516,7 +537,8 @@ class CipeController extends Controller
         $dataCipeOdg = $dataCipeOdg->cipe_odg;
         foreach ($dataCipeOdg as $item => $value) {
             //print_r($value->ordine);
-            $check = $this->checkCampiObbligatori($value,["denominazione","ordine","id_fascicoli","id_registri","id_titolari","id_uffici"]);
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            $check = $this->checkCampiObbligatori($value,["denominazione","ordine","id_uffici"]);
             if ($check != "ok") {
                 $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
                 $response = new Response(json_encode($response_array), 409);
@@ -527,6 +549,18 @@ class CipeController extends Controller
 
         $cipe = new Cipe();
         $cipe->setData(new \DateTime($this->zulu_to_rome($data->data)));
+        //MODIFICA MOSIC 3.0 del 11/05/2020
+        $cipe->setIdSegretario(0);
+        if ($data->id_segretario != "" && $data->id_segretario != 0) {
+            $cipe->setIdSegretario($data->id_segretario);
+        }
+        $cipe->setIdPresidente(0);
+        if ($data->id_presidente != "" && $data->id_presidente != 0) {
+            $cipe->setIdPresidente($data->id_presidente);
+        }
+
+
+
 
         $em->persist($cipe);
         $em->flush(); //esegue l'update
@@ -538,8 +572,16 @@ class CipeController extends Controller
 
             $cipeodg->setIdCipe($cipe->getId());
             //$cipeodg->setProgressivo($value->progressivo);
-            $cipeodg->setIdTitolari($value->id_titolari);
-            $cipeodg->setIdFascicoli($value->id_fascicoli);
+
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            $cipeodg->setIdTitolari(0);
+            if ($value->id_titolari != "") {
+                $cipeodg->setIdTitolari($value->id_titolari);
+            }
+            $cipeodg->setIdFascicoli(0);
+            if ($value->id_fascicoli != "") {
+                $cipeodg->setIdFascicoli($value->id_fascicoli);
+            }
             //$cipeodg->setIdArgomenti($value->id_argomenti);
             $cipeodg->setOrdine($value->ordine);
             $cipeodg->setDenominazione($value->denominazione);
@@ -999,6 +1041,7 @@ class CipeController extends Controller
         //$response = new Response(json_encode($precipeTemp), Response::HTTP_OK);
         //return $this->setBaseHeaders($response);
 
+
         //unset($precipeTemp->punti_odg[1]);
         //unset($precipeTemp->punti_odg[2]);
         //unset($precipeTemp->punti_odg[3]);
@@ -1042,7 +1085,17 @@ class CipeController extends Controller
 //        unset($precipeTemp->punti_odg[28]);
 
 
+//"\/opt\/php-5.6.25\/bin\/php -f mosic-script\/cipe-area-riservata.php"
+
+
+
+
         $command = Costanti::PATH_PHP . " -f mosic-script/cipe-area-riservata.php " . $id . " '". str_replace("'", " ",json_encode($precipeTemp)) ."'";
+
+        //$response = new Response($command, Response::HTTP_OK);
+        //return $this->setBaseHeaders($response);
+
+
         exec( "$command > /dev/null &", $arrOutput );
 
 

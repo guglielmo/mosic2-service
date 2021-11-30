@@ -54,7 +54,7 @@ class RegistrationController extends BaseController
         $userManager = $this->get('fos_user.user_manager');
 				
         $user = $userManager->createUser();
-        
+
         $data = json_decode($request->getContent(), true); //converto il json in array
         $check = $this->checkCampiObbligatori(json_decode($request->getContent()),["userName","firstName","lastName","repeatPassword","id_groups","id_uffici","id_ruoli_cipe"]);
         if ($check != "ok") {
@@ -167,7 +167,7 @@ class RegistrationController extends BaseController
         $serialize = $this->formatDateTimeJsonCustom($serialize, array('registrationDate'));
 
         foreach ($serialize as $item) {
-            $gruppi = "";
+            $gruppi = [];
             foreach ($item->groups as $k) {
                 $gruppi[] = $k->id;
             }
@@ -187,8 +187,8 @@ class RegistrationController extends BaseController
                 "id_groups" => $gruppi, //togliere [0] se vogliamo gestire più gruppi
             );
         }
-        
-				
+
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($users),
@@ -196,7 +196,7 @@ class RegistrationController extends BaseController
             "offset" => 0,
             "data" => $utenti,
         );
-				
+
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
 
         return $this->setBaseHeaders($response);

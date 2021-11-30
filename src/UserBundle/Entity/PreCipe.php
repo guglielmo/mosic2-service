@@ -52,6 +52,13 @@ class PreCipe
      */
     private $publicReservedUrl;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="id_segretario", type="integer", nullable=true, options={"default":0})
+     */
+    private $idSegretario;
+
 
 
 
@@ -60,9 +67,8 @@ class PreCipe
         $this->ufficialeRiunione = 0;
         $this->publicReservedStatus = "";
         $this->publicReservedUrl = "";
+        $this->idSegretario = 0;
     }
-
-
 
 
 
@@ -172,4 +178,22 @@ class PreCipe
     {
         return $this->publicReservedUrl;
     }
+
+    /**
+     * @return string
+     */
+    public function getIdSegretario()
+    {
+        return $this->idSegretario;
+    }
+
+    /**
+     * @param string $idSegretario
+     */
+    public function setIdSegretario($idSegretario)
+    {
+        $this->idSegretario = $idSegretario;
+    }
+    
+
 }

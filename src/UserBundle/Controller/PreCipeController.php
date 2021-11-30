@@ -61,6 +61,8 @@ class PreCipeController extends Controller
      */
     public function precipeAction(Request $request)
     {
+
+
         //prendo i parametri get
         $limit = ($request->query->get('limit') != "") ? $request->query->get('limit') : 100;
         $offset = ($request->query->get('offset') != "") ? $request->query->get('offset') : 0;
@@ -74,25 +76,29 @@ class PreCipeController extends Controller
         $arrayPrecipe = array();
 
         foreach ($precipe as $item => $value) {
-            $allegatiTLX = "";
-            $allegatiAPG = "";
-            $allegatiOSS = "";
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            $allegatiTLX = [];
+            $allegatiAPG = [];
+            $allegatiOSS = [];
 
             $allegati = $repository->getAllegatiByIdPreCipe($value->getId());
             $allegati = json_decode($this->serialize($allegati));
-            foreach ($allegati as $i => $v) {
-                switch ($v->tipologia) {
-                    case "TLX":
-                        $allegatiTLX[] = $v;
-                        break;
-                    case "APG":
-                        $allegatiAPG[] = $v;
-                        break;
-                    case "OSS":
-                        $allegatiOSS[] = $v;
-                        break;
+
+            if (count($allegati) > 0) {
+                foreach ($allegati as $i => $v) {
+                    switch ($v->tipologia) {
+                        case "TLX":
+                            $allegatiTLX[] = $v;
+                            break;
+                        case "APG":
+                            $allegatiAPG[] = $v;
+                            break;
+                        case "OSS":
+                            $allegatiOSS[] = $v;
+                            break;
+                    }
+                    //print_r($v->tipologia);
                 }
-                //print_r($v->tipologia);
             }
 
             $arrayTemp = json_decode($this->serialize($value));
@@ -100,8 +106,10 @@ class PreCipeController extends Controller
             $arrayTemp->allegati_APG = $allegatiAPG;
             $arrayTemp->allegati_OSS = $allegatiOSS;
             $arrayPrecipe[] = $arrayTemp;
-        }
 
+
+        }
+        
         //$serialize = json_decode($this->serialize($precipe));
 
         //print_r($tags);
@@ -115,7 +123,6 @@ class PreCipeController extends Controller
         );
 
         $response = new Response(json_encode($response_array), Response::HTTP_OK);
-
         return $this->setBaseHeaders($response);
     }
 
@@ -216,10 +223,10 @@ class PreCipeController extends Controller
 
         $allegati = $repository->getAllegatiByIdPreCipe($id);
         $allegati = json_decode($this->serialize($allegati));
-
-        $allegatiTLX = "";
-        $allegatiAPG = "";
-        $allegatiOSS = "";
+        //MODIFICA MOSIC 3.0 del 08/05/2020
+        $allegatiTLX = [];
+        $allegatiAPG = [];
+        $allegatiOSS = [];
 
         foreach ($allegati as $i => $v) {
             switch ($v->tipologia) {
@@ -339,6 +346,11 @@ class PreCipeController extends Controller
 
         $precipe->setData(new \DateTime($this->zulu_to_rome($data->data)));
         //$precipe->setData(new \DateTime('2016-07-18'));
+        //MODIFICA MOSIC 3.0 del 11/05/2020
+        $precipe->setIdSegretario(0);
+        if ($data->id_segretario != "" && $data->id_segretario != 0) {
+            $precipe->setIdSegretario($data->id_segretario);
+        }
 
         $repository_odg = $em->getRepository('UserBundle:PreCipeOdg');
         $repository_rel_registri_odg = $em->getRepository('UserBundle:RelRegistriOdg');
@@ -355,8 +367,16 @@ class PreCipeController extends Controller
 
             $precipeodg->setIdPrecipe($id);
             //$precipeodg->setProgressivo($value->progressivo);
-            $precipeodg->setIdTitolari($value->id_titolari);
-            $precipeodg->setIdFascicoli($value->id_fascicoli);
+
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            $precipeodg->setIdTitolari(0);
+            if ($value->id_titolari != "" && $value->id_titolari != 0) {
+                $precipeodg->setIdTitolari($value->id_titolari);
+            }
+            $precipeodg->setIdFascicoli(0);
+            if ($value->id_fascicoli != "" && $value->id_fascicoli != 0) {
+                $precipeodg->setIdFascicoli($value->id_fascicoli);
+            }
             //$precipeodg->setIdArgomenti($value->id_argomenti);
             $precipeodg->setOrdine($value->ordine);
             $precipeodg->setDenominazione($value->denominazione);
@@ -469,7 +489,8 @@ class PreCipeController extends Controller
         $dataCipeOdg = $dataCipeOdg->precipe_odg;
         foreach ($dataCipeOdg as $item => $value) {
             //print_r($value->ordine);
-            $check = $this->checkCampiObbligatori($value,["denominazione","ordine","id_fascicoli","id_registri","id_titolari","id_uffici"]);
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            $check = $this->checkCampiObbligatori($value,["denominazione","ordine","id_uffici"]);
             if ($check != "ok") {
                 $response_array = array("error" =>  ["code" => 409, "message" => "Il campo ".$check." e' obbligatorio"]);
                 $response = new Response(json_encode($response_array), 409);
@@ -480,6 +501,10 @@ class PreCipeController extends Controller
 
         $precipe = new PreCipe();
         $precipe->setData(new \DateTime($this->zulu_to_rome($data->data)));
+        $precipe->setIdSegretario(0);
+        if ($data->id_segretario != "" && $data->id_segretario != 0) {
+            $precipe->setIdSegretario($data->id_segretario);
+        }
 
         $em->persist($precipe);
         $em->flush(); //esegue l'update
@@ -490,8 +515,15 @@ class PreCipeController extends Controller
 
             $precipeodg->setIdPrecipe($precipe->getId());
             //$precipeodg->setProgressivo($value->progressivo);
-            $precipeodg->setIdTitolari($value->id_titolari);
-            $precipeodg->setIdFascicoli($value->id_fascicoli);
+            $precipeodg->setIdTitolari(0);
+            //MODIFICA MOSIC 3.0 del 08/05/2020
+            if ($value->id_titolari != "" ) {
+                $precipeodg->setIdTitolari($value->id_titolari);
+            }
+            $precipeodg->setIdFascicoli(0);
+            if ($value->id_titolari != "" ) {
+                $precipeodg->setIdFascicoli($value->id_fascicoli);
+            }
             //$precipeodg->setIdArgomenti($value->id_argomenti);
             $precipeodg->setOrdine($value->ordine);
             $precipeodg->setDenominazione($value->denominazione);

@@ -28,6 +28,14 @@ class Tags
      */
     private $denominazione;
 
+    //MODIFICA MOSIC 3.0 del 17/06/2020
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="disattivo", type="integer")
+     */
+    private $disattivo;
+
 
     /**
      * Get id
@@ -62,4 +70,23 @@ class Tags
     {
         return $this->denominazione;
     }
+
+    /**
+     * @return int
+     */
+    public function getDisattivo()
+    {
+        return $this->disattivo;
+    }
+
+    /**
+     * @param int $disattivo
+     */
+    public function setDisattivo($disattivo)
+    {
+        $this->disattivo = $disattivo;
+    }
+
+
+
 }

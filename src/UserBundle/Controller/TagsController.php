@@ -161,6 +161,11 @@ class TagsController extends Controller
         }
 
         $tag_new = new Tags();
+        //MODIFICA MOSIC 3.0 del 17/06/2020
+        $tag_new->setDisattivo(0);
+        if (isset($data->disattivo) && $data->disattivo == 1) {
+            $tag_new->setDisattivo($data->disattivo);
+        }
         $tag_new->setDenominazione($data->denominazione);
 
         //aggiorna la date della modifica nella tabella msc_last_updates
@@ -245,6 +250,11 @@ class TagsController extends Controller
         $tags = $repository->findOneById($data->id);
 
         $tags->setDenominazione($data->denominazione);
+        //MODIFICA MOSIC 3.0 del 17/06/2020
+        $tags->setDisattivo(0);
+        if (isset($data->disattivo) && $data->disattivo == 1) {
+            $tags->setDisattivo($data->disattivo);
+        }
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');

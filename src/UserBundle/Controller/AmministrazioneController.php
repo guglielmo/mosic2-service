@@ -56,7 +56,6 @@ class AmministrazioneController extends Controller
         $repository = $this->getDoctrine()->getRepository('UserBundle:Amministrazione');
         $amministrazione = $repository->findAll();
         
-        
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => count($amministrazione),
@@ -169,6 +168,11 @@ class AmministrazioneController extends Controller
         $amministrazione_new = new Amministrazione();
         $amministrazione_new->setDenominazione($data->denominazione);
         $amministrazione_new->setCodice("xxx");//lo aggiornerò dopo con l'id dell'elemento creato
+        //MODIFICA MOSIC 3.0 del 17/06/2020
+        $amministrazione_new->setDisattivo(0);
+        if (isset($data->disattivo) && $data->disattivo == 1) {
+            $amministrazione_new->setDisattivo($data->disattivo);
+        }
 
         //aggiorna la date della modifica nella tabella msc_last_updates
         $repositoryLastUpdates = $em->getRepository('UserBundle:LastUpdates');
@@ -260,6 +264,11 @@ class AmministrazioneController extends Controller
 
         $amministrazione->setCodice($data->codice);
         $amministrazione->setDenominazione($data->denominazione);
+        //MODIFICA MOSIC 3.0 del 17/06/2020
+        $amministrazione->setDisattivo(0);
+        if (isset($data->disattivo) && $data->disattivo == 1) {
+            $amministrazione->setDisattivo($data->disattivo);
+        }
 
 
         //aggiorna la date della modifica nella tabella msc_last_updates
