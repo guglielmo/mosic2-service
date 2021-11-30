@@ -98,7 +98,7 @@ fclose($fp);
 window.onload = function() {
   // Build a system
   const ui = SwaggerUIBundle({
-    url: "/service/docs/swagger.json",
+    url: "/docs/swagger.json",
     dom_id: '#swagger-ui',
     presets: [
       SwaggerUIBundle.presets.apis,

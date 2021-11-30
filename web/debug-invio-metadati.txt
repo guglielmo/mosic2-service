@@ -1,0 +1,1 @@
+{"tipo":"cipe","id_seduta":169,"self_uri":"http://area-riservata.programmazioneeconomica.gov.it/cipe/65","data":"2020-03-17","ufficiale":false}

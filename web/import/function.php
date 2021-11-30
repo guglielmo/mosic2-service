@@ -1273,16 +1273,32 @@ function createAdempimenti() {
             if( strpos( $struttura, "Ufficio V" ) !== false ) {
                 $struttura = "Ufficio V";
             }
-            $query2 = 'SELECT * FROM msc_uffici WHERE denominazione = "'. $struttura . '"';
+            if( strpos( $struttura, "UfficioV" ) !== false ) {
+                $struttura = "Ufficio V";
+            }
+            $query2 = 'SELECT * FROM msc_uffici WHERE denominazione = "'. $struttura . '" AND disattivo_ufficio = 0';
             $res2 = mysqli_query($db, $query2);
             if (!$res2) { return mysqli_error($db) . " (msc_uffici)"; }
+
+            $id_struttura = 6; // è il codice dell'ufficio corrispondente a vuoto
             while ($row2 = mysqli_fetch_array($res2)) {
-                if ($row2['id'] == 35 || $row2['id'] == "35") {
-                    $id_struttura = 1;
-                } else {
-                    $id_struttura = $row2['id'];
-                }
+//                if ($row2['id'] == 35 || $row2['id'] == "35") {
+//                    $id_struttura = 1;
+//                } elseif ($row2['id'] == 32 || $row2['id'] == "32") {
+//                    $id_struttura = 2;
+//                } elseif ($row2['id'] == 34 || $row2['id'] == "34") {
+//                    $id_struttura = 8;
+//                } elseif ($row2['id'] == 44 || $row2['id'] == "44") {
+//                    $id_struttura = 9;
+//                } else {
+//                    $id_struttura = $row2['id'];
+//                }
+
+                $id_struttura = $row2['id'];
+
             }
+
+
 
 
             //ricavo l'id della delibera (da numero_delibera e suduta)
@@ -1385,7 +1401,7 @@ function createAdempimenti() {
                                                 "' . $row['Pluriennalita'] . '",
                                                 "' . $row['NOTE'] . '"
                                                 )';
-            //echo $query . "<br>";
+            //echo " ---->   ". $row['id'] . " | " . $id_struttura . " <br>";
             $res3 = mysqli_query($db, $query);
             if (!$res3) {
                 return mysqli_error($db) . " (msc_adempimenti)";
@@ -1458,6 +1474,12 @@ function createAdempimenti2() {
             while ($row2 = mysqli_fetch_array($res2)) {
                 if ($row2['id'] == 35 || $row2['id'] == "35") {
                     $id_struttura = 1;
+                } elseif ($row2['id'] == 32 || $row2['id'] == "32") {
+                    $id_struttura = 2;
+                } elseif ($row2['id'] == 34 || $row2['id'] == "34") {
+                    $id_struttura = 8;
+                } elseif ($row2['id'] == 44 || $row2['id'] == "44") {
+                    $id_struttura = 9;
                 } else {
                     $id_struttura = $row2['id'];
                 }
@@ -3541,6 +3563,123 @@ function monitor() {
 }
 
 
+
+
+
+function getDelibereCCFix() {
+    global $db;
+    $countOk = 0;
+    $countRIL = 0;
+
+    $query = "SELECT * FROM msc_rel_allegati_delibere WHERE tipo = 'CC' GROUP BY id_delibere ORDER BY id_delibere DESC";
+    $res = mysqli_query($db, $query);
+    if (!$res) { return mysqli_error($db); }
+
+
+    if (mysqli_num_rows($res) >= 1) {
+        while ($row = mysqli_fetch_array($res)) {
+            $arrayRilieviNumero = array();
+
+            $query3 = "SELECT cc.id, cc.id_delibere, cc.numero_rilievo FROM msc_delibere_cc as cc 
+                       WHERE cc.id_delibere = '".$row['id_delibere']."'
+            ";
+
+            $res3 = mysqli_query($db, $query3);
+            if (!$res3) { return mysqli_error($db); }
+
+            //echo"<br>";
+
+            if (mysqli_num_rows($res3) >= 1) {
+                while ($row3 = mysqli_fetch_array($res3)) {
+                    $arrayRilieviNumero[$row3['id']] = $row3['numero_rilievo'];
+
+                }
+            }
+
+
+
+            if (count($arrayRilieviNumero) > 0) {
+                //print_r($arrayRilieviNumero);
+
+                $query2 = "SELECT ad.*, a.id as idAllegato, a.file FROM msc_rel_allegati_delibere as ad 
+                       LEFT JOIN msc_allegati as a ON ad.id_allegati = a.id
+                       WHERE ad.id_delibere = '" . $row['id_delibere'] . "' AND ad.tipo = 'CC'
+                ";
+
+                $res2 = mysqli_query($db, $query2);
+                if (!$res2) {
+                    return mysqli_error($db);
+                }
+
+                //echo $query2;
+                //echo "<br>";
+
+                if (mysqli_num_rows($res2) >= 1) {
+                    while ($row2 = mysqli_fetch_array($res2)) {
+                        $nomeFile = explode("/", $row2['file']);
+                        $nomeFile = end($nomeFile);
+
+                        if (strpos($nomeFile, 'RIL') !== false) { // esiste RIL nel nome del file
+                            //echo $nomeFile;
+
+                            $countRIL = $countRIL + 1;
+
+                            $nomeFile = explode("-", $nomeFile); //$nomeFile[2] dovrebbe contenere il numero rilievo
+
+                            if ($nomeFile[2] == '2015.pdf') {
+                                $nomeFile = $nomeFile[1];
+                            } else {
+                                $nomeFile = $nomeFile[2];
+                            }
+
+                            $nomeFile = str_replace(".pdf", "", $nomeFile); //$nomeFile[2] dovrebbe contenere il numero rilievo
+                            $nomeFile = str_replace(".docx", "", $nomeFile); //$nomeFile[2] dovrebbe contenere il numero rilievo
+                            $nomeFile = str_replace(".doc", "", $nomeFile); //$nomeFile[2] dovrebbe contenere il numero rilievo
+
+
+                            if (in_array($nomeFile, $arrayRilieviNumero)) {
+                                $countOk = $countOk + 1;
+                                //echo " ---> OK " . $row2['idAllegato'] . " <br>";
+
+                                $query4 = "INSERT INTO `msc_rel_allegati_delibere_ccr`(`id_delibere_ccr`, `id_allegati`) VALUES ('". array_search($nomeFile, $arrayRilieviNumero) . "', '" .$row2['idAllegato'] . "')";
+                                $res4 = mysqli_query($db, $query4);
+                                if (!$res4) { return mysqli_error($db) . " (insert msc_rel_allegati_delibere_ccr)"; }
+
+                                ////DELETE
+                                $query5 = "DELETE FROM `msc_rel_allegati_delibere` WHERE id_allegati = '". $row2['idAllegato'] ."'";
+                                $res5 = mysqli_query($db, $query5);
+                                if (!$res5) { return mysqli_error($db) . " (delete msc_rel_allegati_delibere)";}
+
+
+
+                            } else {
+                                //echo " ---> NO-OK" . "<br>";
+                            }
+                        } else {
+                            //echo "il file non contiene RIL <br>";
+                        }
+
+
+                    }
+                }
+
+                //echo "<br>----------------------------------------------------------<br>";
+            }
+
+
+
+
+
+
+
+        }
+    }
+
+     print_r("COUNT OK = " . $countOk . "<br>");
+     print_r("COUNT RIL = " . $countRIL . "<br>");
+
+    return;
+}
 
 
 

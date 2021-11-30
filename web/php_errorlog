@@ -1,0 +1,181 @@
+[14-Sep-2020 04:01:42 CST6CDT] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '$response' (T_VARIABLE) in /home/mosicmisterwolf/public_html/src/UserBundle/Controller/GenericController.php:1893
+Stack trace:
+#0 /home/mosicmisterwolf/public_html/vendor/composer/ClassLoader.php(301): Composer\Autoload\includeFile('/home/mosicmist...')
+#1 [internal function]: Composer\Autoload\ClassLoader->loadClass('UserBundle\\Cont...')
+#2 [internal function]: spl_autoload_call('UserBundle\\Cont...')
+#3 /home/mosicmisterwolf/public_html/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(52): ReflectionClass->__construct('UserBundle\\Cont...')
+#4 /home/mosicmisterwolf/public_html/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php(103): Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load('/home/mosicmist...', 'annotation')
+#5 /home/mosicmisterwolf/public_html/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader. in /home/mosicmisterwolf/public_html/src/UserBundle/Controller/GenericController.php on line 1893
+[22-Sep-2020 19:25:25 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/../app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[22-Sep-2020 19:25:26 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/../app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[22-Sep-2020 19:47:47 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/../app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[22-Sep-2020 19:47:48 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/../app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[22-Sep-2020 19:47:49 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/../app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[22-Sep-2020 19:47:49 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/../app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[22-Sep-2020 19:49:54 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/home/customer/www/mosic.mister-wolf.it/public_html/app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[22-Sep-2020 19:49:55 CST6CDT] PHP Fatal error:  require(): Failed opening required '/home/customer/www/dev.mosic.mister-wolf.it/public_html/home/customer/www/mosic.mister-wolf.it/public_html/app/autoload.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/app.php on line 8
+[07-Oct-2020 08:58:14 CST6CDT] PHP Fatal error:  require_once(): Failed opening required '../config-web.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 26
+[07-Oct-2020 10:03:07 CST6CDT] PHP Fatal error:  require_once(): Failed opening required '../config-web.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 26
+[07-Oct-2020 10:03:27 CST6CDT] PHP Fatal error:  require_once(): Failed opening required '../config-web.php' (include_path='.:/usr/local/php73/pear') in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 26
+[07-Oct-2020 10:08:33 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:93
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 93
+[07-Oct-2020 10:10:23 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:93
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 93
+[07-Oct-2020 10:11:37 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:97
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 97
+[07-Oct-2020 10:14:08 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:99
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 99
+[07-Oct-2020 10:17:02 CST6CDT] PHP Parse error:  syntax error, unexpected ';', expecting ')' in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 99
+[07-Oct-2020 10:18:11 CST6CDT] PHP Parse error:  syntax error, unexpected ';', expecting ')' in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 99
+[07-Oct-2020 10:18:45 CST6CDT] PHP Parse error:  syntax error, unexpected ';', expecting ')' in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 99
+[07-Oct-2020 10:22:16 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:101
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 101
+[07-Oct-2020 10:23:25 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:102
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 102
+[07-Oct-2020 10:24:02 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:106
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 106
+[07-Oct-2020 10:27:07 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:129
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 129
+[07-Oct-2020 10:28:08 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:129
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 129
+[07-Oct-2020 10:30:44 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:102
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 102
+[07-Oct-2020 10:37:46 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:102
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 102
+[07-Oct-2020 10:46:56 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:97
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 97
+[07-Oct-2020 10:49:50 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:97
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 97
+[07-Oct-2020 10:51:19 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function aggiornaStatoCipe() in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:94
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 94
+[08-Oct-2020 02:55:00 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:282
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 282
+[08-Oct-2020 02:59:30 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:283
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 283
+[08-Oct-2020 03:03:04 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:283
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 283
+[08-Oct-2020 03:39:34 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:283
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 283
+[08-Oct-2020 03:45:38 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:283
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 283
+[08-Oct-2020 04:10:48 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:283
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 283
+[08-Oct-2020 04:16:18 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:284
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 284
+[08-Oct-2020 04:17:40 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:284
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 284
+[08-Oct-2020 05:06:34 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:288
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 288
+[08-Oct-2020 05:10:44 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:288
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 288
+[08-Oct-2020 05:12:20 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:288
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 288
+[08-Oct-2020 05:24:13 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:288
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 288
+[08-Oct-2020 05:30:13 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:288
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 288
+[08-Oct-2020 05:31:10 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:288
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 288
+[08-Oct-2020 05:34:27 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:285
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 285
+[08-Oct-2020 05:49:57 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:285
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 285
+[08-Oct-2020 05:52:10 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:285
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 285
+[08-Oct-2020 08:52:35 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:285
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 285
+[08-Oct-2020 09:10:45 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:291
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 291
+[08-Oct-2020 09:15:36 CST6CDT] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php:291
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/dev.mosic.mister-wolf.it/public_html/mosic-script/cipe-area-riservata.php on line 291
+[18-Jun-2021 12:12:43 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[18-Jun-2021 12:12:44 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[15-Jul-2021 12:19:24 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[15-Jul-2021 12:19:24 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[30-Jul-2021 12:23:01 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/jms/serializer/src/JMS/Serializer/SerializationContext.php on line 139
+[09-Aug-2021 19:25:06 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[09-Aug-2021 19:25:06 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[20-Aug-2021 02:45:15 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[20-Aug-2021 02:45:16 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[04-Sep-2021 02:22:14 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[04-Sep-2021 02:22:15 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[29-Sep-2021 19:40:59 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[29-Sep-2021 19:40:59 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[29-Sep-2021 19:41:00 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[29-Sep-2021 19:41:00 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[17-Oct-2021 03:27:27 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[17-Oct-2021 03:27:27 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[22-Oct-2021 19:58:38 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[22-Oct-2021 19:58:38 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[25-Oct-2021 10:05:11 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/jms/serializer/src/JMS/Serializer/SerializationContext.php on line 139
+[26-Nov-2021 05:56:33 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/raveren/kint/inc/kintParser.class.php on line 463
+[26-Nov-2021 05:56:33 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/twig/twig/lib/Twig/Node.php on line 42
+[29-Nov-2021 10:36:52 UTC] PHP Deprecated:  Unparenthesized `a ? b : c ? d : e` is deprecated. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/customer/www/mosic.mister-wolf.it/public_html/vendor/jms/serializer/src/JMS/Serializer/SerializationContext.php on line 139

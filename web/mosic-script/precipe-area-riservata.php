@@ -46,20 +46,25 @@ function invioFile ($token, $file, $targetInvioFile) {
 
     $post = new \CURLFile($file, 'application/pdf', $file);
 
-    $data_array = array(
-        'file' => new \CurlFile($file)
-    );
+    if (file_exists($file)) {
+        $data_array = array(
+            'file' => new \CurlFile($file)
+        );
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_URL,$targetInvioFile . $file);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_array);
-    curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL,$target);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_array);
+        curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-    $result=curl_exec ($ch);
-    $result_info =curl_getinfo($ch);
+        $result=curl_exec ($ch);
+        $result_info =curl_getinfo($ch);
+    } else {
+        $result_info = ['http_code' => 404];
+    }
+
     return $result_info;
 }
 
@@ -267,7 +272,7 @@ foreach ($precipeTemp->punti_odg as $i => $v) {
 }
 
 
-$array_file_errati = "";
+$array_file_errati = [];
 foreach ($precipeTemp->punti_odg as $i => $v) {
     foreach ($v->allegati as $item => $k) {
 
@@ -275,7 +280,7 @@ foreach ($precipeTemp->punti_odg as $i => $v) {
         $result_info = invioFile($token, $k->relURI, $targetInvioFile);
 
         //Aggiorno lo stato del precipe
-        if ($result_info['http_code'] != 204) {
+        if ($result_info['http_code'] != 204 && $result_info['http_code'] != 100) {
             $current_file .= $argv[1] . " -------> " . $k->relURI . " --code--> " . $result_info['http_code'] . "\n";
             //file_put_contents("file-errori-upload.txt", $current_file);
             $array_file_errati[] = $k->relURI;
@@ -291,44 +296,53 @@ foreach ($precipeTemp->punti_odg as $i => $v) {
 }
 
 $current_file .=  "\n\n";
-//file_put_contents("file-errori-upload.txt", $current_file);
+file_put_contents("file-errori-upload.txt", $current_file);
 
 
 //se ho inviato tutti i file correttamente
 if ($numero_file == $numero_file_caricati) {
-    aggiornaStato($argv[1], "Procedura conclusa - Caricati ".$numero_file_caricati." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")" );
+    aggiornaStato($argv[1], "Pubblicazione completata - Tutti i file caricati di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")" );
     aggiornaUfficialeRiunione($argv[1],1);
 } else {
-    aggiornaStato($argv[1],  "Errore procedura - Caricati ".$numero_file_caricati." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
+    //aggiornaStato($argv[1],  "Errore procedura - Caricati ".$numero_file_caricati." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
 
-    if (count($array_file_errati > 0)) {
-        $file_ricaricati = 0;
-
-        for ($i=0; $i<1; $i++) { //riprovo x volte
-            foreach ($array_file_errati as $key => $value) {
-                //invia fisicamente il file (EXEC)
-                $result_info = invioFile($token, $value, $targetInvioFile);
-
-                //Aggiorno lo stato del precipe
-                if ($result_info['http_code'] != 204) {
-                    $current_file .= $argv[1] . " ---tentativo----> " . $value . " --code--> " . $result_info['http_code'] . "\n";
-                    //file_put_contents("file-errori-upload.txt", $current_file);
-                    aggiornaStato($argv[1], "Procedura in corso - Caricati " . $numero_file_caricati . " file di " . $numero_file . " - tentativi " . $i . " (".$numero_file_caricati.",".$numero_file.")");
-                } else {
-                    aggiornaStato($argv[1], "Procedura in corso - Caricati " . $numero_file_caricati . " file di " . $numero_file . " - tentativi " . $i . " (".$numero_file_caricati.",".$numero_file.")");
-                    $file_ricaricati++;
-                }
-                curl_close($ch);
-            }
-        }
-
-        if ($file_ricaricati > 0) {
-            aggiornaStato($argv[1], "Procedura conclusa - Caricati ". ($numero_file_caricati + $file_ricaricati) ." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
-        } else {
-            aggiornaStato($argv[1], "Errore procedura - Caricati ".($numero_file_caricati + $file_ricaricati) ." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
-        }
-
+    if ($numero_file_caricati > 0) {
+        aggiornaStato($argv[1],  "Pubblicazione parziale - Caricati ".$numero_file_caricati." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
+        aggiornaUfficialeRiunione($argv[1],1);
+    } else {
+        aggiornaStato($argv[1],  "Pubblicazione parziale - Nessun file trovato di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
+        aggiornaUfficialeRiunione($argv[1],1);
     }
+
+
+//    if (count($array_file_errati > 0)) {
+//        $file_ricaricati = 0;
+//
+//        for ($i=0; $i<1; $i++) { //riprovo x volte
+//            foreach ($array_file_errati as $key => $value) {
+//                //invia fisicamente il file (EXEC)
+//                $result_info = invioFile($token, $value, $targetInvioFile);
+//
+//                //Aggiorno lo stato del precipe
+//                if ($result_info['http_code'] != 204 && $result_info['http_code'] != 100) {
+//                    $current_file .= $argv[1] . " ---tentativo----> " . $value . " --code--> " . $result_info['http_code'] . "\n";
+//                    //file_put_contents("file-errori-upload.txt", $current_file);
+//                    aggiornaStato($argv[1], "Procedura in corso - Caricati " . $numero_file_caricati . " file di " . $numero_file . " - tentativi " . $i . " (".$numero_file_caricati.",".$numero_file.")");
+//                } else {
+//                    aggiornaStato($argv[1], "Procedura in corso - Caricati " . $numero_file_caricati . " file di " . $numero_file . " - tentativi " . $i . " (".$numero_file_caricati.",".$numero_file.")");
+//                    $file_ricaricati++;
+//                }
+//                curl_close($ch);
+//            }
+//        }
+//
+//        if ($file_ricaricati > 0) {
+//            aggiornaStato($argv[1], "Procedura conclusa - Caricati ". ($numero_file_caricati + $file_ricaricati) ." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
+//        } else {
+//            aggiornaStato($argv[1], "Errore procedura - Caricati ".($numero_file_caricati + $file_ricaricati) ." file di " . $numero_file . " (".$numero_file_caricati.",".$numero_file.")");
+//        }
+//
+//    }
 }
 
 

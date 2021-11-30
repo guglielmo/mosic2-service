@@ -1,9 +1,9 @@
 <?php
 
 $sqlname='localhost';
-$username='mosic_symfony';
-$password='_um3c1pdf_';
-$db='mosic_symfony';
+$username='mosicmis_mosic';
+$password='!d]txfMhpecD';
+$db='mosicmis_mosic';
 
 $db= mysqli_connect("$sqlname", "$username","$password","$db") or die(mysqli_error());
 mysqli_set_charset($db,"utf8");
@@ -17,20 +17,42 @@ set_time_limit(7200);
 
 
 
-$filePathSanitize = "";
+//$filePath = "service/";
 $filePath = "";
 
+
+
+//// PATH PER AREA RISERVATA
+//$targetInvioFile = "http://area-riservata.mosic2.celata.com/upload_file/";
+//$targetLogin = "http://area-riservata.mosic2.celata.com/api-token-auth/";
+//
+//$targetGetUrlPreCipe = "http://area-riservata.mosic2.celata.com/seduta/precipe/";
+//$targetGetUrlCipe = "http://area-riservata.mosic2.celata.com/seduta/cipe/";
+//
+//$targetDeletePreCipe = "http://area-riservata.mosic2.celata.com/precipe/";
+//$targetDeleteCipe = "http://area-riservata.mosic2.celata.com/cipe/";
+//
+//$targetInvioMetadatiPreCipe = "http://area-riservata.mosic2.celata.com/precipe";
+//$targetInvioMetadatiCipe = "http://area-riservata.mosic2.celata.com/cipe";
+
+
+
+
+
+
 // PATH PER AREA RISERVATA
-// $area_ris_base_url = "http://area-riservata.mosic2.celata.com";
-$area_ris_base_url = "http://area-riservata.mosic2.celata.com";
-$targetInvioFile = $area_ris_base_url . "/upload_file/";
-$targetLogin = $area_ris_base_url . "/api-token-auth/";
+$targetInvioFile = "http://area-riservata.programmazioneeconomica.gov.it/upload_file/";
+$targetLogin     = "http://area-riservata.programmazioneeconomica.gov.it/api-token-auth/";
 
-$targetGetUrlPreCipe = $area_ris_base_url . "/seduta/precipe/";
-$targetGetUrlCipe = $area_ris_base_url . "/seduta/cipe/";
+$targetGetUrlPreCipe = "http://area-riservata.programmazioneeconomica.gov.it/seduta/precipe/";
+$targetGetUrlCipe = "http://area-riservata.programmazioneeconomica.gov.it/seduta/cipe/";
 
-$targetDeletePreCipe = $area_ris_base_url . "/precipe/";
-$targetDeleteCipe = $area_ris_base_url . "/cipe/";
+$targetDeletePreCipe = "http://area-riservata.programmazioneeconomica.gov.it/precipe/";
+$targetDeleteCipe = "http://area-riservata.programmazioneeconomica.gov.it/cipe/";
 
-$targetInvioMetadatiPreCipe = $area_ris_base_url . "/precipe";
-$targetInvioMetadatiCipe = $area_ris_base_url . "/cipe";
+$targetInvioMetadatiPreCipe = "http://area-riservata.programmazioneeconomica.gov.it/precipe";
+$targetInvioMetadatiCipe = "http://area-riservata.programmazioneeconomica.gov.it/cipe";
+
+
+
+

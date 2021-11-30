@@ -74,9 +74,9 @@ DirectoryIndex app.php
 
     # Rewrite all other queries to the front controller.
     RewriteRule ^ %{ENV:BASE}/app.php [L]
-		
-		
-		
+
+
+
 		RewriteCond %{REQUEST_METHOD} OPTIONS
 		RewriteRule ^(.*)$ $1 [R=200,L]
 
