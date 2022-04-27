@@ -47,7 +47,7 @@ class Delibere
 
     /**
      * @var string
-     * @ORM\Column(name="argomento", type="string", length=255, nullable=true)
+     * @ORM\Column(name="argomento", type="text", nullable=true)
      */
     private $argomento;
 
