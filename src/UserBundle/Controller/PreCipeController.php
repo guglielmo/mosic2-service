@@ -732,6 +732,14 @@ class PreCipeController extends Controller
         }
         //controllo su i tipi di file ammessi
         if (!in_array($file->getMimeType(), array(
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // xlsx
+            'application/vnd.ms-powerpoint', // ppt
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation', // pptx
+            'application/vnd.oasis.opendocument.text', // odt
+            'application/rtf', // rtf
+            'application/x-rtf', // rtf
+            'text/richtext', // rtf
+            'text/rtf', // rtf
             'image/jpeg',
             'image/png',
             'image/gif',
@@ -739,8 +747,7 @@ class PreCipeController extends Controller
             'application/msword',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/vnd.ms-excel',
-            '"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            '"image/tiff'))) {
+            'image/tiff'))) {
             $response_array = array("error" => ["code" => 409, "message" => "Questo tipo di file non e' permesso."]);
             $response = new Response(json_encode($response_array), 409);
             return $this->setBaseHeaders($response);
