@@ -152,6 +152,10 @@ class FascicoliController extends Controller
 
         $serialize = $this->formatDateJsonCustom($serialize, array('data_cipe', 'data_cipe2', 'data_magazzino'));
 
+        if (isset($serialize['id_tags']) && $serialize['id_tags'] == 0) {
+            $serialize['id_tags'] = null;
+        }
+
         $response_array = array(
             "response" => Response::HTTP_OK,
             "total_results" => 1,
