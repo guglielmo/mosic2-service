@@ -174,6 +174,9 @@ class RegistriController extends Controller
 
         $serialize = $this->formatDateJsonCustom($serialize, array('data_arrivo', 'data_mittente'));
 
+        if (isset($serialize['id_tags']) && $serialize['id_tags'] == 0) {
+            $serialize['id_tags'] = null;
+        }
 
         $response_array = array(
             "response" => Response::HTTP_OK,
