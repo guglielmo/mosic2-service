@@ -385,6 +385,9 @@ $mscForSerialize = microtime(true) - $mscForSerialize;
         //$response = new Response(json_encode(array_values($ArrayodgDelibere)), Response::HTTP_OK);
         //return $this->setBaseHeaders($response);
 
+        if (isset($serialize[0]['id_tags']) && $serialize[0]['id_tags'] == 0) {
+            $serialize[0]['id_tags'] = null;
+        }
 
 
         $serialize[0]['rilievi_CC'] = $delibereCC;
