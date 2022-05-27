@@ -283,7 +283,8 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.tipoRegistrazioneCC as tipo_registrazione_cc,
                                             d.dataRegistrazioneCC as data_registrazione_cc,
                                             d.dataInvioGU as data_invio_gu,
-                                            d.dataGU as data_gu
+                                            d.dataGU as data_gu,
+                                            d.invioMef as invio_mef
                                             ')
             ->from('UserBundle:Delibere', 'd')
             ->where('1=1' . $filter)
@@ -326,7 +327,8 @@ class DelibereRepository extends \Doctrine\ORM\EntityRepository
                                             d.dataInvioCC as data_invio_cc,
                                             d.dataRegistrazioneCC as data_registrazione_cc,
                                             d.dataInvioGU as data_invio_gu,
-                                            d.dataGU as data_gu
+                                            d.dataGU as data_gu,
+                                            d.invioMef as invio_mef
                                             ')
             ->from('UserBundle:Delibere', 'd')
             ->where('1=1' . $filter)
