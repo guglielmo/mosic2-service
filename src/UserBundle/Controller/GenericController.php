@@ -311,8 +311,9 @@ class GenericController extends Controller
                 continue;
             }
 
-            if (($item->data_mef_invio == "")
+            if ( ($item->data_mef_invio == "")
                 && ($item->data_mef_pec == "")
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data][$item->id]['MEF_inviare'] = 1;
                 continue;
@@ -320,6 +321,7 @@ class GenericController extends Controller
             if (($item->data_mef_ritorno == "")
                 && (($item->data_mef_invio != ""))
                 && (($item->data_mef_pec != ""))
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data][$item->id]['MEF_firma'] = 1;
                 continue;
@@ -905,6 +907,7 @@ class GenericController extends Controller
 
             if (($item->data_mef_invio == "")
                 && ($item->data_mef_pec == "")
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data][$item->id]['MEF_inviare'] = 1;
                 continue;
@@ -912,6 +915,7 @@ class GenericController extends Controller
             if (($item->data_mef_ritorno == "")
                 && (($item->data_mef_invio != ""))
                 && (($item->data_mef_pec != ""))
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data][$item->id]['MEF_firma'] = 1;
                 continue;
@@ -1497,6 +1501,7 @@ class GenericController extends Controller
 
             if (($item->data_mef_invio == "")
                 && ($item->data_mef_pec == "")
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data]['situazione'][$item->id]['MEF_inviare'] = 1;
                 continue;
@@ -1504,6 +1509,7 @@ class GenericController extends Controller
             if (($item->data_mef_ritorno == "")
                 && (($item->data_mef_invio != ""))
                 && (($item->data_mef_pec != ""))
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data]['situazione'][$item->id]['MEF_firma'] = 1;
                 continue;
@@ -1782,6 +1788,7 @@ class GenericController extends Controller
 
             if (($item->data_mef_invio == "")
                 && ($item->data_mef_pec == "")
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data]['situazione'][$item->id]['MEF_inviare'] = 1;
                 continue;
@@ -1789,6 +1796,7 @@ class GenericController extends Controller
             if (($item->data_mef_ritorno == "")
                 && (($item->data_mef_invio != ""))
                 && (($item->data_mef_pec != ""))
+                && ($item->invio_mef == 1)
             ) {
                 $arrayDelibere[$item->data]['situazione'][$item->id]['MEF_firma'] = 1;
                 continue;
